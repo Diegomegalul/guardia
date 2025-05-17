@@ -1,4 +1,4 @@
-package proyecto;
+package logica;
 import java.util.ArrayList;
 public class PlanificadorGuardias {
     ArrayList<Persona> personas = new ArrayList<>();

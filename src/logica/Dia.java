@@ -1,4 +1,4 @@
-package proyecto;
+package logica;
 
 public enum Dia {
 LUNES,

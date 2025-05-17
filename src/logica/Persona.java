@@ -1,4 +1,4 @@
-package proyecto;
+package logica;
 
 public abstract class Persona {
     //Atributos

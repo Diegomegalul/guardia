@@ -1,4 +1,4 @@
-package proyecto;
+package logica;
 
 import java.time.LocalDate;
 

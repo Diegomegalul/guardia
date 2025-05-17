@@ -1,4 +1,4 @@
-package proyecto;
+package logica;
 
 public class Estudiante extends Persona{
     //Atributos
