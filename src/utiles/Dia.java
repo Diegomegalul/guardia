@@ -1,4 +1,4 @@
-package logica;
+package utiles;
 
 public enum Dia {
 LUNES,

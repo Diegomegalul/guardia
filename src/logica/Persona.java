@@ -1,5 +1,7 @@
 package logica;
 
+import utiles.Sexo;
+
 public abstract class Persona {
     //Atributos
     protected int cantidadGuardias;
