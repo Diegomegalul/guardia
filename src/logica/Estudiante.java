@@ -1,5 +1,7 @@
 package logica;
 
+import utiles.Sexo;
+
 public class Estudiante extends Persona{
     //Atributos
     private int cantidadGuardiasFestivo;

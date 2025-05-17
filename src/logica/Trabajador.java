@@ -2,6 +2,8 @@ package logica;
 
 import java.time.LocalDate;
 
+import utiles.Sexo;
+
 public class Trabajador extends Persona{
     //Atributos
     private LocalDate fechaDeIncorporacion;
