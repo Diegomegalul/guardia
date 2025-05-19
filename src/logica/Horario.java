@@ -10,8 +10,8 @@ public class Horario {
     private Dia dia;
     private LocalDate fecha;
     private LocalTime horaFin;
-    private boolean esFestivo;
-    private LocalTime horaInicio;  
+    private LocalTime horaInicio; 
+    private boolean esFestivo; 
     //Constructor
     public Horario (LocalDate fecha, LocalTime horaInicio, LocalTime horaFin, Dia dia, boolean esFestivo){
         setDia(dia);
