@@ -58,6 +58,4 @@ public abstract class Persona {
         return cantidadGuardias;
     }
     //Metodos
-
-
 }
