@@ -27,13 +27,13 @@ import logica.Trabajador;
 public class AddPersonas extends JFrame {
 
 	private static final long serialVersionUID = 1L;
+	private PlanificadorGuardias planificador;
 	private JPanel contentPane;
 	private DefaultTableModel tableModel;
 	private JTable table;
-	private final PlanificadorGuardias planificador;
 
 	public AddPersonas(final PlanificadorGuardias planificador) {
-		this.planificador = planificador;
+		this.setPlanificador(planificador);
 		setBounds(100, 100, 750, 600);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -115,7 +115,7 @@ public class AddPersonas extends JFrame {
 				if (ci == null || ci.trim().isEmpty()) return;
 				// Validación de longitud de CI
 				if (ci.length() != 11 || !ci.matches("\\d{11}")) {
-				    javax.swing.JOptionPane.showMessageDialog(null, "El CI debe tener exactamente 11 d�gitos num�ricos.");
+				    javax.swing.JOptionPane.showMessageDialog(null, "El CI debe tener exactamente 11 d�gitos num�ricos.");
 				    return;
 				}
 				// Evitar duplicados por CI
@@ -130,11 +130,21 @@ public class AddPersonas extends JFrame {
 				boolean activo = chkActivo.isSelected();
 				int cantidadGuardias = 0;
 				String cantidadGuardiasStr = txtCantidadGuardias.getText();
-				if (cantidadGuardiasStr != null && !cantidadGuardiasStr.trim().isEmpty()) {
-					try { cantidadGuardias = Integer.parseInt(cantidadGuardiasStr); } catch (Exception ex) {}
+				if (cantidadGuardiasStr == null || cantidadGuardiasStr.trim().isEmpty()) {
+					cantidadGuardias = 0;
+				} else {
+					try { 
+						cantidadGuardias = Integer.parseInt(cantidadGuardiasStr); 
+						if (cantidadGuardias < 0) {
+							javax.swing.JOptionPane.showMessageDialog(null, "La cantidad de guardias no puede ser menor que 0.");
+							return;
+						}
+					} catch (Exception ex) {
+						javax.swing.JOptionPane.showMessageDialog(null, "La cantidad de guardias debe ser un número válido.");
+						return;
+					}
 				}
 				String tipo = (String) cbTipo.getSelectedItem();
-				Persona persona = null;
 				if ("Estudiante".equals(tipo)) {
 					int guardiasFestivo = 0;
 					String guardiasFestivoStr = txtGuardiasFestivo.getText();
@@ -204,8 +214,19 @@ public class AddPersonas extends JFrame {
 				boolean activo = chkActivo.isSelected();
 				int cantidadGuardias = 0;
 				String cantidadGuardiasStr = txtCantidadGuardias.getText();
-				if (cantidadGuardiasStr != null && !cantidadGuardiasStr.trim().isEmpty()) {
-					try { cantidadGuardias = Integer.parseInt(cantidadGuardiasStr); } catch (Exception ex) {}
+				if (cantidadGuardiasStr == null || cantidadGuardiasStr.trim().isEmpty()) {
+					cantidadGuardias = 0;
+				} else {
+					try { 
+						cantidadGuardias = Integer.parseInt(cantidadGuardiasStr); 
+						if (cantidadGuardias < 0) {
+							javax.swing.JOptionPane.showMessageDialog(null, "La cantidad de guardias no puede ser menor que 0.");
+							return;
+						}
+					} catch (Exception ex) {
+						javax.swing.JOptionPane.showMessageDialog(null, "La cantidad de guardias debe ser un número válido.");
+						return;
+					}
 				}
 				String tipo = (String) cbTipo.getSelectedItem();
 				Object extra = "Estudiante".equals(tipo) ? txtGuardiasFestivo.getText() : txtFechaIncorporacion.getText();
@@ -236,6 +257,14 @@ public class AddPersonas extends JFrame {
 				planificador.getPersonas().set(selectedRow[0], persona);
 			}
 		});
+	}
+
+	public PlanificadorGuardias getPlanificador() {
+		return planificador;
+	}
+
+	public void setPlanificador(PlanificadorGuardias planificador) {
+		this.planificador = planificador;
 	}
 
 }

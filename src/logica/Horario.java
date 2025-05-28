@@ -13,12 +13,12 @@ public class Horario {
     private LocalTime horaInicio; 
     private boolean esFestivo; 
     //Constructor
-    public Horario (LocalDate fecha, LocalTime horaInicio, LocalTime horaFin, Dia dia, boolean esFestivo){
-        setDia(dia);
-        setFecha(fecha);
-        setEsFestivo(esFestivo);
-        setHoraInicio(horaInicio);
-        setHoraFin(horaFin);
+    public Horario(utiles.Dia dia, java.time.LocalDate fecha, LocalTime horaInicio, LocalTime horaFin, boolean esFestivo) {
+        this.dia = dia;
+        this.fecha = fecha;
+        this.horaInicio = horaInicio;
+        this.horaFin = horaFin;
+        this.esFestivo = esFestivo;
     }
     //Getters y setters
     public void setDia(Dia dia){

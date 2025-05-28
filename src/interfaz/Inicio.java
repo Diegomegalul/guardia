@@ -1,21 +1,19 @@
 package interfaz;
 
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-import javax.swing.JLabel;
-import javax.swing.SwingConstants;
-import javax.swing.JButton;
-import javax.swing.JMenuBar;
-import javax.swing.JMenu;
-import javax.swing.JMenuItem;
-
-import java.awt.EventQueue;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent; 
 import java.awt.BorderLayout;
-import java.awt.GridBagConstraints;
+import java.awt.EventQueue;
 import java.awt.GridBagLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JPanel;
+import javax.swing.SwingConstants;
+import javax.swing.border.EmptyBorder;
 
 import logica.PlanificadorGuardias;
 
@@ -23,9 +21,10 @@ public class Inicio extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
-	private PlanificadorGuardias planificador = new PlanificadorGuardias();
+	private PlanificadorGuardias planificador;
 
-	public Inicio() {
+	public Inicio(final PlanificadorGuardias planificador) {
+		this.setPlanificador(planificador);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 750, 600);
 		contentPane = new JPanel();
@@ -75,7 +74,7 @@ public class Inicio extends JFrame {
 				EventQueue.invokeLater(new Runnable() {
 					public void run() {
 						try {
-							OrganizarGuardias frame = new OrganizarGuardias();
+							OrganizarGuardias frame = new OrganizarGuardias(planificador);
 							frame.setVisible(true);
 						} catch (Exception e) {
 							e.printStackTrace();
@@ -84,5 +83,13 @@ public class Inicio extends JFrame {
 				});
 			}
 		});
+	}
+
+	public PlanificadorGuardias getPlanificador() {
+		return planificador;
+	}
+
+	public void setPlanificador(PlanificadorGuardias planificador) {
+		this.planificador = planificador;
 	}
 }

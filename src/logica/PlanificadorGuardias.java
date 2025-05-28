@@ -47,4 +47,10 @@ public class PlanificadorGuardias {
 	    Persona nuevaPersona = new Trabajador(ci, nombre, sexo, activo, fechaDeIncorporacion, cantidadGuardias);
 	    personas.add(nuevaPersona);
 	}
+	
+	// Nuevo método para crear guardia
+	public void crearGuardia(Horario horario, Persona persona) {
+	    Guardia nuevaGuardia = new Guardia(horario, persona);
+	    guardias.add(nuevaGuardia);
+	}
 }
