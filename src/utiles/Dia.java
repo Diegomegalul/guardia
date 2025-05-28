@@ -1,11 +1,11 @@
 package utiles;
 
 public enum Dia {
-LUNES,
-MARTES,
-MIERCOLES,
-JUEVES,
-VIERNES,
-SABADO,
-DOMINGO
+    MONDAY,
+    TUESDAY,
+    WEDNESDAY,
+    THURSDAY,
+    FRIDAY,
+    SATURDAY,
+    SUNDAY
 }
