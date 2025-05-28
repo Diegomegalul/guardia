@@ -7,9 +7,10 @@ public class Guardia {
     private Horario horario;
     private Persona persona;
     //Constructor
-    public Guardia(Horario horario, Persona personas){
+    public Guardia(int id, Horario horario, Persona personas){
         setHorario(horario);
         setPersona(persona);
+        setId(id);
     }
     //Getters y setters
     public void setHorario(Horario horario){

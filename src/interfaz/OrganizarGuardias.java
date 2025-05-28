@@ -125,7 +125,7 @@ public class OrganizarGuardias extends JFrame {
                         return;
                     }
 
-                    planificador.crearGuardia(horario, persona);
+                    planificador.crearGuardia(idx, horario, persona);
                     persona.setCantidadGuardias(persona.getCantidadGuardias() + 1);
                     JOptionPane.showMessageDialog(null, "Guardia asignada correctamente.");
                     actualizarPersonasFiltradas();

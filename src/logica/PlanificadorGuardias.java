@@ -8,21 +8,11 @@ import utiles.Sexo;
 public class PlanificadorGuardias {
 	private ArrayList<Persona> personas;
 	private ArrayList<Guardia> guardias;
-	private ArrayList<Horario> horarios;
 	private ArrayList<DiaFestivo> diasFestivos = new ArrayList<>();
 
 	public PlanificadorGuardias() {
 		setPersonas(new ArrayList<Persona>());
 		setGuardias(new ArrayList<Guardia>());
-		setHorarios(new ArrayList<Horario>());
-	}
-
-	public ArrayList<Horario> getHorarios() {
-		return horarios;
-	}
-
-	public void setHorarios(ArrayList<Horario> horarios) {
-		this.horarios = horarios;
 	}
 
 	public ArrayList<Guardia> getGuardias() {
@@ -53,8 +43,8 @@ public class PlanificadorGuardias {
 	}
 	
 	// Nuevo método para crear guardia
-	public void crearGuardia(Horario horario, Persona persona) {
-	    Guardia nuevaGuardia = new Guardia(horario, persona);
+	public void crearGuardia(int id, Horario horario, Persona persona) {
+	    Guardia nuevaGuardia = new Guardia(id, horario, persona);
 	    guardias.add(nuevaGuardia);
 	}
 	
