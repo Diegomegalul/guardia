@@ -5,6 +5,7 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.time.LocalDate;
+
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
@@ -17,11 +18,11 @@ import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
+import utiles.Sexo;
 import logica.Estudiante;
 import logica.Persona;
-import utiles.Sexo;
-import logica.Trabajador;
 import logica.PlanificadorGuardias;
+import logica.Trabajador;
 
 public class AddPersonas extends JFrame {
 
@@ -112,6 +113,11 @@ public class AddPersonas extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				String ci = txtCI.getText();
 				if (ci == null || ci.trim().isEmpty()) return;
+				// ValidaciÃ³n de longitud de CI
+				if (ci.length() != 11 || !ci.matches("\\d{11}")) {
+				    javax.swing.JOptionPane.showMessageDialog(null, "El CI debe tener exactamente 11 dígitos numéricos.");
+				    return;
+				}
 				// Evitar duplicados por CI
 				for (Persona p : planificador.getPersonas()) {
 					if (p.getCi().equals(ci)) {
@@ -135,19 +141,16 @@ public class AddPersonas extends JFrame {
 					if (guardiasFestivoStr != null && !guardiasFestivoStr.trim().isEmpty()) {
 						try { guardiasFestivo = Integer.parseInt(guardiasFestivoStr); } catch (Exception ex) {}
 					}
-					persona = new Estudiante(ci, nombre, sexo, activo, cantidadGuardias, guardiasFestivo);
+					planificador.crearPersona(ci, nombre, sexo, activo, cantidadGuardias, guardiasFestivo);
 					tableModel.addRow(new Object[]{ci, nombre, sexo, Boolean.valueOf(activo), "Estudiante", new Integer(cantidadGuardias), new Integer(guardiasFestivo)});
 				} else {
-					LocalDate fecha = null;
+					java.time.LocalDate fecha = null;
 					String fechaStr = txtFechaIncorporacion.getText();
 					if (fechaStr != null && !fechaStr.trim().isEmpty()) {
-						try { fecha = LocalDate.parse(fechaStr); } catch (Exception ex) {}
+						try { fecha = java.time.LocalDate.parse(fechaStr); } catch (Exception ex) {}
 					}
-					persona = new Trabajador(ci, nombre, sexo, activo, fecha, cantidadGuardias);
+					planificador.crearPersona(ci, nombre, sexo, activo, fecha, cantidadGuardias);
 					tableModel.addRow(new Object[]{ci, nombre, sexo, Boolean.valueOf(activo), "Trabajador", new Integer(cantidadGuardias), fecha});
-				}
-				if (persona != null) {
-					planificador.getPersonas().add(persona);
 				}
 			}
 		});

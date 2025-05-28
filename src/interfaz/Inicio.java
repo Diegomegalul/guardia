@@ -6,6 +6,9 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 import javax.swing.JButton;
+import javax.swing.JMenuBar;
+import javax.swing.JMenu;
+import javax.swing.JMenuItem;
 
 import java.awt.EventQueue;
 import java.awt.event.ActionListener;
@@ -30,38 +33,28 @@ public class Inicio extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(new BorderLayout());
 		
+		// Menú
+        JMenuBar menuBar = new JMenuBar();
+        JMenu menu = new JMenu("Opciones");
+        JMenuItem menuAddPersonas = new JMenuItem("A\u00F1adir personas");
+        JMenuItem menuOrganizarGuardias = new JMenuItem("Organizar guardias");
+        menu.add(menuAddPersonas);
+        menu.add(menuOrganizarGuardias);
+        menuBar.add(menu);
+        setJMenuBar(menuBar);
+
 		JLabel lblNewLabel = new JLabel("Bienvenido al planificador de guardias");
 		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel.setFont(new java.awt.Font("Arial", java.awt.Font.BOLD, 24));
 		getContentPane().add(lblNewLabel, BorderLayout.NORTH);
 
+		// Panel central vacío para mantener el diseño responsivo
 		JPanel panelCentral = new JPanel();
 		panelCentral.setLayout(new GridBagLayout());
-		GridBagConstraints gbc1 = new GridBagConstraints();
-		gbc1.insets = new java.awt.Insets(20, 20, 20, 20);
-		gbc1.gridx = 0;
-		gbc1.gridy = 0;
-		gbc1.fill = GridBagConstraints.HORIZONTAL;
-		gbc1.weightx = 1.0;
-
-		JButton btnAddPersonas = new JButton("A\u00F1adir personas");
-		btnAddPersonas.setFont(new java.awt.Font("Arial", java.awt.Font.PLAIN, 18));
-		panelCentral.add(btnAddPersonas, gbc1);
-
-		GridBagConstraints gbc2 = new GridBagConstraints();
-		gbc2.insets = new java.awt.Insets(20, 20, 20, 20);
-		gbc2.gridx = 0;
-		gbc2.gridy = 1;
-		gbc2.fill = GridBagConstraints.HORIZONTAL;
-		gbc2.weightx = 1.0;
-
-		JButton btnOrganizarGuardias = new JButton("Organizar guardias");
-		btnOrganizarGuardias.setFont(new java.awt.Font("Arial", java.awt.Font.PLAIN, 18));
-		panelCentral.add(btnOrganizarGuardias, gbc2);
-
 		getContentPane().add(panelCentral, BorderLayout.CENTER);
 
-		btnAddPersonas.addActionListener(new ActionListener() {
+		// Acción para "Añadir personas"
+		menuAddPersonas.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				EventQueue.invokeLater(new Runnable() {
 					public void run() {
@@ -72,10 +65,12 @@ public class Inicio extends JFrame {
 							e.printStackTrace();
 						}
 					}
-				});		
+				});
 			}
 		});
-		btnOrganizarGuardias.addActionListener(new ActionListener() {
+
+		// Acción para "Organizar guardias"
+		menuOrganizarGuardias.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				EventQueue.invokeLater(new Runnable() {
 					public void run() {
