@@ -5,6 +5,8 @@ import utiles.Sexo;
 public class Estudiante extends Persona{
     //Atributos
     private int cantidadGuardiasFestivo;
+    private boolean licenciaMatricula;
+    private boolean baja;
     //Constructor
     public Estudiante (String ci,String nombre,Sexo sexo,boolean activo,int cantidadGuardias,int cantidadGuardiasFestivo){
         super(ci, nombre, sexo, activo, cantidadGuardias);
@@ -18,6 +20,24 @@ public class Estudiante extends Persona{
     public int getCantidadGuardiasFestivo(){
         return cantidadGuardiasFestivo;
     }
-    //Metodos
 
+    public boolean isLicenciaMatricula() {
+        return licenciaMatricula;
+    }
+
+    public void setLicenciaMatricula(boolean licenciaMatricula) {
+        this.licenciaMatricula = licenciaMatricula;
+    }
+
+    public boolean isBaja() {
+        return baja;
+    }
+
+    public void setBaja(boolean baja) {
+        this.baja = baja;
+    }
+    //Metodos
+    public boolean puedeHacerGuardia() {
+        return activo && !licenciaMatricula && !baja;
+    }
 }

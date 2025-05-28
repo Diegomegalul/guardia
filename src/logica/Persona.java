@@ -7,7 +7,8 @@ public abstract class Persona {
     protected int cantidadGuardias;
     protected String ci;
     protected String nombre;
-    protected Sexo sexo;
+    protected String apellidos;
+    protected Sexo sexo; 
     protected boolean activo;
     //Contructor
     protected Persona(String ci,String nombre,Sexo sexo,boolean activo,int cantidadGuardias){
@@ -56,6 +57,10 @@ public abstract class Persona {
 
     public int getCantidadGuardias(){
         return cantidadGuardias;
+    }
+
+    public boolean estaActivo() {
+        return activo;
     }
     //Metodos
 }

@@ -40,6 +40,23 @@ public class Inicio extends JFrame {
         menu.add(menuAddPersonas);
         menu.add(menuOrganizarGuardias);
         menuBar.add(menu);
+        
+        JMenuItem menuEditarDiasFestivos = new JMenuItem("Dias Festivos");
+        menuEditarDiasFestivos.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent arg0) {
+        		EventQueue.invokeLater(new Runnable() {
+                    public void run() {
+                        try {
+                            EditDiasFestivos frame = new EditDiasFestivos(planificador);
+                            frame.setVisible(true);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+        	}
+        });
+        menu.add(menuEditarDiasFestivos);
         setJMenuBar(menuBar);
 
 		JLabel lblNewLabel = new JLabel("Bienvenido al planificador de guardias");

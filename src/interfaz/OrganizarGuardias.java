@@ -110,9 +110,7 @@ public class OrganizarGuardias extends JFrame {
                     }
                     java.time.LocalDate fecha = fechaDate.toInstant().atZone(java.time.ZoneId.systemDefault()).toLocalDate();
 
-                    // Obtener el día de la semana automáticamente
                     java.time.DayOfWeek dayOfWeek = fecha.getDayOfWeek();
-                    // Asume que tu enum utiles.Dia tiene los mismos nombres que DayOfWeek (MONDAY, TUESDAY, ...)
                     utiles.Dia dia = utiles.Dia.valueOf(dayOfWeek.name());
 
                     LocalTime horaInicio = LocalTime.parse(txtHoraInicio.getText().trim());
@@ -120,6 +118,13 @@ public class OrganizarGuardias extends JFrame {
                     boolean esFestivo = false; // Puedes adaptar esto si tienes un campo para festivo
 
                     Horario horario = new Horario(dia, fecha, horaInicio, horaFin, esFestivo);
+
+                    // NUEVO: Validar si la persona puede realizar la guardia
+                    if (!planificador.puedeRealizarGuardia(persona, horario)) {
+                        JOptionPane.showMessageDialog(null, "La persona seleccionada no puede realizar la guardia en ese horario.");
+                        return;
+                    }
+
                     planificador.crearGuardia(horario, persona);
                     persona.setCantidadGuardias(persona.getCantidadGuardias() + 1);
                     JOptionPane.showMessageDialog(null, "Guardia asignada correctamente.");
