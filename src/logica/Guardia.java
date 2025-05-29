@@ -1,13 +1,13 @@
 package logica;
 
-
 public class Guardia {
     //Atributos
     private int id;
     private Horario horario;
     private Persona persona;
+
     //Constructor
-    public Guardia(int id, Horario horario, Persona personas){
+    public Guardia(int id, Horario horario, Persona persona){
         setHorario(horario);
         setPersona(persona);
         setId(id);

@@ -46,7 +46,7 @@ public class EditDiasFestivos extends JFrame {
         this.planificador = planificador;
         setTitle("Editar D\u00EDas Festivos");
         setSize(400, 350);
-        setLocationRelativeTo(null);
+        setLocationRelativeTo(null); // Centra la ventana
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
         modeloLista = new DefaultListModel<DiaFestivo>();

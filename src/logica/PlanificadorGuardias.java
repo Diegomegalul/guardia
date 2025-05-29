@@ -1,18 +1,18 @@
 package logica;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
 import logica.DiaFestivo;
-import logica.Persona;
+
 import utiles.Sexo;
 
 public class PlanificadorGuardias {
-	private ArrayList<Persona> personas;
+	private Facultad facultad = new Facultad();
 	private ArrayList<Guardia> guardias;
 	private ArrayList<DiaFestivo> diasFestivos = new ArrayList<>();
 
 	public PlanificadorGuardias() {
-		setPersonas(new ArrayList<Persona>());
-		setGuardias(new ArrayList<Guardia>());
+		this.guardias = new ArrayList<Guardia>();
 	}
 
 	public ArrayList<Guardia> getGuardias() {
@@ -23,23 +23,45 @@ public class PlanificadorGuardias {
 		this.guardias = guardias;
 	}
 
-	public ArrayList<Persona> getPersonas() {
-		return personas;
+	public ArrayList<DiaFestivo> getDiasFestivos() {
+		return diasFestivos;
 	}
 
-	public void setPersonas(ArrayList<Persona> personas) {
-		this.personas = personas;
+	public void setDiasFestivos(ArrayList<DiaFestivo> diasFestivos) {
+		this.diasFestivos = diasFestivos;
 	}
 
+	// Métodos para acceder a personas a través de Facultad
+	public List<Persona> getPersonas() {
+		return facultad.getPersonas();
+	}
+
+	public void agregarPersona(Persona persona) {
+		facultad.agregarPersona(persona);
+	}
+
+	public void eliminarPersona(String ci) {
+		facultad.eliminarPersona(ci);
+	}
+
+	public Persona buscarPersonaPorCi(String ci) {
+		return facultad.buscarPersonaPorCi(ci);
+	}
+
+	public void actualizarPersona(Persona personaActualizada) {
+		facultad.actualizarPersona(personaActualizada);
+	}
+
+	// Métodos para crear personas específicos
 	public void crearPersona(String ci, String nombre, Sexo sexo, boolean activo, int cantidadGuardias, int cantidadGuardiasFestivo) {
-	    Persona nuevaPersona = new Estudiante(ci, nombre, sexo, activo, cantidadGuardias, cantidadGuardiasFestivo);
-	    personas.add(nuevaPersona);
+    Persona nuevaPersona = new Estudiante(ci, nombre, sexo, activo, cantidadGuardias, cantidadGuardiasFestivo);
+    agregarPersona(nuevaPersona);
 	}
 
 	// Sobrecarga para Trabajador
 	public void crearPersona(String ci, String nombre, Sexo sexo, boolean activo, java.time.LocalDate fechaDeIncorporacion, int cantidadGuardias) {
 	    Persona nuevaPersona = new Trabajador(ci, nombre, sexo, activo, fechaDeIncorporacion, cantidadGuardias);
-	    personas.add(nuevaPersona);
+	    agregarPersona(nuevaPersona);
 	}
 	
 	// Nuevo método para crear guardia
@@ -91,10 +113,6 @@ public class PlanificadorGuardias {
         return false;
     }
 
-    public ArrayList<DiaFestivo> getDiasFestivos() {
-        return diasFestivos;
-    }
-
     public void agregarDiaFestivo(DiaFestivo diaFestivo) {
         // Evita duplicados por fecha
         for (DiaFestivo df : diasFestivos) {
@@ -123,4 +141,45 @@ public class PlanificadorGuardias {
         }
         return false;
     }
+
+	// CRUD de guardias
+
+	public void agregarGuardia(Guardia guardia) {
+		guardias.add(guardia);
+	}
+
+	public Guardia buscarGuardiaPorId(int id) {
+		for (Guardia g : guardias) {
+			if (g.getId() == id) {
+				return g;
+			}
+		}
+		return null;
+	}
+
+	public void actualizarGuardia(Guardia guardiaActualizada) {
+		for (int i = 0; i < guardias.size(); i++) {
+			if (guardias.get(i).getId() == guardiaActualizada.getId()) {
+				guardias.set(i, guardiaActualizada);
+				break;
+			}
+		}
+	}
+
+	public void eliminarGuardia(int id) {
+		for (int i = 0; i < guardias.size(); i++) {
+			if (guardias.get(i).getId() == id) {
+				guardias.remove(i);
+				break;
+			}
+		}
+	}
+
+	public Facultad getFacultad() {
+		return facultad;
+	}
+
+	public void setFacultad(Facultad facultad) {
+		this.facultad = facultad;
+	}
 }

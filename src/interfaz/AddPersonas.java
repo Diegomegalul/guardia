@@ -20,6 +20,7 @@ import javax.swing.table.DefaultTableModel;
 
 import utiles.Sexo;
 import logica.Estudiante;
+import logica.Facultad;
 import logica.Persona;
 import logica.PlanificadorGuardias;
 import logica.Trabajador;
@@ -31,10 +32,13 @@ public class AddPersonas extends JFrame {
 	private JPanel contentPane;
 	private DefaultTableModel tableModel;
 	private JTable table;
+	private Facultad facultad;
 
 	public AddPersonas(final PlanificadorGuardias planificador) {
 		this.setPlanificador(planificador);
+		this.facultad = planificador.getFacultad(); // Acceso a la facultad desde el planificador
 		setBounds(100, 100, 750, 600);
+		setLocationRelativeTo(null); // Centra la ventana en la pantalla
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setLayout(new BorderLayout(0, 0));
@@ -95,6 +99,10 @@ public class AddPersonas extends JFrame {
 		JButton btnEditar = new JButton("Editar Persona");
 		formPanel.add(btnEditar);
 
+		// Botón para eliminar persona seleccionada
+		JButton btnEliminar = new JButton("Eliminar Persona");
+		formPanel.add(btnEliminar);
+
 		contentPane.add(formPanel, BorderLayout.NORTH);
 
 		String[] columnas = {"CI", "Nombre", "Sexo", "Activo", "Tipo", "Guardias", "Extra"};
@@ -115,15 +123,13 @@ public class AddPersonas extends JFrame {
 				if (ci == null || ci.trim().isEmpty()) return;
 				// Validación de longitud de CI
 				if (ci.length() != 11 || !ci.matches("\\d{11}")) {
-				    javax.swing.JOptionPane.showMessageDialog(null, "El CI debe tener exactamente 11 d�gitos num�ricos.");
+				    javax.swing.JOptionPane.showMessageDialog(null, "El CI debe tener exactamente 11 digitos numéricos.");
 				    return;
 				}
 				// Evitar duplicados por CI
-				for (Persona p : planificador.getPersonas()) {
-					if (p.getCi().equals(ci)) {
-						javax.swing.JOptionPane.showMessageDialog(null, "Ya existe una persona con ese CI.");
-						return;
-					}
+				if (facultad.buscarPersonaPorCi(ci) != null) {
+					javax.swing.JOptionPane.showMessageDialog(null, "Ya existe una persona con ese CI.");
+					return;
 				}
 				String nombre = txtNombre.getText();
 				Sexo sexo = (Sexo) cbSexo.getSelectedItem();
@@ -151,7 +157,8 @@ public class AddPersonas extends JFrame {
 					if (guardiasFestivoStr != null && !guardiasFestivoStr.trim().isEmpty()) {
 						try { guardiasFestivo = Integer.parseInt(guardiasFestivoStr); } catch (Exception ex) {}
 					}
-					planificador.crearPersona(ci, nombre, sexo, activo, cantidadGuardias, guardiasFestivo);
+					Estudiante estudiante = new Estudiante(ci, nombre, sexo, activo, cantidadGuardias, guardiasFestivo);
+					facultad.agregarPersona(estudiante);
 					tableModel.addRow(new Object[]{ci, nombre, sexo, Boolean.valueOf(activo), "Estudiante", new Integer(cantidadGuardias), new Integer(guardiasFestivo)});
 				} else {
 					java.time.LocalDate fecha = null;
@@ -159,14 +166,24 @@ public class AddPersonas extends JFrame {
 					if (fechaStr != null && !fechaStr.trim().isEmpty()) {
 						try { fecha = java.time.LocalDate.parse(fechaStr); } catch (Exception ex) {}
 					}
-					planificador.crearPersona(ci, nombre, sexo, activo, fecha, cantidadGuardias);
+					Trabajador trabajador = new Trabajador(ci, nombre, sexo, activo, fecha, cantidadGuardias);
+					facultad.agregarPersona(trabajador);
 					tableModel.addRow(new Object[]{ci, nombre, sexo, Boolean.valueOf(activo), "Trabajador", new Integer(cantidadGuardias), fecha});
 				}
+				// Vaciar campos después de agregar
+				txtCI.setText("");
+				txtNombre.setText("");
+				cbSexo.setSelectedIndex(0);
+				chkActivo.setSelected(false);
+				txtCantidadGuardias.setText("");
+				cbTipo.setSelectedIndex(0);
+				txtGuardiasFestivo.setText("");
+				txtFechaIncorporacion.setText("");
 			}
 		});
 
 		// Cargar personas existentes en la tabla
-		for (Persona p : planificador.getPersonas()) {
+		for (Persona p : facultad.getPersonas()) {
 			String tipo = (p instanceof Estudiante) ? "Estudiante" : "Trabajador";
 			Object extra = (tipo.equals("Estudiante")) ? ((Estudiante)p).getCantidadGuardiasFestivo() : ((Trabajador)p).getFechaDeIncorporacion();
 			tableModel.addRow(new Object[]{
@@ -229,15 +246,6 @@ public class AddPersonas extends JFrame {
 					}
 				}
 				String tipo = (String) cbTipo.getSelectedItem();
-				Object extra = "Estudiante".equals(tipo) ? txtGuardiasFestivo.getText() : txtFechaIncorporacion.getText();
-				tableModel.setValueAt(ci, selectedRow[0], 0);
-				tableModel.setValueAt(nombre, selectedRow[0], 1);
-				tableModel.setValueAt(sexo, selectedRow[0], 2);
-				tableModel.setValueAt(Boolean.valueOf(activo), selectedRow[0], 3);
-				tableModel.setValueAt(tipo, selectedRow[0], 4);
-				tableModel.setValueAt(new Integer(cantidadGuardias), selectedRow[0], 5);
-				tableModel.setValueAt(extra, selectedRow[0], 6);
-				// Actualizar en planificador
 				Persona persona = null;
 				if ("Estudiante".equals(tipo)) {
 					int guardiasFestivo = 0;
@@ -254,7 +262,50 @@ public class AddPersonas extends JFrame {
 					}
 					persona = new Trabajador(ci, nombre, sexo, activo, fecha, cantidadGuardias);
 				}
-				planificador.getPersonas().set(selectedRow[0], persona);
+				// Actualizar en facultad usando el método correspondiente
+				facultad.actualizarPersona(persona);
+
+				// Actualizar en la tabla
+				Object extra = "Estudiante".equals(tipo) ? txtGuardiasFestivo.getText() : txtFechaIncorporacion.getText();
+				tableModel.setValueAt(ci, selectedRow[0], 0);
+				tableModel.setValueAt(nombre, selectedRow[0], 1);
+				tableModel.setValueAt(sexo, selectedRow[0], 2);
+				tableModel.setValueAt(Boolean.valueOf(activo), selectedRow[0], 3);
+				tableModel.setValueAt(tipo, selectedRow[0], 4);
+				tableModel.setValueAt(new Integer(cantidadGuardias), selectedRow[0], 5);
+				tableModel.setValueAt(extra, selectedRow[0], 6);
+				// Vaciar campos después de editar
+				txtCI.setText("");
+				txtNombre.setText("");
+				cbSexo.setSelectedIndex(0);
+				chkActivo.setSelected(false);
+				txtCantidadGuardias.setText("");
+				cbTipo.setSelectedIndex(0);
+				txtGuardiasFestivo.setText("");
+				txtFechaIncorporacion.setText("");
+			}
+		});
+
+		btnEliminar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int selected = table.getSelectedRow();
+				if (selected == -1) {
+					javax.swing.JOptionPane.showMessageDialog(null, "Seleccione una persona para eliminar.");
+					return;
+				}
+				String ci = (String) tableModel.getValueAt(selected, 0);
+				facultad.eliminarPersona(ci);
+				tableModel.removeRow(selected);
+				javax.swing.JOptionPane.showMessageDialog(null, "Persona eliminada correctamente.");
+				// Vaciar campos después de eliminar
+				txtCI.setText("");
+				txtNombre.setText("");
+				cbSexo.setSelectedIndex(0);
+				chkActivo.setSelected(false);
+				txtCantidadGuardias.setText("");
+				cbTipo.setSelectedIndex(0);
+				txtGuardiasFestivo.setText("");
+				txtFechaIncorporacion.setText("");
 			}
 		});
 	}
