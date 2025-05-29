@@ -33,22 +33,56 @@ public class OrganizarGuardias extends JFrame {
     private static JTable tablaGuardias;
     private JComboBox<String> cbTurnoTrabajador;
 
-    // Variable para alternar el día de asignación para estudiantes
-    private int alternadorDiaEstudiante = 0;
+    // Alternancia de fines de semana: true=trabajadores, false=mujeres estudiantes
+    private static boolean finDeSemanaTrabajadores = true;
+    private static java.time.LocalDate ultimoFinDeSemana = null;
 
     private void actualizarPersonasFiltradas() {
-        // Encontrar el mínimo de cantidad de guardias entre todas las personas
+        // Encontrar el mínimo de cantidad de guardias entre todas las personas activas y profesores incorporados SOLO el día de incorporación
         int minGuardias = Integer.MAX_VALUE;
+        java.util.Date fechaDate = dateChooser != null ? dateChooser.getDate() : null;
+        java.time.LocalDate fechaSeleccionada = null;
+        if (fechaDate != null) {
+            fechaSeleccionada = fechaDate.toInstant().atZone(java.time.ZoneId.systemDefault()).toLocalDate();
+        }
         for (Persona p : planificador.getPersonas()) {
-            if (p.getCantidadGuardias() < minGuardias) {
+            boolean mostrar = false;
+            if (p.estaActivo()) {
+                mostrar = true;
+            } else if (p instanceof logica.Trabajador && fechaSeleccionada != null) {
+                java.time.LocalDate fechaIncorporacion = ((logica.Trabajador) p).getFechaDeIncorporacion();
+                if (fechaIncorporacion != null && !fechaSeleccionada.isBefore(fechaIncorporacion)) {
+                    // Activar profesor si la fecha seleccionada es igual o mayor a la de incorporación
+                    p.setActivo(true);
+                    mostrar = true;
+                } else {
+                    // Si la fecha seleccionada es anterior, asegurarse que esté inactivo
+                    p.setActivo(false);
+                }
+            }
+            if (mostrar && p.getCantidadGuardias() < minGuardias) {
                 minGuardias = p.getCantidadGuardias();
             }
         }
-        // Filtrar solo las personas con la cantidad mínima de guardias
+        // Filtrar solo las personas activas o profesores incorporados con la cantidad mínima de guardias
         personasFiltradas.clear();
         cbPersonas.removeAllItems();
         for (Persona p : planificador.getPersonas()) {
-            if (p.getCantidadGuardias() == minGuardias) {
+            boolean mostrar = false;
+            if (p.estaActivo()) {
+                mostrar = true;
+            } else if (p instanceof logica.Trabajador && fechaSeleccionada != null) {
+                java.time.LocalDate fechaIncorporacion = ((logica.Trabajador) p).getFechaDeIncorporacion();
+                if (fechaIncorporacion != null && !fechaSeleccionada.isBefore(fechaIncorporacion)) {
+                    // Activar profesor si la fecha seleccionada es igual o mayor a la de incorporación
+                    p.setActivo(true);
+                    mostrar = true;
+                } else {
+                    // Si la fecha seleccionada es anterior, asegurarse que esté inactivo
+                    p.setActivo(false);
+                }
+            }
+            if (mostrar && p.getCantidadGuardias() == minGuardias) {
                 personasFiltradas.add(p);
                 cbPersonas.addItem(p.getNombre());
             }
@@ -101,7 +135,7 @@ public class OrganizarGuardias extends JFrame {
         contentPane.add(panelForm, BorderLayout.CENTER);
 
         // Tabla para mostrar guardias asignadas
-        String[] columnas = {"Persona", "CI", "Tipo", "G�nero", "Fecha", "Horario"};
+        String[] columnas = {"Persona", "CI", "Tipo", "G�nero", "Fecha", "Horario"};
         if (modeloTablaGuardias == null) {
             modeloTablaGuardias = new DefaultTableModel(columnas, 0) {
                 private static final long serialVersionUID = 1L;
@@ -118,6 +152,17 @@ public class OrganizarGuardias extends JFrame {
 
         // Inicializa la lista de personas filtradas
         actualizarPersonasFiltradas();
+
+        // Actualiza la lista de personas filtradas cuando cambia la fecha
+        dateChooser.getDateEditor().addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+            public void propertyChange(java.beans.PropertyChangeEvent evt) {
+                if ("date".equals(evt.getPropertyName())) {
+                    actualizarPersonasFiltradas();
+                    mostrarHorarioSugerido();
+                    actualizarTurnoTrabajador();
+                }
+            }
+        });
 
         // Actualiza el horario sugerido cuando cambia la persona o la fecha
         ActionListener actualizarHorarioListener = new ActionListener() {
@@ -160,38 +205,102 @@ public class OrganizarGuardias extends JFrame {
                     java.time.LocalTime horaFin = null;
                     boolean esFestivo = false;
 
-                    // Alternar el día para estudiantes
+                    // --- Lógica para asignación según tipo y reglas ---
                     if (persona instanceof logica.Estudiante) {
-                        // Alternar entre el día seleccionado y el siguiente
-                        int diasASumar = alternadorDiaEstudiante % 2;
-                        fecha = fecha.plusDays(diasASumar);
-                        dayOfWeek = fecha.getDayOfWeek();
-                        dia = utiles.Dia.valueOf(dayOfWeek.name());
-                        alternadorDiaEstudiante++;
-                    }
-
-                    if (persona instanceof logica.Trabajador) {
-                        if (dia == utiles.Dia.SATURDAY || dia == utiles.Dia.SUNDAY) {
-                            cbTurnoTrabajador.setEnabled(true);
-                            String turno = (String) cbTurnoTrabajador.getSelectedItem();
-                            if ("9:00 - 14:00".equals(turno)) {
-                                horaInicio = java.time.LocalTime.of(9, 0);
-                                horaFin = java.time.LocalTime.of(14, 0);
-                            } else {
-                                horaInicio = java.time.LocalTime.of(14, 0);
-                                horaFin = java.time.LocalTime.of(19, 0);
-                            }
-                        }
-                    } else if (persona instanceof logica.Estudiante) {
-                        cbTurnoTrabajador.setEnabled(false);
+                        // Estudiante varón: cualquier día, horario fijo noche
                         if (((logica.Estudiante) persona).getSexo() == utiles.Sexo.MASCULINO) {
                             horaInicio = java.time.LocalTime.of(20, 0);
                             horaFin = java.time.LocalTime.of(8, 0);
                         } else {
-                            if (dia == utiles.Dia.SATURDAY || dia == utiles.Dia.SUNDAY) {
-                                horaInicio = java.time.LocalTime.of(8, 0);
-                                horaFin = java.time.LocalTime.of(20, 0);
+                            // Estudiante mujer: solo fines de semana, alternando con trabajadores
+                            if (dia != utiles.Dia.SATURDAY && dia != utiles.Dia.SUNDAY) {
+                                JOptionPane.showMessageDialog(null, "Las estudiantes mujeres solo pueden hacer guardias los fines de semana.");
+                                return;
                             }
+                            // Alternancia de fines de semana
+                            java.time.LocalDate sabado = fecha.with(java.time.DayOfWeek.SATURDAY);
+                            if (ultimoFinDeSemana == null || !sabado.equals(ultimoFinDeSemana)) {
+                                // Revisar si ya hay asignaciones para ese fin de semana
+                                boolean hayAsignacion = false;
+                                for (int i = 0; i < modeloTablaGuardias.getRowCount(); i++) {
+                                    String fechaFila = (String) modeloTablaGuardias.getValueAt(i, 4);
+                                    java.time.LocalDate fechaGuardia = java.time.LocalDate.parse(fechaFila);
+                                    java.time.DayOfWeek dow = fechaGuardia.getDayOfWeek();
+                                    java.time.LocalDate sabadoFila = fechaGuardia.with(java.time.DayOfWeek.SATURDAY);
+                                    if (sabadoFila.equals(sabado) && (dow == java.time.DayOfWeek.SATURDAY || dow == java.time.DayOfWeek.SUNDAY)) {
+                                        hayAsignacion = true;
+                                        String tipoFila = (String) modeloTablaGuardias.getValueAt(i, 2);
+                                        if ("Trabajador".equals(tipoFila)) {
+                                            finDeSemanaTrabajadores = true;
+                                        } else if ("Estudiante".equals(tipoFila)) {
+                                            String generoFila = (String) modeloTablaGuardias.getValueAt(i, 3);
+                                            if ("FEMENINO".equalsIgnoreCase(generoFila)) {
+                                                finDeSemanaTrabajadores = false;
+                                            }
+                                        }
+                                        break;
+                                    }
+                                }
+                                if (!hayAsignacion) {
+                                    finDeSemanaTrabajadores = !finDeSemanaTrabajadores;
+                                }
+                                ultimoFinDeSemana = sabado;
+                            }
+                            if (finDeSemanaTrabajadores) {
+                                JOptionPane.showMessageDialog(null, "Este fin de semana solo pueden asignarse trabajadores.");
+                                return;
+                            }
+                            // Turno único para mujeres estudiantes en fin de semana
+                            horaInicio = java.time.LocalTime.of(8, 0);
+                            horaFin = java.time.LocalTime.of(20, 0);
+                        }
+                    } else if (persona instanceof logica.Trabajador) {
+                        // Trabajador: solo fines de semana, alternando con mujeres estudiantes
+                        if (dia != utiles.Dia.SATURDAY && dia != utiles.Dia.SUNDAY) {
+                            JOptionPane.showMessageDialog(null, "Los trabajadores solo pueden hacer guardias los fines de semana.");
+                            return;
+                        }
+                        // Alternancia de fines de semana
+                        java.time.LocalDate sabado = fecha.with(java.time.DayOfWeek.SATURDAY);
+                        if (ultimoFinDeSemana == null || !sabado.equals(ultimoFinDeSemana)) {
+                            boolean hayAsignacion = false;
+                            for (int i = 0; i < modeloTablaGuardias.getRowCount(); i++) {
+                                String fechaFila = (String) modeloTablaGuardias.getValueAt(i, 4);
+                                java.time.LocalDate fechaGuardia = java.time.LocalDate.parse(fechaFila);
+                                java.time.DayOfWeek dow = fechaGuardia.getDayOfWeek();
+                                java.time.LocalDate sabadoFila = fechaGuardia.with(java.time.DayOfWeek.SATURDAY);
+                                if (sabadoFila.equals(sabado) && (dow == java.time.DayOfWeek.SATURDAY || dow == java.time.DayOfWeek.SUNDAY)) {
+                                    hayAsignacion = true;
+                                    String tipoFila = (String) modeloTablaGuardias.getValueAt(i, 2);
+                                    if ("Trabajador".equals(tipoFila)) {
+                                        finDeSemanaTrabajadores = true;
+                                    } else if ("Estudiante".equals(tipoFila)) {
+                                        String generoFila = (String) modeloTablaGuardias.getValueAt(i, 3);
+                                        if ("FEMENINO".equalsIgnoreCase(generoFila)) {
+                                            finDeSemanaTrabajadores = false;
+                                        }
+                                    }
+                                    break;
+                                }
+                            }
+                            if (!hayAsignacion) {
+                                finDeSemanaTrabajadores = !finDeSemanaTrabajadores;
+                            }
+                            ultimoFinDeSemana = sabado;
+                        }
+                        if (!finDeSemanaTrabajadores) {
+                            JOptionPane.showMessageDialog(null, "Este fin de semana solo pueden asignarse estudiantes mujeres.");
+                            return;
+                        }
+                        // Selección de turno
+                        cbTurnoTrabajador.setEnabled(true);
+                        String turno = (String) cbTurnoTrabajador.getSelectedItem();
+                        if ("9:00 - 14:00".equals(turno)) {
+                            horaInicio = java.time.LocalTime.of(9, 0);
+                            horaFin = java.time.LocalTime.of(14, 0);
+                        } else {
+                            horaInicio = java.time.LocalTime.of(14, 0);
+                            horaFin = java.time.LocalTime.of(19, 0);
                         }
                     }
 
@@ -206,7 +315,7 @@ public class OrganizarGuardias extends JFrame {
                     if (persona instanceof logica.Estudiante) {
                         for (int i = 0; i < modeloTablaGuardias.getRowCount(); i++) {
                             String tipoFila = (String) modeloTablaGuardias.getValueAt(i, 2);
-                            String fechaFila = (String) modeloTablaGuardias.getValueAt(i, 4); // Cambió el índice por columna nueva
+                            String fechaFila = (String) modeloTablaGuardias.getValueAt(i, 4);
                             String horarioFila = (String) modeloTablaGuardias.getValueAt(i, 5);
                             String horarioStr = horaInicio.toString() + " - " + horaFin.toString();
                             if ("Estudiante".equals(tipoFila) && fecha.toString().equals(fechaFila) && horarioStr.equals(horarioFila)) {

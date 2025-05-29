@@ -91,16 +91,21 @@ public class Inicio extends JFrame {
                         sexo = utiles.Sexo.FEMENINO;
                     }
                     boolean activo = (i % 2 == 0); // alternar activo/inactivo
-                    java.time.LocalDate fechaIncorporacion = java.time.LocalDate.now().minusYears(i - 5).minusMonths(i);
                     int cantidadGuardiasFestivo = i;
-                    planificador.crearPersona(
-                        ci,
-                        nombre,
-                        sexo,
-                        activo,
-                        fechaIncorporacion,
-                        cantidadGuardiasFestivo
-                    );
+                    if (activo) {
+                        // Si está activo, no tiene fecha de incorporación
+                        planificador.crearPersona(
+                            ci,
+                            nombre,
+                            sexo,
+                            true,
+                            null, cantidadGuardiasFestivo
+                        );
+                    } else {
+                        // Si está inactivo, sí tiene fecha de incorporación
+                        java.time.LocalDate fechaIncorporacion = java.time.LocalDate.now().minusYears(i - 5).minusMonths(i);
+                        planificador.crearPersona( ci, nombre, sexo, false, fechaIncorporacion,cantidadGuardiasFestivo);
+                    }
                 }
                 javax.swing.JOptionPane.showMessageDialog(null, "Se han creado 10 personas de prueba variadas.");
             }
