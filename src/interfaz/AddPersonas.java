@@ -18,6 +18,7 @@ import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
+import com.toedter.calendar.JDateChooser;
 import utiles.Sexo;
 import logica.Estudiante;
 import logica.Facultad;
@@ -59,18 +60,29 @@ public class AddPersonas extends JFrame {
 		cbTipo.addItem("Estudiante");
 		cbTipo.addItem("Trabajador");
 		final JTextField txtGuardiasFestivo = new JTextField();
-		final JTextField txtFechaIncorporacion = new JTextField();
+		// Reemplaza el JTextField por JDateChooser para la fecha de incorporación
+		final JDateChooser dateChooserFechaIncorporacion = new JDateChooser();
+		dateChooserFechaIncorporacion.setEnabled(false);
+
 		txtGuardiasFestivo.setEnabled(true);
-		txtFechaIncorporacion.setEnabled(false);
 
 		cbTipo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (cbTipo.getSelectedItem().equals("Estudiante")) {
 					txtGuardiasFestivo.setEnabled(true);
-					txtFechaIncorporacion.setEnabled(false);
+					dateChooserFechaIncorporacion.setEnabled(false);
 				} else {
 					txtGuardiasFestivo.setEnabled(false);
-					txtFechaIncorporacion.setEnabled(true);
+					// Solo habilitar fecha de incorporación si el trabajador NO está activo
+					dateChooserFechaIncorporacion.setEnabled(!chkActivo.isSelected());
+				}
+			}
+		});
+
+		chkActivo.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (cbTipo.getSelectedItem().equals("Trabajador")) {
+					dateChooserFechaIncorporacion.setEnabled(!chkActivo.isSelected());
 				}
 			}
 		});
@@ -89,8 +101,8 @@ public class AddPersonas extends JFrame {
 		formPanel.add(cbTipo);
 		formPanel.add(new JLabel("Guardias Festivo (solo estudiante):"));
 		formPanel.add(txtGuardiasFestivo);
-		formPanel.add(new JLabel("Fecha Incorporaci\u00F3n (solo trabajador, yyyy-mm-dd):"));
-		formPanel.add(txtFechaIncorporacion);
+		formPanel.add(new JLabel("Fecha Incorporación (solo trabajador, usar calendario):"));
+		formPanel.add(dateChooserFechaIncorporacion);
 
 		JButton btnAgregar = new JButton("Agregar Persona");
 		formPanel.add(btnAgregar);
@@ -162,9 +174,10 @@ public class AddPersonas extends JFrame {
 					tableModel.addRow(new Object[]{ci, nombre, sexo, Boolean.valueOf(activo), "Estudiante", new Integer(cantidadGuardias), new Integer(guardiasFestivo)});
 				} else {
 					java.time.LocalDate fecha = null;
-					String fechaStr = txtFechaIncorporacion.getText();
-					if (fechaStr != null && !fechaStr.trim().isEmpty()) {
-						try { fecha = java.time.LocalDate.parse(fechaStr); } catch (Exception ex) {}
+					java.util.Date fechaDate = dateChooserFechaIncorporacion.getDate();
+					// Solo tomar la fecha si el trabajador NO está activo
+					if (!chkActivo.isSelected() && fechaDate != null) {
+						fecha = fechaDate.toInstant().atZone(java.time.ZoneId.systemDefault()).toLocalDate();
 					}
 					Trabajador trabajador = new Trabajador(ci, nombre, sexo, activo, fecha, cantidadGuardias);
 					facultad.agregarPersona(trabajador);
@@ -178,7 +191,7 @@ public class AddPersonas extends JFrame {
 				txtCantidadGuardias.setText("");
 				cbTipo.setSelectedIndex(0);
 				txtGuardiasFestivo.setText("");
-				txtFechaIncorporacion.setText("");
+				dateChooserFechaIncorporacion.setDate(null);
 			}
 		});
 
@@ -212,10 +225,22 @@ public class AddPersonas extends JFrame {
 						txtCantidadGuardias.setText(tableModel.getValueAt(selectedRow[0], 5).toString());
 						if ("Estudiante".equals(tableModel.getValueAt(selectedRow[0], 4))) {
 							txtGuardiasFestivo.setText(tableModel.getValueAt(selectedRow[0], 6).toString());
-							txtFechaIncorporacion.setText("");
+							dateChooserFechaIncorporacion.setDate(null);
 						} else {
-							txtFechaIncorporacion.setText(tableModel.getValueAt(selectedRow[0], 6).toString());
+							dateChooserFechaIncorporacion.setDate(null);
+							Object fechaObj = tableModel.getValueAt(selectedRow[0], 6);
+							if (fechaObj != null && fechaObj instanceof java.time.LocalDate) {
+								java.time.LocalDate fecha = (java.time.LocalDate) fechaObj;
+								java.util.Date date = java.util.Date.from(fecha.atStartOfDay(java.time.ZoneId.systemDefault()).toInstant());
+								dateChooserFechaIncorporacion.setDate(date);
+							}
 							txtGuardiasFestivo.setText("");
+						}
+						// Habilitar/deshabilitar el calendario según el estado actual
+						if ("Trabajador".equals(cbTipo.getSelectedItem())) {
+							dateChooserFechaIncorporacion.setEnabled(!chkActivo.isSelected());
+						} else {
+							dateChooserFechaIncorporacion.setEnabled(false);
 						}
 					}
 				}
@@ -256,9 +281,10 @@ public class AddPersonas extends JFrame {
 					persona = new Estudiante(ci, nombre, sexo, activo, cantidadGuardias, guardiasFestivo);
 				} else {
 					LocalDate fecha = null;
-					String fechaStr = txtFechaIncorporacion.getText();
-					if (fechaStr != null && !fechaStr.trim().isEmpty()) {
-						try { fecha = LocalDate.parse(fechaStr); } catch (Exception ex) {}
+					java.util.Date fechaDate = dateChooserFechaIncorporacion.getDate();
+					// Solo tomar la fecha si el trabajador NO está activo
+					if (!chkActivo.isSelected() && fechaDate != null) {
+						fecha = fechaDate.toInstant().atZone(java.time.ZoneId.systemDefault()).toLocalDate();
 					}
 					persona = new Trabajador(ci, nombre, sexo, activo, fecha, cantidadGuardias);
 				}
@@ -266,7 +292,7 @@ public class AddPersonas extends JFrame {
 				facultad.actualizarPersona(persona);
 
 				// Actualizar en la tabla
-				Object extra = "Estudiante".equals(tipo) ? txtGuardiasFestivo.getText() : txtFechaIncorporacion.getText();
+				Object extra = "Estudiante".equals(tipo) ? txtGuardiasFestivo.getText() : dateChooserFechaIncorporacion.getDate();
 				tableModel.setValueAt(ci, selectedRow[0], 0);
 				tableModel.setValueAt(nombre, selectedRow[0], 1);
 				tableModel.setValueAt(sexo, selectedRow[0], 2);
@@ -282,7 +308,7 @@ public class AddPersonas extends JFrame {
 				txtCantidadGuardias.setText("");
 				cbTipo.setSelectedIndex(0);
 				txtGuardiasFestivo.setText("");
-				txtFechaIncorporacion.setText("");
+				dateChooserFechaIncorporacion.setDate(null);
 			}
 		});
 
@@ -305,7 +331,7 @@ public class AddPersonas extends JFrame {
 				txtCantidadGuardias.setText("");
 				cbTipo.setSelectedIndex(0);
 				txtGuardiasFestivo.setText("");
-				txtFechaIncorporacion.setText("");
+				dateChooserFechaIncorporacion.setDate(null);
 			}
 		});
 	}

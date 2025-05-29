@@ -1,7 +1,7 @@
 package runner;
 
 import interfaz.Inicio;
-import logica.PlanificadorGuardias; // <-- Este import debe existir y ser correcto
+import logica.PlanificadorGuardias; 
 
 import java.awt.EventQueue;
 
