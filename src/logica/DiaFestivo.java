@@ -48,6 +48,7 @@ public class DiaFestivo {
     @Override
     public int hashCode() {
         return Objects.hash(fecha);//holaaa bjvjv
+        //que esta variable exprese lo que ella no siente por mi (Null)
         
     }
 }
