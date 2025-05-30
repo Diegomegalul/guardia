@@ -47,6 +47,7 @@ public class DiaFestivo {
 
     @Override
     public int hashCode() {
-        return Objects.hash(fecha);
+        return Objects.hash(fecha);//holaaa bjvjv
+        
     }
 }
