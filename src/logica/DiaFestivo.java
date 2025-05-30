@@ -2,7 +2,7 @@ package logica;
 
 import java.time.LocalDate;
 import java.util.Objects;
-
+//Yo la queria, que un segundo con ella...
 public class DiaFestivo {
     private LocalDate fecha;
     private String descripcion;
