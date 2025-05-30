@@ -3,6 +3,7 @@ package logica;
 import java.time.LocalDate;
 import java.util.Objects;
 //Yo la queria, que un segundo con ella...
+// valia con 756mil años lejos de ella...
 public class DiaFestivo {
     private LocalDate fecha;
     private String descripcion;
