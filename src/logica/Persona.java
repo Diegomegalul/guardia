@@ -10,16 +10,14 @@ public abstract class Persona {
     protected String apellidos;
     protected Sexo sexo; 
     protected boolean activo;
-    protected int grupo; // Nuevo atributo grupo
-
+    protected int cantidadGuardiasFestivo;
     //Contructor
-    protected Persona(String ci,String nombre,Sexo sexo,boolean activo,int cantidadGuardias,int grupo){
+    protected Persona(String ci,String nombre,Sexo sexo,boolean activo,int cantidadGuardias,int cantidadGuardiasFestivo){
         setCi(ci);
         setNombre(nombre);
         setSexo(sexo);
         setActivo(activo);
         setCantidadGuardias(cantidadGuardias);
-        setGrupo(grupo);
     }
     //Getters y setters
     public void setCi(String ci){
@@ -62,16 +60,16 @@ public abstract class Persona {
         return cantidadGuardias;
     }
 
-    public void setGrupo(int grupo) {
-        this.grupo = grupo;
-    }
-
-    public int getGrupo() {
-        return grupo;
-    }
-
     public boolean estaActivo() {
         return activo;
+    }
+    
+    public void setCantidadGuardiasFestivo(int cantidadGuardiasFestivo) {
+        this.cantidadGuardiasFestivo = cantidadGuardiasFestivo;
+    }
+
+    public int getCantidadGuardiasFestivo(){
+        return cantidadGuardiasFestivo;
     }
     //Metodos
 }

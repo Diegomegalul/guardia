@@ -8,7 +8,6 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
@@ -69,37 +68,41 @@ public class Inicio extends JFrame {
 
         menuCrearPrueba.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent arg0) {
-                // Crear 10 personas de prueba variados
-                // 1-3: Estudiantes hombres, 4-5: Estudiantes mujeres
-                for (int i = 1; i <= 5; i++) {
-                    String ci = String.format("%011d", i);
-                    String nombre = (i <= 3) ? "EstudianteH" + i : "EstudianteM" + (i - 3);
-                    utiles.Sexo sexo = (i <= 3) ? utiles.Sexo.MASCULINO : utiles.Sexo.FEMENINO;
-                    boolean activo = (i % 2 == 1); // alternar activo/inactivo
-                    int cantidadGuardiasFestivo = i;
+                // Crear 16 estudiantes con grupos 11,12,13,14,21,22,23,24,31,32,33,34,41,42,43,44
+                int[] grupos = {11,12,13,14,21,22,23,24,31,32,33,34,41,42,43,44};
+                for (int i = 0; i < grupos.length; i++) {
+                    String ci = String.format("%011d", i+1);
+                    String nombre = "Estudiante" + (i+1);
+                    utiles.Sexo sexo = (i % 2 == 0) ? utiles.Sexo.MASCULINO : utiles.Sexo.FEMENINO;
+                    boolean activo = ((i+1) % 2 == 1); // alternar activo/inactivo
+                    int cantidadGuardias = 0;
+                    int cantidadGuardiasFestivo = 0;
+                    int grupo = grupos[i];
                     planificador.crearPersona(
                         ci,
                         nombre,
                         sexo,
                         activo,
-                        i, // año de la carrera
-                        cantidadGuardiasFestivo
+                        cantidadGuardias,
+                        cantidadGuardiasFestivo,
+                        grupo
                     );
                 }
-                // 6-8: Profesores hombres, 9-10: Profesoras mujeres
-                for (int i = 6; i <= 10; i++) {
+                // 4 trabajadores hombres, 4 trabajadoras mujeres
+                for (int i = 17; i <= 24; i++) {
                     String ci = String.format("%011d", i);
                     String nombre;
                     utiles.Sexo sexo;
-                    if (i <= 8) {
-                        nombre = "ProfesorH" + (i - 5);
+                    if (i <= 20) {
+                        nombre = "ProfesorH" + (i - 16);
                         sexo = utiles.Sexo.MASCULINO;
                     } else {
-                        nombre = "ProfesoraM" + (i - 8);
+                        nombre = "ProfesoraM" + (i - 20);
                         sexo = utiles.Sexo.FEMENINO;
                     }
                     boolean activo = (i % 2 == 0); // alternar activo/inactivo
-                    int cantidadGuardiasFestivo = i;
+                    int cantidadGuardias = 0;
+                    int grupo = 0; // Grupo no relevante para trabajadores
                     if (activo) {
                         // Si está activo, no tiene fecha de incorporación
                         planificador.crearPersona(
@@ -107,15 +110,15 @@ public class Inicio extends JFrame {
                             nombre,
                             sexo,
                             true,
-                            null, cantidadGuardiasFestivo
+                            null, cantidadGuardias, grupo
                         );
                     } else {
                         // Si está inactivo, sí tiene fecha de incorporación
-                        java.time.LocalDate fechaIncorporacion = java.time.LocalDate.now().minusYears(i - 5).minusMonths(i);
-                        planificador.crearPersona( ci, nombre, sexo, false, fechaIncorporacion,cantidadGuardiasFestivo);
+                        java.time.LocalDate fechaIncorporacion = java.time.LocalDate.now().minusYears(i - 16).minusMonths(i);
+                        planificador.crearPersona( ci, nombre, sexo, false, fechaIncorporacion, cantidadGuardias, grupo);
                     }
                 }
-                javax.swing.JOptionPane.showMessageDialog(null, "Se han creado 10 personas de prueba variadas.");
+                javax.swing.JOptionPane.showMessageDialog(null, "Se han creado 16 estudiantes y 8 trabajadores de prueba con grupos 11-44.");
             }
         });
         
@@ -206,37 +209,41 @@ public class Inicio extends JFrame {
 
         menuCrearPrueba.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent arg0) {
-                // Crear 10 personas de prueba variados
-                // 1-3: Estudiantes hombres, 4-5: Estudiantes mujeres
-                for (int i = 1; i <= 5; i++) {
-                    String ci = String.format("%011d", i);
-                    String nombre = (i <= 3) ? "EstudianteH" + i : "EstudianteM" + (i - 3);
-                    utiles.Sexo sexo = (i <= 3) ? utiles.Sexo.MASCULINO : utiles.Sexo.FEMENINO;
-                    boolean activo = (i % 2 == 1); // alternar activo/inactivo
-                    int cantidadGuardiasFestivo = i;
+                // Crear 16 estudiantes con grupos 11,12,13,14,21,22,23,24,31,32,33,34,41,42,43,44
+                int[] grupos = {11,12,13,14,21,22,23,24,31,32,33,34,41,42,43,44};
+                for (int i = 0; i < grupos.length; i++) {
+                    String ci = String.format("%011d", i+1);
+                    String nombre = "Estudiante" + (i+1);
+                    utiles.Sexo sexo = (i % 2 == 0) ? utiles.Sexo.MASCULINO : utiles.Sexo.FEMENINO;
+                    boolean activo = ((i+1) % 2 == 1); // alternar activo/inactivo
+                    int cantidadGuardias = 0;
+                    int cantidadGuardiasFestivo = 0;
+                    int grupo = grupos[i];
                     planificador.crearPersona(
                         ci,
                         nombre,
                         sexo,
                         activo,
-                        i, // año de la carrera
-                        cantidadGuardiasFestivo
+                        cantidadGuardias,
+                        cantidadGuardiasFestivo,
+                        grupo
                     );
                 }
-                // 6-8: Profesores hombres, 9-10: Profesoras mujeres
-                for (int i = 6; i <= 10; i++) {
+                // 4 trabajadores hombres, 4 trabajadoras mujeres
+                for (int i = 17; i <= 24; i++) {
                     String ci = String.format("%011d", i);
                     String nombre;
                     utiles.Sexo sexo;
-                    if (i <= 8) {
-                        nombre = "ProfesorH" + (i - 5);
+                    if (i <= 20) {
+                        nombre = "ProfesorH" + (i - 16);
                         sexo = utiles.Sexo.MASCULINO;
                     } else {
-                        nombre = "ProfesoraM" + (i - 8);
+                        nombre = "ProfesoraM" + (i - 20);
                         sexo = utiles.Sexo.FEMENINO;
                     }
                     boolean activo = (i % 2 == 0); // alternar activo/inactivo
-                    int cantidadGuardiasFestivo = i;
+                    int cantidadGuardias = 0;
+                    int grupo = 0; // Grupo no relevante para trabajadores
                     if (activo) {
                         // Si está activo, no tiene fecha de incorporación
                         planificador.crearPersona(
@@ -244,15 +251,15 @@ public class Inicio extends JFrame {
                             nombre,
                             sexo,
                             true,
-                            null, cantidadGuardiasFestivo
+                            null, cantidadGuardias, grupo
                         );
                     } else {
                         // Si está inactivo, sí tiene fecha de incorporación
-                        java.time.LocalDate fechaIncorporacion = java.time.LocalDate.now().minusYears(i - 5).minusMonths(i);
-                        planificador.crearPersona( ci, nombre, sexo, false, fechaIncorporacion,cantidadGuardiasFestivo);
+                        java.time.LocalDate fechaIncorporacion = java.time.LocalDate.now().minusYears(i - 16).minusMonths(i);
+                        planificador.crearPersona( ci, nombre, sexo, false, fechaIncorporacion, cantidadGuardias, grupo);
                     }
                 }
-                javax.swing.JOptionPane.showMessageDialog(null, "Se han creado 10 personas de prueba variadas.");
+                javax.swing.JOptionPane.showMessageDialog(null, "Se han creado 16 estudiantes y 8 trabajadores de prueba con grupos 11-44.");
             }
         });
         

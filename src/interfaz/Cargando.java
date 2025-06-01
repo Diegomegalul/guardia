@@ -36,7 +36,7 @@ public class Cargando extends JFrame {
         contentPane.add(progressBar, BorderLayout.CENTER);
 
         // Timer para simular la carga (2 segundos en total)
-        timer = new Timer(20, new java.awt.event.ActionListener() {
+        timer = new Timer(10, new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent e) {
                 progreso++;
                 progressBar.setValue(progreso);
