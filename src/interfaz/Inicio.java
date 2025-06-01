@@ -23,6 +23,9 @@ public class Inicio extends JFrame {
 	private JPanel contentPane;
 	private PlanificadorGuardias planificador;
 
+	/**
+	 * @wbp.parser.constructor
+	 */
 	public Inicio(final PlanificadorGuardias planificador) {
 		this.setPlanificador(planificador);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -34,14 +37,21 @@ public class Inicio extends JFrame {
 		
 		// Menú
         JMenuBar menuBar = new JMenuBar();
-        JMenu menu = new JMenu("Opciones");
-        JMenuItem menuAddPersonas = new JMenuItem("A�adir personas");
+
+        // Opciones como botones directos en la barra
+        JMenuItem menuAddPersonas = new JMenuItem("Añadir personas");
         JMenuItem menuOrganizarGuardias = new JMenuItem("Organizar guardias");
-        menu.add(menuAddPersonas);
-        menu.add(menuOrganizarGuardias);
-        menuBar.add(menu);
-        
         JMenuItem menuEditarDiasFestivos = new JMenuItem("Dias Festivos");
+        JMenuItem menuCrearPrueba = new JMenuItem("Crear personas de prueba");
+
+        menuBar.add(menuAddPersonas);
+        menuBar.add(menuOrganizarGuardias);
+        menuBar.add(menuEditarDiasFestivos);
+        menuBar.add(menuCrearPrueba);
+
+        setJMenuBar(menuBar);
+
+        // Listeners igual que antes
         menuEditarDiasFestivos.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent arg0) {
         		EventQueue.invokeLater(new Runnable() {
@@ -56,9 +66,7 @@ public class Inicio extends JFrame {
                 });
         	}
         });
-        menu.add(menuEditarDiasFestivos);
-        
-        JMenuItem menuCrearPrueba = new JMenuItem("Crear personas de prueba");
+
         menuCrearPrueba.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent arg0) {
                 // Crear 10 personas de prueba variados
@@ -110,10 +118,7 @@ public class Inicio extends JFrame {
                 javax.swing.JOptionPane.showMessageDialog(null, "Se han creado 10 personas de prueba variadas.");
             }
         });
-        menu.add(menuCrearPrueba);
         
-        setJMenuBar(menuBar);
-
 		JLabel lblNewLabel = new JLabel("Bienvenido al planificador de guardias");
 		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel.setFont(new java.awt.Font("Arial", java.awt.Font.BOLD, 24));
@@ -169,14 +174,21 @@ public class Inicio extends JFrame {
 		
 		// Menú
         JMenuBar menuBar = new JMenuBar();
-        JMenu menu = new JMenu("Opciones");
-        JMenuItem menuAddPersonas = new JMenuItem("A�adir personas");
+
+        // Opciones como botones directos en la barra
+        JMenuItem menuAddPersonas = new JMenuItem("Añadir personas");
         JMenuItem menuOrganizarGuardias = new JMenuItem("Organizar guardias");
-        menu.add(menuAddPersonas);
-        menu.add(menuOrganizarGuardias);
-        menuBar.add(menu);
-        
         JMenuItem menuEditarDiasFestivos = new JMenuItem("Dias Festivos");
+        JMenuItem menuCrearPrueba = new JMenuItem("Crear personas de prueba");
+
+        menuBar.add(menuAddPersonas);
+        menuBar.add(menuOrganizarGuardias);
+        menuBar.add(menuEditarDiasFestivos);
+        menuBar.add(menuCrearPrueba);
+
+        setJMenuBar(menuBar);
+
+        // Listeners igual que antes
         menuEditarDiasFestivos.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent arg0) {
         		EventQueue.invokeLater(new Runnable() {
@@ -191,9 +203,7 @@ public class Inicio extends JFrame {
                 });
         	}
         });
-        menu.add(menuEditarDiasFestivos);
-        
-        JMenuItem menuCrearPrueba = new JMenuItem("Crear personas de prueba");
+
         menuCrearPrueba.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent arg0) {
                 // Crear 10 personas de prueba variados
@@ -245,10 +255,7 @@ public class Inicio extends JFrame {
                 javax.swing.JOptionPane.showMessageDialog(null, "Se han creado 10 personas de prueba variadas.");
             }
         });
-        menu.add(menuCrearPrueba);
         
-        setJMenuBar(menuBar);
-
 		JLabel lblNewLabel = new JLabel("Bienvenido al planificador de guardias");
 		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel.setFont(new java.awt.Font("Arial", java.awt.Font.BOLD, 24));
