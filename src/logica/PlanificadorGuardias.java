@@ -1,9 +1,10 @@
 package logica;
 import java.time.LocalDate;
+import java.time.YearMonth;
 import java.util.ArrayList;
 import java.util.List;
-import logica.DiaFestivo;
 
+import logica.DiaFestivo;
 import utiles.Sexo;
 
 public class PlanificadorGuardias {
@@ -13,6 +14,18 @@ public class PlanificadorGuardias {
 
 	public PlanificadorGuardias() {
 		this.guardias = new ArrayList<Guardia>();
+		this.diasFestivos = new ArrayList<DiaFestivo>();
+		// Días festivos nacionales de Cuba (puedes agregar más si lo deseas)
+		int year = java.time.LocalDate.now().getYear();
+		diasFestivos.add(new DiaFestivo(java.time.LocalDate.of(year, 1, 1), "Triunfo de la Revolución"));
+		diasFestivos.add(new DiaFestivo(java.time.LocalDate.of(year, 1, 2), "Victoria de la Revolución"));
+		diasFestivos.add(new DiaFestivo(java.time.LocalDate.of(year, 5, 1), "Día Internacional de los Trabajadores"));
+		diasFestivos.add(new DiaFestivo(java.time.LocalDate.of(year, 7, 25), "Día de la Rebeldía Nacional"));
+		diasFestivos.add(new DiaFestivo(java.time.LocalDate.of(year, 7, 26), "Asalto al Cuartel Moncada"));
+		diasFestivos.add(new DiaFestivo(java.time.LocalDate.of(year, 7, 27), "Conmemoración del 26 de Julio"));
+		diasFestivos.add(new DiaFestivo(java.time.LocalDate.of(year, 10, 10), "Inicio de las Guerras de Independencia"));
+		diasFestivos.add(new DiaFestivo(java.time.LocalDate.of(year, 12, 25), "Navidad"));
+		// Puedes agregar más días festivos relevantes para Cuba aquí
 	}
 
 	public ArrayList<Guardia> getGuardias() {
@@ -53,14 +66,14 @@ public class PlanificadorGuardias {
 	}
 
 	// Métodos para crear personas específicos
-	public void crearPersona(String ci, String nombre, Sexo sexo, boolean activo, int cantidadGuardias, int cantidadGuardiasFestivo) {
-    Persona nuevaPersona = new Estudiante(ci, nombre, sexo, activo, cantidadGuardias, cantidadGuardiasFestivo);
+	public void crearPersona(String ci, String nombre, Sexo sexo, boolean activo, int cantidadGuardias, int cantidadGuardiasFestivo, int grupo) {
+    Persona nuevaPersona = new Estudiante(ci, nombre, sexo, activo, cantidadGuardias, cantidadGuardiasFestivo, grupo);
     agregarPersona(nuevaPersona);
 	}
 
 	// Sobrecarga para Trabajador
-	public void crearPersona(String ci, String nombre, Sexo sexo, boolean activo, java.time.LocalDate fechaDeIncorporacion, int cantidadGuardias) {
-	    Persona nuevaPersona = new Trabajador(ci, nombre, sexo, activo, fechaDeIncorporacion, cantidadGuardias);
+	public void crearPersona(String ci, String nombre, Sexo sexo, boolean activo, java.time.LocalDate fechaDeIncorporacion, int cantidadGuardias, int grupo) {
+	    Persona nuevaPersona = new Trabajador(ci, nombre, sexo, activo, fechaDeIncorporacion, cantidadGuardias, grupo);
 	    agregarPersona(nuevaPersona);
 	}
 	
@@ -181,5 +194,144 @@ public class PlanificadorGuardias {
 
 	public void setFacultad(Facultad facultad) {
 		this.facultad = facultad;
+	}
+
+	public ArrayList<Guardia> planificarGuardiasAutomatico(YearMonth yearMonth) {
+		ArrayList<Guardia> resultado = new ArrayList<Guardia>();
+		List<Persona> personas = getPersonas();
+		int id = 1;
+
+		// Verifica si ya existen guardias para ese mes
+		for (Guardia g : guardias) {
+			if (g != null && g.getHorario() != null && g.getHorario().getFecha() != null) {
+				LocalDate fecha = g.getHorario().getFecha();
+				if (fecha.getYear() == yearMonth.getYear() && fecha.getMonthValue() == yearMonth.getMonthValue()) {
+					resultado.add(g);
+				}
+			}
+		}
+		if (!resultado.isEmpty()) {
+			return resultado;
+		}
+
+		// Separar listas por tipo y sexo
+		ArrayList<Estudiante> estudiantesHombres = new ArrayList<Estudiante>();
+		ArrayList<Estudiante> estudiantesMujeres = new ArrayList<Estudiante>();
+		ArrayList<Trabajador> trabajadores = new ArrayList<Trabajador>();
+
+		for (Persona p : personas) {
+			if (p instanceof Estudiante) {
+				Estudiante est = (Estudiante)p;
+				if (est.getSexo() == Sexo.MASCULINO) {
+					estudiantesHombres.add(est);
+				} else {
+					estudiantesMujeres.add(est);
+				}
+			} else if (p instanceof Trabajador) {
+				trabajadores.add((Trabajador)p);
+			}
+		}
+
+		// Copias para conteo temporal de guardias en el mes
+		ArrayList<Estudiante> hombresTemp = new ArrayList<Estudiante>(estudiantesHombres);
+		ArrayList<Estudiante> mujeresTemp = new ArrayList<Estudiante>(estudiantesMujeres);
+		ArrayList<Trabajador> trabajadoresTemp = new ArrayList<Trabajador>(trabajadores);
+
+		java.util.Map<Persona, Integer> guardiasMes = new java.util.HashMap<Persona, Integer>();
+		java.util.Map<Persona, Integer> guardiasFestivoMes = new java.util.HashMap<Persona, Integer>();
+		for (Persona p : personas) {
+			guardiasMes.put(p, p.getCantidadGuardias());
+			guardiasFestivoMes.put(p, p.getCantidadGuardiasFestivo());
+		}
+
+		boolean finDeSemanaTrabajadores = true;
+		LocalDate inicio = yearMonth.atDay(1);
+		LocalDate fin = yearMonth.atEndOfMonth();
+
+		for (LocalDate fecha = inicio; !fecha.isAfter(fin); fecha = fecha.plusDays(1)) {
+			utiles.Dia dia = utiles.Dia.valueOf(fecha.getDayOfWeek().name());
+			boolean esFestivo = esDiaFestivo(fecha);
+
+			// Guardias estudiantes hombres: todos los días, 20:00 a 08:00 del siguiente día
+			if (!hombresTemp.isEmpty()) {
+				// Buscar el estudiante hombre con menor cantidad de guardias
+				Estudiante est = hombresTemp.get(0);
+				int min = guardiasMes.get(est);
+				for (Estudiante e : hombresTemp) {
+					if (guardiasMes.get(e) < min) {
+						est = e;
+						min = guardiasMes.get(e);
+					}
+				}
+				Horario horario = new Horario(dia, fecha, java.time.LocalTime.of(20, 0), java.time.LocalTime.of(8, 0), esFestivo);
+				Guardia guardia = new Guardia(id++, horario, est);
+				resultado.add(guardia);
+				guardias.add(guardia);
+				// Aumentar cantidad de guardias temporal
+				guardiasMes.put(est, guardiasMes.get(est) + 1);
+				if (esFestivo) {
+					guardiasFestivoMes.put(est, guardiasFestivoMes.get(est) + 1);
+				}
+			}
+
+			// Fines de semana: alternancia entre mujeres y trabajadores
+			if (dia == utiles.Dia.SATURDAY || dia == utiles.Dia.SUNDAY) {
+				if (finDeSemanaTrabajadores) {
+					for (int turno = 0; turno < 2; turno++) {
+						if (!trabajadoresTemp.isEmpty()) {
+							// Buscar el trabajador con menor cantidad de guardias
+							Trabajador trab = trabajadoresTemp.get(0);
+							int min = guardiasMes.get(trab);
+							for (Trabajador t : trabajadoresTemp) {
+								if (guardiasMes.get(t) < min) {
+									trab = t;
+									min = guardiasMes.get(t);
+								}
+							}
+							java.time.LocalTime inicioTurno = (turno == 0) ? java.time.LocalTime.of(9, 0) : java.time.LocalTime.of(14, 0);
+							java.time.LocalTime finTurno = (turno == 0) ? java.time.LocalTime.of(14, 0) : java.time.LocalTime.of(19, 0);
+							Horario horario = new Horario(dia, fecha, inicioTurno, finTurno, esFestivo);
+							Guardia guardia = new Guardia(id++, horario, trab);
+							resultado.add(guardia);
+							guardias.add(guardia);
+							guardiasMes.put(trab, guardiasMes.get(trab) + 1);
+							if (esFestivo) {
+								guardiasFestivoMes.put(trab, guardiasFestivoMes.get(trab) + 1);
+							}
+						}
+					}
+				} else {
+					if (!mujeresTemp.isEmpty()) {
+						// Buscar la estudiante mujer con menor cantidad de guardias
+						Estudiante est = mujeresTemp.get(0);
+						int min = guardiasMes.get(est);
+						for (Estudiante e : mujeresTemp) {
+							if (guardiasMes.get(e) < min) {
+								est = e;
+								min = guardiasMes.get(e);
+							}
+						}
+						Horario horario = new Horario(dia, fecha, java.time.LocalTime.of(8, 0), java.time.LocalTime.of(20, 0), esFestivo);
+						Guardia guardia = new Guardia(id++, horario, est);
+						resultado.add(guardia);
+						guardias.add(guardia);
+						guardiasMes.put(est, guardiasMes.get(est) + 1);
+						if (esFestivo) {
+							guardiasFestivoMes.put(est, guardiasFestivoMes.get(est) + 1);
+						}
+					}
+				}
+				if (dia == utiles.Dia.SUNDAY) {
+					finDeSemanaTrabajadores = !finDeSemanaTrabajadores;
+				}
+			}
+		}
+
+		// Al final, actualiza los contadores reales de las personas
+		for (Persona p : personas) {
+			p.setCantidadGuardias(guardiasMes.get(p));
+			p.setCantidadGuardiasFestivo(guardiasFestivoMes.get(p));
+		}
+		return resultado;
 	}
 }

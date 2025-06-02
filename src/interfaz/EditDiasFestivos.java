@@ -49,6 +49,19 @@ public class EditDiasFestivos extends JFrame {
         setLocationRelativeTo(null); // Centra la ventana
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
+        // Inicializa los días festivos si la lista está vacía
+        if (planificador.getDiasFestivos().isEmpty()) {
+            int year = java.time.LocalDate.now().getYear();
+            planificador.agregarDiaFestivo(new logica.DiaFestivo(java.time.LocalDate.of(year, 1, 1), "Triunfo de la Revolución"));
+            planificador.agregarDiaFestivo(new logica.DiaFestivo(java.time.LocalDate.of(year, 1, 2), "Victoria de la Revolución"));
+            planificador.agregarDiaFestivo(new logica.DiaFestivo(java.time.LocalDate.of(year, 5, 1), "Día Internacional de los Trabajadores"));
+            planificador.agregarDiaFestivo(new logica.DiaFestivo(java.time.LocalDate.of(year, 7, 25), "Día de la Rebeldía Nacional"));
+            planificador.agregarDiaFestivo(new logica.DiaFestivo(java.time.LocalDate.of(year, 7, 26), "Asalto al Cuartel Moncada"));
+            planificador.agregarDiaFestivo(new logica.DiaFestivo(java.time.LocalDate.of(year, 7, 27), "Conmemoración del 26 de Julio"));
+            planificador.agregarDiaFestivo(new logica.DiaFestivo(java.time.LocalDate.of(year, 10, 10), "Inicio de las Guerras de Independencia"));
+            planificador.agregarDiaFestivo(new logica.DiaFestivo(java.time.LocalDate.of(year, 12, 25), "Navidad"));
+        }
+
         modeloLista = new DefaultListModel<DiaFestivo>();
         listaDias = new JList<DiaFestivo>(modeloLista);
         JScrollPane scroll = new JScrollPane(listaDias);

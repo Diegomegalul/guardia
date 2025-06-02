@@ -9,9 +9,10 @@ public class Trabajador extends Persona{
     private LocalDate fechaDeIncorporacion;
     private boolean voluntarioVacaciones;
     //Constructor
-    public Trabajador(String ci,String nombre,Sexo sexo,boolean activo,LocalDate fechaDeIncorporacion,int cantidadGuardias){
-        super(ci, nombre, sexo, activo, cantidadGuardias);
+    public Trabajador(String ci,String nombre,Sexo sexo,boolean activo,LocalDate fechaDeIncorporacion,int cantidadGuardias,int grupo){
+        super(ci, nombre, sexo, activo, cantidadGuardias, 0); // cantidadGuardiasFestivo no aplica
         setFechaDeIncorporacion(fechaDeIncorporacion);
+        // No llamar a setGrupo(grupo) aquí, grupo solo aplica a Estudiante
     }
     //Getters y setters
     public void setFechaDeIncorporacion(LocalDate fechaDeIncorporacion){

@@ -10,8 +10,9 @@ public abstract class Persona {
     protected String apellidos;
     protected Sexo sexo; 
     protected boolean activo;
+    protected int cantidadGuardiasFestivo;
     //Contructor
-    protected Persona(String ci,String nombre,Sexo sexo,boolean activo,int cantidadGuardias){
+    protected Persona(String ci,String nombre,Sexo sexo,boolean activo,int cantidadGuardias,int cantidadGuardiasFestivo){
         setCi(ci);
         setNombre(nombre);
         setSexo(sexo);
@@ -61,6 +62,14 @@ public abstract class Persona {
 
     public boolean estaActivo() {
         return activo;
+    }
+    
+    public void setCantidadGuardiasFestivo(int cantidadGuardiasFestivo) {
+        this.cantidadGuardiasFestivo = cantidadGuardiasFestivo;
+    }
+
+    public int getCantidadGuardiasFestivo(){
+        return cantidadGuardiasFestivo;
     }
     //Metodos
 }
