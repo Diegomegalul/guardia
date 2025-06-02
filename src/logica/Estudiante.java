@@ -1,43 +1,40 @@
 package logica;
 
+import java.time.LocalDate;
 import utiles.Sexo;
 
-public class Estudiante extends Persona{
-    //Atributos
-    private int cantidadGuardiasFestivo;
-    private boolean licenciaMatricula;
-    private boolean baja;
-    //Constructor
-    public Estudiante (String ci,String nombre,Sexo sexo,boolean activo,int cantidadGuardias,int cantidadGuardiasFestivo){
-        super(ci, nombre, sexo, activo, cantidadGuardias);
-        setCantidadGuardiasFestivo(cantidadGuardiasFestivo);
-    }
-    //Getters y setters
-    public void setCantidadGuardiasFestivo(int cantidadGuardiasFestivo) {
-        this.cantidadGuardiasFestivo = cantidadGuardiasFestivo;
+public class Estudiante extends Persona {
+    private int grupo;
+
+    public Estudiante(int id, String nombre, String apellidos, Sexo sexo, boolean activo, int grupo) {
+        super(id, nombre, apellidos, sexo, activo);
+        setGrupo(grupo);
     }
 
-    public int getCantidadGuardiasFestivo(){
-        return cantidadGuardiasFestivo;
+    @Override
+    public boolean puedeHacerGuardia(LocalDate fecha, Horario horario) {
+        boolean puedeHacerla = false;
+        
+        if (isActivo()) {
+            int diaSemana = fecha.getDayOfWeek().getValue();
+            boolean esFinDeSemana = diaSemana >= 6;
+            boolean esHorarioDiurno = horario.getTipo().equals("Diurno");
+            
+            puedeHacerla = esFinDeSemana && esHorarioDiurno;
+        }
+        
+        return puedeHacerla;
     }
 
-    public boolean isLicenciaMatricula() {
-        return licenciaMatricula;
+    public int getGrupo() {
+        return grupo;
     }
 
-    public void setLicenciaMatricula(boolean licenciaMatricula) {
-        this.licenciaMatricula = licenciaMatricula;
-    }
-
-    public boolean isBaja() {
-        return baja;
-    }
-
-    public void setBaja(boolean baja) {
-        this.baja = baja;
-    }
-    //Metodos
-    public boolean puedeHacerGuardia() {
-        return activo && !licenciaMatricula && !baja;
+    public void setGrupo(int grupo) {
+        if (grupo <= 0) {
+            throw new IllegalArgumentException("El grupo debe ser positivo");
+        }
+        this.grupo = grupo;
     }
 }
+   
