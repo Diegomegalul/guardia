@@ -33,7 +33,7 @@ public abstract class Persona {
     
     public void setNombre(String nombre) {
         if (nombre == null || nombre.trim().isEmpty()) {
-            throw new IllegalArgumentException("Nombre no puede estar vacío");
+            throw new IllegalArgumentException("Nombre no puede estar vacï¿½o");
         }
         this.nombre = nombre.trim();
     }
@@ -42,7 +42,7 @@ public abstract class Persona {
     
     public void setApellidos(String apellidos) {
         if (apellidos == null || apellidos.trim().isEmpty()) {
-            throw new IllegalArgumentException("Apellidos no puede estar vacío");
+            throw new IllegalArgumentException("Apellidos no puede estar vacï¿½o");
         }
         this.apellidos = apellidos.trim();
     }

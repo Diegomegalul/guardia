@@ -63,18 +63,21 @@ public class AddPersonas extends JFrame {
 		// Reemplaza el JTextField por JDateChooser para la fecha de incorporación
 		final JDateChooser dateChooserFechaIncorporacion = new JDateChooser();
 		dateChooserFechaIncorporacion.setEnabled(false);
+		final JTextField txtGrupo = new JTextField();
 
 		txtGuardiasFestivo.setEnabled(true);
 
 		cbTipo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (cbTipo.getSelectedItem().equals("Estudiante")) {
-					txtGuardiasFestivo.setEnabled(true);
+					txtGuardiasFestivo.setEnabled(true); // Siempre habilitado
 					dateChooserFechaIncorporacion.setEnabled(false);
+					txtGrupo.setEnabled(true);
 				} else {
-					txtGuardiasFestivo.setEnabled(false);
-					// Solo habilitar fecha de incorporación si el trabajador NO está activo
+					txtGuardiasFestivo.setEnabled(true); // Siempre habilitado
 					dateChooserFechaIncorporacion.setEnabled(!chkActivo.isSelected());
+					txtGrupo.setEnabled(false);
+					txtGrupo.setText("");
 				}
 			}
 		});
@@ -97,12 +100,14 @@ public class AddPersonas extends JFrame {
 		formPanel.add(chkActivo);
 		formPanel.add(new JLabel("Cantidad Guardias:"));
 		formPanel.add(txtCantidadGuardias);
+		formPanel.add(new JLabel("Guardias Festivo:"));
+		formPanel.add(txtGuardiasFestivo);
 		formPanel.add(new JLabel("Tipo:"));
 		formPanel.add(cbTipo);
-		formPanel.add(new JLabel("Guardias Festivo (solo estudiante):"));
-		formPanel.add(txtGuardiasFestivo);
-		formPanel.add(new JLabel("Fecha Incorporación (solo trabajador, usar calendario):"));
+		formPanel.add(new JLabel("Fecha Incorporaci\u00F3n (solo trabajador, usar calendario):"));
 		formPanel.add(dateChooserFechaIncorporacion);
+		formPanel.add(new JLabel("Grupo (solo estudiante):"));
+		formPanel.add(txtGrupo);
 
 		JButton btnAgregar = new JButton("Agregar Persona");
 		formPanel.add(btnAgregar);
@@ -115,11 +120,14 @@ public class AddPersonas extends JFrame {
 		JButton btnEliminar = new JButton("Eliminar Persona");
 		formPanel.add(btnEliminar);
 
+		// Botón para actualizar la tabla
+		JButton btnActualizar = new JButton("Actualizar");
+		formPanel.add(btnActualizar);
+
 		contentPane.add(formPanel, BorderLayout.NORTH);
 
-		String[] columnas = {"CI", "Nombre", "Sexo", "Activo", "Tipo", "Guardias", "Extra"};
+		String[] columnas = {"CI", "Nombre", "Sexo", "Activo", "Tipo", "Guardias", "Extra", "Grupo"};
 		tableModel = new DefaultTableModel(columnas, 0) {
-			
 			private static final long serialVersionUID = 1L;
 			public boolean isCellEditable(int row, int column) {
 				return false;
@@ -128,6 +136,48 @@ public class AddPersonas extends JFrame {
 		table = new JTable(tableModel);
 		JScrollPane scrollPane = new JScrollPane(table);
 		contentPane.add(scrollPane, BorderLayout.CENTER);
+
+		// Método para actualizar y ordenar la tabla
+		final ActionListener actualizarTabla = new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				tableModel.setRowCount(0);
+				java.util.List<Object[]> varones = new java.util.ArrayList<Object[]>();
+				java.util.List<Object[]> hembras = new java.util.ArrayList<Object[]>();
+				java.util.List<Object[]> profesores = new java.util.ArrayList<Object[]>();
+				for (Persona p : facultad.getPersonas()) {
+					String tipo = (p instanceof Estudiante) ? "Estudiante" : "Trabajador";
+					Object extra = (tipo.equals("Estudiante")) ? ((Estudiante)p).getCantidadGuardiasFestivo() : ((Trabajador)p).getFechaDeIncorporacion();
+					int grupo = (p instanceof Estudiante) ? ((Estudiante)p).getGrupo() : 0;
+					Object[] row = new Object[]{
+						p.getCi(),
+						p.getNombre(),
+						p.getSexo(),
+						Boolean.valueOf(p.getActivo()),
+						tipo,
+						new Integer(p.getCantidadGuardias()),
+						extra,
+						grupo
+					};
+					if (p instanceof Estudiante) {
+						if (((Estudiante)p).getSexo() == utiles.Sexo.MASCULINO) {
+							varones.add(row);
+						} else {
+							hembras.add(row);
+						}
+					} else {
+						profesores.add(row);
+					}
+				}
+				for (Object[] row : varones) tableModel.addRow(row);
+				for (Object[] row : hembras) tableModel.addRow(row);
+				for (Object[] row : profesores) tableModel.addRow(row);
+			}
+		};
+
+		// Llenar la tabla al inicio ordenada
+		actualizarTabla.actionPerformed(null);
+
+		btnActualizar.addActionListener(actualizarTabla);
 
 		btnAgregar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -163,15 +213,20 @@ public class AddPersonas extends JFrame {
 					}
 				}
 				String tipo = (String) cbTipo.getSelectedItem();
+				int grupo = 0;
+				String grupoStr = txtGrupo.getText();
+				if (grupoStr != null && !grupoStr.trim().isEmpty()) {
+					try { grupo = Integer.parseInt(grupoStr); } catch (Exception ex) {}
+				}
 				if ("Estudiante".equals(tipo)) {
 					int guardiasFestivo = 0;
 					String guardiasFestivoStr = txtGuardiasFestivo.getText();
 					if (guardiasFestivoStr != null && !guardiasFestivoStr.trim().isEmpty()) {
 						try { guardiasFestivo = Integer.parseInt(guardiasFestivoStr); } catch (Exception ex) {}
 					}
-					Estudiante estudiante = new Estudiante(ci, nombre, sexo, activo, cantidadGuardias, guardiasFestivo);
+					Estudiante estudiante = new Estudiante(ci, nombre, sexo, activo, cantidadGuardias, guardiasFestivo, grupo);
 					facultad.agregarPersona(estudiante);
-					tableModel.addRow(new Object[]{ci, nombre, sexo, Boolean.valueOf(activo), "Estudiante", new Integer(cantidadGuardias), new Integer(guardiasFestivo)});
+					tableModel.addRow(new Object[]{ci, nombre, sexo, Boolean.valueOf(activo), "Estudiante", new Integer(cantidadGuardias), new Integer(guardiasFestivo), grupo});
 				} else {
 					java.time.LocalDate fecha = null;
 					java.util.Date fechaDate = dateChooserFechaIncorporacion.getDate();
@@ -179,9 +234,9 @@ public class AddPersonas extends JFrame {
 					if (!chkActivo.isSelected() && fechaDate != null) {
 						fecha = fechaDate.toInstant().atZone(java.time.ZoneId.systemDefault()).toLocalDate();
 					}
-					Trabajador trabajador = new Trabajador(ci, nombre, sexo, activo, fecha, cantidadGuardias);
+					Trabajador trabajador = new Trabajador(ci, nombre, sexo, activo, fecha, cantidadGuardias, grupo);
 					facultad.agregarPersona(trabajador);
-					tableModel.addRow(new Object[]{ci, nombre, sexo, Boolean.valueOf(activo), "Trabajador", new Integer(cantidadGuardias), fecha});
+					tableModel.addRow(new Object[]{ci, nombre, sexo, Boolean.valueOf(activo), "Trabajador", new Integer(cantidadGuardias), fecha, grupo});
 				}
 				// Vaciar campos después de agregar
 				txtCI.setText("");
@@ -192,6 +247,8 @@ public class AddPersonas extends JFrame {
 				cbTipo.setSelectedIndex(0);
 				txtGuardiasFestivo.setText("");
 				dateChooserFechaIncorporacion.setDate(null);
+				txtGrupo.setText("");
+				actualizarTabla.actionPerformed(null);
 			}
 		});
 
@@ -199,6 +256,7 @@ public class AddPersonas extends JFrame {
 		for (Persona p : facultad.getPersonas()) {
 			String tipo = (p instanceof Estudiante) ? "Estudiante" : "Trabajador";
 			Object extra = (tipo.equals("Estudiante")) ? ((Estudiante)p).getCantidadGuardiasFestivo() : ((Trabajador)p).getFechaDeIncorporacion();
+			int grupo = (p instanceof Estudiante) ? ((Estudiante)p).getGrupo() : 0;
 			tableModel.addRow(new Object[]{
 				p.getCi(),
 				p.getNombre(),
@@ -206,7 +264,8 @@ public class AddPersonas extends JFrame {
 				Boolean.valueOf(p.getActivo()),
 				tipo,
 				new Integer(p.getCantidadGuardias()),
-				extra
+				extra,
+				grupo
 			});
 		}
 
@@ -272,13 +331,18 @@ public class AddPersonas extends JFrame {
 				}
 				String tipo = (String) cbTipo.getSelectedItem();
 				Persona persona = null;
+				int grupo = 0;
+				String grupoStr = txtGrupo.getText();
+				if (grupoStr != null && !grupoStr.trim().isEmpty()) {
+					try { grupo = Integer.parseInt(grupoStr); } catch (Exception ex) {}
+				}
 				if ("Estudiante".equals(tipo)) {
 					int guardiasFestivo = 0;
 					String guardiasFestivoStr = txtGuardiasFestivo.getText();
 					if (guardiasFestivoStr != null && !guardiasFestivoStr.trim().isEmpty()) {
 						try { guardiasFestivo = Integer.parseInt(guardiasFestivoStr); } catch (Exception ex) {}
 					}
-					persona = new Estudiante(ci, nombre, sexo, activo, cantidadGuardias, guardiasFestivo);
+					persona = new Estudiante(ci, nombre, sexo, activo, cantidadGuardias, guardiasFestivo, grupo);
 				} else {
 					LocalDate fecha = null;
 					java.util.Date fechaDate = dateChooserFechaIncorporacion.getDate();
@@ -286,7 +350,7 @@ public class AddPersonas extends JFrame {
 					if (!chkActivo.isSelected() && fechaDate != null) {
 						fecha = fechaDate.toInstant().atZone(java.time.ZoneId.systemDefault()).toLocalDate();
 					}
-					persona = new Trabajador(ci, nombre, sexo, activo, fecha, cantidadGuardias);
+					persona = new Trabajador(ci, nombre, sexo, activo, fecha, cantidadGuardias, grupo);
 				}
 				// Actualizar en facultad usando el método correspondiente
 				facultad.actualizarPersona(persona);
@@ -300,15 +364,9 @@ public class AddPersonas extends JFrame {
 				tableModel.setValueAt(tipo, selectedRow[0], 4);
 				tableModel.setValueAt(new Integer(cantidadGuardias), selectedRow[0], 5);
 				tableModel.setValueAt(extra, selectedRow[0], 6);
-				// Vaciar campos después de editar
-				txtCI.setText("");
-				txtNombre.setText("");
-				cbSexo.setSelectedIndex(0);
-				chkActivo.setSelected(false);
-				txtCantidadGuardias.setText("");
-				cbTipo.setSelectedIndex(0);
-				txtGuardiasFestivo.setText("");
-				dateChooserFechaIncorporacion.setDate(null);
+				tableModel.setValueAt(grupo, selectedRow[0], 7);
+				txtGrupo.setText("");
+				actualizarTabla.actionPerformed(null);
 			}
 		});
 
@@ -332,6 +390,7 @@ public class AddPersonas extends JFrame {
 				cbTipo.setSelectedIndex(0);
 				txtGuardiasFestivo.setText("");
 				dateChooserFechaIncorporacion.setDate(null);
+				actualizarTabla.actionPerformed(null);
 			}
 		});
 	}
