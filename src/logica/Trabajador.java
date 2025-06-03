@@ -43,10 +43,10 @@ public class Trabajador extends Persona {
 
     public void setFechaDeIncorporacion(LocalDate fechaDeIncorporacion) {
         if (fechaDeIncorporacion == null) {
-            throw new IllegalArgumentException("Fecha de incorporación no puede ser nula");
+            throw new IllegalArgumentException("Fecha de incorporaciï¿½n no puede ser nula");
         }
         if (fechaDeIncorporacion.isAfter(LocalDate.now())) {
-            throw new IllegalArgumentException("Fecha de incorporación no puede ser futura");
+            throw new IllegalArgumentException("Fecha de incorporaciï¿½n no puede ser futura");
         }
         this.fechaDeIncorporacion = fechaDeIncorporacion;
     }
