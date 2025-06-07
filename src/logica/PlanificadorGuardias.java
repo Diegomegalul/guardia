@@ -3,15 +3,32 @@ import java.time.LocalDate;
 import java.time.YearMonth;
 import java.util.ArrayList;
 import java.util.List;
+
 import logica.DiaFestivo;
 import utiles.Sexo;
 import java.util.Set;
+
+import java.util.Set;
+
+
+import logica.DiaFestivo;
+import utiles.Sexo;
+
 
 public class PlanificadorGuardias {
     private final Calendario calendario;
     private final GuardiaFactory guardiaFactory;
     private final Facultad facultad;
 
+
+    public PlanificadorGuardias(Calendario calendario, Facultad facultad) {
+        if (calendario == null || facultad == null) {
+            throw new IllegalArgumentException("Dependencias no pueden ser nulas");
+        }
+        this.calendario = calendario;
+        this.facultad = facultad;
+        this.guardiaFactory = new GuardiaFactory(calendario);
+    }
 
 	public PlanificadorGuardias() {
 		this.guardias = new ArrayList<Guardia>();
@@ -28,6 +45,7 @@ public class PlanificadorGuardias {
 		diasFestivos.add(new DiaFestivo(java.time.LocalDate.of(year, 12, 25), "Navidad"));
 		// Puedes agregar más días festivos relevantes para Cuba aquí
 	}
+
 
     /**
      * Planifica guardias para todos los d�as del mes actual
@@ -70,6 +88,12 @@ public class PlanificadorGuardias {
             }
         }
     }
+
+
+    private Horario crearHorarioParaDia(int diaSemana, boolean esFinDeSemana) {
+        Dia dia = Dia.values()[diaSemana - 1];
+        if (esFinDeSemana) {
+            return new Horario(dia, "08:00 AM", "02:00 PM", "Diurno");
 
 	public void setDiasFestivos(ArrayList<DiaFestivo> diasFestivos) {
 		this.diasFestivos = diasFestivos;
@@ -124,10 +148,12 @@ public class PlanificadorGuardias {
             // Hombres: todos los días de 20:00 a 08:00
             return horario.getHoraInicio().equals(java.time.LocalTime.of(20,0)) && horario.getHoraFin().equals(java.time.LocalTime.of(8,0));
 
+
     private Horario crearHorarioParaDia(int diaSemana, boolean esFinDeSemana) {
         Dia dia = Dia.values()[diaSemana - 1];
         if (esFinDeSemana) {
             return new Horario(dia, "08:00 AM", "02:00 PM", "Diurno");
+
         } else {
             return new Horario(dia, "06:00 PM", "10:00 PM", "Nocturno");
         }
@@ -193,6 +219,16 @@ public class PlanificadorGuardias {
         
         return actualizado;
     }
+
+
+    public boolean eliminarFestivos(LocalDate fecha) {
+        boolean eliminado = false;
+        if (fecha != null) {
+            eliminado = calendario.eliminarFestivo(fecha);
+        }
+        return eliminado;
+    }
+}
 
 	public void agregarGuardia(Guardia guardia) {
 		guardias.add(guardia);
@@ -372,4 +408,3 @@ public class PlanificadorGuardias {
 		return resultado;
 	}
 }
-

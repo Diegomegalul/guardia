@@ -50,6 +50,7 @@ public class Estudiante extends Persona{
     public boolean puedeHacerGuardia() {
         return activo && !licenciaMatricula && !baja;
 
+
     public Estudiante(int id, String nombre, String apellidos, Sexo sexo, boolean activo, int grupo) {
         super(id, nombre, apellidos, sexo, activo);
         setGrupo(grupo);

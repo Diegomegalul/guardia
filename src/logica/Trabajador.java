@@ -6,6 +6,7 @@ import utiles.Sexo;
 public class Trabajador extends Persona {
     private LocalDate fechaDeIncorporacion;
 
+
     private boolean voluntarioVacaciones;
     //Constructor
     public Trabajador(String ci,String nombre,Sexo sexo,boolean activo,LocalDate fechaDeIncorporacion,int cantidadGuardias,int grupo){
