@@ -1,12 +1,11 @@
 package logica;
 
 import java.time.LocalDate;
-
 import utiles.Sexo;
 
-public class Trabajador extends Persona{
-    //Atributos
+public class Trabajador extends Persona {
     private LocalDate fechaDeIncorporacion;
+
     private boolean voluntarioVacaciones;
     //Constructor
     public Trabajador(String ci,String nombre,Sexo sexo,boolean activo,LocalDate fechaDeIncorporacion,int cantidadGuardias,int grupo){
@@ -17,22 +16,51 @@ public class Trabajador extends Persona{
     //Getters y setters
     public void setFechaDeIncorporacion(LocalDate fechaDeIncorporacion){
         this.fechaDeIncorporacion = fechaDeIncorporacion;
+
     }
 
-    public LocalDate getFechaDeIncorporacion(){
+    @Override
+    public boolean puedeHacerGuardia(LocalDate fecha, Horario horario) {
+        boolean puedeHacerla = false;
+        
+        if (isActivo()) {
+            if (voluntarioGuardia) {
+                puedeHacerla = true;
+            } else {
+                int diaSemana = fecha.getDayOfWeek().getValue();
+                boolean esFinDeSemana = diaSemana >= 6;
+                String tipoHorario = horario.getTipo();
+                
+                if (getSexo() == Sexo.MASCULINO) {
+                    puedeHacerla = tipoHorario.equals("Nocturno");
+                } else {
+                    puedeHacerla = esFinDeSemana && tipoHorario.equals("Diurno");
+                }
+            }
+        }
+        
+        return puedeHacerla;
+    }
+
+    public LocalDate getFechaDeIncorporacion() {
         return fechaDeIncorporacion;
     }
 
-    public boolean esVoluntarioVacaciones() {
-        return voluntarioVacaciones;
+    public void setFechaDeIncorporacion(LocalDate fechaDeIncorporacion) {
+        if (fechaDeIncorporacion == null) {
+            throw new IllegalArgumentException("Fecha de incorporaci�n no puede ser nula");
+        }
+        if (fechaDeIncorporacion.isAfter(LocalDate.now())) {
+            throw new IllegalArgumentException("Fecha de incorporaci�n no puede ser futura");
+        }
+        this.fechaDeIncorporacion = fechaDeIncorporacion;
     }
 
-    public void setVoluntarioVacaciones(boolean voluntarioVacaciones) {
-        this.voluntarioVacaciones = voluntarioVacaciones;
+    public boolean isVoluntarioGuardia() {
+        return voluntarioGuardia;
     }
 
-    //Metodos
-    public boolean puedeHacerGuardia(LocalDate fecha) {
-        return activo && (fechaDeIncorporacion == null || !fecha.isBefore(fechaDeIncorporacion));
+    public void setVoluntarioGuardia(boolean voluntarioGuardia) {
+        this.voluntarioGuardia = voluntarioGuardia;
     }
 }
