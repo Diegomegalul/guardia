@@ -20,16 +20,3 @@ public class Main {
         
     }
 }
-//inicio
-
-/*EventQueue.invokeLater(new Runnable() {
-public void run() {
-try {
-    Inicio frame = new Inicio(planificador);
-    frame.setVisible(true);
-} catch (Exception e) {
-    e.printStackTrace();
-}
-}
-});
-*/

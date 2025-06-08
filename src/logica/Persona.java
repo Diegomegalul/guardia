@@ -20,16 +20,13 @@ public abstract class Persona {
         setActivo(activo);
     }
 
-    public abstract boolean puedeHacerGuardia(LocalDate fecha, Horario horario);
-
     // Getters y Setters
-    public int getId() { return id; }
+    public String getCi() { 
+    	return ci; 
+    }
     
-    public void setId(int id) {
-        if (id <= 0) {
-            throw new IllegalArgumentException("ID debe ser positivo");
-        }
-        this.id = id;
+    public void setCi(String ci) {
+        this.ci = ci;
     }
 
     public String getNombre() { return nombre; }
@@ -65,11 +62,6 @@ public abstract class Persona {
         this.activo = activo;
     }
 
-    @Override
-    public String toString() {
-        return String.format("%s %s (ID: %d)", nombre, apellidos, id);
-    }
-    
     public void setCantidadGuardias(int cantidadGuardias){
         this.cantidadGuardias = cantidadGuardias;
     }
@@ -90,5 +82,6 @@ public abstract class Persona {
         return cantidadGuardiasFestivo;
     }
     //Metodos
+    public abstract boolean puedeHacerGuardia(LocalDate fecha, Horario horario);
 }
 

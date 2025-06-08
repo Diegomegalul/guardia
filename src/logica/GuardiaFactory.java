@@ -4,6 +4,8 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import utiles.Dia;
+
 public class GuardiaFactory {
     private final Calendario calendario;
     private final List<Guardia> guardias;
@@ -37,7 +39,7 @@ public class GuardiaFactory {
 
     public Guardia crearGuardiaRecuperacion(Persona persona, String motivo) {
         LocalDate fecha = LocalDate.now();
-        Horario horario = new Horario(Dia.LUNES, "08:00 AM", "04:00 PM", "Diurno");
+        Horario horario = new Horario(Dia.MONDAY, "08:00 AM", "04:00 PM", "Diurno");
         return crearGuardia(persona, horario, fecha, true, motivo);
     }
 
@@ -50,7 +52,7 @@ public class GuardiaFactory {
         }
         return resultado;
     }
-
+/*       wtf contigo q te pasa?
     public List<Guardia> consultarGuardiasPorPersona(int idPersona) {
         List<Guardia> resultado = new ArrayList<>();
         for (Guardia guardia : guardias) {
@@ -60,7 +62,7 @@ public class GuardiaFactory {
         }
         return resultado;
     }
-
+*/
     public boolean actualizarGuardia(int id, Horario nuevoHorario, LocalDate nuevaFecha) {
         boolean actualizado = false;
         Guardia guardia = consultarGuardia(id);

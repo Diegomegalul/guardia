@@ -14,12 +14,6 @@ public class Estudiante extends Persona{
         super(ci, nombre, sexo, activo, cantidadGuardias, cantidadGuardiasFestivo);
         setGrupo(grupo);
     }
-
-    // Constructor compatible antiguo (por si hay código legacy)
-    public Estudiante (String ci, String nombre, Sexo sexo, boolean activo, int cantidadGuardias, int cantidadGuardiasFestivo){
-        this(ci, nombre, sexo, activo, cantidadGuardias, cantidadGuardiasFestivo, 0);
-    }
-
     //Getters y setters
    
     public boolean isLicenciaMatricula() {
@@ -44,42 +38,14 @@ public class Estudiante extends Persona{
 
     public int getGrupo() {
         return grupo;
-    }
-
+    }  
     //Metodos
-    public boolean puedeHacerGuardia() {
-        return activo && !licenciaMatricula && !baja;
+	@Override
+	public boolean puedeHacerGuardia(LocalDate fecha, Horario horario) {
+		// TODO Auto-generated method stub
+		return false;
+	}
 
-
-    public Estudiante(int id, String nombre, String apellidos, Sexo sexo, boolean activo, int grupo) {
-        super(id, nombre, apellidos, sexo, activo);
-        setGrupo(grupo);
-    }
-
-    @Override
-    public boolean puedeHacerGuardia(LocalDate fecha, Horario horario) {
-        boolean puedeHacerla = false;
-        
-        if (isActivo()) {
-            int diaSemana = fecha.getDayOfWeek().getValue();
-            boolean esFinDeSemana = diaSemana >= 6;
-            boolean esHorarioDiurno = horario.getTipo().equals("Diurno");
-            
-            puedeHacerla = esFinDeSemana && esHorarioDiurno;
-        }
-        
-        return puedeHacerla;
-    }
-
-    public int getGrupo() {
-        return grupo;
-    }
-
-    public void setGrupo(int grupo) {
-        if (grupo <= 0) {
-            throw new IllegalArgumentException("El grupo debe ser positivo");
-        }
-        this.grupo = grupo;
-    }
+ 
 }
    
