@@ -8,12 +8,6 @@ import logica.DiaFestivo;
 import utiles.Sexo;
 import java.util.Set;
 
-import java.util.Set;
-
-
-import logica.DiaFestivo;
-import utiles.Sexo;
-
 
 public class PlanificadorGuardias {
     private final Calendario calendario;
