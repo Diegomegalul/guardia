@@ -1,18 +1,20 @@
 package logica;
 
 import java.time.LocalDate;
-import java.util.Objects;
 //Yo la queria, que un segundo con ella...
 // valia con 756mil años lejos de ella...
 public class DiaFestivo {
+	//Atributos
     private LocalDate fecha;
     private String descripcion;
 
+    //Contructor
     public DiaFestivo(LocalDate fecha, String descripcion) {
         this.fecha = fecha;
         this.descripcion = descripcion;
     }
 
+    //Setters y Getters
     public LocalDate getFecha() {
         return fecha;
     }
@@ -33,23 +35,6 @@ public class DiaFestivo {
         return fecha.toString();
     }
 
-    @Override
-    public String toString() {
-        return getFechaString() + " - " + descripcion;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) return true;
-        if (obj == null || getClass() != obj.getClass()) return false;
-        DiaFestivo other = (DiaFestivo) obj;
-        return Objects.equals(fecha, other.fecha);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(fecha);//holaaa bjvjv
-        //que esta variable exprese lo que ella no siente por mi (Null)
-        
-    }
+    //Metodos
+    
 }

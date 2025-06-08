@@ -6,7 +6,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class Calendario {
-    private final Set<LocalDate> festivos;
+    private Set<LocalDate> festivos;
 
     public Calendario(Set<LocalDate> festivos) {
         if (festivos == null) {
