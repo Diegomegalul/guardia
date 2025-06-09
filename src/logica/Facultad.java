@@ -8,8 +8,8 @@ import logica.Persona;
 
 public class Facultad {
 	//Atributos
-	private static final List<Persona>personas = new ArrayList<>();
-	
+	private final List<Persona>personas = new ArrayList<>();
+
 	//Constructor
 	public Facultad(){
 
@@ -22,7 +22,7 @@ public class Facultad {
 	public void agregarPersona(Persona persona){
 		personas.add(persona);
 	}
-	
+
 	public void eliminarPersona(Persona persona){
 		personas.remove(persona);
 	}

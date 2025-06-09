@@ -7,52 +7,55 @@ import java.util.List;
 import utiles.Dia;
 
 public class GuardiaFactory {
-    private final Calendario calendario;
-    private final List<Guardia> guardias;
-    private static int contadorId = 1;
+	//Atributos
+	private final Calendario calendario;
+	private final List<Guardia> guardias = new ArrayList<>();
+	private static int contadorId = 1;
 
-    public GuardiaFactory(Calendario calendario) {
-        if (calendario == null) {
-            throw new IllegalArgumentException("El calendario no puede ser nulo");
-        }
-        this.calendario = calendario;
-        this.guardias = new ArrayList<>();
-    }
+	//Constructor
+	public GuardiaFactory(Calendario calendario) {
+		if (calendario == null) {
+			throw new IllegalArgumentException("El calendario no puede ser nulo");
+		}
+		this.calendario = calendario;
+		this.guardias = new ArrayList<>();
+	}
 
-    public Guardia crearGuardia(Persona persona, Horario horario, LocalDate fecha, 
-                              boolean esRecuperacion, String motivo) {
-        Guardia guardia = null;
-        boolean parametrosValidos = persona != null && horario != null && 
-                                  fecha != null && motivo != null;
-        
-        if (parametrosValidos) {
-            boolean noEsFestivo = !calendario.esFestivo(fecha);
-            boolean puedeHacerGuardia = persona.puedeHacerGuardia(fecha, horario);
-            
-            if (noEsFestivo && puedeHacerGuardia) {
-                guardia = new Guardia(contadorId++, fecha, persona, horario, esRecuperacion, motivo);
-                guardias.add(guardia);
-            }
-        }
-        return guardia;
-    }
+	//Metodos
+	public Guardia crearGuardia(Persona persona, Horario horario, LocalDate fecha, 
+			boolean esRecuperacion, String motivo) {
+		Guardia guardia = null;
+		boolean parametrosValidos = persona != null && horario != null && 
+				fecha != null && motivo != null;
 
-    public Guardia crearGuardiaRecuperacion(Persona persona, String motivo) {
-        LocalDate fecha = LocalDate.now();
-        Horario horario = new Horario(Dia.MONDAY, "08:00 AM", "04:00 PM", "Diurno");
-        return crearGuardia(persona, horario, fecha, true, motivo);
-    }
+		if (parametrosValidos) {
+			boolean noEsFestivo = !calendario.esFestivo(fecha);
+			boolean puedeHacerGuardia = persona.puedeHacerGuardia(fecha, horario);
 
-    public Guardia consultarGuardia(int id) {
-        Guardia resultado = null;
-        for (Guardia guardia : guardias) {
-            if (guardia.getId() == id) {
-                resultado = guardia;
-            }
-        }
-        return resultado;
-    }
-/*       wtf contigo q te pasa?
+			if (noEsFestivo && puedeHacerGuardia) {
+				guardia = new Guardia(contadorId++, fecha, persona, horario, esRecuperacion, motivo);
+				guardias.add(guardia);
+			}
+		}
+		return guardia;
+	}
+
+	public Guardia crearGuardiaRecuperacion(Persona persona, String motivo) {
+		LocalDate fecha = LocalDate.now();
+		Horario horario = new Horario(Dia.MONDAY, "08:00 AM", "04:00 PM", "Diurno");
+		return crearGuardia(persona, horario, fecha, true, motivo);
+	}
+
+	public Guardia consultarGuardia(int id) {
+		Guardia resultado = null;
+		for (Guardia guardia : guardias) {
+			if (guardia.getId() == id) {
+				resultado = guardia;
+			}
+		}
+		return resultado;
+	}
+	/*       wtf contigo q te pasa?
     public List<Guardia> consultarGuardiasPorPersona(int idPersona) {
         List<Guardia> resultado = new ArrayList<>();
         for (Guardia guardia : guardias) {
@@ -62,29 +65,29 @@ public class GuardiaFactory {
         }
         return resultado;
     }
-*/
-    public boolean actualizarGuardia(int id, Horario nuevoHorario, LocalDate nuevaFecha) {
-        boolean actualizado = false;
-        Guardia guardia = consultarGuardia(id);
-        
-        if (guardia != null) {
-            guardia.setHorario(nuevoHorario);
-            guardia.setFecha(nuevaFecha);
-            actualizado = true;
-        }
-        
-        return actualizado;
-    }
+	 */
+	public boolean actualizarGuardia(int id, Horario nuevoHorario, LocalDate nuevaFecha) {
+		boolean actualizado = false;
+		Guardia guardia = consultarGuardia(id);
 
-    public boolean eliminarGuardia(int id) {
-        boolean eliminado = false;
-        Guardia guardia = consultarGuardia(id);
-        
-        if (guardia != null) {
-            eliminado = guardias.remove(guardia);
-        }
-        
-        return eliminado;
-    }
-    
+		if (guardia != null) {
+			guardia.setHorario(nuevoHorario);
+			guardia.setFecha(nuevaFecha);
+			actualizado = true;
+		}
+
+		return actualizado;
+	}
+
+	public boolean eliminarGuardia(int id) {
+		boolean eliminado = false;
+		Guardia guardia = consultarGuardia(id);
+
+		if (guardia != null) {
+			eliminado = guardias.remove(guardia);
+		}
+
+		return eliminado;
+	}
+
 }

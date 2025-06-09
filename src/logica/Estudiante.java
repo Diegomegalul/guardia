@@ -15,7 +15,6 @@ public class Estudiante extends Persona{
         setGrupo(grupo);
     }
     //Getters y setters
-   
     public boolean isLicenciaMatricula() {
         return licenciaMatricula;
     }
