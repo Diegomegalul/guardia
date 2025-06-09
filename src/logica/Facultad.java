@@ -9,10 +9,10 @@ import logica.Persona;
 public class Facultad {
 	//Atributos
 	private final List<Persona>personas = new ArrayList<>();
-
+	private String nombre;
 	//Constructor
-	public Facultad(){
-
+	public Facultad(String nombre){
+		setNombre(nombre);
 	}
 	//Getters y setters
 	public List<Persona> getPersonas(){
@@ -25,5 +25,13 @@ public class Facultad {
 
 	public void eliminarPersona(Persona persona){
 		personas.remove(persona);
+	} 
+	
+	public String getNombre() {
+		return nombre;
+	}
+	
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
 	}
 }

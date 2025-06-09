@@ -1,5 +1,8 @@
 package logica;
 
+import java.time.DayOfWeek;
+import java.time.LocalTime;
+
 import utiles.Sexo;
 
 public class Estudiante extends Persona{
@@ -44,7 +47,23 @@ public class Estudiante extends Persona{
 		if(getActivo()){
 			int mes = horario.getDia().getMonthValue();
 			if(mes != 7 || mes != 8){
-				puede = true;
+				if(getSexo() == Sexo.MASCULINO){
+					if(horario.getHoraInicio().equals(LocalTime.of(20, 00))){
+						if(horario.getHoraFin().equals(LocalTime.of(8, 00))){
+							puede = true;
+						}
+					}	
+				}else{
+					if(getSexo() == Sexo.FEMENINO){
+						if(horario.getDia().getDayOfWeek() == DayOfWeek.SATURDAY||horario.getDia().getDayOfWeek() == DayOfWeek.SUNDAY){
+							if(horario.getHoraInicio().equals(LocalTime.of(8, 00))){
+								if(horario.getHoraFin().equals(LocalTime.of(20, 00))){
+									puede = true;
+								}
+							}
+						}
+					}	
+				}
 			}
 		}
 		return puede;

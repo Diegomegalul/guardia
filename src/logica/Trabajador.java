@@ -33,6 +33,7 @@ public class Trabajador extends Persona {
 	//Metodos
 	@Override
 	public boolean puedeHacerGuardia(Horario horario) {
+		
 		return false;
 	}
    
