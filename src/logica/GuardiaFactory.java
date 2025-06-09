@@ -12,7 +12,7 @@ public class GuardiaFactory {
 	private List<Guardia> guardias;
 
 	//Constructor
-	public GuardiaFactory(Horario horario,Calendario calendario,List<Guardia> guardias){
+	public GuardiaFactory(){
 		setHorario(horario);
 		setCalendario(calendario);
 		setGuardias(guardias);
