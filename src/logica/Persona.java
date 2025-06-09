@@ -1,87 +1,86 @@
 package logica;
-import java.time.LocalDate;
 import utiles.Sexo;
 
 public abstract class Persona {
-    //Atributos
-    protected int cantidadGuardias;
-    protected String ci;
-    protected String nombre;
-    protected String apellidos;
-    protected Sexo sexo; 
-    protected boolean activo;
-    protected int cantidadGuardiasFestivo;
-    //Contructor
-    protected Persona(String ci,String nombre,Sexo sexo,boolean activo,int cantidadGuardias,int cantidadGuardiasFestivo){
-        setCi(ci);
-        setNombre(nombre);
-        setApellidos(apellidos);
-        setSexo(sexo);
-        setActivo(activo);
-    }
+	//Atributos
+	protected int cantidadGuardias;
+	protected String ci;
+	protected String nombre;
+	protected String apellidos;
+	protected Sexo sexo; 
+	protected boolean activo;
+	protected int cantidadGuardiasFestivo;
+	//Contructor
+	protected Persona(String ci,String nombre,String apellidos,Sexo sexo,boolean activo,int cantidadGuardias,int cantidadGuardiasFestivo){
+		setCi(ci);
+		setNombre(nombre);
+		setApellidos(apellidos);
+		setSexo(sexo);
+		setActivo(activo);
+	}
 
-    // Getters y Setters
-    public String getCi() { 
-    	return ci; 
-    }
-    
-    public void setCi(String ci) {
-        this.ci = ci;
-    }
+	// Getters y Setters
+	public String getCi() { 
+		return ci; 
+	}
 
-    public String getNombre() { return nombre; }
-    
-    public void setNombre(String nombre) {
-        if (nombre == null || nombre.trim().isEmpty()) {
-            throw new IllegalArgumentException("Nombre no puede estar vac�o");
-        }
-        this.nombre = nombre.trim();
-    }
+	public void setCi(String ci) {
+		this.ci = ci;
+	}
 
-    public String getApellidos() { return apellidos; }
-    
-    public void setApellidos(String apellidos) {
-        if (apellidos == null || apellidos.trim().isEmpty()) {
-            throw new IllegalArgumentException("Apellidos no puede estar vac�o");
-        }
-        this.apellidos = apellidos.trim();
-    }
+	public String getNombre() {
+		return nombre;
+	}
 
-    public Sexo getSexo() { return sexo; }
-    
-    public void setSexo(Sexo sexo) {
-        if (sexo == null) {
-            throw new IllegalArgumentException("Sexo no puede ser nulo");
-        }
-        this.sexo = sexo;
-    }
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
+	}
 
-    public boolean isActivo() { return activo; }
-    
-    public void setActivo(boolean activo) {
-        this.activo = activo;
-    }
+	public String getApellidos() { 
+		return apellidos;
+	}
 
-    public void setCantidadGuardias(int cantidadGuardias){
-        this.cantidadGuardias = cantidadGuardias;
-    }
+	public void setApellidos(String apellidos) {
+		this.apellidos = apellidos;
+	}
 
-    public int getCantidadGuardias(){
-        return cantidadGuardias;
-    }
+	public Sexo getSexo() { 
+		return sexo;
+	}
 
-    public boolean estaActivo() {
-        return activo;
-    }
-    
-    public void setCantidadGuardiasFestivo(int cantidadGuardiasFestivo) {
-        this.cantidadGuardiasFestivo = cantidadGuardiasFestivo;
-    }
+	public void setSexo(Sexo sexo) {
+		this.sexo = sexo;
+	}
 
-    public int getCantidadGuardiasFestivo(){
-        return cantidadGuardiasFestivo;
-    }
-    //Metodos
-    public abstract boolean puedeHacerGuardia(LocalDate fecha, Horario horario);
+	public boolean isActivo() { 
+		return activo; 
+	}
+
+	public void setActivo(boolean activo) {
+		this.activo = activo;
+	}
+
+	public void setCantidadGuardias(int cantidadGuardias){
+		this.cantidadGuardias = cantidadGuardias;
+	}
+
+	public int getCantidadGuardias(){
+		return cantidadGuardias;
+	}
+
+	public boolean getActivo() {
+		return activo;
+	}
+
+	public void setCantidadGuardiasFestivo(int cantidadGuardiasFestivo) {
+		this.cantidadGuardiasFestivo = cantidadGuardiasFestivo;
+	}
+
+	public int getCantidadGuardiasFestivo(){
+		return cantidadGuardiasFestivo;
+	}
+
+	//Metodos
+	public abstract boolean puedeHacerGuardia(Horario horario);
 }
 

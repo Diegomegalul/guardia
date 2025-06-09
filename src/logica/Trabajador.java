@@ -7,8 +7,8 @@ public class Trabajador extends Persona {
     private LocalDate fechaDeIncorporacion;
     private boolean voluntario;
     //Constructor
-    public Trabajador(String ci,String nombre,Sexo sexo,boolean activo,LocalDate fechaDeIncorporacion,int cantidadGuardias,int cantidadGuardiasFestivo,boolean voluntario){
-        super(ci, nombre, sexo, activo, cantidadGuardias,cantidadGuardiasFestivo); 
+    public Trabajador(String ci,String nombre,String apellidos,Sexo sexo,boolean activo,LocalDate fechaDeIncorporacion,int cantidadGuardias,int cantidadGuardiasFestivo,boolean voluntario){
+        super(ci, nombre,apellidos, sexo, activo, cantidadGuardias,cantidadGuardiasFestivo); 
         setFechaDeIncorporacion(fechaDeIncorporacion);
         setVoluntario(voluntario);
     }
@@ -32,8 +32,7 @@ public class Trabajador extends Persona {
 
 	//Metodos
 	@Override
-	public boolean puedeHacerGuardia(LocalDate fecha, Horario horario) {
-		// TODO Auto-generated method stub
+	public boolean puedeHacerGuardia(Horario horario) {
 		return false;
 	}
    
