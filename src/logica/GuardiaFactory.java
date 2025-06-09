@@ -1,30 +1,20 @@
 package logica;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-
-import utiles.Dia;
-import utiles.TipoGuardia;
 
 public class GuardiaFactory {
 	//Atributos
 	private Horario horario;
-	private TipoGuardia tipo;
 	private Calendario calendario;
 	private List<Guardia> guardias = new ArrayList<>();
 
 	//Constructor
 	public GuardiaFactory(){
-		setTipo(tipo);
+		
 	}
 	
 	//Setters y Getters
-	public void setTipo(TipoGuardia tipo){
-		this.tipo = tipo;
-	}
-	//Metodos
-
 	public List<Guardia> getGuardias() {
 		return guardias;
 	}
@@ -48,6 +38,9 @@ public class GuardiaFactory {
 	public void setHorario(Horario horario) {
 		this.horario = horario;
 	}
+	//Metodos
+
+
 
 
 

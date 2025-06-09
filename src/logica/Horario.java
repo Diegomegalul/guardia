@@ -10,7 +10,7 @@ public class Horario {
 	private LocalTime horaFin;
 	
 	//Constructor
-	public Horario(){
+	public Horario(LocalDate dia,LocalTime horaInicio,LocalTime horaFin){
 		setDia(dia);
 		setHoraInicio(horaInicio);
 		setHoraFin(horaFin);
@@ -27,6 +27,18 @@ public class Horario {
 	
 	public void setHoraFin(LocalTime horaFin){
 		this.horaFin = horaFin;
+	}
+	
+	public LocalDate getDia(){
+		return dia;
+	}
+	
+	public LocalTime getHoraInicio(){
+		return horaInicio;
+	}
+	
+	public LocalTime getHoraFin(){
+		return horaFin;
 	}
 	
 }
