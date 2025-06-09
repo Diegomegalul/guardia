@@ -5,8 +5,87 @@ import java.util.ArrayList;
 import java.util.List;
 
 import utiles.Dia;
+import utiles.TipoGuardia;
 
 public class GuardiaFactory {
+	//Atributos
+	private Horario horario;
+	private TipoGuardia tipo;
+	private Calendario calendario;
+	private List<Guardia> guardias = new ArrayList<>();
+
+	//Constructor
+	public GuardiaFactory(){
+		setTipo(tipo);
+	}
+	
+	//Setters y Getters
+	public void setTipo(TipoGuardia tipo){
+		this.tipo = tipo;
+	}
+	//Metodos
+
+	public List<Guardia> getGuardias() {
+		return guardias;
+	}
+
+	public void setGuardias(List<Guardia> guardias) {
+		this.guardias = guardias;
+	}
+
+	public Calendario getCalendario() {
+		return calendario;
+	}
+
+	public void setCalendario(Calendario calendario) {
+		this.calendario = calendario;
+	}
+
+	public Horario getHorario() {
+		return horario;
+	}
+
+	public void setHorario(Horario horario) {
+		this.horario = horario;
+	}
+
+
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* La basura de Daniela
 	//Atributos
 	private final Calendario calendario;
 	private final List<Guardia> guardias = new ArrayList<>();
@@ -55,7 +134,7 @@ public class GuardiaFactory {
 		}
 		return resultado;
 	}
-	/*       wtf contigo q te pasa?
+	      wtf contigo q te pasa?
     public List<Guardia> consultarGuardiasPorPersona(int idPersona) {
         List<Guardia> resultado = new ArrayList<>();
         for (Guardia guardia : guardias) {
@@ -65,7 +144,7 @@ public class GuardiaFactory {
         }
         return resultado;
     }
-	 */
+
 	public boolean actualizarGuardia(int id, Horario nuevoHorario, LocalDate nuevaFecha) {
 		boolean actualizado = false;
 		Guardia guardia = consultarGuardia(id);
@@ -91,3 +170,4 @@ public class GuardiaFactory {
 	}
 
 }
+ */

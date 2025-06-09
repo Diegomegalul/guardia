@@ -1,11 +1,64 @@
 package logica;
 
-import java.time.LocalDate;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Calendario {
+	//Atributos
+	private List<DiaFestivo> diasFestivos;
+
+	//Constructor
+	public Calendario(){
+		setDiasFestivos(diasFestivos);
+	}
+	
+	//Setters y getters
+	public void setDiasFestivos(List<DiaFestivo> diasFestivos) {
+		this.diasFestivos = new ArrayList<>();
+	}
+	
+	public List<DiaFestivo> getDiasFestivos() {
+		return diasFestivos;
+	}
+
+	//Metodos
+	
+	
+	
+	
+	
+	
+	
+	
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	/* mas basura de Daniela
     private Set<LocalDate> festivos;
 
     public Calendario(Set<LocalDate> festivos) {
@@ -27,4 +80,4 @@ public class Calendario {
     }
 }
 
-
+*/

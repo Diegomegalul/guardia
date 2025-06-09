@@ -1,8 +1,7 @@
 package logica;
 
 import java.time.LocalDate;
-//Yo la queria, que un segundo con ella...
-// valia con 756mil años lejos de ella...
+
 public class DiaFestivo {
 	//Atributos
     private LocalDate fecha;
