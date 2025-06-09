@@ -10,11 +10,14 @@ public class Estudiante extends Persona{
 	private boolean licenciaMatricula;
 	private boolean baja;
 	private int grupo; // Nuevo atributo grupo
+	private int guardiasCumplidas;  //Nuevo atributo guardiasCumplidas
 
 	//Constructor
-	public Estudiante (String ci, String nombre,String apellidos, Sexo sexo, boolean activo, int cantidadGuardias, int cantidadGuardiasFestivo, int grupo){
-		super(ci, nombre, apellidos, sexo, activo, cantidadGuardias, cantidadGuardiasFestivo);
+	public Estudiante (String ci, String nombre,String apellidos, Sexo sexo, boolean activo, int guardiasAsignadas , int cantidadGuardiasFestivo, int grupo){
+		super(ci, nombre, apellidos, sexo, activo, guardiasAsignadas, cantidadGuardiasFestivo);
 		setGrupo(grupo);
+		this.guardiasAsignadas = 0;
+        this.guardiasCumplidas = 0;
 	}
 	//Getters y setters
 	public boolean isLicenciaMatricula() {
@@ -46,7 +49,7 @@ public class Estudiante extends Persona{
 		boolean puede = false;
 		if(getActivo()){
 			int mes = horario.getDia().getMonthValue();
-			if(mes != 7 || mes != 8){
+			if(mes != 7 && mes != 8){
 				if(getSexo() == Sexo.MASCULINO){
 					if(horario.getHoraInicio().equals(LocalTime.of(20, 00))){
 						if(horario.getHoraFin().equals(LocalTime.of(8, 00))){
@@ -69,5 +72,21 @@ public class Estudiante extends Persona{
 		return puede;
 	}
 
+    public void incrementarGuardiasAsignadas() {
+        this.guardiasAsignadas++;
+    }
+    
+    public void registrarGuardiaCumplida() {
+        this.guardiasCumplidas++;
+    }
+    
+    public int calcularGuardiasPendientes() {
+        return guardiasAsignadas - guardiasCumplidas;
+    }
+    
+    public boolean tieneGuardiasPendientes() {
+        return calcularGuardiasPendientes() > 0;
+    }
+    
 
 }

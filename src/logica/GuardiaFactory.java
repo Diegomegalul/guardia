@@ -1,7 +1,10 @@
 package logica;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+
+import utiles.TipoGuardia;
 import logica.Horario;
 import logica.Calendario;
 
@@ -10,23 +13,14 @@ public class GuardiaFactory {
 	private Horario horario;
 	private Calendario calendario;
 	private List<Guardia> guardias;
+	private int nextId = 1;
 
 	//Constructor
-	public GuardiaFactory(){
-		setHorario(horario);
-		setCalendario(calendario);
-		setGuardias(guardias);
+	public GuardiaFactory() {
+		this.guardias = new ArrayList<>(); 
 	}
-	
+
 	//Setters y Getters
-	public List<Guardia> getGuardias() {
-		return guardias;
-	}
-
-	public void setGuardias(List<Guardia> guardias) {
-		this.guardias = new ArrayList<>();
-	}
-
 	public Calendario getCalendario() {
 		return calendario;
 	}
@@ -42,20 +36,145 @@ public class GuardiaFactory {
 	public void setHorario(Horario horario) {
 		this.horario = horario;
 	}
+	
+	public List<Guardia> getGuardias() {
+        return guardias;
+    }
+
+    public void setGuardias(List<Guardia> guardias) {
+        this.guardias = new ArrayList<>(guardias);  // Copia defensiva
+    }
 	//Metodos
+	//--- CRUD COMPLETO ---//
 
+    // --- CRUD MEJORADO --- //
+    
+    // MÉTODO UNIFICADO PARA CREAR GUARDIAS
+    public boolean crearGuardia(TipoGuardia tipo, Persona persona, Horario horario) {
+        // Validación básica
+        if (!persona.puedeHacerGuardia(horario)) {
+            return false;
+        }
 
+        // Validaciones específicas por tipo
+        switch(tipo) {
+            case RECUPERACION:
+                if (!(persona instanceof Estudiante) || 
+                    !((Estudiante)persona).tieneGuardiasPendientes()) {
+                    return false;
+                }
+                break;
+                
+            case VOLUNTARIA:
+                if (!(persona instanceof Trabajador) || 
+                    !((Trabajador)persona).getVoluntario()) {
+                    return false;
+                }
+                break;
+                
+            case FESTIVO:
+                if (persona.getCantidadGuardiasFestivo() >= 3) {
+                    return false;
+                }
+                break;
+		default:
+			break;
+        }
 
+        // Crear guardia
+        Guardia nuevaGuardia = new Guardia(nextId++, tipo, persona, horario);
+        guardias.add(nuevaGuardia);
+        
+        // Actualizar contadores
+        persona.setGuardiasAsignadas(persona.getGuardiasAsignadas() + 1);
+        
+        if (tipo == TipoGuardia.FESTIVO) {
+            persona.setCantidadGuardiasFestivo(persona.getCantidadGuardiasFestivo() + 1);
+        }
+        
+        // Contador específico para estudiantes
+        if (persona instanceof Estudiante && tipo == TipoGuardia.NORMAL) {
+            ((Estudiante)persona).incrementarGuardiasAsignadas();
+        }
+        
+        return true;
+    }
 
+    // REGISTRAR CUMPLIMIENTO MEJORADO
+    public boolean registrarCumplimientoGuardia(int idGuardia) {
+        Guardia g = buscarGuardiaPorId(idGuardia);
+        if (g == null) return false;
+        
+        Persona p = g.getPersona();
+        
+        if (p instanceof Estudiante) {
+            Estudiante est = (Estudiante) p;
+            est.registrarGuardiaCumplida();
+            
+            // Si es guardia de recuperación, reducir pendientes
+            if (g.getTipo() == TipoGuardia.RECUPERACION) {
+                est.setGuardiasAsignadas(est.getGuardiasAsignadas() - 1);
+            }
+        }
+        // Para trabajadores podrías añadir lógica similar si es necesario
+        return true;
+    }
 
+    // BUSCAR POR ID (compatible)
+    public Guardia buscarGuardiaPorId(int id) {
+        for (Guardia guardia : guardias) {
+            if (guardia.getId() == id) {
+                return guardia;
+            }
+        }
+        return null;
+    }
 
+    // ACTUALIZAR GUARDIA
+    public boolean actualizarGuardia(int id, TipoGuardia nuevoTipo, Persona nuevaPersona, Horario nuevoHorario) {
+        Guardia guardia = buscarGuardiaPorId(id);
+        if (guardia == null) return false;
+        
+        // Validación básica
+        if (!nuevaPersona.puedeHacerGuardia(nuevoHorario)) {
+            return false;
+        }
+        
+        // Actualizar
+        guardia.setTipo(nuevoTipo);
+        guardia.setPersona(nuevaPersona);
+        guardia.setHorario(nuevoHorario);
+        
+        return true;
+    }
 
+    // ELIMINAR GUARDIA MEJORADO
+    public boolean eliminarGuardia(int id) {
+        Iterator<Guardia> it = guardias.iterator();
+        while (it.hasNext()) {
+            Guardia g = it.next();
+            if (g.getId() == id) {
+                Persona p = g.getPersona();
+                
+                // Actualizar contadores generales
+                p.setGuardiasAsignadas(p.getGuardiasAsignadas() - 1);
+                
+                if (g.getTipo() == TipoGuardia.FESTIVO) {
+                    p.setCantidadGuardiasFestivo(p.getCantidadGuardiasFestivo() - 1);
+                }
+                
+                // Contador específico para estudiantes
+                if (p instanceof Estudiante && g.getTipo() == TipoGuardia.NORMAL) {
+                    ((Estudiante)p).setGuardiasAsignadas(((Estudiante)p).getGuardiasAsignadas() - 1);
+                }
+                
+                it.remove();
+                return true;
+            }
+        }
+        return false;
+    }
 }
-
-
-
-
-
 
 
 

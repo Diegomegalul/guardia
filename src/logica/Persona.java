@@ -3,7 +3,7 @@ import utiles.Sexo;
 
 public abstract class Persona {
 	//Atributos
-	protected int cantidadGuardias;
+	protected int guardiasAsignadas;
 	protected String ci;
 	protected String nombre;
 	protected String apellidos;
@@ -11,7 +11,7 @@ public abstract class Persona {
 	protected boolean activo;
 	protected int cantidadGuardiasFestivo;
 	//Contructor
-	protected Persona(String ci,String nombre,String apellidos,Sexo sexo,boolean activo,int cantidadGuardias,int cantidadGuardiasFestivo){
+	protected Persona(String ci,String nombre,String apellidos,Sexo sexo,boolean activo,int guardiasAsignadas,int cantidadGuardiasFestivo){
 		setCi(ci);
 		setNombre(nombre);
 		setApellidos(apellidos);
@@ -60,12 +60,12 @@ public abstract class Persona {
 		this.activo = activo;
 	}
 
-	public void setCantidadGuardias(int cantidadGuardias){
-		this.cantidadGuardias = cantidadGuardias;
+	public void setGuardiasAsignadas(int guardiasAsignadas){
+		this.guardiasAsignadas = guardiasAsignadas;
 	}
 
-	public int getCantidadGuardias(){
-		return cantidadGuardias;
+	public int getGuardiasAsignadas(){
+		return guardiasAsignadas;
 	}
 
 	public boolean getActivo() {
