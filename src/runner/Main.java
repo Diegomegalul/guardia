@@ -4,7 +4,9 @@ import interfaz.Cargando;
 
 import java.awt.EventQueue;
 
+import utiles.Sexo;
 import logica.Calendario;
+import logica.Estudiante;
 import logica.Facultad;
 import logica.GuardiaFactory;
 import logica.Persona;
@@ -12,16 +14,7 @@ import logica.PlanificadorGuardias;
 
 public class Main {
 	public static void main(String[] args) {
-		PlanificadorGuardias planificador = PlanificadorGuardias.getInstancia();
-		
-		Facultad facultad = planificador.getFacultad();
-		Calendario calendario = planificador.getCalendario();
-		GuardiaFactory factory = planificador.getGuardiaFactory();
-		
-		Persona persona = Persona();
-		
-		planificador.getFacultad().agregarPersona(persona);
-
+	
 	}
 }
 
