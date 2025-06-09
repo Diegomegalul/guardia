@@ -1,4 +1,4 @@
-package interfaz;
+package basura;
 
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Date;
 import java.time.LocalDate;
 import java.time.ZoneId;
+
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -16,8 +17,9 @@ import javax.swing.JTextField;
 import javax.swing.DefaultListModel;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
-import logica.PlanificadorGuardias;
+
 import logica.DiaFestivo;
+
 import com.toedter.calendar.JDateChooser;
 
 public class EditDiasFestivos extends JFrame {

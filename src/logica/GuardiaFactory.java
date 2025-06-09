@@ -2,16 +2,20 @@ package logica;
 
 import java.util.ArrayList;
 import java.util.List;
+import logica.Horario;
+import logica.Calendario;
 
 public class GuardiaFactory {
 	//Atributos
 	private Horario horario;
 	private Calendario calendario;
-	private List<Guardia> guardias = new ArrayList<>();
+	private List<Guardia> guardias;
 
 	//Constructor
-	public GuardiaFactory(){
-		
+	public GuardiaFactory(Horario horario,Calendario calendario,List<Guardia> guardias){
+		setHorario(horario);
+		setCalendario(calendario);
+		setGuardias(guardias);
 	}
 	
 	//Setters y Getters
@@ -20,7 +24,7 @@ public class GuardiaFactory {
 	}
 
 	public void setGuardias(List<Guardia> guardias) {
-		this.guardias = guardias;
+		this.guardias = new ArrayList<>();
 	}
 
 	public Calendario getCalendario() {

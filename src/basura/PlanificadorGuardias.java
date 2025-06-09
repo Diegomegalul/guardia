@@ -1,11 +1,20 @@
-package logica;
+package basura;
 import java.time.LocalDate;
 import java.time.YearMonth;
 import java.util.ArrayList;
 import java.util.List;
 
+import logica.Calendario;
 import logica.DiaFestivo;
+import logica.Estudiante;
+import logica.Facultad;
+import logica.Guardia;
+import logica.GuardiaFactory;
+import logica.Horario;
+import logica.Persona;
+import logica.Trabajador;
 import utiles.Sexo;
+
 import java.util.Set;
 
 

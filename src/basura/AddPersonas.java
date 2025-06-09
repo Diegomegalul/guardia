@@ -1,4 +1,4 @@
-package interfaz;
+package basura;
 
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
@@ -19,11 +19,11 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
 import com.toedter.calendar.JDateChooser;
+
 import utiles.Sexo;
 import logica.Estudiante;
 import logica.Facultad;
 import logica.Persona;
-import logica.PlanificadorGuardias;
 import logica.Trabajador;
 
 public class AddPersonas extends JFrame {

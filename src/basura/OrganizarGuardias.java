@@ -1,4 +1,4 @@
-package interfaz;
+package basura;
 
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
@@ -12,7 +12,6 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
 import logica.Persona;
-import logica.PlanificadorGuardias;
 import logica.Guardia;
 
 import com.toedter.calendar.JMonthChooser;

@@ -14,7 +14,10 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
-import logica.PlanificadorGuardias;
+import basura.AddPersonas;
+import basura.EditDiasFestivos;
+import basura.OrganizarGuardias;
+import basura.PlanificadorGuardias;
 
 public class Inicio extends JFrame {
 
