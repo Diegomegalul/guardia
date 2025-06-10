@@ -44,24 +44,22 @@ public class Cargando extends JFrame {
 				progressBar.setValue(progreso);
 				if (progreso >= 100) {
 					timer.stop();
-					// Aquí puedes cerrar la ventana o lanzar la siguiente pantalla
+					// Abrir Login y cerrar esta ventana
 					EventQueue.invokeLater(new Runnable() {
 						public void run() {
 							try {
-								Login loginFrame = new Login(null);
+								Login loginFrame = new Login(Cargando.this);
 								loginFrame.setVisible(true);
 							} catch (Exception e) {
 								e.printStackTrace();
 							}
 						}
 					});
+					setVisible(false);
 					dispose();
-					// Mostrar la ventana de login
 				}
 			}
 		});
 		timer.start();
-
-
 	}   
 }

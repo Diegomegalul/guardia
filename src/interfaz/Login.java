@@ -58,7 +58,7 @@ public class Login extends JFrame {
         gbc.anchor = GridBagConstraints.WEST;
         panelCentral.add(txtUsuario, gbc);
 
-        JLabel lblContrasena = new JLabel("Contraseña:");
+        JLabel lblContrasena = new JLabel("Contraseï¿½a:");
         gbc.gridx = 0;
         gbc.gridy = 1;
         gbc.anchor = GridBagConstraints.EAST;
@@ -84,13 +84,14 @@ public class Login extends JFrame {
                 String usuario = txtUsuario.getText();
                 String contrasena = new String(txtContrasena.getPassword());
                 if ("Diego".equals(usuario) && "Hola".equals(contrasena)) {
-                    JOptionPane.showMessageDialog(Login.this, "¡Bienvenido, Diego!");
+                    JOptionPane.showMessageDialog(Login.this, "Â¡Bienvenido, Diego!");
                     // Abrir la ventana de inicio centrada respecto a Login y pasar planificador
                     Inicio inicioFrame = new Inicio(planificador, Login.this);
                     inicioFrame.setVisible(true);
+                    setVisible(false);
                     dispose();
                 } else {
-                    JOptionPane.showMessageDialog(Login.this, "Usuario o contraseña incorrectos", "Error", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(Login.this, "Usuario o contraseÃ±a incorrectos", "Error", JOptionPane.ERROR_MESSAGE);
                 }
             }
         });
