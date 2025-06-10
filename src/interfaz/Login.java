@@ -39,8 +39,8 @@ public class Login extends JFrame {
 		setLocationRelativeTo(parent);
 
 		// Colores
-		Color amarillo = new Color(255, 215, 0);
-		Color negro = Color.BLACK;
+		final Color amarillo = new Color(255, 215, 0);
+		final Color negro = Color.BLACK;
 		Color blanco = Color.WHITE;
 
 		contentPane = new JPanel();
@@ -124,13 +124,37 @@ public class Login extends JFrame {
 				String usuario = txtUsuario.getText();
 				String contrasena = new String(txtContrasena.getPassword());
 				if (GestorUsuarios.validarUsuario(usuario, contrasena)) {
-					JOptionPane.showMessageDialog(Login.this, "¡Bienvenido, " + usuario + "!");
+					// Mensaje personalizado con estética
+					JLabel label = new JLabel("¡Bienvenido, " + usuario + "!");
+					label.setFont(new Font("Arial", Font.BOLD, 18));
+					label.setForeground(negro);
+					JPanel panel = new JPanel();
+					panel.setBackground(amarillo);
+					panel.add(label);
+					JOptionPane.showMessageDialog(
+						Login.this,
+						panel,
+						"Acceso concedido",
+						JOptionPane.INFORMATION_MESSAGE
+					);
 					Inicio inicioFrame = new Inicio();
 					inicioFrame.setVisible(true);
 					setVisible(false);
 					dispose();
 				} else {
-					JOptionPane.showMessageDialog(Login.this, "Usuario o contraseña incorrectos", "Error", JOptionPane.ERROR_MESSAGE);
+					// Mensaje de error con estética
+					JLabel label = new JLabel("Usuario o contraseña incorrectos");
+					label.setFont(new Font("Arial", Font.BOLD, 16));
+					label.setForeground(Color.RED);
+					JPanel panel = new JPanel();
+					panel.setBackground(amarillo);
+					panel.add(label);
+					JOptionPane.showMessageDialog(
+						Login.this,
+						panel,
+						"Error de acceso",
+						JOptionPane.ERROR_MESSAGE
+					);
 				}
 			}
 		});
