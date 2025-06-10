@@ -1,20 +1,42 @@
 package interfaz;
 
-import java.awt.*;
-import javax.swing.*;
-import javax.swing.border.EmptyBorder;
+import java.awt.BasicStroke;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import interfaz.AddTrabajadores;
-import interfaz.AddEstudiantes;
-import interfaz.EditCalendario;
+
+import javax.swing.BorderFactory;
+import javax.swing.Icon;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.SwingConstants;
+import javax.swing.border.EmptyBorder;
+
+import logica.PlanificadorGuardias;
 
 public class Inicio extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
+	private PlanificadorGuardias planificador;
 
 	public Inicio() {
+		// Instancia singleton del planificador
+		this.planificador = PlanificadorGuardias.getInstancia();
+
 		// Colores institucionales
 		final Color amarillo = new Color(255, 215, 0);
 		final Color negro = Color.BLACK;
@@ -58,7 +80,7 @@ public class Inicio extends JFrame {
 		itemEstudiante.setBorder(BorderFactory.createLineBorder(negro, 1));
 		itemEstudiante.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				AddEstudiantes frame = new AddEstudiantes();
+				AddEstudiantes frame = new AddEstudiantes(planificador);
 				frame.setVisible(true);
 			}
 		});
@@ -70,7 +92,7 @@ public class Inicio extends JFrame {
 		itemTrabajador.setBorder(BorderFactory.createLineBorder(negro, 1));
 		itemTrabajador.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				AddTrabajadores frame = new AddTrabajadores();
+				AddTrabajadores frame = new AddTrabajadores(planificador);
 				frame.setVisible(true);
 			}
 		});
@@ -87,6 +109,7 @@ public class Inicio extends JFrame {
 		menuPlanificar.setBorder(BorderFactory.createLineBorder(negro, 1));
 		menuPlanificar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				// Aquí deberías abrir el JFrame correspondiente a planificar guardias
 				JOptionPane.showMessageDialog(Inicio.this, "Funcionalidad próximamente disponible.");
 			}
 		});
@@ -100,7 +123,7 @@ public class Inicio extends JFrame {
 		menuCalendario.setBorder(BorderFactory.createLineBorder(negro, 1));
 		menuCalendario.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				EditCalendario frame = new EditCalendario();
+				EditCalendario frame = new EditCalendario(planificador);
 				frame.setVisible(true);
 			}
 		});
@@ -114,6 +137,7 @@ public class Inicio extends JFrame {
 		menuReportes.setBorder(BorderFactory.createLineBorder(negro, 1));
 		menuReportes.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				// Aquí deberías abrir el JFrame correspondiente a reportes
 				JOptionPane.showMessageDialog(Inicio.this, "Funcionalidad de reportes próximamente disponible.");
 			}
 		});
@@ -127,6 +151,7 @@ public class Inicio extends JFrame {
 		menuValores.setBorder(BorderFactory.createLineBorder(negro, 1));
 		menuValores.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				// Aquí deberías abrir el JFrame correspondiente a valores de prueba o ejecutar la lógica
 				JOptionPane.showMessageDialog(Inicio.this, "Valores de prueba cargados (simulado).");
 			}
 		});
