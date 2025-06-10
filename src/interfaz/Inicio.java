@@ -202,9 +202,19 @@ public class Inicio extends JFrame {
 	}
 
 	private void solicitarConfirmacionSalida() {
+		final Color amarillo = new Color(255, 215, 0);
+		final Color negro = Color.BLACK;
+
+		JLabel label = new JLabel("¿Estás seguro de que deseas salir de la aplicación?");
+		label.setFont(new Font("Arial", Font.BOLD, 16));
+		label.setForeground(negro);
+		JPanel panel = new JPanel();
+		panel.setBackground(amarillo);
+		panel.add(label);
+
 		int opcion = JOptionPane.showConfirmDialog(
 			this,
-			"¿Estás seguro de que deseas salir de la aplicación?",
+			panel,
 			"Confirmar salida",
 			JOptionPane.YES_NO_OPTION,
 			JOptionPane.QUESTION_MESSAGE
