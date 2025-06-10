@@ -1,7 +1,6 @@
 package logica;
 
 import java.time.DayOfWeek;
-import java.time.LocalDate;
 import java.time.LocalTime;
 
 import utiles.Sexo;
