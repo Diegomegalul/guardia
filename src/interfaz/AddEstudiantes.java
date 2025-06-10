@@ -1,10 +1,13 @@
 package interfaz;
 
 import java.awt.*;
+
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
 import logica.Estudiante;
 import logica.PlanificadorGuardias;
 import utiles.Sexo;
@@ -17,11 +20,9 @@ public class AddEstudiantes extends JFrame {
 	private JComboBox<String> comboSexo;
 	private JCheckBox chkActivo;
 	private JTextField txtGuardiasAsignadas, txtGuardiasFestivo;
+	@SuppressWarnings("unused")
 	private PlanificadorGuardias planificador; // <- debe ser de instancia, no static
 
-	/**
-	 * Create the frame.
-	 */
 	public AddEstudiantes(final PlanificadorGuardias planificador) {
 		this.planificador = planificador;
 		// Colores institucionales
@@ -55,10 +56,7 @@ public class AddEstudiantes extends JFrame {
 
 		// CI
 		gbc.gridx = 0; gbc.gridy = 0;
-		JLabel lblCi = new JLabel("CI:");
-		lblCi.setFont(new Font("Arial", Font.BOLD, 15));
-		lblCi.setForeground(negro);
-		panelForm.add(lblCi, gbc);
+		panelForm.add(new JLabel("CI:"), gbc);
 		gbc.gridx = 1;
 		txtCi = new JTextField(15);
 		txtCi.setFont(new Font("Arial", Font.PLAIN, 15));
@@ -68,10 +66,7 @@ public class AddEstudiantes extends JFrame {
 
 		// Nombre
 		gbc.gridx = 0; gbc.gridy++;
-		JLabel lblNombre = new JLabel("Nombre:");
-		lblNombre.setFont(new Font("Arial", Font.BOLD, 15));
-		lblNombre.setForeground(negro);
-		panelForm.add(lblNombre, gbc);
+		panelForm.add(new JLabel("Nombre:"), gbc);
 		gbc.gridx = 1;
 		txtNombre = new JTextField(15);
 		txtNombre.setFont(new Font("Arial", Font.PLAIN, 15));
@@ -81,10 +76,7 @@ public class AddEstudiantes extends JFrame {
 
 		// Apellidos
 		gbc.gridx = 0; gbc.gridy++;
-		JLabel lblApellidos = new JLabel("Apellidos:");
-		lblApellidos.setFont(new Font("Arial", Font.BOLD, 15));
-		lblApellidos.setForeground(negro);
-		panelForm.add(lblApellidos, gbc);
+		panelForm.add(new JLabel("Apellidos:"), gbc);
 		gbc.gridx = 1;
 		txtApellidos = new JTextField(15);
 		txtApellidos.setFont(new Font("Arial", Font.PLAIN, 15));
@@ -94,10 +86,7 @@ public class AddEstudiantes extends JFrame {
 
 		// Sexo
 		gbc.gridx = 0; gbc.gridy++;
-		JLabel lblSexo = new JLabel("Sexo:");
-		lblSexo.setFont(new Font("Arial", Font.BOLD, 15));
-		lblSexo.setForeground(negro);
-		panelForm.add(lblSexo, gbc);
+		panelForm.add(new JLabel("Sexo:"), gbc);
 		gbc.gridx = 1;
 		comboSexo = new JComboBox<String>(new String[]{"MASCULINO", "FEMENINO"});
 		comboSexo.setFont(new Font("Arial", Font.PLAIN, 15));
@@ -107,10 +96,7 @@ public class AddEstudiantes extends JFrame {
 
 		// Activo
 		gbc.gridx = 0; gbc.gridy++;
-		JLabel lblActivo = new JLabel("Activo:");
-		lblActivo.setFont(new Font("Arial", Font.BOLD, 15));
-		lblActivo.setForeground(negro);
-		panelForm.add(lblActivo, gbc);
+		panelForm.add(new JLabel("Activo:"), gbc);
 		gbc.gridx = 1;
 		chkActivo = new JCheckBox();
 		chkActivo.setBackground(amarillo);
@@ -119,10 +105,7 @@ public class AddEstudiantes extends JFrame {
 
 		// Guardias Asignadas
 		gbc.gridx = 0; gbc.gridy++;
-		JLabel lblGuardias = new JLabel("Guardias Asignadas:");
-		lblGuardias.setFont(new Font("Arial", Font.BOLD, 15));
-		lblGuardias.setForeground(negro);
-		panelForm.add(lblGuardias, gbc);
+		panelForm.add(new JLabel("Guardias Asignadas:"), gbc);
 		gbc.gridx = 1;
 		txtGuardiasAsignadas = new JTextField("0", 15);
 		txtGuardiasAsignadas.setFont(new Font("Arial", Font.PLAIN, 15));
@@ -132,10 +115,7 @@ public class AddEstudiantes extends JFrame {
 
 		// Guardias Festivo
 		gbc.gridx = 0; gbc.gridy++;
-		JLabel lblFestivo = new JLabel("Guardias Festivo:");
-		lblFestivo.setFont(new Font("Arial", Font.BOLD, 15));
-		lblFestivo.setForeground(negro);
-		panelForm.add(lblFestivo, gbc);
+		panelForm.add(new JLabel("Guardias Festivo:"), gbc);
 		gbc.gridx = 1;
 		txtGuardiasFestivo = new JTextField("0", 15);
 		txtGuardiasFestivo.setFont(new Font("Arial", Font.PLAIN, 15));
@@ -145,10 +125,7 @@ public class AddEstudiantes extends JFrame {
 
 		// Grupo
 		gbc.gridx = 0; gbc.gridy++;
-		JLabel lblGrupo = new JLabel("Grupo:");
-		lblGrupo.setFont(new Font("Arial", Font.BOLD, 15));
-		lblGrupo.setForeground(negro);
-		panelForm.add(lblGrupo, gbc);
+		panelForm.add(new JLabel("Grupo:"), gbc);
 		gbc.gridx = 1;
 		txtGrupo = new JTextField(15);
 		txtGrupo.setFont(new Font("Arial", Font.PLAIN, 15));

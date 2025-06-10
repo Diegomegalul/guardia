@@ -1,15 +1,18 @@
 package interfaz;
 
 import java.awt.BorderLayout;
+
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
 import logica.PlanificadorGuardias;
 
 public class EditCalendario extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
+	@SuppressWarnings("unused")
 	private PlanificadorGuardias planificador;
 
 	public EditCalendario(PlanificadorGuardias planificador) {

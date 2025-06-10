@@ -13,9 +13,6 @@ public class Login extends JFrame {
 	private JTextField txtUsuario;
 	private JPasswordField txtContrasena;
 
-	/**
-	 * Launch the application.
-	 */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -29,9 +26,6 @@ public class Login extends JFrame {
 		});
 	}
 
-	/**
-	 * Create the frame.
-	 */
 	public Login(Window parent) {
 		setTitle("Iniciar Sesión");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -61,52 +55,33 @@ public class Login extends JFrame {
 		panelCentral.setBackground(amarillo);
 		panelCentral.setLayout(new GridBagLayout());
 		GridBagConstraints gbc = new GridBagConstraints();
-
-		JLabel lblUsuario = new JLabel("Usuario:");
-		lblUsuario.setFont(new Font("Arial", Font.BOLD, 16));
-		lblUsuario.setForeground(negro);
-		gbc.gridx = 0;
-		gbc.gridy = 0;
 		gbc.insets = new Insets(10, 10, 10, 10);
-		gbc.anchor = GridBagConstraints.EAST;
-		panelCentral.add(lblUsuario, gbc);
 
+		gbc.gridx = 0; gbc.gridy = 0; gbc.anchor = GridBagConstraints.EAST;
+		panelCentral.add(new JLabel("Usuario:"), gbc);
+		gbc.gridx = 1; gbc.anchor = GridBagConstraints.WEST;
 		txtUsuario = new JTextField(15);
 		txtUsuario.setFont(new Font("Arial", Font.PLAIN, 16));
 		txtUsuario.setBackground(blanco);
 		txtUsuario.setForeground(negro);
-		gbc.gridx = 1;
-		gbc.gridy = 0;
-		gbc.anchor = GridBagConstraints.WEST;
 		panelCentral.add(txtUsuario, gbc);
 
-		JLabel lblContrasena = new JLabel("Contraseña:");
-		lblContrasena.setFont(new Font("Arial", Font.BOLD, 16));
-		lblContrasena.setForeground(negro);
-		gbc.gridx = 0;
-		gbc.gridy = 1;
-		gbc.anchor = GridBagConstraints.EAST;
-		panelCentral.add(lblContrasena, gbc);
-
+		gbc.gridx = 0; gbc.gridy = 1; gbc.anchor = GridBagConstraints.EAST;
+		panelCentral.add(new JLabel("Contraseña:"), gbc);
+		gbc.gridx = 1; gbc.anchor = GridBagConstraints.WEST;
 		txtContrasena = new JPasswordField(15);
 		txtContrasena.setFont(new Font("Arial", Font.PLAIN, 16));
 		txtContrasena.setBackground(blanco);
 		txtContrasena.setForeground(negro);
-		gbc.gridx = 1;
-		gbc.gridy = 1;
-		gbc.anchor = GridBagConstraints.WEST;
 		panelCentral.add(txtContrasena, gbc);
 
+		gbc.gridx = 0; gbc.gridy = 2; gbc.gridwidth = 2; gbc.anchor = GridBagConstraints.CENTER;
 		JButton btnIngresar = new JButton("Ingresar");
 		btnIngresar.setFont(new Font("Arial", Font.BOLD, 16));
 		btnIngresar.setBackground(negro);
 		btnIngresar.setForeground(amarillo);
 		btnIngresar.setFocusPainted(false);
 		btnIngresar.setBorder(BorderFactory.createLineBorder(negro, 2));
-		gbc.gridx = 0;
-		gbc.gridy = 2;
-		gbc.gridwidth = 2;
-		gbc.anchor = GridBagConstraints.CENTER;
 		panelCentral.add(btnIngresar, gbc);
 
 		contentPane.add(panelCentral, BorderLayout.CENTER);
