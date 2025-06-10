@@ -2,6 +2,7 @@ package logica;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.time.LocalDate;
 
 public class Calendario {
 	//Atributos
@@ -9,19 +10,69 @@ public class Calendario {
 
 	//Constructor
 	public Calendario(){
-		setDiasFestivos(diasFestivos);
+		this.diasFestivos = new ArrayList<>();
 	}
 	
 	//Setters y getters
 	public void setDiasFestivos(List<DiaFestivo> diasFestivos) {
 		this.diasFestivos = new ArrayList<>();
+		if (diasFestivos != null) {
+			this.diasFestivos.addAll(diasFestivos);
+		}
 	}
 	
 	public List<DiaFestivo> getDiasFestivos() {
 		return diasFestivos;
 	}
+    //Metodos
 
-	//Metodos
+	// CRUD de Dias Festivos
+
+	// Crear
+	public void agregarDiaFestivo(DiaFestivo diaFestivo) {
+		if (diaFestivo != null && !existeDiaFestivo(diaFestivo.getFecha())) {
+			diasFestivos.add(diaFestivo);
+		}
+	}
+
+	// Leer (buscar por fecha)
+	public DiaFestivo obtenerDiaFestivo(LocalDate fecha) {
+		for (DiaFestivo d : diasFestivos) {
+			if (d.getFecha().equals(fecha)) {
+				return d;
+			}
+		}
+		return null;
+	}
+
+	// Actualizar
+	public boolean actualizarDiaFestivo(LocalDate fecha, String nuevaDescripcion) {
+		DiaFestivo dia = obtenerDiaFestivo(fecha);
+		if (dia != null) {
+			dia.setDescripcion(nuevaDescripcion);
+			return true;
+		}
+		return false;
+	}
+
+	// Eliminar
+	public boolean eliminarDiaFestivo(LocalDate fecha) {
+		DiaFestivo dia = obtenerDiaFestivo(fecha);
+		if (dia != null) {
+			diasFestivos.remove(dia);
+			return true;
+		}
+		return false;
+	}
+
+	// Verificar si existe un día festivo por fecha
+	public boolean existeDiaFestivo(LocalDate fecha) {
+		return obtenerDiaFestivo(fecha) != null;
+	}
+
+	
+	
+	
 	
 	
 	
