@@ -84,7 +84,7 @@ public class AddTrabajadores extends JFrame {
 				RowSpec.decode("20dlu:grow"),
 				FormFactory.RELATED_GAP_ROWSPEC,
 				RowSpec.decode("20dlu:grow"),
-				}));
+		}));
 
 		// CI
 		txtCi = new JTextField(15);

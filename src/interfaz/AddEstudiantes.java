@@ -70,7 +70,7 @@ public class AddEstudiantes extends JFrame {
 				ColumnSpec.decode("center:200px:grow"),
 				FormFactory.RELATED_GAP_COLSPEC,
 				ColumnSpec.decode("center:220px:grow"),},
-			new RowSpec[] {
+				new RowSpec[] {
 				FormFactory.RELATED_GAP_ROWSPEC,
 				RowSpec.decode("top:20dlu:grow"),
 				FormFactory.RELATED_GAP_ROWSPEC,
@@ -99,24 +99,24 @@ public class AddEstudiantes extends JFrame {
 
 		// Apellidos
 		gbc.gridx = 0; gbc.gridy = 2;
-		
-				txtNombre = new JTextField(15);
-				txtNombre.setFont(new Font("Arial", Font.PLAIN, 15));
-				txtNombre.setBackground(blanco);
-				txtNombre.setForeground(negro);
-				panelForm.add(txtNombre, "4, 4, center, center");
+
+		txtNombre = new JTextField(15);
+		txtNombre.setFont(new Font("Arial", Font.PLAIN, 15));
+		txtNombre.setBackground(blanco);
+		txtNombre.setForeground(negro);
+		panelForm.add(txtNombre, "4, 4, center, center");
 		gbc.gridx = 1;
 		JLabel label_2 = new JLabel("Apellidos:");
 		panelForm.add(label_2, "2, 6, center, center");
 
 		// Sexo
 		gbc.gridx = 0; gbc.gridy = 3;
-		
-				txtApellidos = new JTextField(15);
-				txtApellidos.setFont(new Font("Arial", Font.PLAIN, 15));
-				txtApellidos.setBackground(blanco);
-				txtApellidos.setForeground(negro);
-				panelForm.add(txtApellidos, "4, 6, center, center");
+
+		txtApellidos = new JTextField(15);
+		txtApellidos.setFont(new Font("Arial", Font.PLAIN, 15));
+		txtApellidos.setBackground(blanco);
+		txtApellidos.setForeground(negro);
+		panelForm.add(txtApellidos, "4, 6, center, center");
 		gbc.gridx = 1;
 
 		// Activo
@@ -138,45 +138,45 @@ public class AddEstudiantes extends JFrame {
 		contentPane.add(panelForm, BorderLayout.CENTER);
 		JLabel label_3 = new JLabel("Sexo:");
 		panelForm.add(label_3, "2, 8, center, center");
-		
-				comboSexo = new JComboBox<String>();
-				comboSexo.addItem("MASCULINO");
-				comboSexo.addItem("FEMENINO");
-				comboSexo.setFont(new Font("Arial", Font.PLAIN, 15));
-				comboSexo.setBackground(blanco);
-				comboSexo.setForeground(negro);
-				panelForm.add(comboSexo, "4, 8, center, center");
-				JLabel label_4 = new JLabel("Activo:");
-				panelForm.add(label_4, "2, 10, center, center");
-				
-						chkActivo = new JCheckBox();
-						chkActivo.setBackground(amarillo);
-						chkActivo.setSelected(true);
-						panelForm.add(chkActivo, "4, 10, center, center");
-						JLabel label_5 = new JLabel("Guardias Asignadas:");
-						panelForm.add(label_5, "2, 12, center, center");
-						
-								txtGuardiasAsignadas = new JTextField("0", 15);
-								txtGuardiasAsignadas.setFont(new Font("Arial", Font.PLAIN, 15));
-								txtGuardiasAsignadas.setBackground(blanco);
-								txtGuardiasAsignadas.setForeground(negro);
-								panelForm.add(txtGuardiasAsignadas, "4, 12, center, center");
-								JLabel label_6 = new JLabel("Guardias Festivo:");
-								panelForm.add(label_6, "2, 14, center, center");
-								
-										txtGuardiasFestivo = new JTextField("0", 15);
-										txtGuardiasFestivo.setFont(new Font("Arial", Font.PLAIN, 15));
-										txtGuardiasFestivo.setBackground(blanco);
-										txtGuardiasFestivo.setForeground(negro);
-										panelForm.add(txtGuardiasFestivo, "4, 14, center, center");
-										JLabel label_7 = new JLabel("Grupo:");
-										panelForm.add(label_7, "2, 16, center, center");
-										
-												txtGrupo = new JTextField(15);
-												txtGrupo.setFont(new Font("Arial", Font.PLAIN, 15));
-												txtGrupo.setBackground(blanco);
-												txtGrupo.setForeground(negro);
-												panelForm.add(txtGrupo, "4, 16, center, center");
+
+		comboSexo = new JComboBox<String>();
+		comboSexo.addItem("MASCULINO");
+		comboSexo.addItem("FEMENINO");
+		comboSexo.setFont(new Font("Arial", Font.PLAIN, 15));
+		comboSexo.setBackground(blanco);
+		comboSexo.setForeground(negro);
+		panelForm.add(comboSexo, "4, 8, center, center");
+		JLabel label_4 = new JLabel("Activo:");
+		panelForm.add(label_4, "2, 10, center, center");
+
+		chkActivo = new JCheckBox();
+		chkActivo.setBackground(amarillo);
+		chkActivo.setSelected(true);
+		panelForm.add(chkActivo, "4, 10, center, center");
+		JLabel label_5 = new JLabel("Guardias Asignadas:");
+		panelForm.add(label_5, "2, 12, center, center");
+
+		txtGuardiasAsignadas = new JTextField("0", 15);
+		txtGuardiasAsignadas.setFont(new Font("Arial", Font.PLAIN, 15));
+		txtGuardiasAsignadas.setBackground(blanco);
+		txtGuardiasAsignadas.setForeground(negro);
+		panelForm.add(txtGuardiasAsignadas, "4, 12, center, center");
+		JLabel label_6 = new JLabel("Guardias Festivo:");
+		panelForm.add(label_6, "2, 14, center, center");
+
+		txtGuardiasFestivo = new JTextField("0", 15);
+		txtGuardiasFestivo.setFont(new Font("Arial", Font.PLAIN, 15));
+		txtGuardiasFestivo.setBackground(blanco);
+		txtGuardiasFestivo.setForeground(negro);
+		panelForm.add(txtGuardiasFestivo, "4, 14, center, center");
+		JLabel label_7 = new JLabel("Grupo:");
+		panelForm.add(label_7, "2, 16, center, center");
+
+		txtGrupo = new JTextField(15);
+		txtGrupo.setFont(new Font("Arial", Font.PLAIN, 15));
+		txtGrupo.setBackground(blanco);
+		txtGrupo.setForeground(negro);
+		panelForm.add(txtGrupo, "4, 16, center, center");
 
 		// Botón guardar
 		JPanel panelBoton = new JPanel();
@@ -235,11 +235,11 @@ public class AddEstudiantes extends JFrame {
 				panel.setBackground(amarillo);
 				panel.add(label);
 				JOptionPane.showMessageDialog(
-					AddEstudiantes.this,
-					panel,
-					"Guardado",
-					JOptionPane.INFORMATION_MESSAGE
-				);
+						AddEstudiantes.this,
+						panel,
+						"Guardado",
+						JOptionPane.INFORMATION_MESSAGE
+						);
 				dispose();
 			}
 		});
