@@ -38,32 +38,34 @@ public class Calendario {
 
 	// Leer (buscar por fecha)
 	public DiaFestivo obtenerDiaFestivo(LocalDate fecha) {
+		DiaFestivo encontrado = null;
 		for (DiaFestivo d : diasFestivos) {
 			if (d.getFecha().equals(fecha)) {
-				return d;
+				encontrado = d;
+				break;
 			}
 		}
-		return null;
+		return encontrado;
 	}
 
-	// Actualizar
 	public boolean actualizarDiaFestivo(LocalDate fecha, String nuevaDescripcion) {
+		boolean actualizado = false;
 		DiaFestivo dia = obtenerDiaFestivo(fecha);
 		if (dia != null) {
 			dia.setDescripcion(nuevaDescripcion);
-			return true;
+			actualizado = true;
 		}
-		return false;
+		return actualizado;
 	}
 
-	// Eliminar
 	public boolean eliminarDiaFestivo(LocalDate fecha) {
+		boolean eliminado = false;
 		DiaFestivo dia = obtenerDiaFestivo(fecha);
 		if (dia != null) {
 			diasFestivos.remove(dia);
-			return true;
+			eliminado = true;
 		}
-		return false;
+		return eliminado;
 	}
 
 	// Verificar si existe un día festivo por fecha

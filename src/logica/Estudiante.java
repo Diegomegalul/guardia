@@ -46,30 +46,26 @@ public class Estudiante extends Persona{
 	//Metodos
 	@Override
 	public boolean puedeHacerGuardia(Horario horario) {
-	    // Validaciones básicas
-	    if (!getActivo() || horario == null) return false;
-	    
-	    // Meses vacacionales
-	    int mes = horario.getDia().getMonthValue();
-	    if (mes == 7 || mes == 8) return false;
-	    
-	    // Variables para validación
-	    LocalTime inicio = horario.getHoraInicio();
-	    LocalTime fin = horario.getHoraFin();
-	    DayOfWeek dia = horario.getDia().getDayOfWeek();
-	    
-	    // Validación por sexo
-	    switch (getSexo()) {
-	        case MASCULINO:
-	            return esHorarioNocturnoValido(inicio, fin);
-	            
-	        case FEMENINO:
-	            return esFinDeSemana(dia) && 
-	                   esHorarioDiurnoValido(inicio, fin);
-	            
-	        default:
-	            return false;
+	    boolean puede = false;
+	    if (getActivo() && horario != null) {
+	        int mes = horario.getDia().getMonthValue();
+	        if (mes != 7 && mes != 8) {
+	            LocalTime inicio = horario.getHoraInicio();
+	            LocalTime fin = horario.getHoraFin();
+	            DayOfWeek dia = horario.getDia().getDayOfWeek();
+	            switch (getSexo()) {
+	                case MASCULINO:
+	                    puede = esHorarioNocturnoValido(inicio, fin);
+	                    break;
+	                case FEMENINO:
+	                    puede = esFinDeSemana(dia) && esHorarioDiurnoValido(inicio, fin);
+	                    break;
+	                default:
+	                    puede = false;
+	            }
+	        }
 	    }
+	    return puede;
 	}
 
 	private boolean esHorarioNocturnoValido(LocalTime inicio, LocalTime fin) {
@@ -101,6 +97,4 @@ public class Estudiante extends Persona{
     public boolean tieneGuardiasPendientes() {
         return calcularGuardiasPendientes() > 0;
     }
-    
-
 }

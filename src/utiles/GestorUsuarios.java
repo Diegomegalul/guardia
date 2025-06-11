@@ -13,7 +13,11 @@ public class GestorUsuarios {
 	}
 
 	public static boolean validarUsuario(String usuario, String contrasena) {
-		return usuarios.containsKey(usuario) && usuarios.get(usuario).equals(contrasena);
+		boolean valido = false;
+		if (usuarios.containsKey(usuario) && usuarios.get(usuario).equals(contrasena)) {
+			valido = true;
+		}
+		return valido;
 	}
 
 	public static void agregarUsuario(String usuario, String contrasena) {

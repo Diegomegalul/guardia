@@ -186,6 +186,9 @@ public class AddTrabajadores extends JFrame {
 				int guardiasAsignadas = 0;
 				int guardiasFestivo = 0;
 				LocalDate fechaIncorporacion = null;
+				boolean datosValidos = true;
+				String mensajeError = "";
+
 				try {
 					guardiasAsignadas = Integer.parseInt(txtGuardiasAsignadas.getText().trim());
 					guardiasFestivo = Integer.parseInt(txtGuardiasFestivo.getText().trim());
@@ -193,28 +196,32 @@ public class AddTrabajadores extends JFrame {
 					if (utilDate == null) throw new Exception("Fecha no seleccionada");
 					fechaIncorporacion = new java.sql.Date(utilDate.getTime()).toLocalDate();
 				} catch (Exception ex) {
-					JOptionPane.showMessageDialog(AddTrabajadores.this, "Verifique los campos numéricos y la fecha.", "Error", JOptionPane.ERROR_MESSAGE);
-					return;
+					datosValidos = false;
+					mensajeError = "Verifique los campos numéricos y la fecha.";
 				}
-				if (ci.isEmpty() || nombre.isEmpty() || apellidos.isEmpty()) {
-					JOptionPane.showMessageDialog(AddTrabajadores.this, "Complete todos los campos obligatorios.", "Error", JOptionPane.ERROR_MESSAGE);
-					return;
+				if (datosValidos && (ci.isEmpty() || nombre.isEmpty() || apellidos.isEmpty())) {
+					datosValidos = false;
+					mensajeError = "Complete todos los campos obligatorios.";
 				}
-				Trabajador trabajador = new Trabajador(ci, nombre, apellidos, Sexo.valueOf(sexoStr), activo, fechaIncorporacion, guardiasAsignadas, guardiasFestivo, voluntario);
-				planificador.getFacultad().agregarPersona(trabajador);
-				JLabel label = new JLabel("Trabajador guardado correctamente");
-				label.setFont(new Font("Arial", Font.BOLD, 16));
-				label.setForeground(negro);
-				JPanel panel = new JPanel();
-				panel.setBackground(amarillo);
-				panel.add(label);
-				JOptionPane.showMessageDialog(
-					AddTrabajadores.this,
-					panel,
-					"Guardado",
-					JOptionPane.INFORMATION_MESSAGE
-				);
-				dispose();
+				if (datosValidos) {
+					Trabajador trabajador = new Trabajador(ci, nombre, apellidos, Sexo.valueOf(sexoStr), activo, fechaIncorporacion, guardiasAsignadas, guardiasFestivo, voluntario);
+					planificador.getFacultad().agregarPersona(trabajador);
+					JLabel label = new JLabel("Trabajador guardado correctamente");
+					label.setFont(new Font("Arial", Font.BOLD, 16));
+					label.setForeground(negro);
+					JPanel panel = new JPanel();
+					panel.setBackground(amarillo);
+					panel.add(label);
+					JOptionPane.showMessageDialog(
+						AddTrabajadores.this,
+						panel,
+						"Guardado",
+						JOptionPane.INFORMATION_MESSAGE
+					);
+					dispose();
+				} else {
+					JOptionPane.showMessageDialog(AddTrabajadores.this, mensajeError, "Error", JOptionPane.ERROR_MESSAGE);
+				}
 			}
 		});
 		panelBoton.add(btnGuardar);

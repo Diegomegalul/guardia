@@ -49,4 +49,5 @@ public class Guardia {
 	}
 
 	//Metodos
+	// No hay dobles returns aquí
 }

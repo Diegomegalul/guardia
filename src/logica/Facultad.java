@@ -28,22 +28,26 @@ public class Facultad {
 	} 
 
 	public Persona buscarPersonaPorCI(String ci) {
+		Persona encontrada = null;
 		for (Persona p : personas) {
 			if (p.getCi().equals(ci)) {
-				return p;
+				encontrada = p;
+				break;
 			}
 		}
-		return null;
+		return encontrada;
 	}
 
 	public boolean actualizarPersona(String ci, Persona nuevaPersona) {
+		boolean actualizado = false;
 		for (int i = 0; i < personas.size(); i++) {
 			if (personas.get(i).getCi().equals(ci)) {
 				personas.set(i, nuevaPersona);
-				return true;
+				actualizado = true;
+				break;
 			}
 		}
-		return false;
+		return actualizado;
 	}
 
 	public String getNombre() {
