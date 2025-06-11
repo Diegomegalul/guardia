@@ -203,40 +203,36 @@ public class EditCalendario extends JFrame {
 
 	public void aplicarModoOscuro(boolean oscuro, Color fondo, Color texto, Color boton, Color amarilloSec) {
 		contentPane.setBackground(fondo);
-		for (Component c : contentPane.getComponents()) {
-			if (c instanceof JLabel) ((JLabel)c).setForeground(oscuro ? Color.WHITE : texto);
-			if (c instanceof JPanel) ((JPanel)c).setBackground(fondo);
-		}
-		JPanel panelForm = null;
-		for (Component c : contentPane.getComponents()) {
-			if (c instanceof JPanel && c != contentPane) panelForm = (JPanel)c;
-		}
-		if (panelForm != null) {
-			panelForm.setBackground(fondo);
-			for (Component c : panelForm.getComponents()) {
-				if (c instanceof JLabel) ((JLabel)c).setForeground(oscuro ? Color.WHITE : texto);
-				if (c instanceof JTextField) {
-					((JTextField)c).setBackground(oscuro ? new Color(50, 50, 60) : Color.WHITE);
-					((JTextField)c).setForeground(oscuro ? Color.WHITE : texto);
-				}
-				if (c instanceof com.toedter.calendar.JDateChooser) {
-					((com.toedter.calendar.JDateChooser)c).getComponent(1).setBackground(oscuro ? new Color(50, 50, 60) : Color.WHITE);
-					((com.toedter.calendar.JDateChooser)c).getComponent(1).setForeground(oscuro ? Color.WHITE : texto);
-				}
-			}
-		}
-		for (Component c : contentPane.getComponents()) {
-			if (c instanceof JPanel) {
-				for (Component b : ((JPanel)c).getComponents()) {
-					if (b instanceof JButton) {
-						b.setBackground(boton);
-						b.setForeground(amarilloSec);
-					}
-				}
-			}
-		}
+		setComponentColors(contentPane, oscuro, fondo, texto, boton, amarilloSec);
 		listaFestivos.setBackground(oscuro ? new Color(40, 40, 50) : Color.WHITE);
 		listaFestivos.setForeground(oscuro ? Color.WHITE : texto);
+	}
+
+	private void setComponentColors(Component comp, boolean oscuro, Color fondo, Color texto, Color boton, Color amarilloSec) {
+		if (comp instanceof JPanel) {
+			comp.setBackground(fondo);
+			for (Component child : ((JPanel) comp).getComponents()) {
+				setComponentColors(child, oscuro, fondo, texto, boton, amarilloSec);
+			}
+		} else if (comp instanceof JLabel) {
+			((JLabel) comp).setForeground(oscuro ? Color.WHITE : Color.BLACK);
+		} else if (comp instanceof JTextField) {
+			comp.setBackground(oscuro ? new Color(50, 50, 60) : Color.WHITE);
+			((JTextField) comp).setForeground(oscuro ? Color.WHITE : texto);
+		} else if (comp instanceof JComboBox) {
+			comp.setBackground(oscuro ? new Color(50, 50, 60) : Color.WHITE);
+			comp.setForeground(oscuro ? Color.WHITE : texto);
+		} else if (comp instanceof JCheckBox) {
+			comp.setBackground(fondo);
+			((JCheckBox) comp).setForeground(oscuro ? Color.WHITE : texto);
+		} else if (comp instanceof JButton) {
+			comp.setBackground(boton);
+			comp.setForeground(amarilloSec);
+		} else if (comp instanceof com.toedter.calendar.JDateChooser) {
+			Component editor = ((com.toedter.calendar.JDateChooser) comp).getComponent(1);
+			editor.setBackground(oscuro ? new Color(50, 50, 60) : Color.WHITE);
+			editor.setForeground(oscuro ? Color.WHITE : texto);
+		}
 	}
 
 	private void actualizarLista() {

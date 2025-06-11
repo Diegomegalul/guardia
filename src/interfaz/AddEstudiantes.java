@@ -249,43 +249,29 @@ public class AddEstudiantes extends JFrame {
 
 	public void aplicarModoOscuro(boolean oscuro, Color fondo, Color texto, Color boton, Color amarilloSec) {
 		contentPane.setBackground(fondo);
-		for (Component c : contentPane.getComponents()) {
-			if (c instanceof JLabel) ((JLabel)c).setForeground(oscuro ? Color.WHITE : texto);
-			if (c instanceof JPanel) ((JPanel)c).setBackground(fondo);
-		}
-		// Panel Formulario
-		JPanel panelForm = null;
-		for (Component c : contentPane.getComponents()) {
-			if (c instanceof JPanel && c != contentPane) panelForm = (JPanel)c;
-		}
-		if (panelForm != null) {
-			panelForm.setBackground(fondo);
-			for (Component c : panelForm.getComponents()) {
-				if (c instanceof JLabel) ((JLabel)c).setForeground(oscuro ? Color.WHITE : texto);
-				if (c instanceof JTextField) {
-					((JTextField)c).setBackground(oscuro ? new Color(50, 50, 60) : Color.WHITE);
-					((JTextField)c).setForeground(oscuro ? Color.WHITE : texto);
-				}
-				if (c instanceof JComboBox) {
-					((JComboBox<?>)c).setBackground(oscuro ? new Color(50, 50, 60) : Color.WHITE);
-					((JComboBox<?>)c).setForeground(oscuro ? Color.WHITE : texto);
-				}
-				if (c instanceof JCheckBox) {
-					((JCheckBox)c).setBackground(fondo);
-					((JCheckBox)c).setForeground(oscuro ? Color.WHITE : texto);
-				}
+		setComponentColors(contentPane, oscuro, fondo, texto, boton, amarilloSec);
+	}
+
+	private void setComponentColors(Component comp, boolean oscuro, Color fondo, Color texto, Color boton, Color amarilloSec) {
+		if (comp instanceof JPanel) {
+			comp.setBackground(fondo);
+			for (Component child : ((JPanel) comp).getComponents()) {
+				setComponentColors(child, oscuro, fondo, texto, boton, amarilloSec);
 			}
-		}
-		// Botón guardar
-		for (Component c : contentPane.getComponents()) {
-			if (c instanceof JPanel) {
-				for (Component b : ((JPanel)c).getComponents()) {
-					if (b instanceof JButton) {
-						b.setBackground(boton);
-						b.setForeground(amarilloSec);
-					}
-				}
-			}
+		} else if (comp instanceof JLabel) {
+			((JLabel) comp).setForeground(oscuro ? Color.WHITE : Color.BLACK);
+		} else if (comp instanceof JTextField) {
+			comp.setBackground(oscuro ? new Color(50, 50, 60) : Color.WHITE);
+			((JTextField) comp).setForeground(oscuro ? Color.WHITE : texto);
+		} else if (comp instanceof JComboBox) {
+			comp.setBackground(oscuro ? new Color(50, 50, 60) : Color.WHITE);
+			comp.setForeground(oscuro ? Color.WHITE : texto);
+		} else if (comp instanceof JCheckBox) {
+			comp.setBackground(fondo);
+			((JCheckBox) comp).setForeground(oscuro ? Color.WHITE : texto);
+		} else if (comp instanceof JButton) {
+			comp.setBackground(boton);
+			comp.setForeground(amarilloSec);
 		}
 	}
 }
