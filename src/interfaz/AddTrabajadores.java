@@ -15,6 +15,11 @@ import logica.Trabajador;
 import logica.PlanificadorGuardias;
 import utiles.Sexo;
 
+import com.jgoodies.forms.layout.FormLayout;
+import com.jgoodies.forms.layout.ColumnSpec;
+import com.jgoodies.forms.factories.FormFactory;
+import com.jgoodies.forms.layout.RowSpec;
+
 public class AddTrabajadores extends JFrame {
 
 	private static final long serialVersionUID = 1L;
@@ -27,6 +32,7 @@ public class AddTrabajadores extends JFrame {
 	private JDateChooser dateChooserFechaIncorporacion;
 
 	public AddTrabajadores(final PlanificadorGuardias planificador) {
+		setMinimumSize(new Dimension(500, 530));
 		this.planificador = planificador;
 		// Colores institucionales
 		final Color amarillo = new Color(255, 215, 0);
@@ -52,101 +58,106 @@ public class AddTrabajadores extends JFrame {
 
 		JPanel panelForm = new JPanel();
 		panelForm.setBackground(amarillo);
-		panelForm.setLayout(new GridBagLayout());
-		GridBagConstraints gbc = new GridBagConstraints();
-		gbc.insets = new Insets(10, 10, 10, 10);
-		gbc.anchor = GridBagConstraints.WEST;
-		gbc.fill = GridBagConstraints.HORIZONTAL; // <-- Añadido para expandir los campos de texto
-		gbc.weightx = 1.0; // <-- Añadido para que los campos ocupen el espacio disponible
+		panelForm.setLayout(new FormLayout(new ColumnSpec[] {
+				FormFactory.RELATED_GAP_COLSPEC,
+				ColumnSpec.decode("center:200px:grow"),
+				FormFactory.RELATED_GAP_COLSPEC,
+				ColumnSpec.decode("center:220px:grow"),},
+				new RowSpec[] {
+				FormFactory.RELATED_GAP_ROWSPEC,
+				RowSpec.decode("top:20dlu:grow"),
+				FormFactory.RELATED_GAP_ROWSPEC,
+				RowSpec.decode("20dlu:grow"),
+				FormFactory.RELATED_GAP_ROWSPEC,
+				RowSpec.decode("20dlu:grow"),
+				FormFactory.RELATED_GAP_ROWSPEC,
+				RowSpec.decode("fill:20dlu:grow"),
+				FormFactory.RELATED_GAP_ROWSPEC,
+				RowSpec.decode("20dlu:grow"),
+				FormFactory.RELATED_GAP_ROWSPEC,
+				RowSpec.decode("20dlu:grow"),
+				FormFactory.RELATED_GAP_ROWSPEC,
+				RowSpec.decode("20dlu:grow"),
+				FormFactory.RELATED_GAP_ROWSPEC,
+				RowSpec.decode("20dlu:grow"),
+				FormFactory.RELATED_GAP_ROWSPEC,
+				RowSpec.decode("20dlu:grow"),
+				FormFactory.RELATED_GAP_ROWSPEC,
+				RowSpec.decode("20dlu:grow"),
+				}));
 
 		// CI
-		gbc.gridx = 0; gbc.gridy = 0;
-		panelForm.add(new JLabel("CI:"), gbc);
-		gbc.gridx = 1;
 		txtCi = new JTextField(15);
 		txtCi.setFont(new Font("Arial", Font.PLAIN, 15));
 		txtCi.setBackground(blanco);
 		txtCi.setForeground(negro);
-		panelForm.add(txtCi, gbc);
+		panelForm.add(new JLabel("CI:"), "2, 2, center, center");
+		panelForm.add(txtCi, "4, 2, center, center");
 
 		// Nombre
-		gbc.gridx = 0; gbc.gridy++;
-		panelForm.add(new JLabel("Nombre:"), gbc);
-		gbc.gridx = 1;
 		txtNombre = new JTextField(15);
 		txtNombre.setFont(new Font("Arial", Font.PLAIN, 15));
 		txtNombre.setBackground(blanco);
 		txtNombre.setForeground(negro);
-		panelForm.add(txtNombre, gbc);
+		panelForm.add(new JLabel("Nombre:"), "2, 4, center, center");
+		panelForm.add(txtNombre, "4, 4, center, center");
 
 		// Apellidos
-		gbc.gridx = 0; gbc.gridy++;
-		panelForm.add(new JLabel("Apellidos:"), gbc);
-		gbc.gridx = 1;
 		txtApellidos = new JTextField(15);
 		txtApellidos.setFont(new Font("Arial", Font.PLAIN, 15));
 		txtApellidos.setBackground(blanco);
 		txtApellidos.setForeground(negro);
-		panelForm.add(txtApellidos, gbc);
+		panelForm.add(new JLabel("Apellidos:"), "2, 6, center, center");
+		panelForm.add(txtApellidos, "4, 6, center, center");
 
 		// Sexo
-		gbc.gridx = 0; gbc.gridy++;
-		panelForm.add(new JLabel("Sexo:"), gbc);
-		gbc.gridx = 1;
-		comboSexo = new JComboBox<String>(new String[]{"MASCULINO", "FEMENINO"});
+		comboSexo = new JComboBox<String>();
+		comboSexo.addItem("MASCULINO");
+		comboSexo.addItem("FEMENINO");
 		comboSexo.setFont(new Font("Arial", Font.PLAIN, 15));
 		comboSexo.setBackground(blanco);
 		comboSexo.setForeground(negro);
-		panelForm.add(comboSexo, gbc);
+		panelForm.add(new JLabel("Sexo:"), "2, 8, center, center");
+		panelForm.add(comboSexo, "4, 8, center, center");
 
 		// Activo
-		gbc.gridx = 0; gbc.gridy++;
-		panelForm.add(new JLabel("Activo:"), gbc);
-		gbc.gridx = 1;
 		chkActivo = new JCheckBox();
 		chkActivo.setBackground(amarillo);
 		chkActivo.setSelected(true);
-		panelForm.add(chkActivo, gbc);
+		panelForm.add(new JLabel("Activo:"), "2, 10, center, center");
+		panelForm.add(chkActivo, "4, 10, center, center");
 
 		// Fecha de Incorporación
-		gbc.gridx = 0; gbc.gridy++;
-		panelForm.add(new JLabel("Fecha Incorporación:"), gbc);
-		gbc.gridx = 1;
 		dateChooserFechaIncorporacion = new JDateChooser();
 		dateChooserFechaIncorporacion.setDateFormatString("yyyy-MM-dd");
 		dateChooserFechaIncorporacion.setFont(new Font("Arial", Font.PLAIN, 15));
 		dateChooserFechaIncorporacion.setBackground(blanco);
 		dateChooserFechaIncorporacion.setForeground(negro);
-		panelForm.add(dateChooserFechaIncorporacion, gbc);
+		panelForm.add(new JLabel("Fecha Incorporación:"), "2, 12, center, center");
+		panelForm.add(dateChooserFechaIncorporacion, "4, 12, center, center");
 
 		// Guardias Asignadas
-		gbc.gridx = 0; gbc.gridy++;
-		panelForm.add(new JLabel("Guardias Asignadas:"), gbc);
-		gbc.gridx = 1;
 		txtGuardiasAsignadas = new JTextField("0", 15);
 		txtGuardiasAsignadas.setFont(new Font("Arial", Font.PLAIN, 15));
 		txtGuardiasAsignadas.setBackground(blanco);
 		txtGuardiasAsignadas.setForeground(negro);
-		panelForm.add(txtGuardiasAsignadas, gbc);
+		panelForm.add(new JLabel("Guardias Asignadas:"), "2, 14, center, center");
+		panelForm.add(txtGuardiasAsignadas, "4, 14, center, center");
 
 		// Guardias Festivo
-		gbc.gridx = 0; gbc.gridy++;
-		panelForm.add(new JLabel("Guardias Festivo:"), gbc);
-		gbc.gridx = 1;
 		txtGuardiasFestivo = new JTextField("0", 15);
 		txtGuardiasFestivo.setFont(new Font("Arial", Font.PLAIN, 15));
 		txtGuardiasFestivo.setBackground(blanco);
 		txtGuardiasFestivo.setForeground(negro);
-		panelForm.add(txtGuardiasFestivo, gbc);
+		panelForm.add(new JLabel("Guardias Festivo:"), "2, 16, center, center");
+		panelForm.add(txtGuardiasFestivo, "4, 16, center, center");
 
 		// Voluntario
-		gbc.gridx = 0; gbc.gridy++;
-		panelForm.add(new JLabel("Voluntario:"), gbc);
-		gbc.gridx = 1;
 		chkVoluntario = new JCheckBox();
 		chkVoluntario.setBackground(amarillo);
 		chkVoluntario.setSelected(false);
-		panelForm.add(chkVoluntario, gbc);
+		panelForm.add(new JLabel("Voluntario:"), "2, 18, center, center");
+		panelForm.add(chkVoluntario, "4, 18, center, center");
 
 		contentPane.add(panelForm, BorderLayout.CENTER);
 
@@ -213,11 +224,11 @@ public class AddTrabajadores extends JFrame {
 					panel.setBackground(amarillo);
 					panel.add(label);
 					JOptionPane.showMessageDialog(
-						AddTrabajadores.this,
-						panel,
-						"Guardado",
-						JOptionPane.INFORMATION_MESSAGE
-					);
+							AddTrabajadores.this,
+							panel,
+							"Guardado",
+							JOptionPane.INFORMATION_MESSAGE
+							);
 					dispose();
 				} else {
 					JOptionPane.showMessageDialog(AddTrabajadores.this, mensajeError, "Error", JOptionPane.ERROR_MESSAGE);
