@@ -52,7 +52,7 @@ public class AddTrabajadores extends JFrame {
 
 		JLabel lblTitulo = new JLabel("Nuevo Trabajador");
 		lblTitulo.setFont(new Font("Arial", Font.BOLD, 24));
-		lblTitulo.setForeground(negro);
+		// No establecer setForeground aquí, dejar que aplicarModoOscuro lo maneje
 		lblTitulo.setHorizontalAlignment(SwingConstants.CENTER);
 		contentPane.add(lblTitulo, BorderLayout.NORTH);
 
@@ -84,6 +84,36 @@ public class AddTrabajadores extends JFrame {
 				RowSpec.decode("20dlu:grow"),
 				FormFactory.RELATED_GAP_ROWSPEC,
 				RowSpec.decode("20dlu:grow"),
+				FormFactory.RELATED_GAP_ROWSPEC,
+				RowSpec.decode("20dlu:grow"),
+				FormFactory.RELATED_GAP_ROWSPEC,
+				RowSpec.decode("20dlu:grow"),
+				FormFactory.RELATED_GAP_ROWSPEC,
+				RowSpec.decode("20dlu:grow"),
+				FormFactory.RELATED_GAP_ROWSPEC,
+				RowSpec.decode("20dlu:grow"),
+				FormFactory.RELATED_GAP_ROWSPEC,
+				RowSpec.decode("20dlu:grow"),
+				FormFactory.RELATED_GAP_ROWSPEC,
+				RowSpec.decode("20dlu:grow"),
+				FormFactory.RELATED_GAP_ROWSPEC,
+				RowSpec.decode("20dlu:grow"),
+				FormFactory.RELATED_GAP_ROWSPEC,
+				RowSpec.decode("20dlu:grow"),
+				FormFactory.RELATED_GAP_ROWSPEC,
+				RowSpec.decode("20dlu:grow"),
+				FormFactory.RELATED_GAP_ROWSPEC,
+				RowSpec.decode("20dlu:grow"),
+				FormFactory.RELATED_GAP_ROWSPEC,
+				RowSpec.decode("20dlu:grow"),
+				FormFactory.RELATED_GAP_ROWSPEC,
+				RowSpec.decode("20dlu:grow"),
+				FormFactory.RELATED_GAP_ROWSPEC,
+				RowSpec.decode("20dlu:grow"),
+				FormFactory.RELATED_GAP_ROWSPEC,
+				RowSpec.decode("20dlu:grow"),
+				FormFactory.RELATED_GAP_ROWSPEC,
+				RowSpec.decode("20dlu:grow"),
 		}));
 
 		// CI
@@ -91,7 +121,8 @@ public class AddTrabajadores extends JFrame {
 		txtCi.setFont(new Font("Arial", Font.PLAIN, 15));
 		txtCi.setBackground(blanco);
 		txtCi.setForeground(negro);
-		panelForm.add(new JLabel("CI:"), "2, 2, center, center");
+		JLabel Ci = new JLabel("CI:");
+		panelForm.add(Ci, "2, 2, center, center");
 		panelForm.add(txtCi, "4, 2, center, center");
 
 		// Nombre
@@ -99,7 +130,8 @@ public class AddTrabajadores extends JFrame {
 		txtNombre.setFont(new Font("Arial", Font.PLAIN, 15));
 		txtNombre.setBackground(blanco);
 		txtNombre.setForeground(negro);
-		panelForm.add(new JLabel("Nombre:"), "2, 4, center, center");
+		JLabel Nombre = new JLabel("Nombre:");
+		panelForm.add(Nombre, "2, 4, center, center");
 		panelForm.add(txtNombre, "4, 4, center, center");
 
 		// Apellidos
@@ -107,7 +139,8 @@ public class AddTrabajadores extends JFrame {
 		txtApellidos.setFont(new Font("Arial", Font.PLAIN, 15));
 		txtApellidos.setBackground(blanco);
 		txtApellidos.setForeground(negro);
-		panelForm.add(new JLabel("Apellidos:"), "2, 6, center, center");
+		JLabel Apellidos = new JLabel("Apellidos:");
+		panelForm.add(Apellidos, "2, 6, center, center");
 		panelForm.add(txtApellidos, "4, 6, center, center");
 
 		// Sexo
@@ -117,14 +150,16 @@ public class AddTrabajadores extends JFrame {
 		comboSexo.setFont(new Font("Arial", Font.PLAIN, 15));
 		comboSexo.setBackground(blanco);
 		comboSexo.setForeground(negro);
-		panelForm.add(new JLabel("Sexo:"), "2, 8, center, center");
+		JLabel LabelSexo = new JLabel("Sexo:");
+		panelForm.add(LabelSexo, "2, 8, center, center");
 		panelForm.add(comboSexo, "4, 8, center, center");
 
 		// Activo
 		chkActivo = new JCheckBox();
 		chkActivo.setBackground(amarillo);
 		chkActivo.setSelected(true);
-		panelForm.add(new JLabel("Activo:"), "2, 10, center, center");
+		JLabel Activo = new JLabel("Activo:");
+		panelForm.add(Activo, "2, 10, center, center");
 		panelForm.add(chkActivo, "4, 10, center, center");
 
 		// Fecha de Incorporación
@@ -133,7 +168,8 @@ public class AddTrabajadores extends JFrame {
 		dateChooserFechaIncorporacion.setFont(new Font("Arial", Font.PLAIN, 15));
 		dateChooserFechaIncorporacion.setBackground(blanco);
 		dateChooserFechaIncorporacion.setForeground(negro);
-		panelForm.add(new JLabel("Fecha Incorporación:"), "2, 12, center, center");
+		JLabel Fecha = new JLabel("Fecha Incorporación:");
+		panelForm.add(Fecha, "2, 12, center, center");
 		panelForm.add(dateChooserFechaIncorporacion, "4, 12, center, center");
 
 		// Guardias Asignadas
@@ -141,7 +177,8 @@ public class AddTrabajadores extends JFrame {
 		txtGuardiasAsignadas.setFont(new Font("Arial", Font.PLAIN, 15));
 		txtGuardiasAsignadas.setBackground(blanco);
 		txtGuardiasAsignadas.setForeground(negro);
-		panelForm.add(new JLabel("Guardias Asignadas:"), "2, 14, center, center");
+		JLabel GAsignadas = new JLabel("Guardias Asignadas:");
+		panelForm.add(GAsignadas, "2, 14, center, center");
 		panelForm.add(txtGuardiasAsignadas, "4, 14, center, center");
 
 		// Guardias Festivo
@@ -149,14 +186,16 @@ public class AddTrabajadores extends JFrame {
 		txtGuardiasFestivo.setFont(new Font("Arial", Font.PLAIN, 15));
 		txtGuardiasFestivo.setBackground(blanco);
 		txtGuardiasFestivo.setForeground(negro);
-		panelForm.add(new JLabel("Guardias Festivo:"), "2, 16, center, center");
+		JLabel GFestivo = new JLabel("Guardias Festivo:");
+		panelForm.add(GFestivo, "2, 16, center, center");
 		panelForm.add(txtGuardiasFestivo, "4, 16, center, center");
 
 		// Voluntario
 		chkVoluntario = new JCheckBox();
 		chkVoluntario.setBackground(amarillo);
 		chkVoluntario.setSelected(false);
-		panelForm.add(new JLabel("Voluntario:"), "2, 18, center, center");
+		JLabel Voluntario = new JLabel("Voluntario:");
+		panelForm.add(Voluntario, "2, 18, center, center");
 		panelForm.add(chkVoluntario, "4, 18, center, center");
 
 		contentPane.add(panelForm, BorderLayout.CENTER);
@@ -237,5 +276,39 @@ public class AddTrabajadores extends JFrame {
 		});
 		panelBoton.add(btnGuardar);
 		contentPane.add(panelBoton, BorderLayout.SOUTH);
+	}
+
+	public void aplicarModoOscuro(boolean oscuro, Color fondo, Color texto, Color boton, Color amarilloSec) {
+		contentPane.setBackground(fondo);
+
+		// Recorrer todos los componentes recursivamente
+		setComponentColors(contentPane, oscuro, fondo, texto, boton, amarilloSec);
+	}
+
+	private void setComponentColors(Component comp, boolean oscuro, Color fondo, Color texto, Color boton, Color amarilloSec) {
+		if (comp instanceof JPanel) {
+			comp.setBackground(fondo);
+			for (Component child : ((JPanel) comp).getComponents()) {
+				setComponentColors(child, oscuro, fondo, texto, boton, amarilloSec);
+			}
+		} else if (comp instanceof JLabel) {
+			((JLabel) comp).setForeground(oscuro ? Color.WHITE : Color.BLACK);
+		} else if (comp instanceof JTextField) {
+			comp.setBackground(oscuro ? new Color(50, 50, 60) : Color.WHITE);
+			((JTextField) comp).setForeground(oscuro ? Color.WHITE : texto);
+		} else if (comp instanceof JComboBox) {
+			comp.setBackground(oscuro ? new Color(50, 50, 60) : Color.WHITE);
+			comp.setForeground(oscuro ? Color.WHITE : texto);
+		} else if (comp instanceof JCheckBox) {
+			comp.setBackground(fondo);
+			((JCheckBox) comp).setForeground(oscuro ? Color.WHITE : texto);
+		} else if (comp instanceof JButton) {
+			comp.setBackground(boton);
+			comp.setForeground(amarilloSec);
+		} else if (comp instanceof com.toedter.calendar.JDateChooser) {
+			Component editor = ((com.toedter.calendar.JDateChooser) comp).getComponent(1);
+			editor.setBackground(oscuro ? new Color(50, 50, 60) : Color.WHITE);
+			editor.setForeground(oscuro ? Color.WHITE : texto);
+		}
 	}
 }

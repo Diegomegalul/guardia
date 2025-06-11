@@ -201,6 +201,44 @@ public class EditCalendario extends JFrame {
 		actualizarLista();
 	}
 
+	public void aplicarModoOscuro(boolean oscuro, Color fondo, Color texto, Color boton, Color amarilloSec) {
+		contentPane.setBackground(fondo);
+		for (Component c : contentPane.getComponents()) {
+			if (c instanceof JLabel) ((JLabel)c).setForeground(oscuro ? Color.WHITE : texto);
+			if (c instanceof JPanel) ((JPanel)c).setBackground(fondo);
+		}
+		JPanel panelForm = null;
+		for (Component c : contentPane.getComponents()) {
+			if (c instanceof JPanel && c != contentPane) panelForm = (JPanel)c;
+		}
+		if (panelForm != null) {
+			panelForm.setBackground(fondo);
+			for (Component c : panelForm.getComponents()) {
+				if (c instanceof JLabel) ((JLabel)c).setForeground(oscuro ? Color.WHITE : texto);
+				if (c instanceof JTextField) {
+					((JTextField)c).setBackground(oscuro ? new Color(50, 50, 60) : Color.WHITE);
+					((JTextField)c).setForeground(oscuro ? Color.WHITE : texto);
+				}
+				if (c instanceof com.toedter.calendar.JDateChooser) {
+					((com.toedter.calendar.JDateChooser)c).getComponent(1).setBackground(oscuro ? new Color(50, 50, 60) : Color.WHITE);
+					((com.toedter.calendar.JDateChooser)c).getComponent(1).setForeground(oscuro ? Color.WHITE : texto);
+				}
+			}
+		}
+		for (Component c : contentPane.getComponents()) {
+			if (c instanceof JPanel) {
+				for (Component b : ((JPanel)c).getComponents()) {
+					if (b instanceof JButton) {
+						b.setBackground(boton);
+						b.setForeground(amarilloSec);
+					}
+				}
+			}
+		}
+		listaFestivos.setBackground(oscuro ? new Color(40, 40, 50) : Color.WHITE);
+		listaFestivos.setForeground(oscuro ? Color.WHITE : texto);
+	}
+
 	private void actualizarLista() {
 		modeloLista.clear();
 		for (DiaFestivo d : planificador.getCalendario().getDiasFestivos()) {

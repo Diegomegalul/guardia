@@ -4,8 +4,10 @@ import java.awt.BasicStroke;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.Frame;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
@@ -33,14 +35,16 @@ public class Inicio extends JFrame {
 	private JPanel contentPane;
 	private PlanificadorGuardias planificador;
 
+	private boolean modoOscuro = false;
+	private Color amarillo = new Color(255, 215, 0);
+	private Color negro = Color.BLACK;
+	private Color blanco = Color.WHITE;
+	private Color darkBg = new Color(30, 32, 40); // color principal modo oscuro
+	private Color darkFg = new Color(220, 220, 220); // texto modo oscuro
+
 	public Inicio() {
 		// Instancia singleton del planificador
 		this.planificador = PlanificadorGuardias.getInstancia();
-
-		// Colores institucionales
-		final Color amarillo = new Color(255, 215, 0);
-		final Color negro = Color.BLACK;
-		final Color blanco = Color.WHITE;
 
 		setTitle("Inicio - Sistema de Guardias");
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE); // Cambiado para control personalizado
@@ -81,6 +85,7 @@ public class Inicio extends JFrame {
 		itemEstudiante.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				AddEstudiantes frame = new AddEstudiantes(planificador);
+				if (modoOscuro) frame.aplicarModoOscuro(modoOscuro, darkBg, darkFg, new Color(60, 63, 80), amarillo);
 				frame.setVisible(true);
 			}
 		});
@@ -93,6 +98,7 @@ public class Inicio extends JFrame {
 		itemTrabajador.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				AddTrabajadores frame = new AddTrabajadores(planificador);
+				if (modoOscuro) frame.aplicarModoOscuro(modoOscuro, darkBg, darkFg, new Color(60, 63, 80), amarillo);
 				frame.setVisible(true);
 			}
 		});
@@ -124,6 +130,7 @@ public class Inicio extends JFrame {
 		menuCalendario.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				EditCalendario frame = new EditCalendario(planificador);
+				if (modoOscuro) frame.aplicarModoOscuro(modoOscuro, darkBg, darkFg, new Color(60, 63, 80), amarillo);
 				frame.setVisible(true);
 			}
 		});
@@ -171,11 +178,14 @@ public class Inicio extends JFrame {
 		lblBienvenida.setBorder(new EmptyBorder(80, 10, 10, 10));
 		panelCentral.add(lblBienvenida, BorderLayout.CENTER);
 
-		// Panel inferior para el botón salir
-		JPanel panelInferior = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+		// Panel inferior para el botón salir y el botón de modo oscuro
+		JPanel panelInferior = new JPanel(new BorderLayout());
 		panelInferior.setBackground(amarillo);
 
-		// Botón salir con icono y esquinas redondeadas
+		// Botón salir (derecha)
+		JPanel panelSalir = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+		panelSalir.setBackground(amarillo);
+
 		JButton btnSalir = new JButton("Salir") {
 			private static final long serialVersionUID = 1L;
 			protected void paintComponent(Graphics g) {
@@ -197,7 +207,6 @@ public class Inicio extends JFrame {
 		btnSalir.setContentAreaFilled(false);
 		btnSalir.setOpaque(true);
 
-		// Icono redondeado (círculo rojo con X blanca)
 		Icon iconoSalir = new Icon() {
 			public int getIconWidth() { return 20; }
 			public int getIconHeight() { return 20; }
@@ -220,10 +229,155 @@ public class Inicio extends JFrame {
 				solicitarConfirmacionSalida();
 			}
 		});
-		panelInferior.add(btnSalir);
+		panelSalir.add(btnSalir);
+
+		// Botón modo oscuro (izquierda)
+		JPanel panelLuna = new JPanel(new FlowLayout(FlowLayout.LEFT));
+		panelLuna.setBackground(amarillo);
+
+		final JButton btnLuna = new JButton() {
+			private static final long serialVersionUID = 1L;
+			protected void paintComponent(Graphics g) {
+				if (modoOscuro) {
+					setBackground(new Color(40, 40, 50)); // Fondo oscuro para el botón en modo oscuro
+				} else {
+					setBackground(amarillo);
+				}
+				super.paintComponent(g);
+			}
+		};
+		btnLuna.setPreferredSize(new Dimension(44, 44));
+		btnLuna.setBackground(amarillo);
+		btnLuna.setBorderPainted(false);
+		btnLuna.setFocusPainted(false);
+		btnLuna.setContentAreaFilled(true);
+		btnLuna.setOpaque(true);
+		btnLuna.setToolTipText("Cambiar modo oscuro");
+
+		final Icon iconoLuna = new Icon() {
+			public int getIconWidth() { return 32; }
+			public int getIconHeight() { return 32; }
+			public void paintIcon(Component c, Graphics g, int x, int y) {
+				Graphics2D g2 = (Graphics2D) g.create();
+				g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+				g2.setColor(new Color(240, 230, 140)); // luna amarilla suave
+				g2.fillArc(x+4, y+4, 24, 24, 45, 270);
+				g2.setColor(new Color(30, 32, 40));
+				g2.fillArc(x+12, y+4, 24, 24, 45, 270);
+				g2.dispose();
+			}
+		};
+		final Icon iconoSol = new Icon() {
+			public int getIconWidth() { return 32; }
+			public int getIconHeight() { return 32; }
+			public void paintIcon(Component c, Graphics g, int x, int y) {
+				Graphics2D g2 = (Graphics2D) g.create();
+				g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+				// Fondo del botón ya es oscuro, así que el sol resalta
+				g2.setColor(new Color(255, 215, 0));
+				g2.fillOval(x+6, y+6, 20, 20);
+				g2.setStroke(new BasicStroke(3));
+				for (int i = 0; i < 8; i++) {
+					double angle = Math.PI/4 * i;
+					int x1 = (int)(x+16+Math.cos(angle)*14);
+					int y1 = (int)(y+16+Math.sin(angle)*14);
+					int x2 = (int)(x+16+Math.cos(angle)*24);
+					int y2 = (int)(y+16+Math.sin(angle)*24);
+					g2.drawLine(x1, y1, x2, y2);
+				}
+				g2.dispose();
+			}
+		};
+		btnLuna.setIcon(iconoLuna);
+
+		btnLuna.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				modoOscuro = !modoOscuro;
+				btnLuna.setIcon(modoOscuro ? iconoSol : iconoLuna);
+				btnLuna.setBackground(modoOscuro ? new Color(40, 40, 50) : amarillo);
+				aplicarModoOscuro();
+			}
+		});
+		panelLuna.add(btnLuna);
+
+		panelInferior.add(panelLuna, BorderLayout.WEST);
+		panelInferior.add(panelSalir, BorderLayout.EAST);
 
 		contentPane.add(panelCentral, BorderLayout.CENTER);
 		contentPane.add(panelInferior, BorderLayout.SOUTH);
+
+		// Guardar referencias para cambio de modo
+		this.lblBienvenida = lblBienvenida;
+		this.panelCentral = panelCentral;
+		this.panelInferior = panelInferior;
+		this.menuBar = menuBar;
+		this.menuAdd = menuAdd;
+		this.itemEstudiante = itemEstudiante;
+		this.itemTrabajador = itemTrabajador;
+		this.menuPlanificar = menuPlanificar;
+		this.menuCalendario = menuCalendario;
+		this.menuReportes = menuReportes;
+		this.menuValores = menuValores;
+		this.btnSalir = btnSalir;
+		this.btnLuna = btnLuna;
+		this.iconoLuna = iconoLuna;
+		this.iconoSol = iconoSol;
+	}
+
+	// Referencias para modo oscuro
+	private JLabel lblBienvenida;
+	private JPanel panelCentral, panelInferior;
+	private JMenuBar menuBar;
+	private JMenu menuAdd;
+	private JMenuItem itemEstudiante, itemTrabajador, menuPlanificar, menuCalendario, menuReportes, menuValores;
+	private JButton btnSalir, btnLuna;
+	private Icon iconoLuna, iconoSol;
+
+	private void aplicarModoOscuro() {
+		Color fondo = modoOscuro ? darkBg : amarillo;
+		Color texto = modoOscuro ? darkFg : negro;
+		Color boton = modoOscuro ? new Color(60, 63, 80) : negro;
+		Color amarilloSec = amarillo;
+
+		contentPane.setBackground(fondo);
+		panelCentral.setBackground(fondo);
+		panelInferior.setBackground(fondo);
+		lblBienvenida.setForeground(texto);
+
+		menuBar.setBackground(fondo);
+		menuAdd.setBackground(fondo);
+		menuAdd.setForeground(texto);
+		itemEstudiante.setBackground(modoOscuro ? boton : blanco);
+		itemEstudiante.setForeground(texto);
+		itemTrabajador.setBackground(modoOscuro ? boton : blanco);
+		itemTrabajador.setForeground(texto);
+		menuPlanificar.setBackground(fondo);
+		menuPlanificar.setForeground(texto);
+		menuCalendario.setBackground(fondo);
+		menuCalendario.setForeground(texto);
+		menuReportes.setBackground(fondo);
+		menuReportes.setForeground(texto);
+		menuValores.setBackground(fondo);
+		menuValores.setForeground(texto);
+
+		btnSalir.setBackground(boton);
+		btnSalir.setForeground(amarilloSec);
+
+		btnLuna.setBackground(fondo);
+		btnLuna.setIcon(modoOscuro ? iconoSol : iconoLuna);
+
+		// Cambiar modo en todos los frames abiertos
+		for (Frame frame : JFrame.getFrames()) {
+			if (frame instanceof AddEstudiantes) {
+				((AddEstudiantes) frame).aplicarModoOscuro(modoOscuro, fondo, texto, boton, amarilloSec);
+			}
+			if (frame instanceof AddTrabajadores) {
+				((AddTrabajadores) frame).aplicarModoOscuro(modoOscuro, fondo, texto, boton, amarilloSec);
+			}
+			if (frame instanceof EditCalendario) {
+				((EditCalendario) frame).aplicarModoOscuro(modoOscuro, fondo, texto, boton, amarilloSec);
+			}
+		}
 	}
 
 	private void solicitarConfirmacionSalida() {
