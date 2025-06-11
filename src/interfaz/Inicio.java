@@ -28,6 +28,7 @@ import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
 import logica.PlanificadorGuardias;
+import javax.swing.border.LineBorder;
 
 public class Inicio extends JFrame {
 
@@ -38,7 +39,6 @@ public class Inicio extends JFrame {
 	private boolean modoOscuro = false;
 	private Color amarillo = new Color(255, 215, 0);
 	private Color negro = Color.BLACK;
-	private Color blanco = Color.WHITE;
 	private Color darkBg = new Color(30, 32, 40); // color principal modo oscuro
 	private Color darkFg = new Color(220, 220, 220); // texto modo oscuro
 
@@ -79,8 +79,8 @@ public class Inicio extends JFrame {
 
 		JMenuItem itemEstudiante = new JMenuItem("Añadir Estudiante");
 		itemEstudiante.setFont(new Font("Arial", Font.PLAIN, 15));
-		itemEstudiante.setBackground(blanco);
-		itemEstudiante.setForeground(negro);
+		itemEstudiante.setBackground(darkBg);
+		itemEstudiante.setForeground(amarillo);
 		itemEstudiante.setBorder(BorderFactory.createLineBorder(negro, 1));
 		itemEstudiante.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -92,8 +92,8 @@ public class Inicio extends JFrame {
 
 		JMenuItem itemTrabajador = new JMenuItem("Añadir Trabajador");
 		itemTrabajador.setFont(new Font("Arial", Font.PLAIN, 15));
-		itemTrabajador.setBackground(blanco);
-		itemTrabajador.setForeground(negro);
+		itemTrabajador.setBackground(darkBg);
+		itemTrabajador.setForeground(amarillo);
 		itemTrabajador.setBorder(BorderFactory.createLineBorder(negro, 1));
 		itemTrabajador.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -109,6 +109,7 @@ public class Inicio extends JFrame {
 
 		// "Planificar Guardias"
 		JMenuItem menuPlanificar = new JMenuItem("Planificar Guardias");
+		menuPlanificar.setOpaque(true);
 		menuPlanificar.setFont(new Font("Arial", Font.BOLD, 16));
 		menuPlanificar.setBackground(amarillo);
 		menuPlanificar.setForeground(negro);
@@ -119,10 +120,57 @@ public class Inicio extends JFrame {
 				JOptionPane.showMessageDialog(Inicio.this, "Funcionalidad próximamente disponible.");
 			}
 		});
+		
+		// NUEVO: Menú "Mostrar" con submenús
+		JMenu menuVer = new JMenu("Mostrar");
+		menuVer.setOpaque(true);
+		menuVer.setFont(new Font("Arial", Font.BOLD, 16));
+		menuVer.setForeground(negro);
+		menuVer.setBackground(amarillo);
+		menuVer.setBorder(new LineBorder(new Color(0, 0, 0)));
+
+		JMenuItem verEstudiantes = new JMenuItem("Estudiantes");
+		verEstudiantes.setFont(new Font("Arial", Font.PLAIN, 15));
+		verEstudiantes.setBackground(darkBg);
+		verEstudiantes.setForeground(amarillo);
+		verEstudiantes.setBorder(new LineBorder(new Color(0, 0, 0)));
+		verEstudiantes.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				JOptionPane.showMessageDialog(Inicio.this, "Listado de estudiantes (próximamente).");
+			}
+		});
+
+		JMenuItem verProfesores = new JMenuItem("Profesores");
+		verProfesores.setFont(new Font("Arial", Font.PLAIN, 15));
+		verProfesores.setBackground(darkBg);
+		verProfesores.setForeground(amarillo);
+		verProfesores.setBorder(BorderFactory.createLineBorder(negro, 1));
+		verProfesores.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				JOptionPane.showMessageDialog(Inicio.this, "Listado de profesores (próximamente).");
+			}
+		});
+
+		JMenuItem verGuardias = new JMenuItem("Guardias");
+		verGuardias.setFont(new Font("Arial", Font.PLAIN, 15));
+		verGuardias.setBackground(darkBg);
+		verGuardias.setForeground(amarillo);
+		verGuardias.setBorder(BorderFactory.createLineBorder(negro, 1));
+		verGuardias.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				JOptionPane.showMessageDialog(Inicio.this, "Listado de guardias (próximamente).");
+			}
+		});
+
+		menuVer.add(verEstudiantes);
+		menuVer.add(verProfesores);
+		menuVer.add(verGuardias);
+		menuBar.add(menuVer);
 		menuBar.add(menuPlanificar);
 
 		// "Editar Calendario"
 		JMenuItem menuCalendario = new JMenuItem("Editar Calendario");
+		menuCalendario.setOpaque(true);
 		menuCalendario.setFont(new Font("Arial", Font.BOLD, 16));
 		menuCalendario.setBackground(amarillo);
 		menuCalendario.setForeground(negro);
@@ -138,6 +186,7 @@ public class Inicio extends JFrame {
 
 		// "Reportes"
 		JMenuItem menuReportes = new JMenuItem("Reportes");
+		menuReportes.setOpaque(true);
 		menuReportes.setFont(new Font("Arial", Font.BOLD, 16));
 		menuReportes.setBackground(amarillo);
 		menuReportes.setForeground(negro);
@@ -152,6 +201,7 @@ public class Inicio extends JFrame {
 
 		// "Valores de Prueba"
 		JMenuItem menuValores = new JMenuItem("Valores de prueba");
+		menuValores.setOpaque(true);
 		menuValores.setFont(new Font("Arial", Font.BOLD, 16));
 		menuValores.setBackground(amarillo);
 		menuValores.setForeground(negro);
@@ -322,14 +372,21 @@ public class Inicio extends JFrame {
 		this.btnLuna = btnLuna;
 		this.iconoLuna = iconoLuna;
 		this.iconoSol = iconoSol;
+
+		// Referencias para menú "Mostrar"
+		this.menuVer = menuVer;
+		this.verEstudiantes = verEstudiantes;
+		this.verProfesores = verProfesores;
+		this.verGuardias = verGuardias;
 	}
 
 	// Referencias para modo oscuro
 	private JLabel lblBienvenida;
 	private JPanel panelCentral, panelInferior;
 	private JMenuBar menuBar;
-	private JMenu menuAdd;
+	private JMenu menuAdd, menuVer;
 	private JMenuItem itemEstudiante, itemTrabajador, menuPlanificar, menuCalendario, menuReportes, menuValores;
+	private JMenuItem verEstudiantes, verProfesores, verGuardias;
 	private JButton btnSalir, btnLuna;
 	private Icon iconoLuna, iconoSol;
 
@@ -344,13 +401,41 @@ public class Inicio extends JFrame {
 		panelInferior.setBackground(fondo);
 		lblBienvenida.setForeground(texto);
 
-		menuBar.setBackground(fondo);
-		menuAdd.setBackground(fondo);
-		menuAdd.setForeground(texto);
-		itemEstudiante.setBackground(modoOscuro ? boton : blanco);
-		itemEstudiante.setForeground(texto);
-		itemTrabajador.setBackground(modoOscuro ? boton : blanco);
-		itemTrabajador.setForeground(texto);
+		// Menú principal y "Mostrar" siempre amarillo/negro
+		menuBar.setBackground(amarillo);
+		menuAdd.setBackground(amarillo);
+		menuAdd.setForeground(negro);
+		menuVer.setBackground(amarillo);
+		menuVer.setForeground(negro);
+
+		if (modoOscuro) {
+			verEstudiantes.setBackground(amarillo);
+			verEstudiantes.setForeground(negro);
+			verProfesores.setBackground(amarillo);
+			verProfesores.setForeground(negro);
+			verGuardias.setBackground(amarillo);
+			verGuardias.setForeground(negro);
+			itemEstudiante.setBackground(amarillo);
+			itemEstudiante.setForeground(negro);
+			itemTrabajador.setBackground(amarillo);
+			itemTrabajador.setForeground(negro);
+		} else {
+			verEstudiantes.setBackground(darkBg);
+			verEstudiantes.setForeground(amarillo);
+			verProfesores.setBackground(darkBg);
+			verProfesores.setForeground(amarillo);
+			verGuardias.setBackground(darkBg);
+			verGuardias.setForeground(amarillo);
+			itemEstudiante.setBackground(darkBg);
+			itemEstudiante.setForeground(amarillo);
+			itemTrabajador.setBackground(darkBg);
+			itemTrabajador.setForeground(amarillo);
+		}
+
+		verEstudiantes.setBorder(BorderFactory.createLineBorder(negro, 1));
+		verProfesores.setBorder(BorderFactory.createLineBorder(negro, 1));
+		verGuardias.setBorder(BorderFactory.createLineBorder(negro, 1));
+
 		menuPlanificar.setBackground(fondo);
 		menuPlanificar.setForeground(texto);
 		menuCalendario.setBackground(fondo);

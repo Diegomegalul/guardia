@@ -36,7 +36,6 @@ public class EditCalendario extends JFrame {
 
 		final Color amarillo = new Color(255, 215, 0);
 		final Color negro = Color.BLACK;
-		final Color blanco = Color.WHITE;
 
 		contentPane = new JPanel();
 		contentPane.setBackground(amarillo);
