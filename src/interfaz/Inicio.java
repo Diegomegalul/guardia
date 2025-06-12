@@ -469,13 +469,21 @@ public class Inicio extends JFrame {
 		this.panelCentral = panelCentral;
 		this.panelInferior = panelInferior;
 		this.menuBar = menuBar;
-		this.menuAdd = menuAdd;
 		this.itemEstudiante = itemEstudiante;
 		this.itemTrabajador = itemTrabajador;
-		this.menuPlanificar = menuPlanificar;
-		this.menuCalendario = menuCalendario;
-		this.menuReportes = menuReportes;
-		this.menuValores = menuValores;
+		this.valoresEstudiantes = valoresEstudiantes;
+		this.valoresTrabajadores = valoresTrabajadores;
+		this.planificarAuto = planificarAuto;
+		this.planificarRecuperacion = planificarRecuperacion;
+		this.mostrarPersonas = mostrarPersonas;
+		this.mostrarTrabajadores = mostrarTrabajadores;
+		this.mostrarGuardiasPlanificadas = mostrarGuardiasPlanificadas;
+		this.mostrarGuardiasCumplidas = mostrarGuardiasCumplidas;
+		this.reporteRecuperacion = reporteRecuperacion;
+		this.reporteVoluntarios = reporteVoluntarios;
+		this.reporteEstInactivos = reporteEstInactivos;
+		this.reporteFestivas = reporteFestivas;
+		this.editarManual = editarManual;
 		this.btnSalir = btnSalir;
 		this.btnLuna = btnLuna;
 		this.iconoLuna = iconoLuna;
@@ -486,9 +494,11 @@ public class Inicio extends JFrame {
 	private JLabel lblBienvenida;
 	private JPanel panelCentral, panelInferior;
 	private JMenuBar menuBar;
-	private JMenu menuAdd, menuVer, menuValores;
-	private JMenuItem itemEstudiante, itemTrabajador, menuPlanificar, menuCalendario, menuReportes;
+	private JMenuItem itemEstudiante, itemTrabajador;
 	private JMenuItem valoresEstudiantes, valoresTrabajadores;
+	private JMenuItem planificarAuto,planificarRecuperacion,editarManual;
+	private JMenuItem mostrarPersonas,mostrarTrabajadores,mostrarGuardiasPlanificadas,mostrarGuardiasCumplidas;
+	private JMenuItem reporteRecuperacion,reporteVoluntarios,reporteEstInactivos,reporteFestivas;
 	private JButton btnSalir, btnLuna;
 	private Icon iconoLuna, iconoSol;
 
@@ -498,56 +508,86 @@ public class Inicio extends JFrame {
 		Color boton = modoOscuro ? new Color(60, 63, 80) : negro;
 		Color amarilloSec = amarillo;
 
-		contentPane.setBackground(fondo);
-		panelCentral.setBackground(fondo);
-		panelInferior.setBackground(fondo);
-		lblBienvenida.setForeground(texto);
-
-		// Menú principal y "Mostrar" siempre amarillo/negro
-		menuBar.setBackground(amarillo);
-		menuAdd.setBackground(amarillo);
-		menuAdd.setForeground(negro);
-		menuVer.setBackground(amarillo);
-		menuVer.setForeground(negro);
-		menuValores.setBackground(amarillo);
-		menuValores.setForeground(negro);
-
-		if (modoOscuro) {
-			valoresEstudiantes.setBackground(amarillo);
-			valoresEstudiantes.setForeground(negro);
-			valoresTrabajadores.setBackground(amarillo);
-			valoresTrabajadores.setForeground(negro);
-			itemEstudiante.setBackground(amarillo);
-			itemEstudiante.setForeground(negro);
-			itemTrabajador.setBackground(amarillo);
-			itemTrabajador.setForeground(negro);
-		} else {
-			valoresEstudiantes.setBackground(darkBg);
-			valoresEstudiantes.setForeground(amarillo);
-			valoresTrabajadores.setBackground(darkBg);
-			valoresTrabajadores.setForeground(amarillo);
-			itemEstudiante.setBackground(darkBg);
-			itemEstudiante.setForeground(amarillo);
-			itemTrabajador.setBackground(darkBg);
-			itemTrabajador.setForeground(amarillo);
+		// La barra del menú siempre amarilla (constante)
+		if (menuBar != null) {
+			menuBar.setBackground(amarillo);
+			menuBar.setOpaque(true);
 		}
-		valoresEstudiantes.setBorder(BorderFactory.createLineBorder(negro, 1));
-		valoresTrabajadores.setBorder(BorderFactory.createLineBorder(negro, 1));
 
-		menuPlanificar.setBackground(fondo);
-		menuPlanificar.setForeground(texto);
-		menuCalendario.setBackground(fondo);
-		menuCalendario.setForeground(texto);
-		menuReportes.setBackground(fondo);
-		menuReportes.setForeground(texto);
-		menuValores.setBackground(fondo);
-		menuValores.setForeground(texto);
+		// Evitar NullPointerException: solo aplicar si los componentes existen
+		if (contentPane != null) contentPane.setBackground(fondo);
+		if (panelCentral != null) panelCentral.setBackground(fondo);
+		if (panelInferior != null) panelInferior.setBackground(fondo);
+		if (lblBienvenida != null) lblBienvenida.setForeground(texto);
 
-		btnSalir.setBackground(boton);
-		btnSalir.setForeground(amarilloSec);
-
-		btnLuna.setBackground(fondo);
-		btnLuna.setIcon(modoOscuro ? iconoSol : iconoLuna);
+		if (itemEstudiante != null) {
+			itemEstudiante.setBackground(modoOscuro ? amarillo : darkBg);
+			itemEstudiante.setForeground(modoOscuro ? negro : amarillo);
+		}
+		if (reporteFestivas != null) {
+			reporteFestivas.setBackground(modoOscuro ? amarillo : darkBg);
+			reporteFestivas.setForeground(modoOscuro ? negro : amarillo);
+		}
+		if (reporteEstInactivos != null) {
+			reporteEstInactivos.setBackground(modoOscuro ? amarillo : darkBg);
+			reporteEstInactivos.setForeground(modoOscuro ? negro : amarillo);
+		}
+		if (reporteRecuperacion != null) {
+			reporteRecuperacion.setBackground(modoOscuro ? amarillo : darkBg);
+			reporteRecuperacion.setForeground(modoOscuro ? negro : amarillo);
+		}
+		if (reporteVoluntarios != null) {
+			reporteVoluntarios.setBackground(modoOscuro ? amarillo : darkBg);
+			reporteVoluntarios.setForeground(modoOscuro ? negro : amarillo);
+		}
+		if (itemTrabajador != null) {
+			itemTrabajador.setBackground(modoOscuro ? amarillo : darkBg);
+			itemTrabajador.setForeground(modoOscuro ? negro : amarillo);
+		}
+		if (mostrarGuardiasCumplidas != null) {
+			mostrarGuardiasCumplidas.setBackground(modoOscuro ? amarillo : darkBg);
+			mostrarGuardiasCumplidas.setForeground(modoOscuro ? negro : amarillo);
+		}
+		if (mostrarGuardiasPlanificadas != null) {
+			mostrarGuardiasPlanificadas.setBackground(modoOscuro ? amarillo : darkBg);
+			mostrarGuardiasPlanificadas.setForeground(modoOscuro ? negro : amarillo);
+		}
+		if (mostrarTrabajadores != null) {
+			mostrarTrabajadores.setBackground(modoOscuro ? amarillo : darkBg);
+			mostrarTrabajadores.setForeground(modoOscuro ? negro : amarillo);
+		}
+		if (mostrarPersonas != null) {
+			mostrarPersonas.setBackground(modoOscuro ? amarillo : darkBg);
+			mostrarPersonas.setForeground(modoOscuro ? negro : amarillo);
+		}
+		if (editarManual != null) {
+			editarManual.setBackground(modoOscuro ? amarillo : darkBg);
+			editarManual.setForeground(modoOscuro ? negro : amarillo);
+		}
+		if (planificarAuto != null) {
+			planificarAuto.setBackground(modoOscuro ? amarillo : darkBg);
+			planificarAuto.setForeground(modoOscuro ? negro : amarillo);
+		}
+		if (planificarRecuperacion != null) {
+			planificarRecuperacion.setBackground(modoOscuro ? amarillo : darkBg);
+			planificarRecuperacion.setForeground(modoOscuro ? negro : amarillo);
+		}
+		if (valoresEstudiantes != null) {
+			valoresEstudiantes.setBackground(modoOscuro ? amarillo : darkBg);
+			valoresEstudiantes.setForeground(modoOscuro ? negro : amarillo);
+		}
+		if (valoresTrabajadores != null) {
+			valoresTrabajadores.setBackground(modoOscuro ? amarillo : darkBg);
+			valoresTrabajadores.setForeground(modoOscuro ? negro : amarillo);
+		}
+		if (btnSalir != null) {
+			btnSalir.setBackground(boton);
+			btnSalir.setForeground(amarilloSec);
+		}
+		if (btnLuna != null) {
+			btnLuna.setBackground(fondo);
+			btnLuna.setIcon(modoOscuro ? iconoSol : iconoLuna);
+		}
 
 		// Cambiar modo en todos los frames abiertos
 		for (Frame frame : JFrame.getFrames()) {
@@ -575,12 +615,12 @@ public class Inicio extends JFrame {
 		panel.add(label);
 
 		int opcion = JOptionPane.showConfirmDialog(
-			this,
-			panel,
-			"Confirmar salida",
-			JOptionPane.YES_NO_OPTION,
-			JOptionPane.QUESTION_MESSAGE
-		);
+				this,
+				panel,
+				"Confirmar salida",
+				JOptionPane.YES_NO_OPTION,
+				JOptionPane.QUESTION_MESSAGE
+				);
 		if (opcion == JOptionPane.YES_OPTION) {
 			System.exit(0);
 		}
