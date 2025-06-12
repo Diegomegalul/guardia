@@ -177,14 +177,15 @@ public class Inicio extends JFrame {
 		menuMostrar.setForeground(negro);
 		menuMostrar.setBorder(BorderFactory.createLineBorder(negro, 1));
 
-		JMenuItem mostrarPersonas = new JMenuItem("Personas");
-		mostrarPersonas.setFont(new Font("Arial", Font.PLAIN, 15));
-		mostrarPersonas.setBackground(darkBg);
-		mostrarPersonas.setForeground(amarillo);
-		mostrarPersonas.setBorder(BorderFactory.createLineBorder(negro, 1));
-		mostrarPersonas.addActionListener(new ActionListener() {
+		JMenuItem mostrarEstudiantes = new JMenuItem("Estudiantes");
+		mostrarEstudiantes.setFont(new Font("Arial", Font.PLAIN, 15));
+		mostrarEstudiantes.setBackground(darkBg);
+		mostrarEstudiantes.setForeground(amarillo);
+		mostrarEstudiantes.setBorder(BorderFactory.createLineBorder(negro, 1));
+		mostrarEstudiantes.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				JOptionPane.showMessageDialog(Inicio.this, "Listado de personas (próximamente).");
+				VerEstudiantes frame = new VerEstudiantes(planificador);
+				frame.setVisible(true);
 			}
 		});
 
@@ -221,7 +222,7 @@ public class Inicio extends JFrame {
 			}
 		});
 
-		menuMostrar.add(mostrarPersonas);
+		menuMostrar.add(mostrarEstudiantes);
 		menuMostrar.add(mostrarTrabajadores);
 		menuMostrar.add(mostrarGuardiasPlanificadas);
 		menuMostrar.add(mostrarGuardiasCumplidas);
@@ -475,7 +476,7 @@ public class Inicio extends JFrame {
 		this.valoresTrabajadores = valoresTrabajadores;
 		this.planificarAuto = planificarAuto;
 		this.planificarRecuperacion = planificarRecuperacion;
-		this.mostrarPersonas = mostrarPersonas;
+		this.mostrarEstudiantes = mostrarEstudiantes;
 		this.mostrarTrabajadores = mostrarTrabajadores;
 		this.mostrarGuardiasPlanificadas = mostrarGuardiasPlanificadas;
 		this.mostrarGuardiasCumplidas = mostrarGuardiasCumplidas;
@@ -497,7 +498,7 @@ public class Inicio extends JFrame {
 	private JMenuItem itemEstudiante, itemTrabajador;
 	private JMenuItem valoresEstudiantes, valoresTrabajadores;
 	private JMenuItem planificarAuto,planificarRecuperacion,editarManual;
-	private JMenuItem mostrarPersonas,mostrarTrabajadores,mostrarGuardiasPlanificadas,mostrarGuardiasCumplidas;
+	private JMenuItem mostrarEstudiantes,mostrarTrabajadores,mostrarGuardiasPlanificadas,mostrarGuardiasCumplidas;
 	private JMenuItem reporteRecuperacion,reporteVoluntarios,reporteEstInactivos,reporteFestivas;
 	private JButton btnSalir, btnLuna;
 	private Icon iconoLuna, iconoSol;
@@ -556,9 +557,9 @@ public class Inicio extends JFrame {
 			mostrarTrabajadores.setBackground(modoOscuro ? amarillo : darkBg);
 			mostrarTrabajadores.setForeground(modoOscuro ? negro : amarillo);
 		}
-		if (mostrarPersonas != null) {
-			mostrarPersonas.setBackground(modoOscuro ? amarillo : darkBg);
-			mostrarPersonas.setForeground(modoOscuro ? negro : amarillo);
+		if (mostrarEstudiantes != null) {
+			mostrarEstudiantes.setBackground(modoOscuro ? amarillo : darkBg);
+			mostrarEstudiantes.setForeground(modoOscuro ? negro : amarillo);
 		}
 		if (editarManual != null) {
 			editarManual.setBackground(modoOscuro ? amarillo : darkBg);

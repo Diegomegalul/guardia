@@ -7,7 +7,7 @@ Dia-4: Ya hice grupos y asignacion auto de las guardias y login <br>
 Dia-5: Estoy arreglando una pila de clases y cosas mal hechas <br>
 Dia-6: Estoy haciendo las pantallas (4:36) <br>
 Dia-7: Sigo haciendo jFrames aesthetic <br>
-Dia-8: Pienzo terminal todas las funcionalidades hoy <br>
+Dia-8: El menu inicio ya lo tiene todo creo <br>
 
 ## Daniela lee esto
 

@@ -27,6 +27,14 @@ public class Estudiante extends Persona{
 	public void setLicenciaMatricula(boolean licenciaMatricula) {
 		this.licenciaMatricula = licenciaMatricula;
 	}
+	
+	public void setGuardiasCumplidas(int guardiasCumplidas){
+		this.guardiasCumplidas = guardiasCumplidas;
+	}
+	
+	public int getGuardiasCumplidas(){
+		return guardiasCumplidas;
+	}
 
 	public boolean isBaja() {
 		return baja;
