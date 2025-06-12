@@ -15,3 +15,9 @@ Te hice una nueva rama llamada danielaUwU <br>
 Para descargarte la rama:
 
 # *Paso 1: Me llamas ;)*
+
+usar j dialog para no abrir mas  ventanas o algo <br>
+planificar recuperacion auto <br>
+el caliendario debe actualizar los dias <br>
+agregar el editar y eliminar a mostrar estudiantes y profesores <br>
+poner un sheck mark para pasar las guardias planificadas a cumplidas <br>
