@@ -28,7 +28,6 @@ import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
 import logica.PlanificadorGuardias;
-import javax.swing.border.LineBorder;
 
 public class Inicio extends JFrame {
 
@@ -105,70 +104,56 @@ public class Inicio extends JFrame {
 
 		menuAdd.add(itemEstudiante);
 		menuAdd.add(itemTrabajador);
-		menuBar.add(menuAdd);
+		menuBar.add(menuAdd); // SIEMPRE al principio
 
-		// "Planificar Guardias"
-		JMenuItem menuPlanificar = new JMenuItem("Planificar Guardias");
+		// Menú Planificar Guardias (después de Añadir Personas)
+		JMenu menuPlanificar = new JMenu("Planificar Guardias");
 		menuPlanificar.setOpaque(true);
 		menuPlanificar.setFont(new Font("Arial", Font.BOLD, 16));
 		menuPlanificar.setBackground(amarillo);
 		menuPlanificar.setForeground(negro);
 		menuPlanificar.setBorder(BorderFactory.createLineBorder(negro, 1));
-		menuPlanificar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				// Aquí deberías abrir el JFrame correspondiente a planificar guardias
-				JOptionPane.showMessageDialog(Inicio.this, "Funcionalidad próximamente disponible.");
-			}
-		});
-		
-		// NUEVO: Menú "Mostrar" con submenús
-		JMenu menuVer = new JMenu("Mostrar");
-		menuVer.setOpaque(true);
-		menuVer.setFont(new Font("Arial", Font.BOLD, 16));
-		menuVer.setForeground(negro);
-		menuVer.setBackground(amarillo);
-		menuVer.setBorder(new LineBorder(new Color(0, 0, 0)));
 
-		JMenuItem verEstudiantes = new JMenuItem("Estudiantes");
-		verEstudiantes.setFont(new Font("Arial", Font.PLAIN, 15));
-		verEstudiantes.setBackground(darkBg);
-		verEstudiantes.setForeground(amarillo);
-		verEstudiantes.setBorder(new LineBorder(new Color(0, 0, 0)));
-		verEstudiantes.addActionListener(new ActionListener() {
+		JMenuItem planificarAuto = new JMenuItem("Planificar Auto");
+		planificarAuto.setFont(new Font("Arial", Font.PLAIN, 15));
+		planificarAuto.setBackground(darkBg);
+		planificarAuto.setForeground(amarillo);
+		planificarAuto.setBorder(BorderFactory.createLineBorder(negro, 1));
+		planificarAuto.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				JOptionPane.showMessageDialog(Inicio.this, "Listado de estudiantes (próximamente).");
+				PlanGuardias frame = new PlanGuardias();
+				frame.setVisible(true);
 			}
 		});
 
-		JMenuItem verProfesores = new JMenuItem("Profesores");
-		verProfesores.setFont(new Font("Arial", Font.PLAIN, 15));
-		verProfesores.setBackground(darkBg);
-		verProfesores.setForeground(amarillo);
-		verProfesores.setBorder(BorderFactory.createLineBorder(negro, 1));
-		verProfesores.addActionListener(new ActionListener() {
+		JMenuItem planificarRecuperacion = new JMenuItem("Planificar Recuperación");
+		planificarRecuperacion.setFont(new Font("Arial", Font.PLAIN, 15));
+		planificarRecuperacion.setBackground(darkBg);
+		planificarRecuperacion.setForeground(amarillo);
+		planificarRecuperacion.setBorder(BorderFactory.createLineBorder(negro, 1));
+		planificarRecuperacion.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				JOptionPane.showMessageDialog(Inicio.this, "Listado de profesores (próximamente).");
+				JOptionPane.showMessageDialog(Inicio.this, "Planificar recuperación (próximamente).");
 			}
 		});
 
-		JMenuItem verGuardias = new JMenuItem("Guardias");
-		verGuardias.setFont(new Font("Arial", Font.PLAIN, 15));
-		verGuardias.setBackground(darkBg);
-		verGuardias.setForeground(amarillo);
-		verGuardias.setBorder(BorderFactory.createLineBorder(negro, 1));
-		verGuardias.addActionListener(new ActionListener() {
+		JMenuItem editarManual = new JMenuItem("Editar Manualmente");
+		editarManual.setFont(new Font("Arial", Font.PLAIN, 15));
+		editarManual.setBackground(darkBg);
+		editarManual.setForeground(amarillo);
+		editarManual.setBorder(BorderFactory.createLineBorder(negro, 1));
+		editarManual.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				JOptionPane.showMessageDialog(Inicio.this, "Listado de guardias (próximamente).");
+				JOptionPane.showMessageDialog(Inicio.this, "Edición manual de guardias (próximamente).");
 			}
 		});
 
-		menuVer.add(verEstudiantes);
-		menuVer.add(verProfesores);
-		menuVer.add(verGuardias);
-		menuBar.add(menuVer);
+		menuPlanificar.add(planificarAuto);
+		menuPlanificar.add(planificarRecuperacion);
+		menuPlanificar.add(editarManual);
 		menuBar.add(menuPlanificar);
 
-		// "Editar Calendario"
+		// Menú Editar Calendario (después de Planificar)
 		JMenuItem menuCalendario = new JMenuItem("Editar Calendario");
 		menuCalendario.setOpaque(true);
 		menuCalendario.setFont(new Font("Arial", Font.BOLD, 16));
@@ -184,34 +169,157 @@ public class Inicio extends JFrame {
 		});
 		menuBar.add(menuCalendario);
 
-		// "Reportes"
-		JMenuItem menuReportes = new JMenuItem("Reportes");
+		// Menú Mostrar (después de Editar Calendario)
+		JMenu menuMostrar = new JMenu("Mostrar");
+		menuMostrar.setOpaque(true);
+		menuMostrar.setFont(new Font("Arial", Font.BOLD, 16));
+		menuMostrar.setBackground(amarillo);
+		menuMostrar.setForeground(negro);
+		menuMostrar.setBorder(BorderFactory.createLineBorder(negro, 1));
+
+		JMenuItem mostrarPersonas = new JMenuItem("Personas");
+		mostrarPersonas.setFont(new Font("Arial", Font.PLAIN, 15));
+		mostrarPersonas.setBackground(darkBg);
+		mostrarPersonas.setForeground(amarillo);
+		mostrarPersonas.setBorder(BorderFactory.createLineBorder(negro, 1));
+		mostrarPersonas.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				JOptionPane.showMessageDialog(Inicio.this, "Listado de personas (próximamente).");
+			}
+		});
+
+		JMenuItem mostrarTrabajadores = new JMenuItem("Trabajadores");
+		mostrarTrabajadores.setFont(new Font("Arial", Font.PLAIN, 15));
+		mostrarTrabajadores.setBackground(darkBg);
+		mostrarTrabajadores.setForeground(amarillo);
+		mostrarTrabajadores.setBorder(BorderFactory.createLineBorder(negro, 1));
+		mostrarTrabajadores.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				JOptionPane.showMessageDialog(Inicio.this, "Listado de trabajadores (próximamente).");
+			}
+		});
+
+		JMenuItem mostrarGuardiasPlanificadas = new JMenuItem("Guardias planificadas");
+		mostrarGuardiasPlanificadas.setFont(new Font("Arial", Font.PLAIN, 15));
+		mostrarGuardiasPlanificadas.setBackground(darkBg);
+		mostrarGuardiasPlanificadas.setForeground(amarillo);
+		mostrarGuardiasPlanificadas.setBorder(BorderFactory.createLineBorder(negro, 1));
+		mostrarGuardiasPlanificadas.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				JOptionPane.showMessageDialog(Inicio.this, "Guardias planificadas (próximamente).");
+			}
+		});
+
+		JMenuItem mostrarGuardiasCumplidas = new JMenuItem("Guardias cumplidas");
+		mostrarGuardiasCumplidas.setFont(new Font("Arial", Font.PLAIN, 15));
+		mostrarGuardiasCumplidas.setBackground(darkBg);
+		mostrarGuardiasCumplidas.setForeground(amarillo);
+		mostrarGuardiasCumplidas.setBorder(BorderFactory.createLineBorder(negro, 1));
+		mostrarGuardiasCumplidas.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				JOptionPane.showMessageDialog(Inicio.this, "Guardias cumplidas (próximamente).");
+			}
+		});
+
+		menuMostrar.add(mostrarPersonas);
+		menuMostrar.add(mostrarTrabajadores);
+		menuMostrar.add(mostrarGuardiasPlanificadas);
+		menuMostrar.add(mostrarGuardiasCumplidas);
+		menuBar.add(menuMostrar);
+
+		// Menú Reportes (después de Mostrar)
+		JMenu menuReportes = new JMenu("Reportes");
 		menuReportes.setOpaque(true);
 		menuReportes.setFont(new Font("Arial", Font.BOLD, 16));
 		menuReportes.setBackground(amarillo);
 		menuReportes.setForeground(negro);
 		menuReportes.setBorder(BorderFactory.createLineBorder(negro, 1));
-		menuReportes.addActionListener(new ActionListener() {
+
+		JMenuItem reporteRecuperacion = new JMenuItem("Guardias Recuperacion");
+		reporteRecuperacion.setFont(new Font("Arial", Font.PLAIN, 15));
+		reporteRecuperacion.setBackground(darkBg);
+		reporteRecuperacion.setForeground(amarillo);
+		reporteRecuperacion.setBorder(BorderFactory.createLineBorder(negro, 1));
+		reporteRecuperacion.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				// Aquí deberías abrir el JFrame correspondiente a reportes
-				JOptionPane.showMessageDialog(Inicio.this, "Funcionalidad de reportes próximamente disponible.");
+				JOptionPane.showMessageDialog(Inicio.this, "Reporte de guardias de recuperación (próximamente).");
 			}
 		});
+
+		JMenuItem reporteVoluntarios = new JMenuItem("Profesores Voluntarios");
+		reporteVoluntarios.setFont(new Font("Arial", Font.PLAIN, 15));
+		reporteVoluntarios.setBackground(darkBg);
+		reporteVoluntarios.setForeground(amarillo);
+		reporteVoluntarios.setBorder(BorderFactory.createLineBorder(negro, 1));
+		reporteVoluntarios.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				JOptionPane.showMessageDialog(Inicio.this, "Reporte de profesores voluntarios (próximamente).");
+			}
+		});
+
+		JMenuItem reporteEstInactivos = new JMenuItem("Estudiantes Inactivos");
+		reporteEstInactivos.setFont(new Font("Arial", Font.PLAIN, 15));
+		reporteEstInactivos.setBackground(darkBg);
+		reporteEstInactivos.setForeground(amarillo);
+		reporteEstInactivos.setBorder(BorderFactory.createLineBorder(negro, 1));
+		reporteEstInactivos.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				JOptionPane.showMessageDialog(Inicio.this, "Reporte de estudiantes inactivos (próximamente).");
+			}
+		});
+
+		JMenuItem reporteFestivas = new JMenuItem("Guardias Festivas");
+		reporteFestivas.setFont(new Font("Arial", Font.PLAIN, 15));
+		reporteFestivas.setBackground(darkBg);
+		reporteFestivas.setForeground(amarillo);
+		reporteFestivas.setBorder(BorderFactory.createLineBorder(negro, 1));
+		reporteFestivas.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				JOptionPane.showMessageDialog(Inicio.this, "Reporte de guardias festivas (próximamente).");
+			}
+		});
+
+		menuReportes.add(reporteRecuperacion);
+		menuReportes.add(reporteVoluntarios);
+		menuReportes.add(reporteEstInactivos);
+		menuReportes.add(reporteFestivas);
 		menuBar.add(menuReportes);
 
-		// "Valores de Prueba"
-		JMenuItem menuValores = new JMenuItem("Valores de prueba");
+		// Menú Valores de Prueba (al final)
+		JMenu menuValores = new JMenu("Valores de prueba");
 		menuValores.setOpaque(true);
 		menuValores.setFont(new Font("Arial", Font.BOLD, 16));
 		menuValores.setBackground(amarillo);
 		menuValores.setForeground(negro);
 		menuValores.setBorder(BorderFactory.createLineBorder(negro, 1));
-		menuValores.addActionListener(new ActionListener() {
+
+		JMenuItem valoresEstudiantes = new JMenuItem("Estudiantes");
+		valoresEstudiantes.setFont(new Font("Arial", Font.PLAIN, 15));
+		valoresEstudiantes.setBackground(darkBg);
+		valoresEstudiantes.setForeground(amarillo);
+		valoresEstudiantes.setBorder(BorderFactory.createLineBorder(negro, 1));
+		valoresEstudiantes.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				// Aquí deberías abrir el JFrame correspondiente a valores de prueba o ejecutar la lógica
-				JOptionPane.showMessageDialog(Inicio.this, "Valores de prueba cargados (simulado).");
+				planificador.agregarEstudiantesMujeresPrueba();
+				planificador.agregarEstudiantesVaronesPrueba();
+				JOptionPane.showMessageDialog(Inicio.this, "Estudiantes de prueba cargados.");
 			}
 		});
+
+		JMenuItem valoresTrabajadores = new JMenuItem("Trabajadores");
+		valoresTrabajadores.setFont(new Font("Arial", Font.PLAIN, 15));
+		valoresTrabajadores.setBackground(darkBg);
+		valoresTrabajadores.setForeground(amarillo);
+		valoresTrabajadores.setBorder(BorderFactory.createLineBorder(negro, 1));
+		valoresTrabajadores.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				planificador.agregarProfesoresPrueba();
+				JOptionPane.showMessageDialog(Inicio.this, "Trabajadores de prueba cargados.");
+			}
+		});
+
+		menuValores.add(valoresEstudiantes);
+		menuValores.add(valoresTrabajadores);
 		menuBar.add(menuValores);
 
 		setJMenuBar(menuBar);
@@ -332,7 +440,7 @@ public class Inicio extends JFrame {
 					int x1 = (int)(x+16+Math.cos(angle)*14);
 					int y1 = (int)(y+16+Math.sin(angle)*14);
 					int x2 = (int)(x+16+Math.cos(angle)*24);
-					int y2 = (int)(y+16+Math.sin(angle)*24);
+					int y2 = (int)(x+16+Math.sin(angle)*24);
 					g2.drawLine(x1, y1, x2, y2);
 				}
 				g2.dispose();
@@ -372,21 +480,15 @@ public class Inicio extends JFrame {
 		this.btnLuna = btnLuna;
 		this.iconoLuna = iconoLuna;
 		this.iconoSol = iconoSol;
-
-		// Referencias para menú "Mostrar"
-		this.menuVer = menuVer;
-		this.verEstudiantes = verEstudiantes;
-		this.verProfesores = verProfesores;
-		this.verGuardias = verGuardias;
 	}
 
 	// Referencias para modo oscuro
 	private JLabel lblBienvenida;
 	private JPanel panelCentral, panelInferior;
 	private JMenuBar menuBar;
-	private JMenu menuAdd, menuVer;
-	private JMenuItem itemEstudiante, itemTrabajador, menuPlanificar, menuCalendario, menuReportes, menuValores;
-	private JMenuItem verEstudiantes, verProfesores, verGuardias;
+	private JMenu menuAdd, menuVer, menuValores;
+	private JMenuItem itemEstudiante, itemTrabajador, menuPlanificar, menuCalendario, menuReportes;
+	private JMenuItem valoresEstudiantes, valoresTrabajadores;
 	private JButton btnSalir, btnLuna;
 	private Icon iconoLuna, iconoSol;
 
@@ -407,34 +509,30 @@ public class Inicio extends JFrame {
 		menuAdd.setForeground(negro);
 		menuVer.setBackground(amarillo);
 		menuVer.setForeground(negro);
+		menuValores.setBackground(amarillo);
+		menuValores.setForeground(negro);
 
 		if (modoOscuro) {
-			verEstudiantes.setBackground(amarillo);
-			verEstudiantes.setForeground(negro);
-			verProfesores.setBackground(amarillo);
-			verProfesores.setForeground(negro);
-			verGuardias.setBackground(amarillo);
-			verGuardias.setForeground(negro);
+			valoresEstudiantes.setBackground(amarillo);
+			valoresEstudiantes.setForeground(negro);
+			valoresTrabajadores.setBackground(amarillo);
+			valoresTrabajadores.setForeground(negro);
 			itemEstudiante.setBackground(amarillo);
 			itemEstudiante.setForeground(negro);
 			itemTrabajador.setBackground(amarillo);
 			itemTrabajador.setForeground(negro);
 		} else {
-			verEstudiantes.setBackground(darkBg);
-			verEstudiantes.setForeground(amarillo);
-			verProfesores.setBackground(darkBg);
-			verProfesores.setForeground(amarillo);
-			verGuardias.setBackground(darkBg);
-			verGuardias.setForeground(amarillo);
+			valoresEstudiantes.setBackground(darkBg);
+			valoresEstudiantes.setForeground(amarillo);
+			valoresTrabajadores.setBackground(darkBg);
+			valoresTrabajadores.setForeground(amarillo);
 			itemEstudiante.setBackground(darkBg);
 			itemEstudiante.setForeground(amarillo);
 			itemTrabajador.setBackground(darkBg);
 			itemTrabajador.setForeground(amarillo);
 		}
-
-		verEstudiantes.setBorder(BorderFactory.createLineBorder(negro, 1));
-		verProfesores.setBorder(BorderFactory.createLineBorder(negro, 1));
-		verGuardias.setBorder(BorderFactory.createLineBorder(negro, 1));
+		valoresEstudiantes.setBorder(BorderFactory.createLineBorder(negro, 1));
+		valoresTrabajadores.setBorder(BorderFactory.createLineBorder(negro, 1));
 
 		menuPlanificar.setBackground(fondo);
 		menuPlanificar.setForeground(texto);

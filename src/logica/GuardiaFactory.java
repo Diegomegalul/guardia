@@ -1,9 +1,13 @@
 package logica;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.YearMonth;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import utiles.Sexo;
 import utiles.TipoGuardia;
 import logica.Horario;
 import logica.Calendario;
@@ -174,6 +178,81 @@ public class GuardiaFactory {
 			}
 		}
 		return eliminar;
+	}
+
+	/**
+	 * Planifica automáticamente las guardias para un mes y año dados.
+	 * Devuelve una lista de strings con el resultado de la planificación.
+	 */
+	public List<String> planificarGuardiasMes(Facultad facultad, int anio, int mes) {
+		List<String> resultado = new ArrayList<>();
+		YearMonth yearMonth = YearMonth.of(anio, mes);
+
+		List<Persona> personas = facultad.getPersonas();
+
+		List<Trabajador> trabajadores = new ArrayList<>();
+		List<Estudiante> estudiantesM = new ArrayList<>();
+		List<Estudiante> estudiantesF = new ArrayList<>();
+
+		for (Persona p : personas) {
+			if (p instanceof Trabajador && p.getActivo()) {
+				trabajadores.add((Trabajador) p);
+			} else if (p instanceof Estudiante && p.getActivo()) {
+				Estudiante est = (Estudiante) p;
+				if (est.getSexo() == Sexo.MASCULINO) {
+					estudiantesM.add(est);
+				} else {
+					estudiantesF.add(est);
+				}
+			}
+		}
+
+		boolean finSemanaMujer = true;
+		int idxTrabajador = 0, idxEstudianteM = 0, idxEstudianteF = 0;
+
+		for (int day = 1; day <= yearMonth.lengthOfMonth(); day++) {
+			LocalDate fecha = LocalDate.of(anio, mes, day);
+			int dow = fecha.getDayOfWeek().getValue(); // 1=Lunes ... 7=Domingo
+
+			// Guardias de estudiantes hombres: todos los días, 20:00-08:00
+			if (!estudiantesM.isEmpty()) {
+				Estudiante est = estudiantesM.get(idxEstudianteM % estudiantesM.size());
+				Horario h = new Horario(fecha, LocalTime.of(20, 0), LocalTime.of(8, 0));
+				if (est.puedeHacerGuardia(h)) {
+					resultado.add(String.format("%s: Estudiante (M) %s %s - 20:00 a 08:00", fecha, est.getNombre(), est.getApellidos()));
+					idxEstudianteM++;
+				}
+			}
+
+			// Guardias de estudiantes mujeres: solo fines de semana, alternando con trabajadores
+			if (dow == 6 || dow == 7) { // Sábado o Domingo
+				if (finSemanaMujer && !estudiantesF.isEmpty()) {
+					Estudiante est = estudiantesF.get(idxEstudianteF % estudiantesF.size());
+					Horario h = new Horario(fecha, LocalTime.of(8, 0), LocalTime.of(20, 0));
+					if (est.puedeHacerGuardia(h)) {
+						resultado.add(String.format("%s: Estudiante (F) %s %s - 08:00 a 20:00", fecha, est.getNombre(), est.getApellidos()));
+						idxEstudianteF++;
+					}
+				} else if (!finSemanaMujer && !trabajadores.isEmpty()) {
+					// Trabajadores: 9-14 y 14-19
+					Trabajador t1 = trabajadores.get(idxTrabajador % trabajadores.size());
+					Horario h1 = new Horario(fecha, LocalTime.of(9, 0), LocalTime.of(14, 0));
+					if (t1.puedeHacerGuardia(h1)) {
+						resultado.add(String.format("%s: Trabajador %s %s - 09:00 a 14:00", fecha, t1.getNombre(), t1.getApellidos()));
+						idxTrabajador++;
+					}
+					Trabajador t2 = trabajadores.get(idxTrabajador % trabajadores.size());
+					Horario h2 = new Horario(fecha, LocalTime.of(14, 0), LocalTime.of(19, 0));
+					if (t2.puedeHacerGuardia(h2)) {
+						resultado.add(String.format("%s: Trabajador %s %s - 14:00 a 19:00", fecha, t2.getNombre(), t2.getApellidos()));
+						idxTrabajador++;
+					}
+				}
+				// Alternar para el próximo fin de semana
+				if (dow == 7) finSemanaMujer = !finSemanaMujer;
+			}
+		}
+		return resultado;
 	}
 }
 

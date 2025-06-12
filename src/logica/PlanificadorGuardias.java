@@ -115,4 +115,54 @@ public class PlanificadorGuardias {
 			this.cantidad = cantidad;
 		}
 	}
+
+    // Métodos de prueba para añadir personas
+    public void agregarProfesoresPrueba() {
+        for (int i = 1; i <= 10; i++) {
+            Trabajador t = new Trabajador(
+                "CI-PROF-" + i,
+                "Profesor" + i,
+                "Apellido" + i,
+                utiles.Sexo.MASCULINO,
+                true,
+                java.time.LocalDate.of(2020, 1, 1),
+                0,
+                0,
+                i % 2 == 0 // alterna voluntario
+            );
+            facultad.agregarPersona(t);
+        }
+    }
+
+    public void agregarEstudiantesVaronesPrueba() {
+        for (int i = 1; i <= 10; i++) {
+            Estudiante e = new Estudiante(
+                "CI-EST-M-" + i,
+                "EstudianteM" + i,
+                "Apellido" + i,
+                utiles.Sexo.MASCULINO,
+                true,
+                0,
+                0,
+                1 // grupo
+            );
+            facultad.agregarPersona(e);
+        }
+    }
+
+    public void agregarEstudiantesMujeresPrueba() {
+        for (int i = 1; i <= 10; i++) {
+            Estudiante e = new Estudiante(
+                "CI-EST-F-" + i,
+                "EstudianteF" + i,
+                "Apellido" + i,
+                utiles.Sexo.FEMENINO,
+                true,
+                0,
+                0,
+                1 // grupo
+            );
+            facultad.agregarPersona(e);
+        }
+    }
 }
