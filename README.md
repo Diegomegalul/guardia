@@ -8,6 +8,7 @@ Dia-5: Estoy arreglando una pila de clases y cosas mal hechas <br>
 Dia-6: Estoy haciendo las pantallas (4:36) <br>
 Dia-7: Sigo haciendo jFrames aesthetic <br>
 Dia-8: El menu inicio ya lo tiene todo creo <br>
+Dia-9: Voy a empezar a resolver detalles de funcionalidad <br>
 
 ## Daniela lee esto
 
