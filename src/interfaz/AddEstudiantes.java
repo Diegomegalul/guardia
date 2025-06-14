@@ -1,13 +1,17 @@
 package interfaz;
 
 import java.awt.*;
+
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
 import logica.Estudiante;
 import logica.PlanificadorGuardias;
 import utiles.Sexo;
+
 import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.factories.FormFactory;

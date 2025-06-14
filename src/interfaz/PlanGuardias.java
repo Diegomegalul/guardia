@@ -2,7 +2,6 @@ package interfaz;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -33,19 +32,6 @@ public class PlanGuardias extends JFrame {
 	private JButton btnPlanificar;
 	private JTextArea txtResultado;
 
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					PlanGuardias frame = new PlanGuardias();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
 	public PlanGuardias() {
 		setTitle("Planificar Guardias Automáticamente");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -54,6 +40,7 @@ public class PlanGuardias extends JFrame {
 		contentPane.setBorder(new EmptyBorder(10, 10, 10, 10));
 		contentPane.setLayout(new BorderLayout(10, 10));
 		setContentPane(contentPane);
+		setLocationRelativeTo(null);
 
 		JPanel panelSuperior = new JPanel();
 		panelSuperior.setLayout(new BoxLayout(panelSuperior, BoxLayout.X_AXIS));

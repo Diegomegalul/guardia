@@ -83,9 +83,20 @@ public class Inicio extends JFrame {
 		itemEstudiante.setBorder(BorderFactory.createLineBorder(negro, 1));
 		itemEstudiante.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				AddEstudiantes frame = new AddEstudiantes(planificador);
-				if (modoOscuro) frame.aplicarModoOscuro(modoOscuro, darkBg, darkFg, new Color(60, 63, 80), amarillo);
-				frame.setVisible(true);
+				boolean found = false;
+				for (Frame frame : JFrame.getFrames()) {
+					if (frame instanceof AddEstudiantes && frame.isVisible()) {
+						frame.toFront();
+						frame.requestFocus();
+						found = true;
+						break;
+					}
+				}
+				if (!found) {
+					AddEstudiantes frame = new AddEstudiantes(planificador);
+					if (modoOscuro) frame.aplicarModoOscuro(modoOscuro, darkBg, darkFg, new Color(60, 63, 80), amarillo);
+					frame.setVisible(true);
+				}
 			}
 		});
 
@@ -96,9 +107,20 @@ public class Inicio extends JFrame {
 		itemTrabajador.setBorder(BorderFactory.createLineBorder(negro, 1));
 		itemTrabajador.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				AddTrabajadores frame = new AddTrabajadores(planificador);
-				if (modoOscuro) frame.aplicarModoOscuro(modoOscuro, darkBg, darkFg, new Color(60, 63, 80), amarillo);
-				frame.setVisible(true);
+				boolean found = false;
+				for (Frame frame : JFrame.getFrames()) {
+					if (frame instanceof AddTrabajadores && frame.isVisible()) {
+						frame.toFront();
+						frame.requestFocus();
+						found = true;
+						break;
+					}
+				}
+				if (!found) {
+					AddTrabajadores frame = new AddTrabajadores(planificador);
+					if (modoOscuro) frame.aplicarModoOscuro(modoOscuro, darkBg, darkFg, new Color(60, 63, 80), amarillo);
+					frame.setVisible(true);
+				}
 			}
 		});
 
@@ -121,8 +143,19 @@ public class Inicio extends JFrame {
 		planificarAuto.setBorder(BorderFactory.createLineBorder(negro, 1));
 		planificarAuto.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				PlanGuardias frame = new PlanGuardias();
-				frame.setVisible(true);
+				boolean found = false;
+				for (Frame frame : JFrame.getFrames()) {
+					if (frame instanceof PlanGuardias && frame.isVisible()) {
+						frame.toFront();
+						frame.requestFocus();
+						found = true;
+						break;
+					}
+				}
+				if (!found) {
+					PlanGuardias frame = new PlanGuardias();
+					frame.setVisible(true);
+				}
 			}
 		});
 
@@ -162,9 +195,20 @@ public class Inicio extends JFrame {
 		menuCalendario.setBorder(BorderFactory.createLineBorder(negro, 1));
 		menuCalendario.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				EditCalendario frame = new EditCalendario(planificador);
-				if (modoOscuro) frame.aplicarModoOscuro(modoOscuro, darkBg, darkFg, new Color(60, 63, 80), amarillo);
-				frame.setVisible(true);
+				boolean found = false;
+				for (Frame frame : JFrame.getFrames()) {
+					if (frame instanceof EditCalendario && frame.isVisible()) {
+						frame.toFront();
+						frame.requestFocus();
+						found = true;
+						break;
+					}
+				}
+				if (!found) {
+					EditCalendario frame = new EditCalendario(planificador);
+					if (modoOscuro) frame.aplicarModoOscuro(modoOscuro, darkBg, darkFg, new Color(60, 63, 80), amarillo);
+					frame.setVisible(true);
+				}
 			}
 		});
 		menuBar.add(menuCalendario);
@@ -184,8 +228,19 @@ public class Inicio extends JFrame {
 		mostrarEstudiantes.setBorder(BorderFactory.createLineBorder(negro, 1));
 		mostrarEstudiantes.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				VerEstudiantes frame = new VerEstudiantes(planificador);
-				frame.setVisible(true);
+				boolean found = false;
+				for (Frame frame : JFrame.getFrames()) {
+					if (frame instanceof VerEstudiantes && frame.isVisible()) {
+						frame.toFront();
+						frame.requestFocus();
+						found = true;
+						break;
+					}
+				}
+				if (!found) {
+					VerEstudiantes frame = new VerEstudiantes(planificador);
+					frame.setVisible(true);
+				}
 			}
 		});
 
@@ -196,7 +251,24 @@ public class Inicio extends JFrame {
 		mostrarTrabajadores.setBorder(BorderFactory.createLineBorder(negro, 1));
 		mostrarTrabajadores.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				JOptionPane.showMessageDialog(Inicio.this, "Listado de trabajadores (próximamente).");
+				boolean found = false;
+				for (Frame frame : JFrame.getFrames()) {
+					if (frame.getClass().getSimpleName().equals("VerTrabajadores") && frame.isVisible()) {
+						frame.toFront();
+						frame.requestFocus();
+						found = true;
+						break;
+					}
+				}
+				if (!found) {
+					try {
+						Class<?> clazz = Class.forName("interfaz.VerTrabajadores");
+						JFrame frame = (JFrame) clazz.getDeclaredConstructor().newInstance();
+						frame.setVisible(true);
+					} catch (Exception ex) {
+						JOptionPane.showMessageDialog(Inicio.this, "No implementado.");
+					}
+				}
 			}
 		});
 
@@ -207,7 +279,24 @@ public class Inicio extends JFrame {
 		mostrarGuardiasPlanificadas.setBorder(BorderFactory.createLineBorder(negro, 1));
 		mostrarGuardiasPlanificadas.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				JOptionPane.showMessageDialog(Inicio.this, "Guardias planificadas (próximamente).");
+				boolean found = false;
+				for (Frame frame : JFrame.getFrames()) {
+					if (frame.getClass().getSimpleName().equals("VerGuardiasPlanificadas") && frame.isVisible()) {
+						frame.toFront();
+						frame.requestFocus();
+						found = true;
+						break;
+					}
+				}
+				if (!found) {
+					try {
+						Class<?> clazz = Class.forName("interfaz.VerGuardiasPlanificadas");
+						JFrame frame = (JFrame) clazz.getDeclaredConstructor().newInstance();
+						frame.setVisible(true);
+					} catch (Exception ex) {
+						JOptionPane.showMessageDialog(Inicio.this, "No implementado.");
+					}
+				}
 			}
 		});
 
@@ -218,7 +307,24 @@ public class Inicio extends JFrame {
 		mostrarGuardiasCumplidas.setBorder(BorderFactory.createLineBorder(negro, 1));
 		mostrarGuardiasCumplidas.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				JOptionPane.showMessageDialog(Inicio.this, "Guardias cumplidas (próximamente).");
+				boolean found = false;
+				for (Frame frame : JFrame.getFrames()) {
+					if (frame.getClass().getSimpleName().equals("VerGuardiasCumplidas") && frame.isVisible()) {
+						frame.toFront();
+						frame.requestFocus();
+						found = true;
+						break;
+					}
+				}
+				if (!found) {
+					try {
+						Class<?> clazz = Class.forName("interfaz.VerGuardiasCumplidas");
+						JFrame frame = (JFrame) clazz.getDeclaredConstructor().newInstance();
+						frame.setVisible(true);
+					} catch (Exception ex) {
+						JOptionPane.showMessageDialog(Inicio.this, "No implementado.");
+					}
+				}
 			}
 		});
 
@@ -301,9 +407,20 @@ public class Inicio extends JFrame {
 		valoresEstudiantes.setBorder(BorderFactory.createLineBorder(negro, 1));
 		valoresEstudiantes.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				planificador.agregarEstudiantesMujeresPrueba();
-				planificador.agregarEstudiantesVaronesPrueba();
-				JOptionPane.showMessageDialog(Inicio.this, "Estudiantes de prueba cargados.");
+				boolean found = false;
+				for (Frame frame : JFrame.getFrames()) {
+					if (frame.getClass().getSimpleName().equals("VerEstudiantes") && frame.isVisible()) {
+						frame.toFront();
+						frame.requestFocus();
+						found = true;
+						break;
+					}
+				}
+				if (!found) {
+					planificador.agregarEstudiantesMujeresPrueba();
+					planificador.agregarEstudiantesVaronesPrueba();
+					JOptionPane.showMessageDialog(Inicio.this, "Estudiantes de prueba cargados.");
+				}
 			}
 		});
 
@@ -314,8 +431,19 @@ public class Inicio extends JFrame {
 		valoresTrabajadores.setBorder(BorderFactory.createLineBorder(negro, 1));
 		valoresTrabajadores.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				planificador.agregarProfesoresPrueba();
-				JOptionPane.showMessageDialog(Inicio.this, "Trabajadores de prueba cargados.");
+				boolean found = false;
+				for (Frame frame : JFrame.getFrames()) {
+					if (frame.getClass().getSimpleName().equals("VerTrabajadores") && frame.isVisible()) {
+						frame.toFront();
+						frame.requestFocus();
+						found = true;
+						break;
+					}
+				}
+				if (!found) {
+					planificador.agregarProfesoresPrueba();
+					JOptionPane.showMessageDialog(Inicio.this, "Trabajadores de prueba cargados.");
+				}
 			}
 		});
 

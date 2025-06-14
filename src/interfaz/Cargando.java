@@ -20,9 +20,6 @@ public class Cargando extends JFrame {
 	private Timer timer;
 	private int progreso = 0;
 
-	/**
-	 * Launch the application.
-	 */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -36,9 +33,6 @@ public class Cargando extends JFrame {
 		});
 	}
 
-	/**
-	 * Create the frame.
-	 */
 	public Cargando() {
 		// Colores principales
 		Color amarillo = new Color(255, 215, 0);
