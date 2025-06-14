@@ -12,13 +12,21 @@ Dia-9: Voy a empezar a resolver detalles de funcionalidad <br>
 
 ## Daniela lee esto
 
-Te hice una nueva rama llamada danielaUwU <br>
-Para descargarte la rama:
+# Cuando quieras hacer cosas en el proyecto
 
-# *Paso 1: Me llamas ;)*
+1-Creas una nueva rama: "git branch (Nombre de la rama)" no pongas ni los () ni las "" <br>
+2-Te cambias a la rama: "git switch (Nombre de la rama)" <br>
+3-Haces los cambios en una cosa y le vas haciendo commits
+tipo: "git add." y "git commit -m "Estoy haciendo reporte tal"" <br>
+cada cosa unos cuantos commits, nada de 3000 cambios en un commit <br>
+4-Haces el push ahora voy a probar como lo debes hacer <br>
+
+## Cosas q hacer
 
 usar j dialog para no abrir mas  ventanas o algo <br>
 planificar recuperacion auto <br>
 el caliendario debe actualizar los dias <br>
 agregar el editar y eliminar a mostrar estudiantes y profesores <br>
 poner un sheck mark para pasar las guardias planificadas a cumplidas <br>
+hacer un buscador por ci o por nombre o por grupo <br>
+cualquier cosa q se te ocurra la escribes aca <br>
