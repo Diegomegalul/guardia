@@ -1,30 +1,8 @@
 package interfaz;
 
-import java.awt.BasicStroke;
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.Font;
-import java.awt.Frame;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.RenderingHints;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
-import javax.swing.BorderFactory;
-import javax.swing.Icon;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.SwingConstants;
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
 import logica.PlanificadorGuardias;
@@ -41,6 +19,18 @@ public class Inicio extends JFrame {
 	private Color darkBg = new Color(30, 32, 40); // color principal modo oscuro
 	private Color darkFg = new Color(220, 220, 220); // texto modo oscuro
 
+	// Referencias para modo oscuro
+	private JLabel lblBienvenida;
+	private JPanel panelCentral, panelInferior;
+	private JMenuBar menuBar;
+	private JMenuItem itemEstudiante, itemTrabajador;
+	private JMenuItem valoresEstudiantes, valoresTrabajadores;
+	private JMenuItem planificarAuto, planificarRecuperacion, editarManual;
+	private JMenuItem mostrarEstudiantes, mostrarTrabajadores, mostrarGuardiasPlanificadas, mostrarGuardiasCumplidas;
+	private JMenuItem reporteRecuperacion, reporteVoluntarios, reporteEstInactivos, reporteFestivas;
+	private JButton btnSalir, btnLuna;
+	private Icon iconoLuna, iconoSol;
+
 	public Inicio() {
 		// Instancia singleton del planificador
 		this.planificador = PlanificadorGuardias.getInstancia();
@@ -53,7 +43,7 @@ public class Inicio extends JFrame {
 		// Confirmación al cerrar ventana principal
 		addWindowListener(new java.awt.event.WindowAdapter() {
 			public void windowClosing(java.awt.event.WindowEvent e) {
-				solicitarConfirmacionSalida();
+				Inicio.this.solicitarConfirmacionSalida();
 			}
 		});
 
@@ -64,7 +54,7 @@ public class Inicio extends JFrame {
 		setContentPane(contentPane);
 
 		// Menú superior
-		JMenuBar menuBar = new JMenuBar();
+		menuBar = new JMenuBar();
 		menuBar.setBackground(amarillo);
 		menuBar.setBorder(BorderFactory.createLineBorder(negro, 2)); // Borde negro para el menú
 
@@ -76,7 +66,7 @@ public class Inicio extends JFrame {
 		menuAdd.setBackground(amarillo);
 		menuAdd.setBorder(BorderFactory.createLineBorder(negro, 1)); // Borde negro
 
-		JMenuItem itemEstudiante = new JMenuItem("Añadir Estudiante");
+		itemEstudiante = new JMenuItem("Añadir Estudiante");
 		itemEstudiante.setFont(new Font("Arial", Font.PLAIN, 15));
 		itemEstudiante.setBackground(darkBg);
 		itemEstudiante.setForeground(amarillo);
@@ -100,7 +90,7 @@ public class Inicio extends JFrame {
 			}
 		});
 
-		JMenuItem itemTrabajador = new JMenuItem("Añadir Trabajador");
+		itemTrabajador = new JMenuItem("Añadir Trabajador");
 		itemTrabajador.setFont(new Font("Arial", Font.PLAIN, 15));
 		itemTrabajador.setBackground(darkBg);
 		itemTrabajador.setForeground(amarillo);
@@ -117,7 +107,7 @@ public class Inicio extends JFrame {
 					}
 				}
 				if (!found) {
-					AddTrabajadores frame = new AddTrabajadores(planificador,null,null);
+					AddTrabajadores frame = new AddTrabajadores(planificador, null, null);
 					if (modoOscuro) frame.aplicarModoOscuro(modoOscuro, darkBg, darkFg, new Color(60, 63, 80), amarillo);
 					frame.setVisible(true);
 				}
@@ -136,7 +126,7 @@ public class Inicio extends JFrame {
 		menuPlanificar.setForeground(negro);
 		menuPlanificar.setBorder(BorderFactory.createLineBorder(negro, 1));
 
-		JMenuItem planificarAuto = new JMenuItem("Planificar Auto");
+		planificarAuto = new JMenuItem("Planificar Auto");
 		planificarAuto.setFont(new Font("Arial", Font.PLAIN, 15));
 		planificarAuto.setBackground(darkBg);
 		planificarAuto.setForeground(amarillo);
@@ -162,14 +152,13 @@ public class Inicio extends JFrame {
 								darkFg,
 								new Color(60, 63, 80),
 								amarillo
-								);
+						);
 					}
 				}
 			}
 		});
 
-
-		JMenuItem planificarRecuperacion = new JMenuItem("Planificar Recuperación");
+		planificarRecuperacion = new JMenuItem("Planificar Recuperación");
 		planificarRecuperacion.setFont(new Font("Arial", Font.PLAIN, 15));
 		planificarRecuperacion.setBackground(darkBg);
 		planificarRecuperacion.setForeground(amarillo);
@@ -180,7 +169,7 @@ public class Inicio extends JFrame {
 			}
 		});
 
-		JMenuItem editarManual = new JMenuItem("Editar Manualmente");
+		editarManual = new JMenuItem("Editar Manualmente");
 		editarManual.setFont(new Font("Arial", Font.PLAIN, 15));
 		editarManual.setBackground(darkBg);
 		editarManual.setForeground(amarillo);
@@ -231,7 +220,7 @@ public class Inicio extends JFrame {
 		menuMostrar.setForeground(negro);
 		menuMostrar.setBorder(BorderFactory.createLineBorder(negro, 1));
 
-		JMenuItem mostrarEstudiantes = new JMenuItem("Estudiantes");
+		mostrarEstudiantes = new JMenuItem("Estudiantes");
 		mostrarEstudiantes.setFont(new Font("Arial", Font.PLAIN, 15));
 		mostrarEstudiantes.setBackground(darkBg);
 		mostrarEstudiantes.setForeground(amarillo);
@@ -254,7 +243,7 @@ public class Inicio extends JFrame {
 			}
 		});
 
-		JMenuItem mostrarTrabajadores = new JMenuItem("Trabajadores");
+		mostrarTrabajadores = new JMenuItem("Trabajadores");
 		mostrarTrabajadores.setFont(new Font("Arial", Font.PLAIN, 15));
 		mostrarTrabajadores.setBackground(darkBg);
 		mostrarTrabajadores.setForeground(amarillo);
@@ -263,7 +252,7 @@ public class Inicio extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				boolean found = false;
 				for (Frame frame : JFrame.getFrames()) {
-					if (frame.getClass().getSimpleName().equals("VerTrabajadores") && frame.isVisible()) {
+					if (frame instanceof VerTrabajadores && frame.isVisible()) {
 						frame.toFront();
 						frame.requestFocus();
 						found = true;
@@ -271,18 +260,13 @@ public class Inicio extends JFrame {
 					}
 				}
 				if (!found) {
-					try {
-						Class<?> clazz = Class.forName("interfaz.VerTrabajadores");
-						JFrame frame = (JFrame) clazz.getDeclaredConstructor().newInstance();
-						frame.setVisible(true);
-					} catch (Exception ex) {
-						JOptionPane.showMessageDialog(Inicio.this, "No implementado.");
-					}
+					VerTrabajadores frame = new VerTrabajadores();
+					frame.setVisible(true);
 				}
 			}
 		});
 
-		JMenuItem mostrarGuardiasPlanificadas = new JMenuItem("Guardias planificadas");
+		mostrarGuardiasPlanificadas = new JMenuItem("Guardias planificadas");
 		mostrarGuardiasPlanificadas.setFont(new Font("Arial", Font.PLAIN, 15));
 		mostrarGuardiasPlanificadas.setBackground(darkBg);
 		mostrarGuardiasPlanificadas.setForeground(amarillo);
@@ -305,7 +289,7 @@ public class Inicio extends JFrame {
 			}
 		});
 
-		JMenuItem mostrarGuardiasCumplidas = new JMenuItem("Guardias cumplidas");
+		mostrarGuardiasCumplidas = new JMenuItem("Guardias cumplidas");
 		mostrarGuardiasCumplidas.setFont(new Font("Arial", Font.PLAIN, 15));
 		mostrarGuardiasCumplidas.setBackground(darkBg);
 		mostrarGuardiasCumplidas.setForeground(amarillo);
@@ -314,7 +298,7 @@ public class Inicio extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				boolean found = false;
 				for (Frame frame : JFrame.getFrames()) {
-					if (frame.getClass().getSimpleName().equals("VerGuardiasCumplidas") && frame.isVisible()) {
+					if (frame instanceof GuardiasCumplidas && frame.isVisible()) {
 						frame.toFront();
 						frame.requestFocus();
 						found = true;
@@ -322,13 +306,8 @@ public class Inicio extends JFrame {
 					}
 				}
 				if (!found) {
-					try {
-						Class<?> clazz = Class.forName("interfaz.VerGuardiasCumplidas");
-						JFrame frame = (JFrame) clazz.getDeclaredConstructor().newInstance();
-						frame.setVisible(true);
-					} catch (Exception ex) {
-						JOptionPane.showMessageDialog(Inicio.this, "No implementado.");
-					}
+					GuardiasCumplidas frame = new GuardiasCumplidas();
+					frame.setVisible(true);
 				}
 			}
 		});
@@ -459,11 +438,11 @@ public class Inicio extends JFrame {
 		setJMenuBar(menuBar);
 
 		// Panel central con mensaje de bienvenida o imagen
-		JPanel panelCentral = new JPanel();
+		panelCentral = new JPanel();
 		panelCentral.setBackground(amarillo);
 		panelCentral.setLayout(new BorderLayout());
 
-		JLabel lblBienvenida = new JLabel("Bienvenido al Sistema de Guardias");
+		lblBienvenida = new JLabel("Bienvenido al Sistema de Guardias");
 		lblBienvenida.setFont(new Font("Arial", Font.BOLD, 28));
 		lblBienvenida.setForeground(negro);
 		lblBienvenida.setHorizontalAlignment(SwingConstants.CENTER);
@@ -471,14 +450,13 @@ public class Inicio extends JFrame {
 		panelCentral.add(lblBienvenida, BorderLayout.CENTER);
 
 		// Panel inferior para el botón salir y el botón de modo oscuro
-		JPanel panelInferior = new JPanel(new BorderLayout());
+		panelInferior = new JPanel(new BorderLayout());
 		panelInferior.setBackground(amarillo);
 
-		// Botón salir (derecha)
 		JPanel panelSalir = new JPanel(new FlowLayout(FlowLayout.RIGHT));
 		panelSalir.setBackground(amarillo);
 
-		JButton btnSalir = new JButton("Salir") {
+		btnSalir = new JButton("Salir") {
 			private static final long serialVersionUID = 1L;
 			protected void paintComponent(Graphics g) {
 				if (isContentAreaFilled()) {
@@ -523,15 +501,14 @@ public class Inicio extends JFrame {
 		});
 		panelSalir.add(btnSalir);
 
-		// Botón modo oscuro (izquierda)
 		JPanel panelLuna = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		panelLuna.setBackground(amarillo);
 
-		final JButton btnLuna = new JButton() {
+		btnLuna = new JButton() {
 			private static final long serialVersionUID = 1L;
 			protected void paintComponent(Graphics g) {
 				if (modoOscuro) {
-					setBackground(new Color(40, 40, 50)); // Fondo oscuro para el botón en modo oscuro
+					setBackground(new Color(40, 40, 50));
 				} else {
 					setBackground(amarillo);
 				}
@@ -546,26 +523,25 @@ public class Inicio extends JFrame {
 		btnLuna.setOpaque(true);
 		btnLuna.setToolTipText("Cambiar modo oscuro");
 
-		final Icon iconoLuna = new Icon() {
+		iconoLuna = new Icon() {
 			public int getIconWidth() { return 32; }
 			public int getIconHeight() { return 32; }
 			public void paintIcon(Component c, Graphics g, int x, int y) {
 				Graphics2D g2 = (Graphics2D) g.create();
 				g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-				g2.setColor(new Color(240, 230, 140)); // luna amarilla suave
+				g2.setColor(new Color(240, 230, 140));
 				g2.fillArc(x+4, y+4, 24, 24, 45, 270);
 				g2.setColor(new Color(30, 32, 40));
 				g2.fillArc(x+12, y+4, 24, 24, 45, 270);
 				g2.dispose();
 			}
 		};
-		final Icon iconoSol = new Icon() {
+		iconoSol = new Icon() {
 			public int getIconWidth() { return 32; }
 			public int getIconHeight() { return 32; }
 			public void paintIcon(Component c, Graphics g, int x, int y) {
 				Graphics2D g2 = (Graphics2D) g.create();
 				g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-				// Fondo del botón ya es oscuro, así que el sol resalta
 				g2.setColor(new Color(255, 215, 0));
 				g2.fillOval(x+6, y+6, 20, 20);
 				g2.setStroke(new BasicStroke(3));
@@ -597,44 +573,7 @@ public class Inicio extends JFrame {
 
 		contentPane.add(panelCentral, BorderLayout.CENTER);
 		contentPane.add(panelInferior, BorderLayout.SOUTH);
-
-		// Guardar referencias para cambio de modo
-		this.lblBienvenida = lblBienvenida;
-		this.panelCentral = panelCentral;
-		this.panelInferior = panelInferior;
-		this.menuBar = menuBar;
-		this.itemEstudiante = itemEstudiante;
-		this.itemTrabajador = itemTrabajador;
-		this.valoresEstudiantes = valoresEstudiantes;
-		this.valoresTrabajadores = valoresTrabajadores;
-		this.planificarAuto = planificarAuto;
-		this.planificarRecuperacion = planificarRecuperacion;
-		this.mostrarEstudiantes = mostrarEstudiantes;
-		this.mostrarTrabajadores = mostrarTrabajadores;
-		this.mostrarGuardiasPlanificadas = mostrarGuardiasPlanificadas;
-		this.mostrarGuardiasCumplidas = mostrarGuardiasCumplidas;
-		this.reporteRecuperacion = reporteRecuperacion;
-		this.reporteVoluntarios = reporteVoluntarios;
-		this.reporteEstInactivos = reporteEstInactivos;
-		this.reporteFestivas = reporteFestivas;
-		this.editarManual = editarManual;
-		this.btnSalir = btnSalir;
-		this.btnLuna = btnLuna;
-		this.iconoLuna = iconoLuna;
-		this.iconoSol = iconoSol;
 	}
-
-	// Referencias para modo oscuro
-	private JLabel lblBienvenida;
-	private JPanel panelCentral, panelInferior;
-	private JMenuBar menuBar;
-	private JMenuItem itemEstudiante, itemTrabajador;
-	private JMenuItem valoresEstudiantes, valoresTrabajadores;
-	private JMenuItem planificarAuto,planificarRecuperacion,editarManual;
-	private JMenuItem mostrarEstudiantes,mostrarTrabajadores,mostrarGuardiasPlanificadas,mostrarGuardiasCumplidas;
-	private JMenuItem reporteRecuperacion,reporteVoluntarios,reporteEstInactivos,reporteFestivas;
-	private JButton btnSalir, btnLuna;
-	private Icon iconoLuna, iconoSol;
 
 	private void aplicarModoOscuro() {
 		Color fondo = modoOscuro ? darkBg : amarillo;
@@ -642,13 +581,10 @@ public class Inicio extends JFrame {
 		Color boton = modoOscuro ? new Color(60, 63, 80) : negro;
 		Color amarilloSec = amarillo;
 
-		// La barra del menú siempre amarilla (constante)
 		if (menuBar != null) {
 			menuBar.setBackground(amarillo);
 			menuBar.setOpaque(true);
 		}
-
-		// Evitar NullPointerException: solo aplicar si los componentes existen
 		if (contentPane != null) contentPane.setBackground(fondo);
 		if (panelCentral != null) panelCentral.setBackground(fondo);
 		if (panelInferior != null) panelInferior.setBackground(fondo);
@@ -723,7 +659,6 @@ public class Inicio extends JFrame {
 			btnLuna.setIcon(modoOscuro ? iconoSol : iconoLuna);
 		}
 
-		// Cambiar modo en todos los frames abiertos
 		for (Frame frame : JFrame.getFrames()) {
 			if (frame instanceof AddEstudiantes) {
 				((AddEstudiantes) frame).aplicarModoOscuro(modoOscuro, fondo, texto, boton, amarilloSec);
@@ -740,7 +675,7 @@ public class Inicio extends JFrame {
 		}
 	}
 
-	private void solicitarConfirmacionSalida() {
+	protected void solicitarConfirmacionSalida() {
 		final Color amarillo = new Color(255, 215, 0);
 		final Color negro = Color.BLACK;
 
@@ -757,9 +692,10 @@ public class Inicio extends JFrame {
 				"Confirmar salida",
 				JOptionPane.YES_NO_OPTION,
 				JOptionPane.QUESTION_MESSAGE
-				);
+		);
 		if (opcion == JOptionPane.YES_OPTION) {
 			System.exit(0);
 		}
 	}
 }
+
