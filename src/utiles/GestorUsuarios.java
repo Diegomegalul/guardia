@@ -10,6 +10,7 @@ public class GestorUsuarios {
 		// Usuario por defecto
 		usuarios.put("Diego", "1234");
 		usuarios.put("Daniela", "1234");
+		usuarios.put("", "");
 	}
 
 	public static boolean validarUsuario(String usuario, String contrasena) {
