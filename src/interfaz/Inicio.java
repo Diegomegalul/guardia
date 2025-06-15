@@ -153,11 +153,21 @@ public class Inicio extends JFrame {
 					}
 				}
 				if (!found) {
-					PlanGuardias frame = new PlanGuardias();
+					PlanGuardias frame = new PlanGuardias(planificador);
 					frame.setVisible(true);
+					if (modoOscuro) {
+						frame.aplicarModoOscuro(
+							modoOscuro,
+							darkBg,
+							darkFg,
+							new Color(60, 63, 80),
+							amarillo
+						);
+					}
 				}
 			}
 		});
+		
 
 		JMenuItem planificarRecuperacion = new JMenuItem("Planificar Recuperación");
 		planificarRecuperacion.setFont(new Font("Arial", Font.PLAIN, 15));
@@ -728,6 +738,9 @@ public class Inicio extends JFrame {
 			}
 			if (frame instanceof EditCalendario) {
 				((EditCalendario) frame).aplicarModoOscuro(modoOscuro, fondo, texto, boton, amarilloSec);
+			}
+			if (frame instanceof PlanGuardias) {
+				((PlanGuardias) frame).aplicarModoOscuro(modoOscuro, fondo, texto, boton, amarilloSec);
 			}
 		}
 	}
