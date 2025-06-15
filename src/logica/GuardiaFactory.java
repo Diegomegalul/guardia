@@ -16,14 +16,20 @@ public class GuardiaFactory {
 	private Horario horario;
 	private Calendario calendario;
 	private List<Guardia> guardias;
+	private List<Guardia> guardiasCumplidas;
 	private int nextId = 1;
 
 	//Constructor
 	public GuardiaFactory() {
 		this.guardias = new ArrayList<>(); 
+		this.guardiasCumplidas = new ArrayList<>();
 	}
 
 	//Setters y Getters
+ 	public List<Guardia> getGuardiasCumplidas() {
+  	return guardiasCumplidas;
+ 	}
+
 	public Calendario getCalendario() {
 		return calendario;
 	}

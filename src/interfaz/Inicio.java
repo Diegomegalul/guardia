@@ -157,17 +157,17 @@ public class Inicio extends JFrame {
 					frame.setVisible(true);
 					if (modoOscuro) {
 						frame.aplicarModoOscuro(
-							modoOscuro,
-							darkBg,
-							darkFg,
-							new Color(60, 63, 80),
-							amarillo
-						);
+								modoOscuro,
+								darkBg,
+								darkFg,
+								new Color(60, 63, 80),
+								amarillo
+								);
 					}
 				}
 			}
 		});
-		
+
 
 		JMenuItem planificarRecuperacion = new JMenuItem("Planificar Recuperación");
 		planificarRecuperacion.setFont(new Font("Arial", Font.PLAIN, 15));
@@ -291,7 +291,7 @@ public class Inicio extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				boolean found = false;
 				for (Frame frame : JFrame.getFrames()) {
-					if (frame.getClass().getSimpleName().equals("VerGuardiasPlanificadas") && frame.isVisible()) {
+					if (frame instanceof GuardiasPlanificadas && frame.isVisible()) {
 						frame.toFront();
 						frame.requestFocus();
 						found = true;
@@ -299,13 +299,8 @@ public class Inicio extends JFrame {
 					}
 				}
 				if (!found) {
-					try {
-						Class<?> clazz = Class.forName("interfaz.VerGuardiasPlanificadas");
-						JFrame frame = (JFrame) clazz.getDeclaredConstructor().newInstance();
-						frame.setVisible(true);
-					} catch (Exception ex) {
-						JOptionPane.showMessageDialog(Inicio.this, "No implementado.");
-					}
+					GuardiasPlanificadas frame = new GuardiasPlanificadas();
+					frame.setVisible(true);
 				}
 			}
 		});
