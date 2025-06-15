@@ -165,7 +165,19 @@ public class Inicio extends JFrame {
 		editarManual.setBorder(BorderFactory.createLineBorder(negro, 1));
 		editarManual.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				JOptionPane.showMessageDialog(Inicio.this, "Edición manual de guardias (próximamente).");
+				boolean found = false;
+				for (Frame frame : JFrame.getFrames()) {
+					if (frame instanceof EditarGuardias && frame.isVisible()) {
+						frame.toFront();
+						frame.requestFocus();
+						found = true;
+						break;
+					}
+				}
+				if (!found) {
+					EditarGuardias frame = new EditarGuardias();
+					frame.setVisible(true);
+				}
 			}
 		});
 
