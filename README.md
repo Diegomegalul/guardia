@@ -1,4 +1,4 @@
-﻿# Mi Proyecto Guardia
+﻿# Leer esto antes de empezar a trabajar
 
 Dia-1: Estoy haciendo las malditas clases q puto sueño <br>
 Dia-2: Ya hice la entrada de personas <br>
@@ -9,8 +9,7 @@ Dia-6: Estoy haciendo las pantallas (4:36) <br>
 Dia-7: Sigo haciendo jFrames aesthetic <br>
 Dia-8: El menu inicio ya lo tiene todo creo <br>
 Dia-9: Voy a empezar a resolver detalles de funcionalidad <br>
-
-## Daniela lee esto
+Dia-10: Hice pila de frames en cuanto me tome un 10 hago los reportes <br>
 
 # Cuando quieras hacer cosas en el proyecto
 
