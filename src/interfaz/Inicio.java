@@ -117,7 +117,7 @@ public class Inicio extends JFrame {
 					}
 				}
 				if (!found) {
-					AddTrabajadores frame = new AddTrabajadores(planificador);
+					AddTrabajadores frame = new AddTrabajadores(planificador,null,null);
 					if (modoOscuro) frame.aplicarModoOscuro(modoOscuro, darkBg, darkFg, new Color(60, 63, 80), amarillo);
 					frame.setVisible(true);
 				}
