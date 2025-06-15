@@ -112,6 +112,15 @@ public class EditarGuardias extends JFrame {
 		btnEditar.setContentAreaFilled(false);
 		btnEditar.setOpaque(true);
 
+		JButton btnEliminar = new JButton("Eliminar");
+		btnEliminar.setFont(new Font("Arial", Font.BOLD, 15));
+		btnEliminar.setBackground(negro);
+		btnEliminar.setForeground(amarillo);
+		btnEliminar.setFocusPainted(false);
+		btnEliminar.setBorder(BorderFactory.createLineBorder(negro, 2, true));
+		btnEliminar.setContentAreaFilled(false);
+		btnEliminar.setOpaque(true);
+
 		JButton btnCerrar = new JButton("Cerrar");
 		btnCerrar.setFont(new Font("Arial", Font.BOLD, 15));
 		btnCerrar.setBackground(negro);
@@ -122,6 +131,7 @@ public class EditarGuardias extends JFrame {
 		btnCerrar.setOpaque(true);
 
 		panelBoton.add(btnEditar);
+		panelBoton.add(btnEliminar);
 		panelBoton.add(btnCerrar);
 		contentPane.add(panelBoton, BorderLayout.SOUTH);
 
@@ -158,6 +168,33 @@ public class EditarGuardias extends JFrame {
 					FormularioGuardia frame = new FormularioGuardia();
 					frame.setVisible(true);
 					// Aquí puedes pasar la guardia seleccionada al formulario si lo deseas
+				}
+			}
+		});
+
+		// Acción eliminar
+		btnEliminar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int fila = table.getSelectedRow();
+				if (fila == -1) {
+					JOptionPane.showMessageDialog(EditarGuardias.this, "Seleccione una guardia para eliminar.", "Error", JOptionPane.ERROR_MESSAGE);
+					return;
+				}
+				int id = Integer.parseInt(model.getValueAt(fila, 0).toString());
+				int confirm = JOptionPane.showConfirmDialog(
+					EditarGuardias.this,
+					"¿Está seguro de eliminar la guardia seleccionada?",
+					"Confirmar eliminación",
+					JOptionPane.YES_NO_OPTION
+				);
+				if (confirm == JOptionPane.YES_OPTION) {
+					boolean eliminado = PlanificadorGuardias.getInstancia().getGuardiaFactory().eliminarGuardia(id);
+					if (eliminado) {
+						JOptionPane.showMessageDialog(EditarGuardias.this, "Guardia eliminada correctamente.", "Eliminado", JOptionPane.INFORMATION_MESSAGE);
+						cargarGuardias(txtBusqueda.getText().trim().isEmpty() ? null : txtBusqueda.getText().trim().toLowerCase());
+					} else {
+						JOptionPane.showMessageDialog(EditarGuardias.this, "No se pudo eliminar la guardia.", "Error", JOptionPane.ERROR_MESSAGE);
+					}
 				}
 			}
 		});
