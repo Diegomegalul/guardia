@@ -19,7 +19,7 @@ Dia-9: Voy a empezar a resolver detalles de funcionalidad <br>
 3-Haces los cambios en una cosa y le vas haciendo commits
 tipo: "git add." y "git commit -m "Estoy haciendo reporte tal"" <br>
 cada cosa unos cuantos commits, nada de 3000 cambios en un commit <br>
-4-Haces el push ahora voy a probar como lo debes hacer <br>
+4-Haces el push normal dsde tu rama "git push"<br>
 
 ## Cosas q hacer
 
