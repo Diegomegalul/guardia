@@ -25,7 +25,7 @@ public class Inicio extends JFrame {
 	private JMenuBar menuBar;
 	private JMenuItem itemEstudiante, itemTrabajador;
 	private JMenuItem valoresEstudiantes, valoresTrabajadores;
-	private JMenuItem planificarAuto, editarManual;
+	private JMenuItem planificarAuto;
 	private JMenuItem mostrarEstudiantes, mostrarTrabajadores, mostrarGuardiasPlanificadas, mostrarGuardiasCumplidas;
 	private JMenuItem reporteRecuperacion, reporteVoluntarios, reporteEstInactivos, reporteFestivas;
 	private JButton btnSalir, btnLuna;
@@ -119,14 +119,14 @@ public class Inicio extends JFrame {
 		menuBar.add(menuAdd); // SIEMPRE al principio
 
 		// Menú Planificar Guardias (después de Añadir Personas)
-		JMenu menuPlanificar = new JMenu("Planificar Guardias");
+		JMenu menuPlanificar = new JMenu("Guardias");
 		menuPlanificar.setOpaque(true);
 		menuPlanificar.setFont(new Font("Arial", Font.BOLD, 16));
 		menuPlanificar.setBackground(amarillo);
 		menuPlanificar.setForeground(negro);
 		menuPlanificar.setBorder(BorderFactory.createLineBorder(negro, 1));
 
-		planificarAuto = new JMenuItem("Planificar Auto");
+		planificarAuto = new JMenuItem("Planificar ");
 		planificarAuto.setFont(new Font("Arial", Font.PLAIN, 15));
 		planificarAuto.setBackground(darkBg);
 		planificarAuto.setForeground(amarillo);
@@ -158,32 +158,56 @@ public class Inicio extends JFrame {
 			}
 		});
 
-		editarManual = new JMenuItem("Editar Manualmente");
-		editarManual.setFont(new Font("Arial", Font.PLAIN, 15));
-		editarManual.setBackground(darkBg);
-		editarManual.setForeground(amarillo);
-		editarManual.setBorder(BorderFactory.createLineBorder(negro, 1));
-		editarManual.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				boolean found = false;
-				for (Frame frame : JFrame.getFrames()) {
-					if (frame instanceof EditarGuardias && frame.isVisible()) {
-						frame.toFront();
-						frame.requestFocus();
-						found = true;
-						break;
-					}
-				}
-				if (!found) {
-					EditarGuardias frame = new EditarGuardias();
-					frame.setVisible(true);
-				}
-			}
-		});
-
 		menuPlanificar.add(planificarAuto);
-		menuPlanificar.add(editarManual);
 		menuBar.add(menuPlanificar);
+		
+				mostrarGuardiasPlanificadas = new JMenuItem("Guardias planificadas");
+				menuPlanificar.add(mostrarGuardiasPlanificadas);
+				mostrarGuardiasPlanificadas.setFont(new Font("Arial", Font.PLAIN, 15));
+				mostrarGuardiasPlanificadas.setBackground(darkBg);
+				mostrarGuardiasPlanificadas.setForeground(amarillo);
+				mostrarGuardiasPlanificadas.setBorder(BorderFactory.createLineBorder(negro, 1));
+				
+						mostrarGuardiasCumplidas = new JMenuItem("Guardias cumplidas");
+						menuPlanificar.add(mostrarGuardiasCumplidas);
+						mostrarGuardiasCumplidas.setFont(new Font("Arial", Font.PLAIN, 15));
+						mostrarGuardiasCumplidas.setBackground(darkBg);
+						mostrarGuardiasCumplidas.setForeground(amarillo);
+						mostrarGuardiasCumplidas.setBorder(BorderFactory.createLineBorder(negro, 1));
+						mostrarGuardiasCumplidas.addActionListener(new ActionListener() {
+							public void actionPerformed(ActionEvent e) {
+								boolean found = false;
+								for (Frame frame : JFrame.getFrames()) {
+									if (frame instanceof GuardiasCumplidas && frame.isVisible()) {
+										frame.toFront();
+										frame.requestFocus();
+										found = true;
+										break;
+									}
+								}
+								if (!found) {
+									GuardiasCumplidas frame = new GuardiasCumplidas();
+									frame.setVisible(true);
+								}
+							}
+						});
+				mostrarGuardiasPlanificadas.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						boolean found = false;
+						for (Frame frame : JFrame.getFrames()) {
+							if (frame instanceof GuardiasPlanificadas && frame.isVisible()) {
+								frame.toFront();
+								frame.requestFocus();
+								found = true;
+								break;
+							}
+						}
+						if (!found) {
+							GuardiasPlanificadas frame = new GuardiasPlanificadas();
+							frame.setVisible(true);
+						}
+					}
+				});
 
 		// Menú Editar Calendario (después de Planificar)
 		JMenuItem menuCalendario = new JMenuItem("Editar Calendario");
@@ -266,56 +290,8 @@ public class Inicio extends JFrame {
 			}
 		});
 
-		mostrarGuardiasPlanificadas = new JMenuItem("Guardias planificadas");
-		mostrarGuardiasPlanificadas.setFont(new Font("Arial", Font.PLAIN, 15));
-		mostrarGuardiasPlanificadas.setBackground(darkBg);
-		mostrarGuardiasPlanificadas.setForeground(amarillo);
-		mostrarGuardiasPlanificadas.setBorder(BorderFactory.createLineBorder(negro, 1));
-		mostrarGuardiasPlanificadas.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				boolean found = false;
-				for (Frame frame : JFrame.getFrames()) {
-					if (frame instanceof GuardiasPlanificadas && frame.isVisible()) {
-						frame.toFront();
-						frame.requestFocus();
-						found = true;
-						break;
-					}
-				}
-				if (!found) {
-					GuardiasPlanificadas frame = new GuardiasPlanificadas();
-					frame.setVisible(true);
-				}
-			}
-		});
-
-		mostrarGuardiasCumplidas = new JMenuItem("Guardias cumplidas");
-		mostrarGuardiasCumplidas.setFont(new Font("Arial", Font.PLAIN, 15));
-		mostrarGuardiasCumplidas.setBackground(darkBg);
-		mostrarGuardiasCumplidas.setForeground(amarillo);
-		mostrarGuardiasCumplidas.setBorder(BorderFactory.createLineBorder(negro, 1));
-		mostrarGuardiasCumplidas.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				boolean found = false;
-				for (Frame frame : JFrame.getFrames()) {
-					if (frame instanceof GuardiasCumplidas && frame.isVisible()) {
-						frame.toFront();
-						frame.requestFocus();
-						found = true;
-						break;
-					}
-				}
-				if (!found) {
-					GuardiasCumplidas frame = new GuardiasCumplidas();
-					frame.setVisible(true);
-				}
-			}
-		});
-
 		menuMostrar.add(mostrarEstudiantes);
 		menuMostrar.add(mostrarTrabajadores);
-		menuMostrar.add(mostrarGuardiasPlanificadas);
-		menuMostrar.add(mostrarGuardiasCumplidas);
 		menuBar.add(menuMostrar);
 
 		// Menú Reportes (después de Mostrar)
@@ -629,10 +605,6 @@ public class Inicio extends JFrame {
 		if (mostrarEstudiantes != null) {
 			mostrarEstudiantes.setBackground(modoOscuro ? amarillo : darkBg);
 			mostrarEstudiantes.setForeground(modoOscuro ? negro : amarillo);
-		}
-		if (editarManual != null) {
-			editarManual.setBackground(modoOscuro ? amarillo : darkBg);
-			editarManual.setForeground(modoOscuro ? negro : amarillo);
 		}
 		if (planificarAuto != null) {
 			planificarAuto.setBackground(modoOscuro ? amarillo : darkBg);
