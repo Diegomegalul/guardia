@@ -23,7 +23,7 @@ cada cosa unos cuantos commits, nada de 3000 cambios en un commit <br>
 
 ## Cosas q hacer
 
-usar j dialog para no abrir mas  ventanas o algo <br>
+Buscar las ventanas que puedan tener conflictos con otras y no dejar q se abran juntas <br>
 planificar recuperacion auto <br>
 el caliendario debe actualizar los dias <br>
 agregar el editar y eliminar a mostrar estudiantes y profesores <br>

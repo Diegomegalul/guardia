@@ -18,6 +18,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.border.EmptyBorder;
 
+import logica.Guardia;
 import logica.PlanificadorGuardias;
 
 import com.toedter.calendar.JMonthChooser;
@@ -83,9 +84,8 @@ public class PlanGuardias extends JFrame {
 				int mes = monthChooser.getMonth() + 1; // JMonthChooser es 0-based
 				int anio = yearChooser.getYear();
 				PlanificadorGuardias planificador = PlanificadorGuardias.getInstancia();
-				List<String> resultado = planificador.getGuardiaFactory()
-					.planificarGuardiasMes(planificador.getFacultad(), anio, mes);
-				for (String linea : resultado) {
+				List<Guardia> resultado = planificador.getGuardiaFactory().planificarGuardiasMes(planificador.getFacultad(), anio, mes);
+				for (Guardia linea : resultado) {
 					txtResultado.append(linea + "\n");
 				}
 			}
