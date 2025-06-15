@@ -130,6 +130,76 @@ public class PlanGuardias extends JFrame {
 		scroll.setBorder(BorderFactory.createLineBorder(amarillo, 2));
 		contentPane.add(scroll, BorderLayout.CENTER);
 
+		// Panel de botones de acción
+		JPanel panelBoton = new JPanel();
+		panelBoton.setBackground(amarillo);
+
+		JButton btnEditar = new JButton("Editar");
+		btnEditar.setFont(new Font("Arial", Font.BOLD, 15));
+		btnEditar.setBackground(negro);
+		btnEditar.setForeground(amarillo);
+		btnEditar.setFocusPainted(false);
+		btnEditar.setBorder(BorderFactory.createLineBorder(negro, 2, true));
+		btnEditar.setContentAreaFilled(false);
+		btnEditar.setOpaque(true);
+
+		JButton btnEliminar = new JButton("Eliminar");
+		btnEliminar.setFont(new Font("Arial", Font.BOLD, 15));
+		btnEliminar.setBackground(negro);
+		btnEliminar.setForeground(amarillo);
+		btnEliminar.setFocusPainted(false);
+		btnEliminar.setBorder(BorderFactory.createLineBorder(negro, 2, true));
+		btnEliminar.setContentAreaFilled(false);
+		btnEliminar.setOpaque(true);
+
+		panelBoton.add(btnEditar);
+		panelBoton.add(btnEliminar);
+		contentPane.add(panelBoton, BorderLayout.SOUTH);
+
+		// Acción editar
+		btnEditar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int fila = tablaGuardias.getSelectedRow();
+				if (fila == -1) {
+					JOptionPane.showMessageDialog(PlanGuardias.this, "Seleccione una guardia para editar.", "Error", JOptionPane.ERROR_MESSAGE);
+					return;
+				}
+				int id = Integer.parseInt(tablaModel.getValueAt(fila, 0).toString());
+				logica.Guardia g = buscarGuardiaPorId(id);
+				if (g != null) {
+					FormularioGuardia frame = new FormularioGuardia(g);
+					frame.setVisible(true);
+				}
+			}
+		});
+
+		// Acción eliminar
+		btnEliminar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int fila = tablaGuardias.getSelectedRow();
+				if (fila == -1) {
+					JOptionPane.showMessageDialog(PlanGuardias.this, "Seleccione una guardia para eliminar.", "Error", JOptionPane.ERROR_MESSAGE);
+					return;
+				}
+				int id = Integer.parseInt(tablaModel.getValueAt(fila, 0).toString());
+				int confirm = JOptionPane.showConfirmDialog(
+					PlanGuardias.this,
+					"¿Está seguro de eliminar la guardia seleccionada?",
+					"Confirmar eliminación",
+					JOptionPane.YES_NO_OPTION
+				);
+				if (confirm == JOptionPane.YES_OPTION) {
+					boolean eliminado = PlanificadorGuardias.getInstancia().getGuardiaFactory().eliminarGuardia(id);
+					if (eliminado) {
+						JOptionPane.showMessageDialog(PlanGuardias.this, "Guardia eliminada correctamente.", "Eliminado", JOptionPane.INFORMATION_MESSAGE);
+						cargarGuardiasEnTabla();
+					} else {
+						JOptionPane.showMessageDialog(PlanGuardias.this, "No se pudo eliminar la guardia.", "Error", JOptionPane.ERROR_MESSAGE);
+					}
+				}
+			}
+		});
+
 		// --- Cargar guardias existentes al abrir la ventana ---
 		cargarGuardiasEnTabla();
 
@@ -254,5 +324,14 @@ public class PlanGuardias extends JFrame {
 			comp.setBackground(oscuro ? new Color(40, 40, 50) : Color.WHITE);
 			((JTable) comp).setForeground(oscuro ? Color.WHITE : texto);
 		}
+	}
+
+	// Método para buscar guardia por ID
+	private logica.Guardia buscarGuardiaPorId(int id) {
+		java.util.List<logica.Guardia> guardias = PlanificadorGuardias.getInstancia().getGuardiaFactory().getGuardias();
+		for (logica.Guardia g : guardias) {
+			if (g.getId() == id) return g;
+		}
+		return null;
 	}
 }

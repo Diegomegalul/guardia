@@ -21,10 +21,9 @@ tipo: "git add." y "git commit -m "Estoy haciendo reporte tal"" <br>
 cada cosa unos cuantos commits, nada de 3000 cambios en un commit <br>
 4-Haces el push normal dsde tu rama "git push"<br>
 
-## Cosas q hacer
+## Problemas que solucionar
 
 Buscar las ventanas que puedan tener conflictos con otras y no dejar q se abran juntas <br>
 planificar recuperacion auto <br>
 el caliendario debe actualizar los dias <br>
-poner un sheck mark para pasar las guardias planificadas a cumplidas <br>
 cualquier cosa q se te ocurra la escribes aca <br>
