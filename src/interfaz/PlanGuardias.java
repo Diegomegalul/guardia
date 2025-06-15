@@ -17,13 +17,14 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
+import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
+import javax.swing.table.DefaultTableModel;
 
-import logica.Guardia;
 import logica.PlanificadorGuardias;
 
 import com.toedter.calendar.JMonthChooser;
@@ -36,7 +37,8 @@ public class PlanGuardias extends JFrame {
 	private JMonthChooser monthChooser;
 	private JYearChooser yearChooser;
 	private JButton btnPlanificar;
-	private JTextArea txtResultado;
+	private JTable tablaGuardias;
+	private DefaultTableModel tablaModel;
 	@SuppressWarnings("unused")
 	private PlanificadorGuardias planificador;
 	private JScrollPane scroll; // <-- cambia a atributo para poder acceder
@@ -49,7 +51,7 @@ public class PlanGuardias extends JFrame {
 		this.planificador = planificador;
 		setTitle("Planificar Guardias Automáticamente");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 600, 500);
+		setBounds(100, 100, 800, 500);
 		setLocationRelativeTo(null);
 
 		contentPane = new JPanel();
@@ -111,36 +113,119 @@ public class PlanGuardias extends JFrame {
 
 		contentPane.add(panelSuperior, BorderLayout.NORTH);
 
-		txtResultado = new JTextArea();
-		txtResultado.setEditable(false);
-		txtResultado.setFont(new Font("Consolas", Font.PLAIN, 14));
-		txtResultado.setBackground(Color.WHITE);
-		txtResultado.setForeground(negro);
+		// Tabla de guardias planificadas
+		String[] columnas = {"ID", "Tipo", "Persona", "CI", "Fecha", "Hora Inicio", "Hora Fin"};
+		tablaModel = new DefaultTableModel(columnas, 0) {
+			private static final long serialVersionUID = 1L;
+			public boolean isCellEditable(int row, int column) { return false; }
+		};
+		tablaGuardias = new JTable(tablaModel);
+		tablaGuardias.getTableHeader().setFont(new Font("Arial", Font.BOLD, 14));
+		tablaGuardias.setFont(new Font("Consolas", Font.PLAIN, 13));
+		tablaGuardias.setRowHeight(24);
+		tablaGuardias.setBackground(Color.WHITE);
+		tablaGuardias.setForeground(negro);
 
-		scroll = new JScrollPane(txtResultado);
+		scroll = new JScrollPane(tablaGuardias);
 		scroll.setBorder(BorderFactory.createLineBorder(amarillo, 2));
 		contentPane.add(scroll, BorderLayout.CENTER);
 
+		// --- Cargar guardias existentes al abrir la ventana ---
+		cargarGuardiasEnTabla();
+
+		// Actualizar tabla al cambiar mes o año
+		monthChooser.addPropertyChangeListener("month", new java.beans.PropertyChangeListener() {
+			public void propertyChange(java.beans.PropertyChangeEvent evt) {
+				cargarGuardiasEnTabla();
+			}
+		});
+		yearChooser.addPropertyChangeListener("year", new java.beans.PropertyChangeListener() {
+			public void propertyChange(java.beans.PropertyChangeEvent evt) {
+				cargarGuardiasEnTabla();
+			}
+		});
+
 		btnPlanificar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				txtResultado.setText("");
 				int mes = monthChooser.getMonth() + 1; // JMonthChooser es 0-based
 				int anio = yearChooser.getYear();
 				PlanificadorGuardias planificador = PlanificadorGuardias.getInstancia();
-				java.util.List<Guardia> resultado = planificador.getGuardiaFactory().planificarGuardiasMes(planificador.getFacultad(), anio, mes);
-				for (Guardia linea : resultado) {
-					txtResultado.append(linea + "\n");
+
+				// Verificar si ya hay guardias planificadas para este mes y año
+				java.util.List<logica.Guardia> guardiasExistentes = planificador.getGuardiaFactory().getGuardias();
+				boolean yaPlanificado = false;
+				for (int i = 0; i < guardiasExistentes.size(); i++) {
+					java.time.LocalDate fecha = guardiasExistentes.get(i).getHorario().getDia();
+					if (fecha.getMonthValue() == mes && fecha.getYear() == anio) {
+						yaPlanificado = true;
+						break;
+					}
 				}
+
+				if (yaPlanificado) {
+					JOptionPane.showMessageDialog(
+						PlanGuardias.this,
+						"Todas las guardias para este mes ya se han planificado.",
+						"Información",
+						JOptionPane.INFORMATION_MESSAGE
+					);
+					cargarGuardiasEnTabla();
+					return;
+				}
+
+				// Planificar y guardar en GuardiaFactory
+				java.util.List<logica.Guardia> guardiasPlanificadas = planificador.getGuardiaFactory().planificarGuardiasMes(planificador.getFacultad(), anio, mes);
+
+				if (guardiasPlanificadas == null || guardiasPlanificadas.isEmpty()) {
+					JOptionPane.showMessageDialog(
+						PlanGuardias.this,
+						"No hay guardias para planificar en este mes.",
+						"Información",
+						JOptionPane.INFORMATION_MESSAGE
+					);
+					cargarGuardiasEnTabla();
+					return;
+				}
+
+				// Añadir las nuevas guardias a las existentes (no borrar las de otros meses)
+				java.util.List<logica.Guardia> nuevas = new java.util.ArrayList<logica.Guardia>(guardiasExistentes);
+				nuevas.addAll(guardiasPlanificadas);
+				planificador.getGuardiaFactory().setGuardias(nuevas);
+
+				cargarGuardiasEnTabla();
 			}
 		});
+	}
+
+	// Método para cargar guardias existentes en la tabla según mes y año seleccionados
+	private void cargarGuardiasEnTabla() {
+		tablaModel.setRowCount(0);
+		int mes = monthChooser.getMonth() + 1;
+		int anio = yearChooser.getYear();
+		java.util.List<logica.Guardia> guardias = PlanificadorGuardias.getInstancia().getGuardiaFactory().getGuardias();
+		for (int i = 0; i < guardias.size(); i++) {
+			logica.Guardia g = guardias.get(i);
+			java.time.LocalDate fecha = g.getHorario().getDia();
+			if (fecha.getMonthValue() == mes && fecha.getYear() == anio) {
+				tablaModel.addRow(new Object[] {
+					g.getId(),
+					g.getTipo(),
+					g.getPersona().getNombre() + " " + g.getPersona().getApellidos(),
+					g.getPersona().getCi(),
+					g.getHorario().getDia(),
+					g.getHorario().getHoraInicio(),
+					g.getHorario().getHoraFin()
+				});
+			}
+		}
 	}
 
 	public void aplicarModoOscuro(boolean oscuro, Color fondo, Color texto, Color boton, Color amarilloSec) {
 		contentPane.setBackground(fondo);
 		setComponentColors(contentPane, oscuro, fondo, texto, boton, amarilloSec);
-		if (txtResultado != null) {
-			txtResultado.setBackground(oscuro ? new Color(40, 40, 50) : Color.WHITE);
-			txtResultado.setForeground(oscuro ? Color.WHITE : texto);
+		if (tablaGuardias != null) {
+			tablaGuardias.setBackground(oscuro ? new Color(40, 40, 50) : Color.WHITE);
+			tablaGuardias.setForeground(oscuro ? Color.WHITE : texto);
 		}
 		if (scroll != null) {
 			scroll.getViewport().setBackground(oscuro ? new Color(40, 40, 50) : Color.WHITE);
@@ -165,9 +250,9 @@ public class PlanGuardias extends JFrame {
 		} else if (comp instanceof JButton) {
 			comp.setBackground(boton);
 			comp.setForeground(amarilloSec);
-		} else if (comp instanceof JTextArea) {
+		} else if (comp instanceof JTable) {
 			comp.setBackground(oscuro ? new Color(40, 40, 50) : Color.WHITE);
-			((JTextArea) comp).setForeground(oscuro ? Color.WHITE : texto);
+			((JTable) comp).setForeground(oscuro ? Color.WHITE : texto);
 		}
 	}
 }

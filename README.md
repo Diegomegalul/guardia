@@ -26,7 +26,5 @@ cada cosa unos cuantos commits, nada de 3000 cambios en un commit <br>
 Buscar las ventanas que puedan tener conflictos con otras y no dejar q se abran juntas <br>
 planificar recuperacion auto <br>
 el caliendario debe actualizar los dias <br>
-agregar el editar y eliminar a mostrar estudiantes y profesores <br>
 poner un sheck mark para pasar las guardias planificadas a cumplidas <br>
-hacer un buscador por ci o por nombre o por grupo <br>
 cualquier cosa q se te ocurra la escribes aca <br>
