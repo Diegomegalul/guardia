@@ -1,7 +1,11 @@
 package logica;
-
 import java.util.*;
+
 import utiles.TipoGuardia;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class PlanificadorGuardias {
 	//Atributos
@@ -165,4 +169,50 @@ public class PlanificadorGuardias {
             facultad.agregarPersona(e);
         }
     }
+    //Profesores voluntarios en vacaciones
+    public List<String> reporteProfesoresVoluntariosEnVacaciones() {
+        List<String> voluntarios = new ArrayList<>();
+        boolean tieneGuardiaEnVacaciones;
+        
+        for (Persona persona : facultad.getPersonas()) {
+            if (persona instanceof Trabajador) {
+                Trabajador trabajador = (Trabajador) persona;
+                if (trabajador.getActivo() && trabajador.getVoluntario()) {
+                    
+                    tieneGuardiaEnVacaciones = false;
+                    Iterator<Guardia> it = guardiaFactory.getGuardias().iterator();
+                    
+                    while (it.hasNext() && !tieneGuardiaEnVacaciones) {
+                        Guardia guardia = it.next();
+                        if (guardia.getPersona().equals(trabajador)) {
+                            int mes = guardia.getHorario().getDia().getMonthValue();
+                            tieneGuardiaEnVacaciones = (mes == 7 || mes == 8);
+                        }
+                    }
+                    
+                    if (tieneGuardiaEnVacaciones) {
+                        String nombreCompleto = trabajador.getNombre() + " " + trabajador.getApellidos();
+                        if (!voluntarios.contains(nombreCompleto)) {
+                            voluntarios.add(nombreCompleto);
+                        }
+                    }
+                }
+            }
+        }
+        
+        return voluntarios;
+    }
+    //Listado de gurdias en dias festivos
+    public List<Guardia> listaGuardiasEnDiasFestivos() {
+        List<Guardia> resultado = new ArrayList<>();
+        
+        for (Guardia guardia : guardiaFactory.getGuardias()) {
+            if (calendario.existeDiaFestivo(guardia.getHorario().getDia())) {
+                resultado.add(guardia);
+            }
+        }
+        
+        return resultado;
+    }
 }
+
