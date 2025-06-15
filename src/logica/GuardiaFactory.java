@@ -81,6 +81,7 @@ public class GuardiaFactory {
 			break;
 
 		case FESTIVO:
+			// Validar máximo de 3 guardias festivas por persona
 			if (persona.getCantidadGuardiasFestivo() >= 3) {
 				return false;
 			}
@@ -96,11 +97,17 @@ public class GuardiaFactory {
 		// Actualizar contadores
 		persona.setGuardiasAsignadas(persona.getGuardiasAsignadas() + 1);
 
+		// Si es festivo, aumentar contador
 		if (tipo == TipoGuardia.FESTIVO) {
 			persona.setCantidadGuardiasFestivo(persona.getCantidadGuardiasFestivo() + 1);
+		} else {
+			// Si el día es festivo según el calendario, también cuenta como festivo
+			if (calendario != null && calendario.existeDiaFestivo(horario.getDia())) {
+				persona.setCantidadGuardiasFestivo(persona.getCantidadGuardiasFestivo() + 1);
+			}
 		}
 
-		// Contador espec�fico para estudiantes
+		// Contador específico para estudiantes
 		if (persona instanceof Estudiante && tipo == TipoGuardia.NORMAL) {
 			((Estudiante)persona).incrementarGuardiasAsignadas();
 		}
@@ -185,7 +192,7 @@ public class GuardiaFactory {
 
 	/*
 	  Planifica automáticamente las guardias para un mes y año dados.
-	  Devuelve una lista de strings con el resultado de la planificación.
+	  Devuelve una lista de guardias con el resultado de la planificación.
 	 */
 	public List<Guardia> planificarGuardiasMes(Facultad facultad, int anio, int mes) {
 		ArrayList<Guardia> guardias = new ArrayList<>();
@@ -194,16 +201,22 @@ public class GuardiaFactory {
 		List<Estudiante> estudiantesM = new ArrayList<>();
 		List<Estudiante> estudiantesF = new ArrayList<>();
 
+		// --- NUEVO: Asignar guardias de recuperación antes de planificar normales ---
+		planificarGuardiasRecuperacion(anio, mes);
+
 		// Clasificar personas
 		for (Persona p : personas) {
 			if (p instanceof Trabajador && p.getActivo()) {
 				trabajadores.add((Trabajador) p);
 			} else if (p instanceof Estudiante && p.getActivo()) {
 				Estudiante est = (Estudiante) p;
-				if (est.getSexo() == Sexo.MASCULINO) {
-					estudiantesM.add(est);
-				} else if (est.getSexo() == Sexo.FEMENINO) {
-					estudiantesF.add(est);
+				// Solo agregar estudiantes que NO deben guardias de recuperación
+				if (est.calcularGuardiasPendientes() <= 0) {
+					if (est.getSexo() == Sexo.MASCULINO) {
+						estudiantesM.add(est);
+					} else if (est.getSexo() == Sexo.FEMENINO) {
+						estudiantesF.add(est);
+					}
 				}
 			}
 		}
@@ -216,6 +229,29 @@ public class GuardiaFactory {
 		for (int day = 1; day <= yearMonth.lengthOfMonth(); day++) {
 			LocalDate fecha = LocalDate.of(anio, mes, day);
 			int dow = fecha.getDayOfWeek().getValue(); // 1=Lunes ... 7=Domingo
+
+			// --- NUEVO: Si el día es festivo, asignar a la persona con menos guardias festivas ---
+			if (calendario != null && calendario.existeDiaFestivo(fecha)) {
+				// Buscar persona con menor cantidad de guardias festivas (de todos los activos)
+				Persona menosFestivos = null;
+				int minFestivos = Integer.MAX_VALUE;
+				for (Persona p : personas) {
+					if (p.getActivo() && p.getCantidadGuardiasFestivo() < minFestivos) {
+						minFestivos = p.getCantidadGuardiasFestivo();
+						menosFestivos = p;
+					}
+				}
+				if (menosFestivos != null) {
+					// Asignar guardia festiva (tipo FESTIVO)
+					Horario hFestivo = new Horario(fecha, LocalTime.of(8, 0), LocalTime.of(20, 0));
+					if (menosFestivos.puedeHacerGuardia(hFestivo)) {
+						guardias.add(new Guardia(nextId++, TipoGuardia.FESTIVO, menosFestivos, hFestivo));
+						menosFestivos.setCantidadGuardiasFestivo(menosFestivos.getCantidadGuardiasFestivo() + 1);
+						menosFestivos.setGuardiasAsignadas(menosFestivos.getGuardiasAsignadas() + 1);
+					}
+				}
+				continue; // No asignar guardias normales ese día
+			}
 
 			// Guardias de estudiantes hombres: todos los días, 20:00-08:00
 			if (!estudiantesM.isEmpty()) {
@@ -257,6 +293,71 @@ public class GuardiaFactory {
 		}
 
 		return guardias;
+	}
+
+	/**
+	 * Planifica guardias de recuperación para estudiantes con guardias pendientes
+	 * que hayan pasado al menos dos meses desde la asignación de la guardia pendiente.
+	 * Se asigna la guardia de recuperación en el mes siguiente disponible.
+	 */
+	public void planificarGuardiasRecuperacion(int anio, int mes) {
+		// Buscar estudiantes con guardias pendientes
+		List<Persona> personas = new ArrayList<>();
+		if (personas.isEmpty()) {
+			personas = logica.PlanificadorGuardias.getInstancia().getFacultad().getPersonas();
+		}
+
+		for (Persona p : personas) {
+			if (p instanceof logica.Estudiante) {
+				logica.Estudiante est = (logica.Estudiante) p;
+				int pendientes = est.calcularGuardiasPendientes();
+				if (pendientes > 0) {
+					// Buscar la última guardia asignada no cumplida
+					LocalDate ultimaAsignada = null;
+					for (Guardia g : guardias) {
+						if (g.getPersona().equals(est)) {
+							LocalDate fecha = g.getHorario().getDia();
+							// Solo considerar guardias normales (no recuperación)
+							if (g.getTipo() == utiles.TipoGuardia.NORMAL) {
+								if (ultimaAsignada == null || fecha.isAfter(ultimaAsignada)) {
+									ultimaAsignada = fecha;
+								}
+							}
+						}
+					}
+					if (ultimaAsignada != null) {
+						// Revisar si han pasado al menos dos meses desde la última asignación
+						LocalDate fechaRecuperacion = ultimaAsignada.plusMonths(2).withDayOfMonth(1);
+						LocalDate fechaPlanificada = LocalDate.of(anio, mes, 1);
+						if (!fechaPlanificada.isBefore(fechaRecuperacion)) {
+							// Asignar guardias de recuperación para nivelar
+							for (int i = 0; i < pendientes; i++) {
+								// Buscar un día hábil en el mes para la guardia de recuperación
+								LocalDate dia = fechaPlanificada.plusDays(i);
+								if (dia.getMonthValue() != mes) break;
+								// Horario nocturno para hombres, diurno para mujeres
+								Horario horario;
+								if (est.getSexo() == utiles.Sexo.MASCULINO) {
+									horario = new Horario(dia, java.time.LocalTime.of(20, 0), java.time.LocalTime.of(8, 0));
+								} else {
+									// Buscar fin de semana
+									while (dia.getDayOfWeek() != java.time.DayOfWeek.SATURDAY &&
+										   dia.getDayOfWeek() != java.time.DayOfWeek.SUNDAY) {
+										dia = dia.plusDays(1);
+										if (dia.getMonthValue() != mes) break;
+									}
+									horario = new Horario(dia, java.time.LocalTime.of(8, 0), java.time.LocalTime.of(20, 0));
+								}
+								// Solo si puede hacer guardia
+								if (est.puedeHacerGuardia(horario)) {
+									crearGuardia(utiles.TipoGuardia.RECUPERACION, est, horario);
+								}
+							}
+						}
+					}
+				}
+			}
+		}
 	}
 }
 

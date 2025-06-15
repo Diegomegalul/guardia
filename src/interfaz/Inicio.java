@@ -25,7 +25,7 @@ public class Inicio extends JFrame {
 	private JMenuBar menuBar;
 	private JMenuItem itemEstudiante, itemTrabajador;
 	private JMenuItem valoresEstudiantes, valoresTrabajadores;
-	private JMenuItem planificarAuto, planificarRecuperacion, editarManual;
+	private JMenuItem planificarAuto, editarManual;
 	private JMenuItem mostrarEstudiantes, mostrarTrabajadores, mostrarGuardiasPlanificadas, mostrarGuardiasCumplidas;
 	private JMenuItem reporteRecuperacion, reporteVoluntarios, reporteEstInactivos, reporteFestivas;
 	private JButton btnSalir, btnLuna;
@@ -158,17 +158,6 @@ public class Inicio extends JFrame {
 			}
 		});
 
-		planificarRecuperacion = new JMenuItem("Planificar Recuperación");
-		planificarRecuperacion.setFont(new Font("Arial", Font.PLAIN, 15));
-		planificarRecuperacion.setBackground(darkBg);
-		planificarRecuperacion.setForeground(amarillo);
-		planificarRecuperacion.setBorder(BorderFactory.createLineBorder(negro, 1));
-		planificarRecuperacion.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				JOptionPane.showMessageDialog(Inicio.this, "Planificar recuperación (próximamente).");
-			}
-		});
-
 		editarManual = new JMenuItem("Editar Manualmente");
 		editarManual.setFont(new Font("Arial", Font.PLAIN, 15));
 		editarManual.setBackground(darkBg);
@@ -181,7 +170,6 @@ public class Inicio extends JFrame {
 		});
 
 		menuPlanificar.add(planificarAuto);
-		menuPlanificar.add(planificarRecuperacion);
 		menuPlanificar.add(editarManual);
 		menuBar.add(menuPlanificar);
 
@@ -637,10 +625,6 @@ public class Inicio extends JFrame {
 		if (planificarAuto != null) {
 			planificarAuto.setBackground(modoOscuro ? amarillo : darkBg);
 			planificarAuto.setForeground(modoOscuro ? negro : amarillo);
-		}
-		if (planificarRecuperacion != null) {
-			planificarRecuperacion.setBackground(modoOscuro ? amarillo : darkBg);
-			planificarRecuperacion.setForeground(modoOscuro ? negro : amarillo);
 		}
 		if (valoresEstudiantes != null) {
 			valoresEstudiantes.setBackground(modoOscuro ? amarillo : darkBg);

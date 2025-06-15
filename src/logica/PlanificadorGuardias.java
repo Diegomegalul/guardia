@@ -218,5 +218,13 @@ public class PlanificadorGuardias {
 
 		return resultado;
 	}
+
+	/**
+	 * Planifica guardias de recuperación para estudiantes con pendientes,
+	 * en el mes y año indicados.
+	 */
+	public void planificarGuardiasRecuperacion(int anio, int mes) {
+		guardiaFactory.planificarGuardiasRecuperacion(anio, mes);
+	}
 }
 
