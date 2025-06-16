@@ -25,4 +25,5 @@ cada cosa unos cuantos commits, nada de 3000 cambios en un commit <br>
 Buscar las ventanas que puedan tener conflictos con otras y no dejar q se abran juntas <br>
 planificar recuperacion auto <br>
 el caliendario debe actualizar los dias <br>
+poner las cardinalidades en el diagrama <br>
 cualquier cosa q se te ocurra la escribes aca <br>
