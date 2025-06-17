@@ -1,20 +1,36 @@
 package interfaz;
 
-import java.awt.*;
-
-import javax.swing.*;
-import javax.swing.border.EmptyBorder;
-
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.GridBagConstraints;
+import java.awt.Insets;
+import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.BorderFactory;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.SwingConstants;
+import javax.swing.border.EmptyBorder;
+
 import logica.Estudiante;
 import logica.PlanificadorGuardias;
-import utiles.Sexo;
 
-import com.jgoodies.forms.layout.FormLayout;
-import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.factories.FormFactory;
+import com.jgoodies.forms.layout.ColumnSpec;
+import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.forms.layout.RowSpec;
 
 public class AddEstudiantes extends JFrame {
@@ -27,16 +43,27 @@ public class AddEstudiantes extends JFrame {
 	private JTextField txtGuardiasAsignadas, txtGuardiasFestivo;
 	@SuppressWarnings("unused")
 	private PlanificadorGuardias planificador; // <- debe ser de instancia, no static
+	private Estudiante estudianteEditado = null;
+	@SuppressWarnings("unused")
+	private VerEstudiantes framePadre = null;
 
+	// Constructor para añadir
 	public AddEstudiantes(final PlanificadorGuardias planificador) {
+		this(planificador, null, null);
+	}
+
+	// Constructor para editar
+	public AddEstudiantes(final PlanificadorGuardias planificador, Estudiante estudiante, final VerEstudiantes framePadre) {
 		setMinimumSize(new Dimension(500, 500));
 		this.planificador = planificador;
+		this.estudianteEditado = estudiante;
+		this.framePadre = framePadre;
 		// Colores institucionales
 		final Color amarillo = new Color(255, 215, 0);
 		final Color negro = Color.BLACK;
 		final Color blanco = Color.WHITE;
 
-		setTitle("Añadir Estudiante");
+		setTitle(estudiante == null ? "Añadir Estudiante" : "Editar Estudiante");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); // No cierra la app
 		setBounds(100, 100, 500, 500);
 		setLocationRelativeTo(null);
@@ -47,7 +74,7 @@ public class AddEstudiantes extends JFrame {
 		contentPane.setLayout(new BorderLayout(0, 0));
 		setContentPane(contentPane);
 
-		JLabel lblTitulo = new JLabel("Nuevo Estudiante");
+		JLabel lblTitulo = new JLabel(estudiante == null ? "Nuevo Estudiante" : "Editar Estudiante");
 		lblTitulo.setFont(new Font("Arial", Font.BOLD, 24));
 		lblTitulo.setForeground(negro);
 		lblTitulo.setHorizontalAlignment(SwingConstants.CENTER);
@@ -182,12 +209,24 @@ public class AddEstudiantes extends JFrame {
 		txtGrupo.setForeground(negro);
 		panelForm.add(txtGrupo, "4, 16, center, center");
 
-		// Botón guardar
+		// Si es edición, llenar los campos
+		if (estudiante != null) {
+			txtCi.setText(estudiante.getCi());
+			// txtCi.setEditable(false); // Permitir editar el CI
+			txtNombre.setText(estudiante.getNombre());
+			txtApellidos.setText(estudiante.getApellidos());
+			comboSexo.setSelectedItem(estudiante.getSexo().toString());
+			chkActivo.setSelected(estudiante.getActivo());
+			txtGuardiasAsignadas.setText(String.valueOf(estudiante.getGuardiasAsignadas()));
+			txtGuardiasFestivo.setText(String.valueOf(estudiante.getCantidadGuardiasFestivo()));
+			txtGrupo.setText(String.valueOf(estudiante.getGrupo()));
+		}
+
+		// Botón guardar/actualizar
 		JPanel panelBoton = new JPanel();
 		panelBoton.setBackground(amarillo);
-		JButton btnGuardar = new JButton("Guardar") {
+		JButton btnGuardar = new JButton(estudiante == null ? "Guardar" : "Actualizar") {
 			private static final long serialVersionUID = 1L;
-
 			protected void paintComponent(Graphics g) {
 				if (isContentAreaFilled()) {
 					Graphics2D g2 = (Graphics2D) g.create();
@@ -209,7 +248,6 @@ public class AddEstudiantes extends JFrame {
 
 		btnGuardar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				// Usa la variable de instancia 'planificador'
 				String ci = txtCi.getText().trim();
 				String nombre = txtNombre.getText().trim();
 				String apellidos = txtApellidos.getText().trim();
@@ -230,20 +268,43 @@ public class AddEstudiantes extends JFrame {
 					JOptionPane.showMessageDialog(AddEstudiantes.this, "Complete todos los campos obligatorios.", "Error", JOptionPane.ERROR_MESSAGE);
 					return;
 				}
-				Estudiante estudiante = new Estudiante(ci, nombre, apellidos, Sexo.valueOf(sexoStr), activo, guardiasAsignadas, guardiasFestivo, grupo);
-				planificador.getFacultad().agregarPersona(estudiante);
-				JLabel label = new JLabel("Estudiante guardado correctamente");
-				label.setFont(new Font("Arial", Font.BOLD, 16));
-				label.setForeground(negro);
-				JPanel panel = new JPanel();
-				panel.setBackground(amarillo);
-				panel.add(label);
-				JOptionPane.showMessageDialog(
-						AddEstudiantes.this,
-						panel,
-						"Guardado",
-						JOptionPane.INFORMATION_MESSAGE
-						);
+				if (estudianteEditado == null) {
+					// Nuevo estudiante
+					Estudiante estudiante = new Estudiante(ci, nombre, apellidos, utiles.Sexo.valueOf(sexoStr), activo, guardiasAsignadas, guardiasFestivo, grupo);
+					planificador.getFacultad().agregarPersona(estudiante);
+					JLabel label = new JLabel("Estudiante guardado correctamente");
+					label.setFont(new Font("Arial", Font.BOLD, 16));
+					label.setForeground(negro);
+					JPanel panel = new JPanel();
+					panel.setBackground(amarillo);
+					panel.add(label);
+					JOptionPane.showMessageDialog(
+							AddEstudiantes.this,
+							panel,
+							"Guardado",
+							JOptionPane.INFORMATION_MESSAGE
+							);
+				} else {
+					// Editar existente (puede cambiar el CI)
+					Estudiante nuevo = new Estudiante(ci, nombre, apellidos, utiles.Sexo.valueOf(sexoStr), activo, guardiasAsignadas, guardiasFestivo, grupo);
+					planificador.getFacultad().eliminarPersona(estudianteEditado);
+					planificador.getFacultad().agregarPersona(nuevo);
+					JLabel label = new JLabel("Estudiante actualizado correctamente");
+					label.setFont(new Font("Arial", Font.BOLD, 16));
+					label.setForeground(negro);
+					JPanel panel = new JPanel();
+					panel.setBackground(amarillo);
+					panel.add(label);
+					JOptionPane.showMessageDialog(
+							AddEstudiantes.this,
+							panel,
+							"Actualizado",
+							JOptionPane.INFORMATION_MESSAGE
+							);
+				}
+				if (framePadre != null) {
+					framePadre.refrescarTabla();
+				}
 				dispose();
 			}
 		});

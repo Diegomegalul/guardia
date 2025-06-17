@@ -2,6 +2,7 @@ package interfaz;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -22,11 +23,11 @@ import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
-import logica.Estudiante;
+import logica.Trabajador;
 import logica.Persona;
 import logica.PlanificadorGuardias;
 
-public class VerEstudiantes extends JFrame {
+public class VerTrabajadores extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
@@ -34,17 +35,28 @@ public class VerEstudiantes extends JFrame {
 	private DefaultTableModel model;
 	private JTextField txtBusqueda;
 	private PlanificadorGuardias planificador;
-	private List<Persona> estudiantesFiltrados;
+	private List<Persona> trabajadoresFiltrados;
 
-	public VerEstudiantes(PlanificadorGuardias planificadorplanificador) {
-		setTitle("Listado de Estudiantes");
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					VerTrabajadores frame = new VerTrabajadores();
+					frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+
+	public VerTrabajadores() {
+		setTitle("Listado de Trabajadores");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 850, 550);
+		setBounds(100, 100, 800, 550);
 
 		Color amarillo = new Color(255, 215, 0);
 		Color negro = Color.BLACK;
-		@SuppressWarnings("unused")
-		Color darkBg = new Color(30, 32, 40);
 
 		contentPane = new JPanel();
 		contentPane.setBackground(amarillo);
@@ -52,7 +64,7 @@ public class VerEstudiantes extends JFrame {
 		contentPane.setLayout(new BorderLayout(10, 10));
 		setContentPane(contentPane);
 
-		JLabel lblTitulo = new JLabel("Estudiantes de la Facultad");
+		JLabel lblTitulo = new JLabel("Trabajadores de la Facultad");
 		lblTitulo.setFont(new Font("Arial", Font.BOLD, 22));
 		lblTitulo.setForeground(negro);
 		lblTitulo.setHorizontalAlignment(SwingConstants.CENTER);
@@ -92,8 +104,8 @@ public class VerEstudiantes extends JFrame {
 		panelBusqueda.add(btnLimpiar);
 		contentPane.add(panelBusqueda, BorderLayout.BEFORE_FIRST_LINE);
 
-		// Tabla de estudiantes
-		String[] columnas = {"CI", "Nombre", "Apellidos", "Sexo", "Activo", "Grupo", "Guardias Asignadas", "Guardias Cumplidas"};
+		// Tabla de trabajadores
+		String[] columnas = {"CI", "Nombre", "Apellidos", "Sexo", "Activo", "Fecha Incorp.", "Guardias Asignadas", "Guardias Festivo", "Voluntario"};
 		model = new DefaultTableModel(columnas, 0) {
 			private static final long serialVersionUID = 1L;
 			@Override
@@ -154,20 +166,20 @@ public class VerEstudiantes extends JFrame {
 		// Instancia planificador
 		this.planificador = PlanificadorGuardias.getInstancia();
 
-		// Cargar todos los estudiantes inicialmente
-		cargarEstudiantes(null);
+		// Cargar todos los trabajadores inicialmente
+		cargarTrabajadores(null);
 
 		// Acción buscar
 		btnBuscar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String texto = txtBusqueda.getText().trim().toLowerCase();
-				cargarEstudiantes(texto.isEmpty() ? null : texto);
+				cargarTrabajadores(texto.isEmpty() ? null : texto);
 			}
 		});
 		btnLimpiar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				txtBusqueda.setText("");
-				cargarEstudiantes(null);
+				cargarTrabajadores(null);
 			}
 		});
 
@@ -176,16 +188,16 @@ public class VerEstudiantes extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				int fila = table.getSelectedRow();
 				if (fila == -1) {
-					JOptionPane.showMessageDialog(VerEstudiantes.this, "Seleccione un estudiante para eliminar.", "Error", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(VerTrabajadores.this, "Seleccione un trabajador para eliminar.", "Error", JOptionPane.ERROR_MESSAGE);
 					return;
 				}
 				String ci = (String) model.getValueAt(fila, 0);
 				Persona p = planificador.getFacultad().buscarPersonaPorCI(ci);
-				if (p != null && p instanceof Estudiante) {
-					int confirm = JOptionPane.showConfirmDialog(VerEstudiantes.this, "¿Está seguro de eliminar al estudiante?", "Confirmar", JOptionPane.YES_NO_OPTION);
+				if (p != null && p instanceof Trabajador) {
+					int confirm = JOptionPane.showConfirmDialog(VerTrabajadores.this, "¿Está seguro de eliminar al trabajador?", "Confirmar", JOptionPane.YES_NO_OPTION);
 					if (confirm == JOptionPane.YES_OPTION) {
 						planificador.getFacultad().eliminarPersona(p);
-						cargarEstudiantes(txtBusqueda.getText().trim().isEmpty() ? null : txtBusqueda.getText().trim().toLowerCase());
+						cargarTrabajadores(txtBusqueda.getText().trim().isEmpty() ? null : txtBusqueda.getText().trim().toLowerCase());
 					}
 				}
 			}
@@ -196,13 +208,13 @@ public class VerEstudiantes extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				int fila = table.getSelectedRow();
 				if (fila == -1) {
-					JOptionPane.showMessageDialog(VerEstudiantes.this, "Seleccione un estudiante para editar.", "Error", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(VerTrabajadores.this, "Seleccione un trabajador para editar.", "Error", JOptionPane.ERROR_MESSAGE);
 					return;
 				}
 				String ci = (String) model.getValueAt(fila, 0);
 				Persona p = planificador.getFacultad().buscarPersonaPorCI(ci);
-				if (p != null && p instanceof Estudiante) {
-					abrirFormularioEdicion((Estudiante) p);
+				if (p != null && p instanceof Trabajador) {
+					abrirFormularioEdicion((Trabajador) p);
 				}
 			}
 		});
@@ -214,50 +226,52 @@ public class VerEstudiantes extends JFrame {
 		});
 	}
 
-	private void cargarEstudiantes(String filtro) {
+	private void cargarTrabajadores(String filtro) {
 		model.setRowCount(0);
 		List<Persona> personas = planificador.getFacultad().getPersonas();
-		estudiantesFiltrados = new java.util.ArrayList<Persona>();
+		trabajadoresFiltrados = new java.util.ArrayList<Persona>();
 		for (int i = 0; i < personas.size(); i++) {
 			Persona p = personas.get(i);
-			if (p instanceof Estudiante) {
-				Estudiante e = (Estudiante) p;
+			if (p instanceof Trabajador) {
+				Trabajador t = (Trabajador) p;
 				boolean coincide = false;
 				if (filtro == null) {
 					coincide = true;
 				} else {
-					String ci = e.getCi().toLowerCase();
-					String nombre = e.getNombre().toLowerCase();
-					String apellidos = e.getApellidos().toLowerCase();
-					String grupoStr = String.valueOf(e.getGrupo());
-					if (ci.contains(filtro) || nombre.contains(filtro) || apellidos.contains(filtro) || grupoStr.contains(filtro)) {
+					String ci = t.getCi().toLowerCase();
+					String nombre = t.getNombre().toLowerCase();
+					String apellidos = t.getApellidos().toLowerCase();
+					String fecha = t.getFechaDeIncorporacion() != null ? t.getFechaDeIncorporacion().toString() : "";
+					String voluntario = t.getVoluntario() ? "sí" : "no";
+					if (ci.contains(filtro) || nombre.contains(filtro) || apellidos.contains(filtro) || fecha.contains(filtro) || voluntario.contains(filtro)) {
 						coincide = true;
 					}
 				}
 				if (coincide) {
-					estudiantesFiltrados.add(e);
+					trabajadoresFiltrados.add(t);
 					model.addRow(new Object[] {
-						e.getCi(),
-						e.getNombre(),
-						e.getApellidos(),
-						e.getSexo(),
-						e.getActivo() ? "Sí" : "No",
-						e.getGrupo(),
-						e.getGuardiasAsignadas(),
-						e.getGuardiasCumplidas()
+						t.getCi(),
+						t.getNombre(),
+						t.getApellidos(),
+						t.getSexo(),
+						t.getActivo() ? "Sí" : "No",
+						t.getFechaDeIncorporacion() != null ? t.getFechaDeIncorporacion().toString() : "",
+						t.getGuardiasAsignadas(),
+						t.getCantidadGuardiasFestivo(),
+						t.getVoluntario() ? "Sí" : "No"
 					});
 				}
 			}
 		}
 	}
 
-	private void abrirFormularioEdicion(Estudiante estudiante) {
-		AddEstudiantes frame = new AddEstudiantes(planificador, estudiante, this);
+	private void abrirFormularioEdicion(Trabajador trabajador) {
+		AddTrabajadores frame = new AddTrabajadores(planificador, trabajador, this);
 		frame.setVisible(true);
 	}
 
-	// Método para refrescar la tabla desde AddEstudiantes tras editar
+	// Método para refrescar la tabla desde AddTrabajadores tras editar
 	public void refrescarTabla() {
-		cargarEstudiantes(txtBusqueda.getText().trim().isEmpty() ? null : txtBusqueda.getText().trim().toLowerCase());
+		cargarTrabajadores(txtBusqueda.getText().trim().isEmpty() ? null : txtBusqueda.getText().trim().toLowerCase());
 	}
 }

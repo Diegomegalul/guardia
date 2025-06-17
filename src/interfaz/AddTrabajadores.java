@@ -31,7 +31,7 @@ public class AddTrabajadores extends JFrame {
 	private PlanificadorGuardias planificador;
 	private JDateChooser dateChooserFechaIncorporacion;
 
-	public AddTrabajadores(final PlanificadorGuardias planificador) {
+	public AddTrabajadores(final PlanificadorGuardias planificador,  final Trabajador trabajador, final VerTrabajadores verTrabajadores) {
 		setMinimumSize(new Dimension(500, 530));
 		this.planificador = planificador;
 		// Colores institucionales
@@ -39,7 +39,7 @@ public class AddTrabajadores extends JFrame {
 		final Color negro = Color.BLACK;
 		final Color blanco = Color.WHITE;
 
-		setTitle("Añadir Trabajador");
+		setTitle(trabajador == null ? "Añadir Trabajador" : "Editar Trabajador");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); // No cierra la app
 		setBounds(100, 100, 500, 530);
 		setLocationRelativeTo(null);
@@ -50,9 +50,8 @@ public class AddTrabajadores extends JFrame {
 		contentPane.setLayout(new BorderLayout(0, 0));
 		setContentPane(contentPane);
 
-		JLabel lblTitulo = new JLabel("Nuevo Trabajador");
+		JLabel lblTitulo = new JLabel(trabajador == null ? "Nuevo Trabajador" : "Editar Trabajador");
 		lblTitulo.setFont(new Font("Arial", Font.BOLD, 24));
-		// No establecer setForeground aquí, dejar que aplicarModoOscuro lo maneje
 		lblTitulo.setHorizontalAlignment(SwingConstants.CENTER);
 		contentPane.add(lblTitulo, BorderLayout.NORTH);
 
@@ -72,6 +71,20 @@ public class AddTrabajadores extends JFrame {
 				RowSpec.decode("20dlu:grow"),
 				FormFactory.RELATED_GAP_ROWSPEC,
 				RowSpec.decode("fill:20dlu:grow"),
+				FormFactory.RELATED_GAP_ROWSPEC,
+				RowSpec.decode("20dlu:grow"),
+				FormFactory.RELATED_GAP_ROWSPEC,
+				RowSpec.decode("20dlu:grow"),
+				FormFactory.RELATED_GAP_ROWSPEC,
+				RowSpec.decode("20dlu:grow"),
+				FormFactory.RELATED_GAP_ROWSPEC,
+				RowSpec.decode("20dlu:grow"),
+				FormFactory.RELATED_GAP_ROWSPEC,
+				RowSpec.decode("20dlu:grow"),
+				FormFactory.RELATED_GAP_ROWSPEC,
+				RowSpec.decode("20dlu:grow"),
+				FormFactory.RELATED_GAP_ROWSPEC,
+				RowSpec.decode("20dlu:grow"),
 				FormFactory.RELATED_GAP_ROWSPEC,
 				RowSpec.decode("20dlu:grow"),
 				FormFactory.RELATED_GAP_ROWSPEC,
@@ -200,12 +213,28 @@ public class AddTrabajadores extends JFrame {
 
 		contentPane.add(panelForm, BorderLayout.CENTER);
 
+		// --- LLENAR CAMPOS SI ES EDICIÓN ---
+		if (trabajador != null) {
+			txtCi.setText(trabajador.getCi());
+			txtNombre.setText(trabajador.getNombre());
+			txtApellidos.setText(trabajador.getApellidos());
+			comboSexo.setSelectedItem(trabajador.getSexo().toString());
+			chkActivo.setSelected(trabajador.getActivo());
+			txtGuardiasAsignadas.setText(String.valueOf(trabajador.getGuardiasAsignadas()));
+			txtGuardiasFestivo.setText(String.valueOf(trabajador.getCantidadGuardiasFestivo()));
+			chkVoluntario.setSelected(trabajador.getVoluntario());
+			if (trabajador.getFechaDeIncorporacion() != null) {
+				dateChooserFechaIncorporacion.setDate(java.sql.Date.valueOf(trabajador.getFechaDeIncorporacion()));
+			} else {
+				dateChooserFechaIncorporacion.setDate(null);
+			}
+		}
+
 		// Botón guardar
 		JPanel panelBoton = new JPanel();
 		panelBoton.setBackground(amarillo);
-		JButton btnGuardar = new JButton("Guardar") {
+		JButton btnGuardar = new JButton(trabajador == null ? "Guardar" : "Actualizar") {
 			private static final long serialVersionUID = 1L;
-
 			protected void paintComponent(Graphics g) {
 				if (isContentAreaFilled()) {
 					Graphics2D g2 = (Graphics2D) g.create();
@@ -254,20 +283,40 @@ public class AddTrabajadores extends JFrame {
 					mensajeError = "Complete todos los campos obligatorios.";
 				}
 				if (datosValidos) {
-					Trabajador trabajador = new Trabajador(ci, nombre, apellidos, Sexo.valueOf(sexoStr), activo, fechaIncorporacion, guardiasAsignadas, guardiasFestivo, voluntario);
-					planificador.getFacultad().agregarPersona(trabajador);
-					JLabel label = new JLabel("Trabajador guardado correctamente");
-					label.setFont(new Font("Arial", Font.BOLD, 16));
-					label.setForeground(negro);
-					JPanel panel = new JPanel();
-					panel.setBackground(amarillo);
-					panel.add(label);
-					JOptionPane.showMessageDialog(
-							AddTrabajadores.this,
-							panel,
-							"Guardado",
-							JOptionPane.INFORMATION_MESSAGE
-							);
+					Trabajador nuevoTrabajador = new Trabajador(ci, nombre, apellidos, Sexo.valueOf(sexoStr), activo, fechaIncorporacion, guardiasAsignadas, guardiasFestivo, voluntario);
+					if (trabajador == null) {
+						planificador.getFacultad().agregarPersona(nuevoTrabajador);
+						JLabel label = new JLabel("Trabajador guardado correctamente");
+						label.setFont(new Font("Arial", Font.BOLD, 16));
+						label.setForeground(negro);
+						JPanel panel = new JPanel();
+						panel.setBackground(amarillo);
+						panel.add(label);
+						JOptionPane.showMessageDialog(
+								AddTrabajadores.this,
+								panel,
+								"Guardado",
+								JOptionPane.INFORMATION_MESSAGE
+								);
+					} else {
+						planificador.getFacultad().eliminarPersona(trabajador);
+						planificador.getFacultad().agregarPersona(nuevoTrabajador);
+						JLabel label = new JLabel("Trabajador actualizado correctamente");
+						label.setFont(new Font("Arial", Font.BOLD, 16));
+						label.setForeground(negro);
+						JPanel panel = new JPanel();
+						panel.setBackground(amarillo);
+						panel.add(label);
+						JOptionPane.showMessageDialog(
+								AddTrabajadores.this,
+								panel,
+								"Actualizado",
+								JOptionPane.INFORMATION_MESSAGE
+								);
+					}
+					if (verTrabajadores != null) {
+						verTrabajadores.refrescarTabla();
+					}
 					dispose();
 				} else {
 					JOptionPane.showMessageDialog(AddTrabajadores.this, mensajeError, "Error", JOptionPane.ERROR_MESSAGE);

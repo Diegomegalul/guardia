@@ -5,6 +5,10 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
 import utiles.GestorUsuarios;
+import com.jgoodies.forms.layout.FormLayout;
+import com.jgoodies.forms.layout.ColumnSpec;
+import com.jgoodies.forms.factories.FormFactory;
+import com.jgoodies.forms.layout.RowSpec;
 
 public class Login extends JFrame {
 
@@ -53,38 +57,85 @@ public class Login extends JFrame {
 		// Panel central para formulario
 		JPanel panelCentral = new JPanel();
 		panelCentral.setBackground(amarillo);
-		panelCentral.setLayout(new GridBagLayout());
-		GridBagConstraints gbc = new GridBagConstraints();
-		gbc.insets = new Insets(10, 10, 10, 10);
-
-		gbc.gridx = 0; gbc.gridy = 0; gbc.anchor = GridBagConstraints.EAST;
-		panelCentral.add(new JLabel("Usuario:"), gbc);
-		gbc.gridx = 1; gbc.anchor = GridBagConstraints.WEST;
+		panelCentral.setLayout(new FormLayout(new ColumnSpec[] {
+				ColumnSpec.decode("42px"),
+				ColumnSpec.decode("73px"),
+				FormFactory.LABEL_COMPONENT_GAP_COLSPEC,
+				ColumnSpec.decode("199px"),
+				ColumnSpec.decode("right:max(20dlu;default)"),},
+			new RowSpec[] {
+				RowSpec.decode("47px"),
+				RowSpec.decode("25px"),
+				FormFactory.PARAGRAPH_GAP_ROWSPEC,
+				RowSpec.decode("25px"),
+				FormFactory.PARAGRAPH_GAP_ROWSPEC,
+				RowSpec.decode("57px"),}));
+		
+		JLabel label_1 = new JLabel("Usuario:");
+		panelCentral.add(label_1, "2, 2, right, center");
 		txtUsuario = new JTextField(15);
 		txtUsuario.setFont(new Font("Arial", Font.PLAIN, 16));
 		txtUsuario.setBackground(blanco);
 		txtUsuario.setForeground(negro);
-		panelCentral.add(txtUsuario, gbc);
-
-		gbc.gridx = 0; gbc.gridy = 1; gbc.anchor = GridBagConstraints.EAST;
-		panelCentral.add(new JLabel("Contraseña:"), gbc);
-		gbc.gridx = 1; gbc.anchor = GridBagConstraints.WEST;
+		panelCentral.add(txtUsuario, "4, 2, right, center");
+		
+		JLabel label_2 = new JLabel("Contraseña:");
+		panelCentral.add(label_2, "2, 4, right, center");
 		txtContrasena = new JPasswordField(15);
 		txtContrasena.setFont(new Font("Arial", Font.PLAIN, 16));
 		txtContrasena.setBackground(blanco);
 		txtContrasena.setForeground(negro);
-		panelCentral.add(txtContrasena, gbc);
+		panelCentral.add(txtContrasena, "4, 4, right, center");
 
-		gbc.gridx = 0; gbc.gridy = 2; gbc.gridwidth = 2; gbc.anchor = GridBagConstraints.CENTER;
+		contentPane.add(panelCentral, BorderLayout.CENTER);
 		JButton btnIngresar = new JButton("Ingresar");
 		btnIngresar.setFont(new Font("Arial", Font.BOLD, 16));
 		btnIngresar.setBackground(negro);
 		btnIngresar.setForeground(amarillo);
 		btnIngresar.setFocusPainted(false);
 		btnIngresar.setBorder(BorderFactory.createLineBorder(negro, 2));
-		panelCentral.add(btnIngresar, gbc);
-
-		contentPane.add(panelCentral, BorderLayout.CENTER);
+		panelCentral.add(btnIngresar, "1, 6, 5, 1, center, center");
+		
+				// Acción de login
+				btnIngresar.addActionListener(new java.awt.event.ActionListener() {
+					public void actionPerformed(java.awt.event.ActionEvent e) {
+						String usuario = txtUsuario.getText();
+						String contrasena = new String(txtContrasena.getPassword());
+						if (GestorUsuarios.validarUsuario(usuario, contrasena)) {
+							// Mensaje personalizado con estética
+							JLabel label = new JLabel("¡Bienvenido, " + usuario + "!");
+							label.setFont(new Font("Arial", Font.BOLD, 18));
+							label.setForeground(negro);
+							JPanel panel = new JPanel();
+							panel.setBackground(amarillo);
+							panel.add(label);
+							JOptionPane.showMessageDialog(
+								Login.this,
+								panel,
+								"Acceso concedido",
+								JOptionPane.INFORMATION_MESSAGE
+							);
+							Inicio inicioFrame = new Inicio();
+							inicioFrame.setVisible(true);
+							setVisible(false);
+							dispose();
+						} else {
+							// Mensaje de error con estética
+							JLabel label = new JLabel("Usuario o contraseña incorrectos");
+							label.setFont(new Font("Arial", Font.BOLD, 16));
+							label.setForeground(Color.RED);
+							JPanel panel = new JPanel();
+							panel.setBackground(amarillo);
+							panel.add(label);
+							JOptionPane.showMessageDialog(
+								Login.this,
+								panel,
+								"Error de acceso",
+								JOptionPane.ERROR_MESSAGE
+							);
+						}
+					}
+				});
 
 		// Pie de página
 		JLabel lblPie = new JLabel("© Facultad de Informática");
@@ -92,46 +143,5 @@ public class Login extends JFrame {
 		lblPie.setForeground(negro);
 		lblPie.setHorizontalAlignment(SwingConstants.CENTER);
 		contentPane.add(lblPie, BorderLayout.SOUTH);
-
-		// Acción de login
-		btnIngresar.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent e) {
-				String usuario = txtUsuario.getText();
-				String contrasena = new String(txtContrasena.getPassword());
-				if (GestorUsuarios.validarUsuario(usuario, contrasena)) {
-					// Mensaje personalizado con estética
-					JLabel label = new JLabel("¡Bienvenido, " + usuario + "!");
-					label.setFont(new Font("Arial", Font.BOLD, 18));
-					label.setForeground(negro);
-					JPanel panel = new JPanel();
-					panel.setBackground(amarillo);
-					panel.add(label);
-					JOptionPane.showMessageDialog(
-						Login.this,
-						panel,
-						"Acceso concedido",
-						JOptionPane.INFORMATION_MESSAGE
-					);
-					Inicio inicioFrame = new Inicio();
-					inicioFrame.setVisible(true);
-					setVisible(false);
-					dispose();
-				} else {
-					// Mensaje de error con estética
-					JLabel label = new JLabel("Usuario o contraseña incorrectos");
-					label.setFont(new Font("Arial", Font.BOLD, 16));
-					label.setForeground(Color.RED);
-					JPanel panel = new JPanel();
-					panel.setBackground(amarillo);
-					panel.add(label);
-					JOptionPane.showMessageDialog(
-						Login.this,
-						panel,
-						"Error de acceso",
-						JOptionPane.ERROR_MESSAGE
-					);
-				}
-			}
-		});
 	}
 }
