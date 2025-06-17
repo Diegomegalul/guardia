@@ -460,6 +460,7 @@ public class Inicio extends JFrame {
 
 		// Panel inferior para el botón salir y el botón de modo oscuro
 		JPanel panelInferior = new JPanel();
+		panelInferior.setAlignmentY(Component.BOTTOM_ALIGNMENT);
 		panelInferior.setBounds(0, 479, 884, 54);
 		panelInferior.setBackground(amarillo);
 
@@ -596,6 +597,7 @@ public class Inicio extends JFrame {
 		panelCentral.setLayout(null);
 		
 		JLabel lblNewLabel = new JLabel("New label");
+		lblNewLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 		lblNewLabel.setIcon(new ImageIcon(Inicio.class.getResource("/com/imagenes/Copilot_20250615_0234535.png")));
 		lblNewLabel.setBounds(153, 97, 580, 373);
 		panelCentral.add(lblNewLabel);
