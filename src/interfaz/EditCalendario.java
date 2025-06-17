@@ -1,16 +1,21 @@
 package interfaz;
 
 import java.awt.*;
+
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+
 import com.toedter.calendar.JDateChooser;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.time.LocalDate;
+
 import logica.PlanificadorGuardias;
 import logica.DiaFestivo;
+
 import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.factories.FormFactory;
@@ -27,6 +32,7 @@ public class EditCalendario extends JFrame {
 	private JList<String> listaFestivos;
 
 	public EditCalendario(final PlanificadorGuardias planificador) {
+		setIconImage(Toolkit.getDefaultToolkit().getImage(Login.class.getResource("/imagenes/IMG_20250617_110529.jpg")));
 		this.planificador = planificador;
 		setMinimumSize(new Dimension(600, 500));
 		setTitle("Editar Calendario - Días Festivos");

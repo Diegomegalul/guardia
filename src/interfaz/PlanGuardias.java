@@ -7,6 +7,7 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -48,6 +49,7 @@ public class PlanGuardias extends JFrame {
 	private Color negro = Color.BLACK;
 
 	public PlanGuardias(final PlanificadorGuardias planificador) {
+		setIconImage(Toolkit.getDefaultToolkit().getImage(Login.class.getResource("/imagenes/IMG_20250617_110529.jpg")));
 		this.planificador = planificador;
 		setTitle("Planificar Guardias Automáticamente");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);

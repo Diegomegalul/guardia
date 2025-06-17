@@ -36,6 +36,7 @@ public class GuardiasCumplidas extends JFrame {
 	}
 
 	public GuardiasCumplidas() {
+		setIconImage(Toolkit.getDefaultToolkit().getImage(Login.class.getResource("/imagenes/IMG_20250617_110529.jpg")));
 		this.planificador = PlanificadorGuardias.getInstancia();
 		setTitle("Guardias Cumplidas");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);

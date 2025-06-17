@@ -10,6 +10,7 @@ import java.awt.Graphics2D;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import java.awt.RenderingHints;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -54,6 +55,7 @@ public class AddEstudiantes extends JFrame {
 
 	// Constructor para editar
 	public AddEstudiantes(final PlanificadorGuardias planificador, Estudiante estudiante, final VerEstudiantes framePadre) {
+		setIconImage(Toolkit.getDefaultToolkit().getImage(Login.class.getResource("/imagenes/IMG_20250617_110529.jpg")));
 		setMinimumSize(new Dimension(500, 500));
 		this.planificador = planificador;
 		this.estudianteEditado = estudiante;

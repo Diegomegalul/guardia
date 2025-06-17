@@ -2,6 +2,7 @@ package interfaz;
 
 import java.awt.*;
 import java.awt.event.*;
+
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
@@ -34,6 +35,7 @@ public class Inicio extends JFrame {
 
 	public Inicio() {
 		// Instancia singleton del planificador
+		setIconImage(Toolkit.getDefaultToolkit().getImage(Login.class.getResource("/imagenes/IMG_20250617_110529.jpg")));
 		this.planificador = PlanificadorGuardias.getInstancia();
 
 		setTitle("Inicio - Sistema de Guardias");

@@ -32,6 +32,7 @@ public class AddTrabajadores extends JFrame {
 	private JDateChooser dateChooserFechaIncorporacion;
 
 	public AddTrabajadores(final PlanificadorGuardias planificador,  final Trabajador trabajador, final VerTrabajadores verTrabajadores) {
+		setIconImage(Toolkit.getDefaultToolkit().getImage(Login.class.getResource("/imagenes/IMG_20250617_110529.jpg")));
 		setMinimumSize(new Dimension(500, 530));
 		this.planificador = planificador;
 		// Colores institucionales

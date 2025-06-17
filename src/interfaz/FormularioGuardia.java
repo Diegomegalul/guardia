@@ -33,6 +33,7 @@ public class FormularioGuardia extends JFrame {
 	}
 
 	public FormularioGuardia(final Guardia guardia) {
+		setIconImage(Toolkit.getDefaultToolkit().getImage(Login.class.getResource("/imagenes/IMG_20250617_110529.jpg")));
 		setTitle("Editar/Crear Guardia");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 480, 340);
