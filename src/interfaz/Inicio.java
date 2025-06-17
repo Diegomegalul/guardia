@@ -28,6 +28,7 @@ import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
 import logica.PlanificadorGuardias;
+import javax.swing.ImageIcon;
 
 public class Inicio extends JFrame {
 
@@ -60,7 +61,6 @@ public class Inicio extends JFrame {
 		contentPane = new JPanel();
 		contentPane.setBackground(amarillo);
 		contentPane.setBorder(new EmptyBorder(0, 0, 0, 0));
-		contentPane.setLayout(new BorderLayout());
 		setContentPane(contentPane);
 
 		// Menú superior
@@ -455,22 +455,17 @@ public class Inicio extends JFrame {
 
 		// Panel central con mensaje de bienvenida o imagen
 		JPanel panelCentral = new JPanel();
+		panelCentral.setBounds(0, 0, 884, 444);
 		panelCentral.setBackground(amarillo);
-		panelCentral.setLayout(new BorderLayout());
-
-		JLabel lblBienvenida = new JLabel("Bienvenido al Sistema de Guardias");
-		lblBienvenida.setFont(new Font("Arial", Font.BOLD, 28));
-		lblBienvenida.setForeground(negro);
-		lblBienvenida.setHorizontalAlignment(SwingConstants.CENTER);
-		lblBienvenida.setBorder(new EmptyBorder(80, 10, 10, 10));
-		panelCentral.add(lblBienvenida, BorderLayout.CENTER);
 
 		// Panel inferior para el botón salir y el botón de modo oscuro
-		JPanel panelInferior = new JPanel(new BorderLayout());
+		JPanel panelInferior = new JPanel();
+		panelInferior.setBounds(0, 479, 884, 54);
 		panelInferior.setBackground(amarillo);
 
 		// Botón salir (derecha)
 		JPanel panelSalir = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+		panelSalir.setBounds(756, 0, 118, 54);
 		panelSalir.setBackground(amarillo);
 
 		JButton btnSalir = new JButton("Salir") {
@@ -519,7 +514,8 @@ public class Inicio extends JFrame {
 		panelSalir.add(btnSalir);
 
 		// Botón modo oscuro (izquierda)
-		JPanel panelLuna = new JPanel(new FlowLayout(FlowLayout.LEFT));
+		JPanel panelLuna = new JPanel();
+		panelLuna.setBounds(0, 0, 54, 54);
 		panelLuna.setBackground(amarillo);
 
 		final JButton btnLuna = new JButton() {
@@ -533,6 +529,7 @@ public class Inicio extends JFrame {
 				super.paintComponent(g);
 			}
 		};
+		btnLuna.setBounds(5, 5, 44, 44);
 		btnLuna.setPreferredSize(new Dimension(44, 44));
 		btnLuna.setBackground(amarillo);
 		btnLuna.setBorderPainted(false);
@@ -585,17 +582,28 @@ public class Inicio extends JFrame {
 				aplicarModoOscuro();
 			}
 		});
+		panelInferior.setLayout(null);
+		panelLuna.setLayout(null);
 		panelLuna.add(btnLuna);
 
-		panelInferior.add(panelLuna, BorderLayout.WEST);
-		panelInferior.add(panelSalir, BorderLayout.EAST);
+		panelInferior.add(panelLuna);
+		panelInferior.add(panelSalir);
+		contentPane.setLayout(null);
 
-		contentPane.add(panelCentral, BorderLayout.CENTER);
-		contentPane.add(panelInferior, BorderLayout.SOUTH);
-
-		// Guardar referencias para cambio de modo
-		this.lblBienvenida = lblBienvenida;
+		contentPane.add(panelCentral);
+		contentPane.add(panelInferior);
 		this.panelCentral = panelCentral;
+		panelCentral.setLayout(null);
+		
+		JLabel lblNewLabel = new JLabel("New label");
+		lblNewLabel.setIcon(new ImageIcon(Inicio.class.getResource("/com/imagenes/Copilot_20250615_0234535.png")));
+		lblNewLabel.setBounds(153, 97, 580, 373);
+		panelCentral.add(lblNewLabel);
+		
+		JLabel lblBienvenidoAlSistema = new JLabel("BIENVENIDO AL SISTEMA DE DE GESTION DE GUARDIAS");
+		lblBienvenidoAlSistema.setFont(new Font("Berlin Sans FB Demi", Font.BOLD, 23));
+		lblBienvenidoAlSistema.setBounds(171, 36, 600, 50);
+		panelCentral.add(lblBienvenidoAlSistema);
 		this.panelInferior = panelInferior;
 		this.menuBar = menuBar;
 		this.itemEstudiante = itemEstudiante;
