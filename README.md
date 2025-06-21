@@ -20,6 +20,11 @@ tipo: "git add." y "git commit -m "Estoy haciendo reporte tal"" <br>
 cada cosa unos cuantos commits, nada de 3000 cambios en un commit <br>
 4-Haces el push normal dsde tu rama "git push"<br>
 
+## Consenso
+
+Las guardias de recuperacion las van a tener las personas que no tengan la misma cantidad de guardias<br>
+asignadas y guardias cumplidas cuando se vaya a planificar el proximo mes <br>
+
 ## Problemas que solucionar
 
 Buscar las ventanas que puedan tener conflictos con otras y no dejar q se abran juntas <br>
