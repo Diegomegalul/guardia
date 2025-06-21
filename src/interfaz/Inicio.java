@@ -31,6 +31,8 @@ public class Inicio extends JFrame {
 	private JMenuItem reporteRecuperacion, reporteVoluntarios, reporteEstInactivos, reporteFestivas;
 	private JButton btnSalir, btnLuna;
 	private Icon iconoLuna, iconoSol;
+	private ImageIcon fondoClaroIcon;
+	private ImageIcon fondoOscuroIcon;
 
 	public Inicio() {
 		// Instancia singleton del planificador
@@ -54,6 +56,22 @@ public class Inicio extends JFrame {
 		contentPane.setBorder(new EmptyBorder(0, 0, 0, 0));
 		contentPane.setLayout(new BorderLayout());
 		setContentPane(contentPane);
+
+		// Cargar imágenes de fondo de forma segura
+		java.net.URL urlClaro = getClass().getResource("/imagenes/Fondo claro.png");
+		java.net.URL urlOscuro = getClass().getResource("/imagenes/Fondo oscuro.png");
+		if (urlClaro != null) {
+			fondoClaroIcon = new ImageIcon(urlClaro);
+		} else {
+			System.err.println("No se encontró la imagen: /imagenes/Fondo claro.png");
+			fondoClaroIcon = null;
+		}
+		if (urlOscuro != null) {
+			fondoOscuroIcon = new ImageIcon(urlOscuro);
+		} else {
+			System.err.println("No se encontró la imagen: /imagenes/Fondo oscuro.png");
+			fondoOscuroIcon = null;
+		}
 
 		// Menú superior
 		menuBar = new JMenuBar();
@@ -420,12 +438,23 @@ public class Inicio extends JFrame {
 		panelCentral.setBackground(amarillo);
 		panelCentral.setLayout(new BorderLayout());
 
-		lblBienvenida = new JLabel("Bienvenido al Sistema de Guardias");
+		lblBienvenida = new JLabel();
 		lblBienvenida.setFont(new Font("Arial", Font.BOLD, 28));
 		lblBienvenida.setForeground(negro);
 		lblBienvenida.setHorizontalAlignment(SwingConstants.CENTER);
 		lblBienvenida.setBorder(new EmptyBorder(80, 10, 10, 10));
 		panelCentral.add(lblBienvenida, BorderLayout.CENTER);
+		lblBienvenida.addComponentListener(new java.awt.event.ComponentAdapter() {
+			public void componentResized(java.awt.event.ComponentEvent e) {
+				actualizarImagenBienvenida();
+			}
+		});
+		// Inicializar imagen
+		SwingUtilities.invokeLater(new Runnable() {
+			public void run() {
+				actualizarImagenBienvenida();
+			}
+		});
 
 		// Panel inferior para el botón salir y el botón de modo oscuro
 		panelInferior = new JPanel(new BorderLayout());
@@ -553,6 +582,21 @@ public class Inicio extends JFrame {
 		contentPane.add(panelInferior, BorderLayout.SOUTH);
 	}
 
+	private void actualizarImagenBienvenida() {
+		if (lblBienvenida == null) return;
+		ImageIcon iconoBase = modoOscuro ? fondoOscuroIcon : fondoClaroIcon;
+		if (iconoBase != null && iconoBase.getIconWidth() > 0 && iconoBase.getIconHeight() > 0) {
+			int ancho = lblBienvenida.getWidth();
+			int alto = lblBienvenida.getHeight();
+			if (ancho > 0 && alto > 0) {
+				Image imgEscalada = iconoBase.getImage().getScaledInstance(ancho, alto, Image.SCALE_SMOOTH);
+				lblBienvenida.setIcon(new ImageIcon(imgEscalada));
+			} else {
+				lblBienvenida.setIcon(iconoBase);
+			}
+		}
+	}
+
 	private void aplicarModoOscuro() {
 		Color fondo = modoOscuro ? darkBg : amarillo;
 		Color texto = modoOscuro ? darkFg : negro;
@@ -566,7 +610,10 @@ public class Inicio extends JFrame {
 		if (contentPane != null) contentPane.setBackground(fondo);
 		if (panelCentral != null) panelCentral.setBackground(fondo);
 		if (panelInferior != null) panelInferior.setBackground(fondo);
-		if (lblBienvenida != null) lblBienvenida.setForeground(texto);
+		if (lblBienvenida != null) {
+			lblBienvenida.setForeground(texto);
+			actualizarImagenBienvenida();
+		}
 
 		if (itemEstudiante != null) {
 			itemEstudiante.setBackground(modoOscuro ? amarillo : darkBg);
