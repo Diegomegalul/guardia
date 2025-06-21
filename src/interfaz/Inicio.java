@@ -14,7 +14,7 @@ public class Inicio extends JFrame {
 	private JPanel contentPane;
 	private PlanificadorGuardias planificador;
 
-	private boolean modoOscuro = false;
+	private boolean modoOscuro = true;
 	private Color amarillo = new Color(255, 215, 0);
 	private Color negro = Color.BLACK;
 	private Color darkBg = new Color(30, 32, 40); // color principal modo oscuro
@@ -455,6 +455,8 @@ public class Inicio extends JFrame {
 				actualizarImagenBienvenida();
 			}
 		});
+		// Aplicar modo oscuro al inicio
+		aplicarModoOscuro();
 
 		// Panel inferior para el botón salir y el botón de modo oscuro
 		panelInferior = new JPanel(new BorderLayout());
