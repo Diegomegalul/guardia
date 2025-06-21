@@ -32,7 +32,7 @@ public class EditCalendario extends JFrame {
 	private JList<String> listaFestivos;
 
 	public EditCalendario(final PlanificadorGuardias planificador) {
-		setIconImage(Toolkit.getDefaultToolkit().getImage(Login.class.getResource("/imagenes/IMG_20250617_110529.jpg")));
+		setIconImage(Toolkit.getDefaultToolkit().getImage(Login.class.getResource("/imagenes/logo.jpg")));
 		this.planificador = planificador;
 		setMinimumSize(new Dimension(600, 500));
 		setTitle("Editar Calendario - Días Festivos");

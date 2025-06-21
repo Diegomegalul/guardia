@@ -49,7 +49,7 @@ public class PlanGuardias extends JFrame {
 	private Color negro = Color.BLACK;
 
 	public PlanGuardias(final PlanificadorGuardias planificador) {
-		setIconImage(Toolkit.getDefaultToolkit().getImage(Login.class.getResource("/imagenes/IMG_20250617_110529.jpg")));
+		setIconImage(Toolkit.getDefaultToolkit().getImage(Login.class.getResource("/imagenes/logo.jpg")));
 		this.planificador = planificador;
 		setTitle("Planificar Guardias Automáticamente");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);

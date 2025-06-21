@@ -16,9 +16,11 @@ public class Main {
 				}
 			}
 		}); 
-	}//cosas
+	}
 }
 
-//probando el push
-//Holaaaaa
+//Diooooos como hago para sacarla de mi cabeza
+
+//TIMØ - Quiero Saber ;)
+
 

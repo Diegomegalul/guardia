@@ -38,7 +38,7 @@ public class VerEstudiantes extends JFrame {
 	private List<Persona> estudiantesFiltrados;
 
 	public VerEstudiantes(PlanificadorGuardias planificadorplanificador) {
-		setIconImage(Toolkit.getDefaultToolkit().getImage(Login.class.getResource("/imagenes/IMG_20250617_110529.jpg")));
+		setIconImage(Toolkit.getDefaultToolkit().getImage(Login.class.getResource("/imagenes/logo.jpg")));
 		setTitle("Listado de Estudiantes");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 850, 550);

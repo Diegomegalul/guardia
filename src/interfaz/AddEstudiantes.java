@@ -55,7 +55,7 @@ public class AddEstudiantes extends JFrame {
 
 	// Constructor para editar
 	public AddEstudiantes(final PlanificadorGuardias planificador, Estudiante estudiante, final VerEstudiantes framePadre) {
-		setIconImage(Toolkit.getDefaultToolkit().getImage(Login.class.getResource("/imagenes/IMG_20250617_110529.jpg")));
+		setIconImage(Toolkit.getDefaultToolkit().getImage(Login.class.getResource("/imagenes/logo.jpg")));
 		setMinimumSize(new Dimension(500, 500));
 		this.planificador = planificador;
 		this.estudianteEditado = estudiante;

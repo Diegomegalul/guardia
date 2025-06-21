@@ -35,7 +35,7 @@ public class Inicio extends JFrame {
 
 	public Inicio() {
 		// Instancia singleton del planificador
-		setIconImage(Toolkit.getDefaultToolkit().getImage(Login.class.getResource("/imagenes/IMG_20250617_110529.jpg")));
+		setIconImage(Toolkit.getDefaultToolkit().getImage(Login.class.getResource("/imagenes/logo.jpg")));
 		this.planificador = PlanificadorGuardias.getInstancia();
 
 		setTitle("Inicio - Sistema de Guardias");
@@ -555,7 +555,7 @@ public class Inicio extends JFrame {
 		lblNewLabel = new JLabel("");
 		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-		lblNewLabel.setIcon(new ImageIcon(Inicio.class.getResource("/imagenes/Copilot_20250615_0234535.png")));
+		lblNewLabel.setIcon(new ImageIcon(Inicio.class.getResource("/imagenes/Fondo 2.0.png")));
 		panelCentral.add(lblNewLabel, BorderLayout.CENTER);
 		contentPane.add(panelInferior, BorderLayout.SOUTH);
 	}
