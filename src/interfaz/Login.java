@@ -16,6 +16,10 @@ public class Login extends JFrame {
 	private JPanel contentPane;
 	private JTextField txtUsuario;
 	private JPasswordField txtContrasena;
+	private JButton btnMostrarOcultar;
+	private boolean contrasenaVisible = false;
+	private ImageIcon iconoOjo;
+	private ImageIcon iconoOjoCerrado;
 
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -77,6 +81,14 @@ public class Login extends JFrame {
 		Image img = iconoUsuario.getImage().getScaledInstance(28, 28, Image.SCALE_SMOOTH);
 		iconoUsuario = new ImageIcon(img);
 
+		// Cargar iconos de ojo y ojo-cerrado
+		iconoOjo = new ImageIcon(Login.class.getResource("/imagenes/ojo.png"));
+		Image imgOjo = iconoOjo.getImage().getScaledInstance(22, 22, Image.SCALE_SMOOTH);
+		iconoOjo = new ImageIcon(imgOjo);
+		iconoOjoCerrado = new ImageIcon(Login.class.getResource("/imagenes/ojo-cerrado.png"));
+		Image imgOjoCerrado = iconoOjoCerrado.getImage().getScaledInstance(22, 22, Image.SCALE_SMOOTH);
+		iconoOjoCerrado = new ImageIcon(imgOjoCerrado);
+
 		JLabel label_1 = new JLabel("Usuario:");
 		label_1.setIcon(iconoUsuario);
 		label_1.setIconTextGap(10);
@@ -93,7 +105,33 @@ public class Login extends JFrame {
 		txtContrasena.setFont(new Font("Arial", Font.PLAIN, 16));
 		txtContrasena.setBackground(blanco);
 		txtContrasena.setForeground(negro);
-		panelCentral.add(txtContrasena, "4, 4, right, center");
+		// Panel para campo de contraseña y botón ojo
+		JPanel panelContrasena = new JPanel(new BorderLayout());
+		panelContrasena.setBackground(amarillo);
+		panelContrasena.add(txtContrasena, BorderLayout.CENTER);
+		btnMostrarOcultar = new JButton(iconoOjoCerrado);
+		btnMostrarOcultar.setPreferredSize(new Dimension(32, 32));
+		btnMostrarOcultar.setFocusPainted(false);
+		btnMostrarOcultar.setContentAreaFilled(false);
+		btnMostrarOcultar.setBorderPainted(false);
+		btnMostrarOcultar.setOpaque(false);
+		btnMostrarOcultar.addActionListener(new java.awt.event.ActionListener() {
+			@Override
+			public void actionPerformed(java.awt.event.ActionEvent e) {
+				contrasenaVisible = !contrasenaVisible;
+				if (contrasenaVisible) {
+					txtContrasena.setEchoChar((char)0);
+					btnMostrarOcultar.setIcon(iconoOjo);
+				} else {
+					txtContrasena.setEchoChar('•');
+					btnMostrarOcultar.setIcon(iconoOjoCerrado);
+				}
+			}
+		});
+		// Por defecto, ocultar contraseña
+		txtContrasena.setEchoChar('•');
+		panelContrasena.add(btnMostrarOcultar, BorderLayout.EAST);
+		panelCentral.add(panelContrasena, "4, 4, right, center");
 
 		contentPane.add(panelCentral, BorderLayout.CENTER);
 		JButton btnIngresar = new JButton("Ingresar");
