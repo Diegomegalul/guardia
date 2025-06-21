@@ -13,6 +13,9 @@ Dia-10: Hice pila de frames en cuanto me tome un 10 hago los reportes <br>
 
 # Cuando quieras hacer cosas en el proyecto
 
+Guiate por el uml_clases para poner bien las relaciones<br>
+que no me dio tiempo a hacer eso ni las cardinalidades <br>
+
 1-Creas una nueva rama: "git branch (Nombre de la rama)" no pongas ni los () ni las "" <br>
 2-Te cambias a la rama: "git switch (Nombre de la rama)" <br>
 3-Haces los cambios en una cosa y le vas haciendo commits

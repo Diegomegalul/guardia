@@ -1,0 +1,163 @@
+Clase: Persona (abstracta)
+- ci: String
+- nombre: String
+- apellidos: String
+- sexo: Sexo
+- activo: boolean
+- guardiasAsignadas: int
+- cantidadGuardiasFestivo: int
++ getCi(): String
++ setCi(String)
++ getNombre(): String
++ setNombre(String)
++ getApellidos(): String
++ setApellidos(String)
++ getSexo(): Sexo
++ setSexo(Sexo)
++ getActivo(): boolean
++ setActivo(boolean)
++ getGuardiasAsignadas(): int
++ setGuardiasAsignadas(int)
++ getCantidadGuardiasFestivo(): int
++ setCantidadGuardiasFestivo(int)
+# puedeHacerGuardia(Horario): boolean (abstracto)
+
+Clase: Estudiante extends Persona
+- licenciaMatricula: boolean
+- baja: boolean
+- grupo: int
+- guardiasCumplidas: int
++ isLicenciaMatricula(): boolean
++ setLicenciaMatricula(boolean)
++ isBaja(): boolean
++ setBaja(boolean)
++ getGrupo(): int
++ setGrupo(int)
++ getGuardiasCumplidas(): int
++ setGuardiasCumplidas(int)
++ puedeHacerGuardia(Horario): boolean
++ incrementarGuardiasAsignadas()
++ registrarGuardiaCumplida()
++ calcularGuardiasPendientes(): int
++ tieneGuardiasPendientes(): boolean
+
+Clase: Trabajador extends Persona
+- fechaDeIncorporacion: LocalDate
+- voluntario: boolean
++ getFechaDeIncorporacion(): LocalDate
++ setFechaDeIncorporacion(LocalDate)
++ getVoluntario(): boolean
++ setVoluntario(boolean)
++ puedeHacerGuardia(Horario): boolean
+
+Clase: Guardia
+- id: int
+- tipo: TipoGuardia
+- persona: Persona
+- horario: Horario
++ getId(): int
++ setId(int)
++ getTipo(): TipoGuardia
++ setTipo(TipoGuardia)
++ getPersona(): Persona
++ setPersona(Persona)
++ getHorario(): Horario
++ setHorario(Horario)
+
+Clase: Horario
+- dia: LocalDate
+- horaInicio: LocalTime
+- horaFin: LocalTime
++ getDia(): LocalDate
++ setDia(LocalDate)
++ getHoraInicio(): LocalTime
++ setHoraInicio(LocalTime)
++ getHoraFin(): LocalTime
++ setHoraFin(LocalTime)
+
+Clase: Facultad
+- personas: List<Persona>
+- nombre: String
++ getPersonas(): List<Persona>
++ agregarPersona(Persona)
++ eliminarPersona(Persona)
++ buscarPersonaPorCI(String): Persona
++ actualizarPersona(String, Persona): boolean
++ getNombre(): String
++ setNombre(String)
+
+Clase: GuardiaFactory
+- horario: Horario
+- calendario: Calendario
+- guardias: List<Guardia>
+- guardiasCumplidas: List<Guardia>
+- nextId: int
++ getGuardiasCumplidas(): List<Guardia>
++ getCalendario(): Calendario
++ setCalendario(Calendario)
++ getHorario(): Horario
++ setHorario(Horario)
++ getGuardias(): List<Guardia>
++ setGuardias(List<Guardia>)
++ crearGuardia(TipoGuardia, Persona, Horario): boolean
++ registrarCumplimientoGuardia(int): boolean
++ buscarGuardiaPorId(int): Guardia
++ actualizarGuardia(int, TipoGuardia, Persona, Horario): boolean
++ eliminarGuardia(int): boolean
++ planificarGuardiasMes(Facultad, int, int): List<Guardia>
++ planificarGuardiasRecuperacion(int, int)
+
+Clase: PlanificadorGuardias (Singleton)
+- facultad: Facultad
+- calendario: Calendario
+- guardiaFactory: GuardiaFactory
+- instancia: static PlanificadorGuardias
++ getFacultad(): Facultad
++ getCalendario(): Calendario
++ getGuardiaFactory(): GuardiaFactory
++ getInstancia(): PlanificadorGuardias
++ reporteGuardiasRecuperacionPorGrupo(): List<GrupoRecuperacionReporte>
++ agregarProfesoresPrueba()
++ agregarEstudiantesVaronesPrueba()
++ agregarEstudiantesMujeresPrueba()
++ reporteProfesoresVoluntariosEnVacaciones(): List<String>
++ listaGuardiasEnDiasFestivos(): List<Guardia>
++ planificarGuardiasRecuperacion(int, int)
+
+Clase: DiaFestivo
+- fecha: LocalDate
+- descripcion: String
++ getFecha(): LocalDate
++ setFecha(LocalDate)
++ getDescripcion(): String
++ setDescripcion(String)
++ getFechaString(): String
+
+Clase: Calendario
+- diasFestivos: List<DiaFestivo>
++ setDiasFestivos(List<DiaFestivo>)
++ getDiasFestivos(): List<DiaFestivo>
++ agregarDiaFestivo(DiaFestivo)
++ obtenerDiaFestivo(LocalDate): DiaFestivo
++ actualizarDiaFestivo(LocalDate, String): boolean
++ eliminarDiaFestivo(LocalDate): boolean
++ existeDiaFestivo(LocalDate): boolean
+
+Relaciones entre clases (tipo y cardinalidad):
+
+- Estudiante y Trabajador heredan de Persona (herencia).
+- Facultad 1 --- * Persona (composición): Una Facultad contiene muchos Personas.
+- GuardiaFactory 1 --- * Guardia (composición): Un GuardiaFactory contiene muchas Guardias.
+- GuardiaFactory 1 --- * Guardia (composición): Un GuardiaFactory contiene muchas guardiasCumplidas.
+- GuardiaFactory 1 --- 1 Calendario (asociación): Un GuardiaFactory tiene un Calendario.
+- GuardiaFactory 1 --- 1 Horario (asociación): Un GuardiaFactory tiene un Horario.
+- Guardia 1 --- 1 Persona (asociación): Una Guardia está asociada a una Persona.
+- Guardia 1 --- 1 Horario (asociación): Una Guardia está asociada a un Horario.
+- PlanificadorGuardias 1 --- 1 Facultad (composición): Un PlanificadorGuardias contiene una Facultad.
+- PlanificadorGuardias 1 --- 1 Calendario (composición): Un PlanificadorGuardias contiene un Calendario.
+- PlanificadorGuardias 1 --- 1 GuardiaFactory (composición): Un PlanificadorGuardias contiene un GuardiaFactory.
+- Calendario 1 --- * DiaFestivo (composición): Un Calendario contiene muchos DiasFestivos.
+- DiaFestivo es usado por Calendario (asociación).
+- Horario es usado por Guardia y Persona (asociación).
+- Persona usa Sexo (enum) (asociación).
+- Guardia usa TipoGuardia (enum) (asociación).
