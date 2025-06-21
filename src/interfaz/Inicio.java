@@ -31,7 +31,6 @@ public class Inicio extends JFrame {
 	private JMenuItem reporteRecuperacion, reporteVoluntarios, reporteEstInactivos, reporteFestivas;
 	private JButton btnSalir, btnLuna;
 	private Icon iconoLuna, iconoSol;
-	private JLabel lblNewLabel;
 
 	public Inicio() {
 		// Instancia singleton del planificador
@@ -426,7 +425,7 @@ public class Inicio extends JFrame {
 		lblBienvenida.setForeground(negro);
 		lblBienvenida.setHorizontalAlignment(SwingConstants.CENTER);
 		lblBienvenida.setBorder(new EmptyBorder(80, 10, 10, 10));
-		panelCentral.add(lblBienvenida, BorderLayout.NORTH);
+		panelCentral.add(lblBienvenida, BorderLayout.CENTER);
 
 		// Panel inferior para el botón salir y el botón de modo oscuro
 		panelInferior = new JPanel(new BorderLayout());
@@ -551,12 +550,6 @@ public class Inicio extends JFrame {
 		panelInferior.add(panelSalir, BorderLayout.EAST);
 
 		contentPane.add(panelCentral, BorderLayout.CENTER);
-		
-		lblNewLabel = new JLabel("");
-		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-		lblNewLabel.setIcon(new ImageIcon(Inicio.class.getResource("/imagenes/Fondo 2.0.png")));
-		panelCentral.add(lblNewLabel, BorderLayout.CENTER);
 		contentPane.add(panelInferior, BorderLayout.SOUTH);
 	}
 
