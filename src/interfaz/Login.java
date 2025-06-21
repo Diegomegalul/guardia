@@ -59,11 +59,11 @@ public class Login extends JFrame {
 		JPanel panelCentral = new JPanel();
 		panelCentral.setBackground(amarillo);
 		panelCentral.setLayout(new FormLayout(new ColumnSpec[] {
-				ColumnSpec.decode("42px"),
-				ColumnSpec.decode("73px"),
+				ColumnSpec.decode("30px"),
+				ColumnSpec.decode("96px"),
 				FormFactory.LABEL_COMPONENT_GAP_COLSPEC,
-				ColumnSpec.decode("199px"),
-				ColumnSpec.decode("right:max(20dlu;default)"),},
+				ColumnSpec.decode("183px"),
+				ColumnSpec.decode("right:max(25dlu;default)"),},
 			new RowSpec[] {
 				RowSpec.decode("47px"),
 				RowSpec.decode("25px"),
@@ -72,7 +72,14 @@ public class Login extends JFrame {
 				FormFactory.PARAGRAPH_GAP_ROWSPEC,
 				RowSpec.decode("57px"),}));
 		
+		// Cargar y escalar el icono de usuario
+		ImageIcon iconoUsuario = new ImageIcon(Login.class.getResource("/imagenes/usuario.png"));
+		Image img = iconoUsuario.getImage().getScaledInstance(28, 28, Image.SCALE_SMOOTH);
+		iconoUsuario = new ImageIcon(img);
+
 		JLabel label_1 = new JLabel("Usuario:");
+		label_1.setIcon(iconoUsuario);
+		label_1.setIconTextGap(10);
 		panelCentral.add(label_1, "2, 2, right, center");
 		txtUsuario = new JTextField(15);
 		txtUsuario.setFont(new Font("Arial", Font.PLAIN, 16));
