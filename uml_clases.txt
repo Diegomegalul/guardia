@@ -27,6 +27,8 @@ Clase: Estudiante extends Persona
 - baja: boolean
 - grupo: int
 - guardiasCumplidas: int
+- guardiasRecuperacion: int
+- guardiasIncumplidas: int
 + isLicenciaMatricula(): boolean
 + setLicenciaMatricula(boolean)
 + isBaja(): boolean
@@ -35,6 +37,10 @@ Clase: Estudiante extends Persona
 + setGrupo(int)
 + getGuardiasCumplidas(): int
 + setGuardiasCumplidas(int)
++ getGuardiasRecuperacion(): int
++ setGuardiasRecuperacion(int)
++ getGuardiasIncumplidas(): int
++ setGuardiasIncumplidas(int)
 + puedeHacerGuardia(Horario): boolean
 + incrementarGuardiasAsignadas()
 + registrarGuardiaCumplida()
@@ -117,12 +123,14 @@ Clase: PlanificadorGuardias (Singleton)
 + getGuardiaFactory(): GuardiaFactory
 + getInstancia(): PlanificadorGuardias
 + reporteGuardiasRecuperacionPorGrupo(): List<GrupoRecuperacionReporte>
++ estudiantesPorGrupoRecuperacionDesc(): List<GrupoRecuperacionOrdenado>
 + agregarProfesoresPrueba()
 + agregarEstudiantesVaronesPrueba()
 + agregarEstudiantesMujeresPrueba()
 + reporteProfesoresVoluntariosEnVacaciones(): List<String>
 + listaGuardiasEnDiasFestivos(): List<Guardia>
 + planificarGuardiasRecuperacion(int, int)
++ reportePersonasInactivas(): ReporteInactivos
 
 Clase: DiaFestivo
 - fecha: LocalDate
