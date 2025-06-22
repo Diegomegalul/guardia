@@ -209,8 +209,6 @@ public class GuardiaFactory {
 		List<Estudiante> estudiantesM = new ArrayList<>();
 		List<Estudiante> estudiantesF = new ArrayList<>();
 
-		java.time.YearMonth yearMonth = java.time.YearMonth.of(anio, mes);
-
 		// Clasificar personas
 		for (Persona p : personas) {
 			if (p instanceof Trabajador && p.getActivo()) {

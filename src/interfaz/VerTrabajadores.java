@@ -260,11 +260,6 @@ public class VerTrabajadores extends JFrame {
 		}
 	}
 
-	private void abrirFormularioEdicion(Trabajador trabajador) {
-		AddTrabajadores frame = new AddTrabajadores(planificador, trabajador, this);
-		frame.setVisible(true);
-	}
-
 	// Método para refrescar la tabla desde AddTrabajadores tras editar
 	public void refrescarTabla() {
 		cargarTrabajadores(txtBusqueda.getText().trim().isEmpty() ? null : txtBusqueda.getText().trim().toLowerCase());
