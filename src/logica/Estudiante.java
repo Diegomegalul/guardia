@@ -11,15 +11,24 @@ public class Estudiante extends Persona{
 	private boolean baja;
 	private int grupo; // Nuevo atributo grupo
 	private int guardiasCumplidas;  //Nuevo atributo guardiasCumplidas
+	private int guardiasRecuperacion; // Nuevo atributo guardias de recuperacion
 
 	//Constructor
-	public Estudiante (String ci, String nombre,String apellidos, Sexo sexo, boolean activo, int guardiasAsignadas , int cantidadGuardiasFestivo, int grupo){
+	public Estudiante (String ci, String nombre,String apellidos, Sexo sexo, boolean activo, int guardiasAsignadas , int cantidadGuardiasFestivo, int grupo,int guardiasCumplidas, int guardiasRecuperacion) {
 		super(ci, nombre, apellidos, sexo, activo, guardiasAsignadas, cantidadGuardiasFestivo);
 		setGrupo(grupo);
-		this.guardiasAsignadas = 0;
-		this.guardiasCumplidas = 0;
+		setGuardiasCumplidas(guardiasCumplidas);
+		setGuardiasRecuperacion(guardiasRecuperacion);
 	}
 	//Getters y setters
+	public void setGuardiasRecuperacion(int guardiasRecuperacion) {
+		this.guardiasRecuperacion = guardiasRecuperacion;
+	}
+	
+	public int getGuardiasRecuperacion() {
+		return guardiasRecuperacion;
+	}
+	
 	public boolean isLicenciaMatricula() {
 		return licenciaMatricula;
 	}

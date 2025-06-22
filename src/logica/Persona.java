@@ -17,6 +17,8 @@ public abstract class Persona {
 		setApellidos(apellidos);
 		setSexo(sexo);
 		setActivo(activo);
+		setGuardiasAsignadas(guardiasAsignadas);
+		setCantidadGuardiasFestivo(cantidadGuardiasFestivo);
 	}
 
 	// Getters y Setters

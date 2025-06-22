@@ -258,6 +258,8 @@ public class AddEstudiantes extends JFrame {
 				int guardiasAsignadas = 0;
 				int guardiasFestivo = 0;
 				int grupo = 0;
+				int guardiasCumplidas = 0;
+				int guardiasRecuperacion = 0;
 				try {
 					guardiasAsignadas = Integer.parseInt(txtGuardiasAsignadas.getText().trim());
 					guardiasFestivo = Integer.parseInt(txtGuardiasFestivo.getText().trim());
@@ -272,7 +274,7 @@ public class AddEstudiantes extends JFrame {
 				}
 				if (estudianteEditado == null) {
 					// Nuevo estudiante
-					Estudiante estudiante = new Estudiante(ci, nombre, apellidos, utiles.Sexo.valueOf(sexoStr), activo, guardiasAsignadas, guardiasFestivo, grupo);
+					Estudiante estudiante = new Estudiante(ci, nombre, apellidos, utiles.Sexo.valueOf(sexoStr), activo, guardiasAsignadas, guardiasFestivo, grupo, guardiasCumplidas, guardiasRecuperacion);
 					planificador.getFacultad().agregarPersona(estudiante);
 					JLabel label = new JLabel("Estudiante guardado correctamente");
 					label.setFont(new Font("Arial", Font.BOLD, 16));
@@ -288,7 +290,7 @@ public class AddEstudiantes extends JFrame {
 							);
 				} else {
 					// Editar existente (puede cambiar el CI)
-					Estudiante nuevo = new Estudiante(ci, nombre, apellidos, utiles.Sexo.valueOf(sexoStr), activo, guardiasAsignadas, guardiasFestivo, grupo);
+					Estudiante nuevo = new Estudiante(ci, nombre, apellidos, utiles.Sexo.valueOf(sexoStr), activo, guardiasAsignadas, guardiasFestivo, grupo, guardiasCumplidas, guardiasRecuperacion);
 					planificador.getFacultad().eliminarPersona(estudianteEditado);
 					planificador.getFacultad().agregarPersona(nuevo);
 					JLabel label = new JLabel("Estudiante actualizado correctamente");
