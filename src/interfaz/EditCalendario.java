@@ -156,13 +156,40 @@ public class EditCalendario extends JFrame {
 					JOptionPane.showMessageDialog(EditCalendario.this, "Seleccione un día y complete los campos.", "Error", JOptionPane.ERROR_MESSAGE);
 					return;
 				}
-				LocalDate fecha = new java.sql.Date(utilDate.getTime()).toLocalDate();
-				boolean actualizado = planificador.getCalendario().actualizarDiaFestivo(fecha, descripcion);
-				if (actualizado) {
+				String selected = modeloLista.getElementAt(idx);
+				String[] partes = selected.split(" - ", 2);
+				if (partes.length != 2) {
+					JOptionPane.showMessageDialog(EditCalendario.this, "Error al obtener el día seleccionado.", "Error", JOptionPane.ERROR_MESSAGE);
+					return;
+				}
+				LocalDate fechaOriginal = LocalDate.parse(partes[0]);
+				LocalDate fechaNueva = new java.sql.Date(utilDate.getTime()).toLocalDate();
+
+				// Si la fecha cambió, eliminar el anterior y agregar el nuevo
+				if (!fechaOriginal.equals(fechaNueva)) {
+					boolean eliminado = planificador.getCalendario().eliminarDiaFestivo(fechaOriginal);
+					if (!eliminado) {
+						JOptionPane.showMessageDialog(EditCalendario.this, "No se pudo actualizar la fecha.", "Error", JOptionPane.ERROR_MESSAGE);
+						return;
+					}
+					planificador.getCalendario().agregarDiaFestivo(new DiaFestivo(fechaNueva, descripcion));
 					actualizarLista();
 					JOptionPane.showMessageDialog(EditCalendario.this, "Día festivo actualizado.", "Actualizado", JOptionPane.INFORMATION_MESSAGE);
+					// Limpiar campos
+					txtDescripcion.setText("");
+					dateChooser.setDate(null);
 				} else {
-					JOptionPane.showMessageDialog(EditCalendario.this, "No se pudo actualizar.", "Error", JOptionPane.ERROR_MESSAGE);
+					// Solo actualizar la descripción
+					boolean actualizado = planificador.getCalendario().actualizarDiaFestivo(fechaNueva, descripcion);
+					if (actualizado) {
+						actualizarLista();
+						JOptionPane.showMessageDialog(EditCalendario.this, "Día festivo actualizado.", "Actualizado", JOptionPane.INFORMATION_MESSAGE);
+						// Limpiar campos
+						txtDescripcion.setText("");
+						dateChooser.setDate(null);
+					} else {
+						JOptionPane.showMessageDialog(EditCalendario.this, "No se pudo actualizar.", "Error", JOptionPane.ERROR_MESSAGE);
+					}
 				}
 			}
 		});

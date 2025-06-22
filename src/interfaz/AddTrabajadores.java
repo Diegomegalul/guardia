@@ -128,6 +128,32 @@ public class AddTrabajadores extends JFrame {
 				RowSpec.decode("20dlu:grow"),
 				FormFactory.RELATED_GAP_ROWSPEC,
 				RowSpec.decode("20dlu:grow"),
+				FormFactory.RELATED_GAP_ROWSPEC,
+				RowSpec.decode("20dlu:grow"),
+				FormFactory.RELATED_GAP_ROWSPEC,
+				RowSpec.decode("20dlu:grow"),
+				FormFactory.RELATED_GAP_ROWSPEC,
+				RowSpec.decode("20dlu:grow"),
+				FormFactory.RELATED_GAP_ROWSPEC,
+				RowSpec.decode("20dlu:grow"),
+				FormFactory.RELATED_GAP_ROWSPEC,
+				RowSpec.decode("20dlu:grow"),
+				FormFactory.RELATED_GAP_ROWSPEC,
+				RowSpec.decode("20dlu:grow"),
+				FormFactory.RELATED_GAP_ROWSPEC,
+				RowSpec.decode("20dlu:grow"),
+				FormFactory.RELATED_GAP_ROWSPEC,
+				RowSpec.decode("20dlu:grow"),
+				FormFactory.RELATED_GAP_ROWSPEC,
+				RowSpec.decode("20dlu:grow"),
+				FormFactory.RELATED_GAP_ROWSPEC,
+				RowSpec.decode("20dlu:grow"),
+				FormFactory.RELATED_GAP_ROWSPEC,
+				RowSpec.decode("20dlu:grow"),
+				FormFactory.RELATED_GAP_ROWSPEC,
+				RowSpec.decode("20dlu:grow"),
+				FormFactory.RELATED_GAP_ROWSPEC,
+				RowSpec.decode("20dlu:grow"),
 		}));
 
 		// CI
@@ -326,6 +352,21 @@ public class AddTrabajadores extends JFrame {
 		});
 		panelBoton.add(btnGuardar);
 		contentPane.add(panelBoton, BorderLayout.SOUTH);
+	}
+
+	public AddTrabajadores(PlanificadorGuardias planificador, Trabajador trabajador) {
+		this(planificador, trabajador, null); // Llama al constructor principal
+		// Llenar los campos con los datos del trabajador
+		txtCi.setText(trabajador.getCi());
+		txtNombre.setText(trabajador.getNombre());
+		txtApellidos.setText(trabajador.getApellidos());
+		comboSexo.setSelectedItem(trabajador.getSexo().toString());
+		chkActivo.setSelected(trabajador.getActivo());
+		txtGuardiasAsignadas.setText(String.valueOf(trabajador.getGuardiasAsignadas()));
+		txtGuardiasFestivo.setText(String.valueOf(trabajador.getCantidadGuardiasFestivo()));
+		chkVoluntario.setSelected(trabajador.getVoluntario());
+		// Puedes deshabilitar el campo CI si no quieres que se edite
+		txtCi.setEditable(false);
 	}
 
 	public void aplicarModoOscuro(boolean oscuro, Color fondo, Color texto, Color boton, Color amarilloSec) {

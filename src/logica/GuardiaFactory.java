@@ -25,7 +25,6 @@ public class GuardiaFactory {
 		this.guardias = new ArrayList<>(); 
 		this.guardiasCumplidas = new ArrayList<>();
 		this.guardiasIncumplidas = new ArrayList<>();
-		this.calendario = new Calendario(); // Inicializa un calendario vacío
 	}
 
 	//Setters y Getters

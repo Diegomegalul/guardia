@@ -191,14 +191,11 @@ public class VerTrabajadores extends JFrame {
 					JOptionPane.showMessageDialog(VerTrabajadores.this, "Seleccione un trabajador para eliminar.", "Error", JOptionPane.ERROR_MESSAGE);
 					return;
 				}
-				String ci = (String) model.getValueAt(fila, 0);
-				Persona p = planificador.getFacultad().buscarPersonaPorCI(ci);
-				if (p != null && p instanceof Trabajador) {
-					int confirm = JOptionPane.showConfirmDialog(VerTrabajadores.this, "¿Está seguro de eliminar al trabajador?", "Confirmar", JOptionPane.YES_NO_OPTION);
-					if (confirm == JOptionPane.YES_OPTION) {
-						planificador.getFacultad().eliminarPersona(p);
-						cargarTrabajadores(txtBusqueda.getText().trim().isEmpty() ? null : txtBusqueda.getText().trim().toLowerCase());
-					}
+				Trabajador trabajador = (Trabajador) trabajadoresFiltrados.get(table.convertRowIndexToModel(fila));
+				int confirm = JOptionPane.showConfirmDialog(VerTrabajadores.this, "¿Está seguro de eliminar al trabajador?", "Confirmar", JOptionPane.YES_NO_OPTION);
+				if (confirm == JOptionPane.YES_OPTION) {
+					planificador.getFacultad().eliminarPersona(trabajador);
+					cargarTrabajadores(txtBusqueda.getText().trim().isEmpty() ? null : txtBusqueda.getText().trim().toLowerCase());
 				}
 			}
 		});
@@ -206,15 +203,13 @@ public class VerTrabajadores extends JFrame {
 		// Acción editar
 		btnEditar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				int fila = table.getSelectedRow();
-				if (fila == -1) {
-					JOptionPane.showMessageDialog(VerTrabajadores.this, "Seleccione un trabajador para editar.", "Error", JOptionPane.ERROR_MESSAGE);
-					return;
-				}
-				String ci = (String) model.getValueAt(fila, 0);
-				Persona p = planificador.getFacultad().buscarPersonaPorCI(ci);
-				if (p != null && p instanceof Trabajador) {
-					abrirFormularioEdicion((Trabajador) p);
+				int selectedRow = table.getSelectedRow();
+				if (selectedRow >= 0) {
+					Trabajador trabajador = (Trabajador) trabajadoresFiltrados.get(table.convertRowIndexToModel(selectedRow));
+					AddTrabajadores frame = new AddTrabajadores(planificador, trabajador);
+					frame.setVisible(true);
+				} else {
+					JOptionPane.showMessageDialog(VerTrabajadores.this, "Seleccione un trabajador para editar.", "Aviso", JOptionPane.WARNING_MESSAGE);
 				}
 			}
 		});
@@ -275,3 +270,5 @@ public class VerTrabajadores extends JFrame {
 		cargarTrabajadores(txtBusqueda.getText().trim().isEmpty() ? null : txtBusqueda.getText().trim().toLowerCase());
 	}
 }
+
+
