@@ -268,6 +268,11 @@ public class AddEstudiantes extends JFrame {
 					JOptionPane.showMessageDialog(AddEstudiantes.this, "Verifique los campos numéricos.", "Error", JOptionPane.ERROR_MESSAGE);
 					return;
 				}
+				// Validación de CI: debe tener 11 dígitos numéricos
+				if (ci.length() != 11 || !ci.matches("\\d{11}")) {
+					JOptionPane.showMessageDialog(AddEstudiantes.this, "El CI debe tener exactamente 11 números.", "Error", JOptionPane.ERROR_MESSAGE);
+					return;
+				}
 				if (ci.isEmpty() || nombre.isEmpty() || apellidos.isEmpty()) {
 					JOptionPane.showMessageDialog(AddEstudiantes.this, "Complete todos los campos obligatorios.", "Error", JOptionPane.ERROR_MESSAGE);
 					return;
