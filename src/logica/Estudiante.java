@@ -17,7 +17,7 @@ public class Estudiante extends Persona{
 		super(ci, nombre, apellidos, sexo, activo, guardiasAsignadas, cantidadGuardiasFestivo);
 		setGrupo(grupo);
 		this.guardiasAsignadas = 0;
-        this.guardiasCumplidas = 0;
+		this.guardiasCumplidas = 0;
 	}
 	//Getters y setters
 	public boolean isLicenciaMatricula() {
@@ -27,11 +27,11 @@ public class Estudiante extends Persona{
 	public void setLicenciaMatricula(boolean licenciaMatricula) {
 		this.licenciaMatricula = licenciaMatricula;
 	}
-	
+
 	public void setGuardiasCumplidas(int guardiasCumplidas){
 		this.guardiasCumplidas = guardiasCumplidas;
 	}
-	
+
 	public int getGuardiasCumplidas(){
 		return guardiasCumplidas;
 	}
@@ -54,55 +54,55 @@ public class Estudiante extends Persona{
 	//Metodos
 	@Override
 	public boolean puedeHacerGuardia(Horario horario) {
-	    boolean puede = false;
-	    if (getActivo() && horario != null) {
-	        int mes = horario.getDia().getMonthValue();
-	        if (mes != 7 && mes != 8) {
-	            LocalTime inicio = horario.getHoraInicio();
-	            LocalTime fin = horario.getHoraFin();
-	            DayOfWeek dia = horario.getDia().getDayOfWeek();
-	            switch (getSexo()) {
-	                case MASCULINO:
-	                    puede = esHorarioNocturnoValido(inicio, fin);
-	                    break;
-	                case FEMENINO:
-	                    puede = esFinDeSemana(dia) && esHorarioDiurnoValido(inicio, fin);
-	                    break;
-	                default:
-	                    puede = false;
-	            }
-	        }
-	    }
-	    return puede;
+		boolean puede = false;
+		if (getActivo() && horario != null) {
+			int mes = horario.getDia().getMonthValue();
+			if (mes != 7 && mes != 8) {
+				LocalTime inicio = horario.getHoraInicio();
+				LocalTime fin = horario.getHoraFin();
+				DayOfWeek dia = horario.getDia().getDayOfWeek();
+				switch (getSexo()) {
+				case MASCULINO:
+					puede = esHorarioNocturnoValido(inicio, fin);
+					break;
+				case FEMENINO:
+					puede = esFinDeSemana(dia) && esHorarioDiurnoValido(inicio, fin);
+					break;
+				default:
+					puede = false;
+				}
+			}
+		}
+		return puede;
 	}
 
 	private boolean esHorarioNocturnoValido(LocalTime inicio, LocalTime fin) {
-	    return inicio.equals(LocalTime.of(20, 0)) && 
-	           fin.equals(LocalTime.of(8, 0));
+		return inicio.equals(LocalTime.of(20, 0)) && 
+				fin.equals(LocalTime.of(8, 0));
 	}
 
 	private boolean esHorarioDiurnoValido(LocalTime inicio, LocalTime fin) {
-	    return inicio.equals(LocalTime.of(8, 0)) && 
-	           fin.equals(LocalTime.of(20, 0));
+		return inicio.equals(LocalTime.of(8, 0)) && 
+				fin.equals(LocalTime.of(20, 0));
 	}
 
 	private boolean esFinDeSemana(DayOfWeek dia) {
-	    return dia == DayOfWeek.SATURDAY || dia == DayOfWeek.SUNDAY;
+		return dia == DayOfWeek.SATURDAY || dia == DayOfWeek.SUNDAY;
 	}
 
-    public void incrementarGuardiasAsignadas() {
-        this.guardiasAsignadas++;
-    }
-    
-    public void registrarGuardiaCumplida() {
-        this.guardiasCumplidas++;
-    }
-    
-    public int calcularGuardiasPendientes() {
-        return guardiasAsignadas - guardiasCumplidas;
-    }
-    
-    public boolean tieneGuardiasPendientes() {
-        return calcularGuardiasPendientes() > 0;
-    }
+	public void incrementarGuardiasAsignadas() {
+		this.guardiasAsignadas++;
+	}
+
+	public void registrarGuardiaCumplida() {
+		this.guardiasCumplidas++;
+	}
+
+	public int calcularGuardiasPendientes() {
+		return guardiasAsignadas - guardiasCumplidas;
+	}
+
+	public boolean tieneGuardiasPendientes() {
+		return calcularGuardiasPendientes() > 0;
+	}
 }

@@ -26,9 +26,9 @@ public class GuardiaFactory {
 	}
 
 	//Setters y Getters
- 	public List<Guardia> getGuardiasCumplidas() {
-  	return guardiasCumplidas;
- 	}
+	public List<Guardia> getGuardiasCumplidas() {
+		return guardiasCumplidas;
+	}
 
 	public Calendario getCalendario() {
 		return calendario;
@@ -342,7 +342,7 @@ public class GuardiaFactory {
 								} else {
 									// Buscar fin de semana
 									while (dia.getDayOfWeek() != java.time.DayOfWeek.SATURDAY &&
-										   dia.getDayOfWeek() != java.time.DayOfWeek.SUNDAY) {
+											dia.getDayOfWeek() != java.time.DayOfWeek.SUNDAY) {
 										dia = dia.plusDays(1);
 										if (dia.getMonthValue() != mes) break;
 									}

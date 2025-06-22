@@ -13,7 +13,7 @@ public class Calendario {
 	public Calendario(){
 		this.diasFestivos = new ArrayList<>();
 	}
-	
+
 	//Setters y getters
 	public void setDiasFestivos(List<DiaFestivo> diasFestivos) {
 		this.diasFestivos = new ArrayList<>();
@@ -21,11 +21,11 @@ public class Calendario {
 			this.diasFestivos.addAll(diasFestivos);
 		}
 	}
-	
+
 	public List<DiaFestivo> getDiasFestivos() {
 		return diasFestivos;
 	}
-    //Metodos
+	//Metodos
 
 	// CRUD de Dias Festivos
 
@@ -73,17 +73,17 @@ public class Calendario {
 		return obtenerDiaFestivo(fecha) != null;
 	}
 
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
+
+
+
+
+
+
+
+
+
+
 }
 
 
@@ -112,7 +112,7 @@ public class Calendario {
 
 
 
-	/* mas basura de Daniela
+/* mas basura de Daniela
     private Set<LocalDate> festivos;
 
     public Calendario(Set<LocalDate> festivos) {
@@ -134,4 +134,4 @@ public class Calendario {
     }
 }
 
-*/
+ */
