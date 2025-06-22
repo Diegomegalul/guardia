@@ -99,7 +99,47 @@ public class PlanificadorGuardias {
 		return reporte;
 	}
 
-	// Clases internas para el reporte
+	/**
+	 * Devuelve una lista de grupos ordenados de mayor a menor según la suma de guardias de recuperación.
+	 * Dentro de cada grupo, los estudiantes están ordenados de mayor a menor guardias de recuperación.
+	 * @return Lista de objetos GrupoRecuperacionOrdenado con grupo y lista de estudiantes ordenados
+	 */
+	public List<GrupoRecuperacionOrdenado> estudiantesPorGrupoRecuperacionDesc() {
+		Map<Integer, List<Estudiante>> mapa = new HashMap<>();
+		for (Persona p : facultad.getPersonas()) {
+			if (p instanceof Estudiante) {
+				Estudiante e = (Estudiante) p;
+				int grupo = e.getGrupo();
+				if (!mapa.containsKey(grupo)) {
+					mapa.put(grupo, new ArrayList<Estudiante>());
+				}
+				mapa.get(grupo).add(e);
+			}
+		}
+		List<GrupoRecuperacionOrdenado> resultado = new ArrayList<GrupoRecuperacionOrdenado>();
+		for (Map.Entry<Integer, List<Estudiante>> entry : mapa.entrySet()) {
+			List<Estudiante> estudiantes = entry.getValue();
+			// Ordenar estudiantes dentro del grupo por guardias de recuperación (desc)
+			Collections.sort(estudiantes, new Comparator<Estudiante>() {
+				public int compare(Estudiante a, Estudiante b) {
+					return Integer.compare(b.getGuardiasRecuperacion(), a.getGuardiasRecuperacion());
+				}
+			});
+			int suma = 0;
+			for (Estudiante est : estudiantes) {
+				suma += est.getGuardiasRecuperacion();
+			}
+			resultado.add(new GrupoRecuperacionOrdenado(entry.getKey(), suma, estudiantes));
+		}
+		// Ordenar lista de grupos por suma de guardias de recuperación (desc)
+		Collections.sort(resultado, new Comparator<GrupoRecuperacionOrdenado>() {
+			public int compare(GrupoRecuperacionOrdenado a, GrupoRecuperacionOrdenado b) {
+				return Integer.compare(b.totalRecuperacion, a.totalRecuperacion);
+			}
+		});
+		return resultado;
+	}
+
 	public static class GrupoRecuperacionReporte {
 		public int grupo;
 		public int totalGuardias;
@@ -119,6 +159,18 @@ public class PlanificadorGuardias {
 		public PersonaRecuperacion(Persona persona, int cantidad) {
 			this.persona = persona;
 			this.cantidad = cantidad;
+		}
+	}
+
+	public static class GrupoRecuperacionOrdenado {
+		public int grupo;
+		public int totalRecuperacion;
+		public List<Estudiante> estudiantes;
+
+		public GrupoRecuperacionOrdenado(int grupo, int totalRecuperacion, List<Estudiante> estudiantes) {
+			this.grupo = grupo;
+			this.totalRecuperacion = totalRecuperacion;
+			this.estudiantes = estudiantes;
 		}
 	}
 
@@ -251,6 +303,7 @@ public class PlanificadorGuardias {
 		facultad.agregarPersona(s);
 		facultad.agregarPersona(t);
 	}
+	//REPORTES
 	//Profesores voluntarios en vacaciones
 	public List<String> reporteProfesoresVoluntariosEnVacaciones() {
 		List<String> voluntarios = new ArrayList<>();
@@ -305,6 +358,68 @@ public class PlanificadorGuardias {
 	 */
 	public void planificarGuardiasRecuperacion(int anio, int mes) {
 		guardiaFactory.planificarGuardiasRecuperacion(anio, mes);
+	}
+
+	/**
+	 * Reporte de estudiantes inactivos agrupados por grupo (ordenados de mayor a menor cantidad de inactivos)
+	 * y lista de trabajadores inactivos.
+	 */
+	public ReporteInactivos reportePersonasInactivas() {
+		// Estudiantes inactivos por grupo
+		Map<Integer, List<Estudiante>> mapaInactivos = new HashMap<>();
+		// Trabajadores inactivos
+		List<Trabajador> trabajadoresInactivos = new ArrayList<>();
+
+		for (Persona p : facultad.getPersonas()) {
+			if (!p.getActivo()) {
+				if (p instanceof Estudiante) {
+					Estudiante e = (Estudiante) p;
+					int grupo = e.getGrupo();
+					if (!mapaInactivos.containsKey(grupo)) {
+						mapaInactivos.put(grupo, new ArrayList<Estudiante>());
+					}
+					mapaInactivos.get(grupo).add(e);
+				} else if (p instanceof Trabajador) {
+					trabajadoresInactivos.add((Trabajador) p);
+				}
+			}
+		}
+
+		// Crear lista de grupos ordenados por cantidad de inactivos (desc)
+		List<GrupoInactivos> grupos = new ArrayList<GrupoInactivos>();
+		for (Map.Entry<Integer, List<Estudiante>> entry : mapaInactivos.entrySet()) {
+			List<Estudiante> estudiantes = entry.getValue();
+			grupos.add(new GrupoInactivos(entry.getKey(), estudiantes.size(), estudiantes));
+		}
+		Collections.sort(grupos, new Comparator<GrupoInactivos>() {
+			public int compare(GrupoInactivos a, GrupoInactivos b) {
+				return Integer.compare(b.cantidadInactivos, a.cantidadInactivos);
+			}
+		});
+
+		return new ReporteInactivos(grupos, trabajadoresInactivos);
+	}
+
+	public static class ReporteInactivos {
+		public List<GrupoInactivos> gruposEstudiantesInactivos;
+		public List<Trabajador> trabajadoresInactivos;
+
+		public ReporteInactivos(List<GrupoInactivos> gruposEstudiantesInactivos, List<Trabajador> trabajadoresInactivos) {
+			this.gruposEstudiantesInactivos = gruposEstudiantesInactivos;
+			this.trabajadoresInactivos = trabajadoresInactivos;
+		}
+	}
+
+	public static class GrupoInactivos {
+		public int grupo;
+		public int cantidadInactivos;
+		public List<Estudiante> estudiantesInactivos;
+
+		public GrupoInactivos(int grupo, int cantidadInactivos, List<Estudiante> estudiantesInactivos) {
+			this.grupo = grupo;
+			this.cantidadInactivos = cantidadInactivos;
+			this.estudiantesInactivos = estudiantesInactivos;
+		}
 	}
 }
 
