@@ -34,4 +34,8 @@ Buscar las ventanas que puedan tener conflictos con otras y no dejar q se abran 
 planificar recuperacion auto <br>
 el caliendario debe actualizar los dias <br>
 poner las cardinalidades en el diagrama <br>
+Poner una X en el buscador <br>
+Buscar guardias de una persona <br>
+considerar los dias festivos como si fuesen fin de semana <br>
+Poner el editar de los trabajadores <br>
 cualquier cosa q se te ocurra la escribes aca <br>
