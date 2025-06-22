@@ -12,6 +12,7 @@ public class Estudiante extends Persona{
 	private int grupo; // Nuevo atributo grupo
 	private int guardiasCumplidas;  //Nuevo atributo guardiasCumplidas
 	private int guardiasRecuperacion; // Nuevo atributo guardias de recuperacion
+	private int guardiasIncumplidas; // Nuevo atributo guardias incumplidas
 
 	//Constructor
 	public Estudiante (String ci, String nombre,String apellidos, Sexo sexo, boolean activo, int guardiasAsignadas , int cantidadGuardiasFestivo, int grupo,int guardiasCumplidas, int guardiasRecuperacion) {
@@ -19,6 +20,7 @@ public class Estudiante extends Persona{
 		setGrupo(grupo);
 		setGuardiasCumplidas(guardiasCumplidas);
 		setGuardiasRecuperacion(guardiasRecuperacion);
+		this.guardiasIncumplidas = 0;
 	}
 	//Getters y setters
 	public void setGuardiasRecuperacion(int guardiasRecuperacion) {
@@ -60,6 +62,14 @@ public class Estudiante extends Persona{
 	public int getGrupo() {
 		return grupo;
 	}  
+	
+	public void setGuardiasIncumplidas(int guardiasIncumplidas) {
+		this.guardiasIncumplidas = guardiasIncumplidas;
+	}
+
+	public int getGuardiasIncumplidas() {
+		return guardiasIncumplidas;
+	}
 	//Metodos
 	@Override
 	public boolean puedeHacerGuardia(Horario horario) {
