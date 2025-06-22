@@ -95,12 +95,21 @@ public class VerEstudiantes extends JFrame {
 		contentPane.add(panelBusqueda, BorderLayout.BEFORE_FIRST_LINE);
 
 		// Tabla de estudiantes
-		String[] columnas = {"CI", "Nombre", "Apellidos", "Sexo", "Activo", "Grupo", "Guardias Asignadas", "Guardias Cumplidas"};
+		String[] columnas = {"CI", "Nombre", "Apellidos", "Sexo", "Activo", "Grupo", "G.Asignadas", "G.Cumplidas", "G.Incumplidas"};
 		model = new DefaultTableModel(columnas, 0) {
 			private static final long serialVersionUID = 1L;
 			@Override
 			public boolean isCellEditable(int row, int column) {
 				return false;
+			}
+			@Override
+			public Class<?> getColumnClass(int columnIndex) {
+				// Solo las columnas numéricas deben ser Integer.class
+				if (columnIndex == 5 || columnIndex == 6 || columnIndex == 7 || columnIndex == 8) {
+					return Integer.class;
+				}
+				// Para evitar el error de casteo, las demás columnas serán String
+				return String.class;
 			}
 		};
 		table = new JTable(model);
@@ -111,6 +120,24 @@ public class VerEstudiantes extends JFrame {
 		table.setBackground(Color.WHITE);
 		table.setForeground(negro);
 		table.setRowHeight(28);
+
+		// Habilitar ordenamiento por columnas numéricas
+		final javax.swing.table.TableRowSorter<DefaultTableModel> sorter = new javax.swing.table.TableRowSorter<>(model);
+		table.setRowSorter(sorter);
+
+		// Ordenar de mayor a menor al hacer click en las columnas de guardias (sin lambda)
+		table.getTableHeader().addMouseListener(new java.awt.event.MouseAdapter() {
+			public void mouseClicked(java.awt.event.MouseEvent e) {
+				int col = table.columnAtPoint(e.getPoint());
+				String colName = table.getColumnName(col);
+				if (colName.equals("G.Asignadas") || colName.equals("G.Cumplidas") || colName.equals("G.Incumplidas")) {
+					java.util.List<javax.swing.RowSorter.SortKey> keys = new java.util.ArrayList<javax.swing.RowSorter.SortKey>();
+					keys.add(new javax.swing.RowSorter.SortKey(col, javax.swing.SortOrder.DESCENDING));
+					sorter.setSortKeys(keys);
+					sorter.sort();
+				}
+			}
+		});
 
 		JScrollPane scrollPane = new JScrollPane(table);
 		scrollPane.getViewport().setBackground(Color.WHITE);
@@ -214,6 +241,35 @@ public class VerEstudiantes extends JFrame {
 				dispose();
 			}
 		});
+
+		// Doble clic en una fila para abrir VerGuardiasPersona (sin lambda)
+		table.addMouseListener(new java.awt.event.MouseAdapter() {
+			public void mouseClicked(java.awt.event.MouseEvent e) {
+				if (e.getClickCount() == 2) {
+					int fila = table.rowAtPoint(e.getPoint());
+					if (fila != -1) {
+						String ci = (String) model.getValueAt(table.convertRowIndexToModel(fila), 0);
+						Persona p = planificador.getFacultad().buscarPersonaPorCI(ci);
+						if (p != null) {
+							// Obtener todas las guardias de la persona
+							List<logica.Guardia> guardiasPersona = new java.util.ArrayList<logica.Guardia>();
+							List<logica.Guardia> todas = planificador.getGuardiaFactory().getGuardias();
+							if (todas != null) {
+								for (int i = 0; i < todas.size(); i++) {
+									logica.Guardia g = todas.get(i);
+									if (g != null && g.getPersona() != null && g.getPersona().equals(p)) {
+										guardiasPersona.add(g);
+									}
+								}
+							}
+							// Evitar pasar null como lista
+							VerGuardiasPersona frame = new VerGuardiasPersona(p, guardiasPersona);
+							frame.setVisible(true);
+						}
+					}
+				}
+			}
+		});
 	}
 
 	private void cargarEstudiantes(String filtro) {
@@ -242,11 +298,12 @@ public class VerEstudiantes extends JFrame {
 						e.getCi(),
 						e.getNombre(),
 						e.getApellidos(),
-						e.getSexo(),
+						e.getSexo().toString(), // Convertir Sexo a String para evitar ClassCastException
 						e.getActivo() ? "Sí" : "No",
 						e.getGrupo(),
 						e.getGuardiasAsignadas(),
-						e.getGuardiasCumplidas()
+						e.getGuardiasCumplidas(),
+						e.getGuardiasIncumplidas()
 					});
 				}
 			}

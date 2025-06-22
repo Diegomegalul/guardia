@@ -180,7 +180,17 @@ public class GuardiasPlanificadas extends JFrame {
 		for (int i = 0; i < guardias.size(); i++) {
 			Guardia g = (Guardia) guardias.get(i);
 			if (g.getId() == idGuardia) {
-				cumplidas.add(g);
+				// Aumentar el contador de guardias cumplidas de la persona
+				logica.Persona p = g.getPersona();
+				if (p instanceof logica.Estudiante) {
+					((logica.Estudiante) p).setGuardiasCumplidas(((logica.Estudiante) p).getGuardiasCumplidas() + 1);
+				} else if (p instanceof logica.Trabajador) {
+					// Si quieres llevar un contador para trabajadores, agrégalo aquí
+				}
+				// Pasar la guardia al arrayList de guardias cumplidas
+				if (!cumplidas.contains(g)) {
+					cumplidas.add(g);
+				}
 				break;
 			}
 		}

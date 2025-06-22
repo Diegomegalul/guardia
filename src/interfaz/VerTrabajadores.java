@@ -105,7 +105,7 @@ public class VerTrabajadores extends JFrame {
 		contentPane.add(panelBusqueda, BorderLayout.BEFORE_FIRST_LINE);
 
 		// Tabla de trabajadores
-		String[] columnas = {"CI", "Nombre", "Apellidos", "Sexo", "Activo", "Fecha Incorp.", "Guardias Asignadas", "Guardias Festivo", "Voluntario"};
+		String[] columnas = {"CI", "Nombre", "Apellidos", "Sexo", "Activo", "Fecha Incorp.", "G.Asignadas", "G.Festivo", "Voluntario"};
 		model = new DefaultTableModel(columnas, 0) {
 			private static final long serialVersionUID = 1L;
 			@Override

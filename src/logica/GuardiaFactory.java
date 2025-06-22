@@ -223,9 +223,50 @@ public class GuardiaFactory {
 			}
 		}
 
-		// Si es la primera vez (no hay guardias planificadas), planifica dos meses completos
 		boolean primeraVez = guardias.isEmpty();
 		int mesesAPlanificar = primeraVez ? 2 : 1;
+
+		// Si es la segunda o posteriores planificaciones, revisar el mes más antiguo aún no revisado
+		if (!primeraVez) {
+			int mesARevisar = mes - mesesAPlanificar;
+			int anioARevisar = anio;
+			while (mesARevisar < 1) {
+				mesARevisar += 12;
+				anioARevisar -= 1;
+			}
+			java.time.YearMonth ymARevisar = java.time.YearMonth.of(anioARevisar, mesARevisar);
+
+			for (Guardia g : new ArrayList<>(guardias)) {
+				if (g.getHorario().getDia().getYear() == ymARevisar.getYear() &&
+					g.getHorario().getDia().getMonthValue() == ymARevisar.getMonthValue() &&
+					g.getTipo() == TipoGuardia.NORMAL) {
+					Persona p = g.getPersona();
+					boolean cumplida = false;
+					for (Guardia gc : guardiasCumplidas) {
+						if (gc.getId() == g.getId()) {
+							cumplida = true;
+							break;
+						}
+					}
+					if (!cumplida && p instanceof Estudiante) {
+						Estudiante est = (Estudiante) p;
+						// Solo si no está ya en guardiasIncumplidas
+						boolean yaIncumplida = false;
+						for (Guardia gi : guardiasIncumplidas) {
+							if (gi.getId() == g.getId()) {
+								yaIncumplida = true;
+								break;
+							}
+						}
+						if (!yaIncumplida) {
+							guardiasIncumplidas.add(g);
+							est.setGuardiasRecuperacion(est.getGuardiasRecuperacion() + 1);
+							est.setGuardiasIncumplidas(est.getGuardiasIncumplidas() + 1);
+						}
+					}
+				}
+			}
+		}
 
 		for (int m = 0; m < mesesAPlanificar; m++) {
 			java.time.YearMonth ym = java.time.YearMonth.of(anio, mes + m);
@@ -234,24 +275,37 @@ public class GuardiaFactory {
 				LocalDate fecha = LocalDate.of(ym.getYear(), ym.getMonthValue(), day);
 				int dow = fecha.getDayOfWeek().getValue(); // 1=Lunes ... 7=Domingo
 
-				// Guardias de estudiantes hombres: todos los días, 20:00-08:00
+				// Guardias de recuperación de estudiantes hombres: todos los días, 20:00-08:00
 				if (!estudiantesM.isEmpty()) {
-					Estudiante est = seleccionarEstudianteParaGuardia(estudiantesM);
+					Estudiante est = seleccionarEstudianteRecuperacionPrimero(estudiantesM);
 					Horario h = new Horario(fecha, LocalTime.of(20, 0), LocalTime.of(8, 0));
 					if (est != null && est.puedeHacerGuardia(h)) {
-						nuevasGuardias.add(new Guardia(nextId++, TipoGuardia.NORMAL, est, h));
-						est.setGuardiasAsignadas(est.getGuardiasAsignadas() + 1);
+						if (est.getGuardiasRecuperacion() > 0) {
+							nuevasGuardias.add(new Guardia(nextId++, TipoGuardia.RECUPERACION, est, h));
+							est.setGuardiasRecuperacion(est.getGuardiasRecuperacion() - 1);
+							// No aumentar guardiasAsignadas
+						} else {
+							nuevasGuardias.add(new Guardia(nextId++, TipoGuardia.NORMAL, est, h));
+							est.setGuardiasAsignadas(est.getGuardiasAsignadas() + 1);
+						}
 					}
 				}
 
-				// Guardias de estudiantes mujeres: solo fines de semana, alternando con trabajadores
-				if (dow == 6 || dow == 7) { // Sábado o Domingo
+				// Guardias de recuperación de estudiantes mujeres: solo fines de semana, alternando con trabajadores
+				if (dow == 6 || dow == 7) // Sábado o Domingo
+				{
 					if (finSemanaMujer && !estudiantesF.isEmpty()) {
-						Estudiante est = seleccionarEstudianteParaGuardia(estudiantesF);
+						Estudiante est = seleccionarEstudianteRecuperacionPrimero(estudiantesF);
 						Horario h = new Horario(fecha, LocalTime.of(8, 0), LocalTime.of(20, 0));
 						if (est != null && est.puedeHacerGuardia(h)) {
-							nuevasGuardias.add(new Guardia(nextId++, TipoGuardia.NORMAL, est, h));
-							est.setGuardiasAsignadas(est.getGuardiasAsignadas() + 1);
+							if (est.getGuardiasRecuperacion() > 0) {
+								nuevasGuardias.add(new Guardia(nextId++, TipoGuardia.RECUPERACION, est, h));
+								est.setGuardiasRecuperacion(est.getGuardiasRecuperacion() - 1);
+								// No aumentar guardiasAsignadas
+							} else {
+								nuevasGuardias.add(new Guardia(nextId++, TipoGuardia.NORMAL, est, h));
+								est.setGuardiasAsignadas(est.getGuardiasAsignadas() + 1);
+							}
 						}
 					} else if (!finSemanaMujer && !trabajadores.isEmpty()) {
 						// Trabajadores: 9-14 y 14-19
@@ -272,62 +326,12 @@ public class GuardiaFactory {
 			}
 		}
 
-		// Si no es la primera vez, revisar el primer mes planificado y asignar recuperaciones
-		if (!primeraVez) {
-			// Buscar el mes anterior al actual
-			int mesAnterior = mes - 1;
-			int anioAnterior = anio;
-			if (mesAnterior < 1) {
-				mesAnterior = 12;
-				anioAnterior = anio - 1;
-			}
-			java.time.YearMonth ymPrevio = java.time.YearMonth.of(anioAnterior, mesAnterior);
-
-			// Buscar guardias normales del mes anterior
-			for (Guardia g : guardias) {
-				if (g.getHorario().getDia().getYear() == ymPrevio.getYear() &&
-					g.getHorario().getDia().getMonthValue() == ymPrevio.getMonthValue() &&
-					g.getTipo() == TipoGuardia.NORMAL) {
-					Persona p = g.getPersona();
-					boolean cumplida = false;
-					// Buscar si está en guardiasCumplidas
-					for (Guardia gc : guardiasCumplidas) {
-						if (gc.getId() == g.getId()) {
-							cumplida = true;
-							break;
-						}
-					}
-					if (!cumplida && p instanceof Estudiante) {
-						Estudiante est = (Estudiante) p;
-						// Asignar guardia de recuperación en el mes actual
-						LocalDate fechaRec = LocalDate.of(anio, mes, 1);
-						Horario hRec;
-						if (est.getSexo() == Sexo.MASCULINO) {
-							hRec = new Horario(fechaRec, LocalTime.of(20, 0), LocalTime.of(8, 0));
-						} else {
-							// Buscar primer fin de semana del mes
-							while (fechaRec.getDayOfWeek() != java.time.DayOfWeek.SATURDAY &&
-								   fechaRec.getDayOfWeek() != java.time.DayOfWeek.SUNDAY) {
-								fechaRec = fechaRec.plusDays(1);
-								if (fechaRec.getMonthValue() != mes) break;
-							}
-							hRec = new Horario(fechaRec, LocalTime.of(8, 0), LocalTime.of(20, 0));
-						}
-						nuevasGuardias.add(new Guardia(nextId++, TipoGuardia.RECUPERACION, est, hRec));
-						est.setGuardiasRecuperacion(est.getGuardiasRecuperacion() + 1);
-						est.setGuardiasIncumplidas(est.getGuardiasIncumplidas() + 1);
-					}
-				}
-			}
-		}
-
-		// Agregar las nuevas guardias a la lista general
 		guardias.addAll(nuevasGuardias);
 		return nuevasGuardias;
 	}
 
 	// Selecciona primero con guardias de recuperación, si no, el de menos guardias asignadas
-	private Estudiante seleccionarEstudianteParaGuardia(List<Estudiante> lista) {
+	private Estudiante seleccionarEstudianteRecuperacionPrimero(List<Estudiante> lista) {
 		Estudiante conRec = null;
 		int minAsignadas = Integer.MAX_VALUE;
 		Estudiante minEst = null;
@@ -422,4 +426,3 @@ public class GuardiaFactory {
 		}
 	}
 }
-
