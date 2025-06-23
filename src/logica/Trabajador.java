@@ -50,27 +50,24 @@ public class Trabajador extends Persona {
 	@Override
 	public boolean puedeHacerGuardia(Horario horario) {
 		boolean puede = false;
-		if (getActivo()) {
+		if (getActivo() && horario != null) {
 			LocalDate fecha = horario.getDia();
 			LocalTime inicio = horario.getHoraInicio();
 			LocalTime fin = horario.getHoraFin();
-			// Validar que la fecha de incorporación no sea null
-			if (fechaDeIncorporacion != null && !fecha.isBefore(fechaDeIncorporacion)) {
-				DayOfWeek diaSemana = fecha.getDayOfWeek();
-				if (diaSemana == DayOfWeek.SATURDAY || diaSemana == DayOfWeek.SUNDAY) {
-					boolean turnoValido = false;
-					if (inicio.equals(LocalTime.of(9, 0)) && fin.equals(LocalTime.of(14, 0))) {
-						turnoValido = true;
-					} else if (inicio.equals(LocalTime.of(14, 0)) && fin.equals(LocalTime.of(19, 0))) {
-						turnoValido = true;
-					}
-					if (turnoValido) {
-						Month mes = fecha.getMonth();
-						if (mes == Month.JULY || mes == Month.AUGUST) {
-							puede = voluntario;
-						} else {
-							puede = true;
-						}
+			Month mes = fecha.getMonth();
+			boolean turnoValido = (inicio.equals(LocalTime.of(9, 0)) && fin.equals(LocalTime.of(14, 0)))
+				|| (inicio.equals(LocalTime.of(14, 0)) && fin.equals(LocalTime.of(19, 0)));
+			// Permitir si no hay restricción de antigüedad
+			boolean incorporacionOk = (fechaDeIncorporacion == null) || !fecha.isBefore(fechaDeIncorporacion);
+			if (incorporacionOk) {
+				if (mes == Month.JULY || mes == Month.AUGUST) {
+					// En julio/agosto, cualquier día, solo si es voluntario y turno válido
+					puede = voluntario && turnoValido;
+				} else {
+					// Resto del año: solo fines de semana y turno válido
+					DayOfWeek diaSemana = fecha.getDayOfWeek();
+					if ((diaSemana == DayOfWeek.SATURDAY || diaSemana == DayOfWeek.SUNDAY) && turnoValido) {
+						puede = true;
 					}
 				}
 			}
@@ -78,5 +75,4 @@ public class Trabajador extends Persona {
 		return puede;
 	} 
 }
-
 
