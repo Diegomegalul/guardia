@@ -176,26 +176,26 @@ public class PlanificadorGuardias {
 
 	// Métodos de prueba para añadir personas
 	public void agregarProfesoresPrueba() {
-			Trabajador a = new Trabajador("12345678901","Carlos","Pérez Gómez",utiles.Sexo.MASCULINO,false,java.time.LocalDate.of(2020, 1, 1),0,0,true);
-			Trabajador b = new Trabajador("23456789012","María","López Fernández",utiles.Sexo.FEMENINO,true,java.time.LocalDate.of(2019, 3, 15),0,0,true);
-			Trabajador c = new Trabajador("34567890123","Juan","Martínez Ruiz",utiles.Sexo.MASCULINO,true,java.time.LocalDate.of(2018, 5, 10),0,0,true);
-			Trabajador d = new Trabajador("45678901234","Ana","García Torres",utiles.Sexo.FEMENINO,true,java.time.LocalDate.of(2021, 2, 20),0,0,true);
-			Trabajador e = new Trabajador("56789012345","Luis","Sánchez Díaz",utiles.Sexo.MASCULINO,true,java.time.LocalDate.of(2017, 8, 8),0,0,true);
-			Trabajador f = new Trabajador("67890123456","Elena","Romero Castro",utiles.Sexo.FEMENINO,true,java.time.LocalDate.of(2016, 11, 30),0,0,true);
-			Trabajador g = new Trabajador("78901234567","Miguel","Vega Herrera",utiles.Sexo.MASCULINO,true,java.time.LocalDate.of(2015, 7, 25),0,0,true);
-			Trabajador h = new Trabajador("89012345678","Lucía","Jiménez Morales",utiles.Sexo.FEMENINO,false,java.time.LocalDate.of(2022, 4, 12),0,0,false);
-			Trabajador i = new Trabajador("90123456789","Pedro","Navarro Ramos",utiles.Sexo.MASCULINO,true,java.time.LocalDate.of(2014, 9, 18),0,0,true);
-			Trabajador j = new Trabajador("11223344556","Sofía","Molina Pérez",utiles.Sexo.FEMENINO,true,java.time.LocalDate.of(2013, 6, 5),0,0,true);
-			Trabajador k = new Trabajador("22334455667","Javier","Castro López",utiles.Sexo.MASCULINO,true,java.time.LocalDate.of(2012, 10, 22),0,0,true);
-			Trabajador l = new Trabajador("33445566778","Patricia","Ortega Gil",utiles.Sexo.FEMENINO,true,java.time.LocalDate.of(2011, 12, 1),0,0,false);
-			Trabajador m = new Trabajador("44556677889","Raúl","Domínguez León",utiles.Sexo.MASCULINO,true,java.time.LocalDate.of(2020, 3, 3),0,0,true);
-			Trabajador n = new Trabajador("55667788990","Isabel","Serrano Cruz",utiles.Sexo.FEMENINO,true,java.time.LocalDate.of(2019, 5, 14),0,0,true);
-			Trabajador o = new Trabajador("66778899001","Alberto","Morales Peña",utiles.Sexo.MASCULINO,true,java.time.LocalDate.of(2018, 7, 19),0,0,true);
-			Trabajador p = new Trabajador("77889900112","Teresa","Ramos Soto",utiles.Sexo.FEMENINO,false,java.time.LocalDate.of(2017, 9, 23),0,0,true);
-			Trabajador q = new Trabajador("88990011223","Francisco","Cano Vargas",utiles.Sexo.MASCULINO,true,java.time.LocalDate.of(2016, 11, 11),0,0,true);
-			Trabajador r = new Trabajador("99001122334","Marta","Reyes Flores",utiles.Sexo.FEMENINO,true,java.time.LocalDate.of(2015, 1, 17),0,0,true);
-			Trabajador s = new Trabajador("10111213141","Andrés","Suárez Bravo",utiles.Sexo.MASCULINO,true,java.time.LocalDate.of(2014, 2, 28),0,0,true);
-			Trabajador t = new Trabajador("12131415161","Beatriz","Medina Pardo",utiles.Sexo.FEMENINO,true,java.time.LocalDate.of(2013, 4, 9),0,0,false);
+			Trabajador a = new Trabajador("12345678901","Carlos","Pérez Gómez",utiles.Sexo.MASCULINO,false,java.time.LocalDate.of(2025, 1, 1),0,0,true);
+			Trabajador b = new Trabajador("23456789012","María","López Fernández",utiles.Sexo.FEMENINO,true,null,0,0,true);
+			Trabajador c = new Trabajador("34567890123","Juan","Martínez Ruiz",utiles.Sexo.MASCULINO,true,null,0,0,true);
+			Trabajador d = new Trabajador("45678901234","Ana","García Torres",utiles.Sexo.FEMENINO,true,null,0,0,true);
+			Trabajador e = new Trabajador("56789012345","Luis","Sánchez Díaz",utiles.Sexo.MASCULINO,true,null,0,0,true);
+			Trabajador f = new Trabajador("67890123456","Elena","Romero Castro",utiles.Sexo.FEMENINO,true,null,0,0,true);
+			Trabajador g = new Trabajador("78901234567","Miguel","Vega Herrera",utiles.Sexo.MASCULINO,true,null,0,0,true);
+			Trabajador h = new Trabajador("89012345678","Lucía","Jiménez Morales",utiles.Sexo.FEMENINO,false,java.time.LocalDate.of(2025, 4, 12),0,0,false);
+			Trabajador i = new Trabajador("90123456789","Pedro","Navarro Ramos",utiles.Sexo.MASCULINO,true,null,0,0,true);
+			Trabajador j = new Trabajador("11223344556","Sofía","Molina Pérez",utiles.Sexo.FEMENINO,true,null,0,0,true);
+			Trabajador k = new Trabajador("22334455667","Javier","Castro López",utiles.Sexo.MASCULINO,true,null,0,0,true);
+			Trabajador l = new Trabajador("33445566778","Patricia","Ortega Gil",utiles.Sexo.FEMENINO,true,null,0,0,false);
+			Trabajador m = new Trabajador("44556677889","Raúl","Domínguez León",utiles.Sexo.MASCULINO,true,null,0,0,true);
+			Trabajador n = new Trabajador("55667788990","Isabel","Serrano Cruz",utiles.Sexo.FEMENINO,true,null,0,0,true);
+			Trabajador o = new Trabajador("66778899001","Alberto","Morales Peña",utiles.Sexo.MASCULINO,true,null,0,0,true);
+			Trabajador p = new Trabajador("77889900112","Teresa","Ramos Soto",utiles.Sexo.FEMENINO,false,java.time.LocalDate.of(2025, 9, 23),0,0,true);
+			Trabajador q = new Trabajador("88990011223","Francisco","Cano Vargas",utiles.Sexo.MASCULINO,true,null,0,0,true);
+			Trabajador r = new Trabajador("99001122334","Marta","Reyes Flores",utiles.Sexo.FEMENINO,true,null,0,0,true);
+			Trabajador s = new Trabajador("10111213141","Andrés","Suárez Bravo",utiles.Sexo.MASCULINO,true,null,0,0,true);
+			Trabajador t = new Trabajador("12131415161","Beatriz","Medina Pardo",utiles.Sexo.FEMENINO,true,null,0,0,false);
 			facultad.agregarPersona(a);
 			facultad.agregarPersona(b);
 			facultad.agregarPersona(c);
