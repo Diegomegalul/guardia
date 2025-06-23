@@ -175,7 +175,13 @@ public class PlanificadorGuardias {
 	}
 
 	// Métodos de prueba para añadir personas
+	private boolean profesoresPruebaAgregados = false;
+	private boolean estudiantesVaronesPruebaAgregados = false;
+	private boolean estudiantesMujeresPruebaAgregados = false;
+
 	public void agregarProfesoresPrueba() {
+		if (profesoresPruebaAgregados) return;
+		profesoresPruebaAgregados = true;
 		facultad.agregarPersona(new Trabajador("12345678901","Carlos","Pérez Gómez",utiles.Sexo.MASCULINO,false,java.time.LocalDate.of(2025, 1, 1),0,0,true,null));
 		facultad.agregarPersona(new Trabajador("23456789012","María","López Fernández",utiles.Sexo.FEMENINO,true,null,0,0,true,java.time.LocalDate.of(2025, 7, 10)));
 		facultad.agregarPersona(new Trabajador("34567890123","Juan","Martínez Ruiz",utiles.Sexo.MASCULINO,true,null,0,0,true,java.time.LocalDate.of(2025, 8, 5)));
@@ -199,6 +205,8 @@ public class PlanificadorGuardias {
 	}
 
 	public void agregarEstudiantesVaronesPrueba() {
+		if (estudiantesVaronesPruebaAgregados) return;
+		estudiantesVaronesPruebaAgregados = true;
 		facultad.agregarPersona(new Estudiante("05090266950","Diego","Canales Calvo",utiles.Sexo.MASCULINO,true,0,0,12, 0, 0));
 		facultad.agregarPersona(new Estudiante("04032448951","Aleksander","Castañeda Morales",utiles.Sexo.MASCULINO,true,0,0,12, 0, 0));
 		facultad.agregarPersona(new Estudiante("05090266900","Aniel","Varela  Hernández",utiles.Sexo.MASCULINO,true,0,0,12, 0, 0));
@@ -222,6 +230,8 @@ public class PlanificadorGuardias {
 	}
 
 	public void agregarEstudiantesMujeresPrueba() {
+		if (estudiantesMujeresPruebaAgregados) return;
+		estudiantesMujeresPruebaAgregados = true;
 		facultad.agregarPersona(new Estudiante("06100948233","Daniela","Rodríguez Molina",utiles.Sexo.FEMENINO,true,0,0,12,0,0));
 		facultad.agregarPersona(new Estudiante("06030867876","Gloria","Santos Rosado",utiles.Sexo.FEMENINO,true,0,0,12,0,0));
 		facultad.agregarPersona(new Estudiante("06061368391","Aylin","Vázquez Alvarez",utiles.Sexo.FEMENINO,true,0,0,12,0,0));

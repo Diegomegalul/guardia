@@ -74,6 +74,15 @@ public class Calendario {
 	}
 
 	public void agregarDiasFestivosPrueba() {
+		// Validar que no se agreguen dos veces
+		boolean yaAgregados =
+			existeDiaFestivo(java.time.LocalDate.of(2025, 1, 1)) &&
+			existeDiaFestivo(java.time.LocalDate.of(2025, 5, 1)) &&
+			existeDiaFestivo(java.time.LocalDate.of(2025, 7, 26)) &&
+			existeDiaFestivo(java.time.LocalDate.of(2025, 12, 25)) &&
+			existeDiaFestivo(java.time.LocalDate.of(2025, 10, 10));
+		if (yaAgregados) return;
+
 		agregarDiaFestivo(new DiaFestivo(java.time.LocalDate.of(2025, 1, 1), "Año Nuevo"));
 		agregarDiaFestivo(new DiaFestivo(java.time.LocalDate.of(2025, 5, 1), "Día del Trabajador"));
 		agregarDiaFestivo(new DiaFestivo(java.time.LocalDate.of(2025, 7, 26), "Día de la Rebeldía Nacional"));

@@ -445,9 +445,24 @@ public class Inicio extends JFrame {
 					}
 				}
 				if (!found) {
-					planificador.agregarEstudiantesMujeresPrueba();
-					planificador.agregarEstudiantesVaronesPrueba();
-					JOptionPane.showMessageDialog(Inicio.this, "Estudiantes de prueba cargados.");
+					// Solo agregar si no se han agregado antes
+					try {
+						java.lang.reflect.Field f1 = planificador.getClass().getDeclaredField("estudiantesMujeresPruebaAgregados");
+						java.lang.reflect.Field f2 = planificador.getClass().getDeclaredField("estudiantesVaronesPruebaAgregados");
+						f1.setAccessible(true);
+						f2.setAccessible(true);
+						boolean mujeresAgregadas = f1.getBoolean(planificador);
+						boolean varonesAgregados = f2.getBoolean(planificador);
+						if (!mujeresAgregadas && !varonesAgregados) {
+							planificador.agregarEstudiantesMujeresPrueba();
+							planificador.agregarEstudiantesVaronesPrueba();
+							JOptionPane.showMessageDialog(Inicio.this, "Estudiantes de prueba cargados.");
+						} else {
+							JOptionPane.showMessageDialog(Inicio.this, "Los estudiantes de prueba ya fueron cargados.");
+						}
+					} catch (Exception ex) {
+						JOptionPane.showMessageDialog(Inicio.this, "Error al verificar si los estudiantes ya fueron cargados.");
+					}
 				}
 			}
 		});
@@ -469,8 +484,20 @@ public class Inicio extends JFrame {
 					}
 				}
 				if (!found) {
-					planificador.agregarProfesoresPrueba();
-					JOptionPane.showMessageDialog(Inicio.this, "Trabajadores de prueba cargados.");
+					// Solo agregar si no se han agregado antes
+					try {
+						java.lang.reflect.Field f = planificador.getClass().getDeclaredField("profesoresPruebaAgregados");
+						f.setAccessible(true);
+						boolean yaAgregado = f.getBoolean(planificador);
+						if (!yaAgregado) {
+							planificador.agregarProfesoresPrueba();
+							JOptionPane.showMessageDialog(Inicio.this, "Trabajadores de prueba cargados.");
+						} else {
+							JOptionPane.showMessageDialog(Inicio.this, "Los trabajadores de prueba ya fueron cargados.");
+						}
+					} catch (Exception ex) {
+						JOptionPane.showMessageDialog(Inicio.this, "Error al verificar si los trabajadores ya fueron cargados.");
+					}
 				}
 			}
 		});
