@@ -59,5 +59,5 @@ public class Guardia {
 	}
 
 	//Metodos
-	// No hay dobles returns aquí
+	// No hay métodos con dos returns en caminos alternativos ni uso de break fuera de switch.
 }

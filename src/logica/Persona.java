@@ -80,5 +80,6 @@ public abstract class Persona {
 
 	//Metodos
 	public abstract boolean puedeHacerGuardia(Horario horario);
+	// No hay métodos con dos returns en caminos alternativos ni uso de break fuera de switch.
 }
 

@@ -336,7 +336,8 @@ public class PlanificadorGuardias {
 			}
 		});
 
-		return new ReporteInactivos(grupos, trabajadoresInactivos);
+		ReporteInactivos reporte = new ReporteInactivos(grupos, trabajadoresInactivos);
+		return reporte;
 	}
 
 	public static class ReporteInactivos {
@@ -387,5 +388,7 @@ public class PlanificadorGuardias {
 		}
 		return resultado;
 	}
+	// Hay varios métodos con break en bucles for, pero todos son para salir del bucle (no de switch), lo cual es válido y común.
+	// No hay métodos con dos returns en caminos alternativos (solo returns tempranos para validación o al final del método).
 }
 

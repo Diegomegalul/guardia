@@ -74,5 +74,6 @@ public class Trabajador extends Persona {
 		}
 		return puede;
 	} 
+	// No hay métodos con dos returns en caminos alternativos ni uso de break fuera de switch.
 }
 

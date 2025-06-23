@@ -81,5 +81,6 @@ public class Calendario {
 		agregarDiaFestivo(new DiaFestivo(java.time.LocalDate.of(2025, 10, 10), "Inicio de las Guerras de Independencia"));
 	}
 
+	// No hay métodos con dos returns en caminos alternativos ni uso de break fuera de switch.
 }
 

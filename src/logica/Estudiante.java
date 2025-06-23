@@ -124,4 +124,5 @@ public class Estudiante extends Persona{
 	public boolean tieneGuardiasPendientes() {
 		return calcularGuardiasPendientes() > 0;
 	}
+	// No hay métodos con dos returns en caminos alternativos ni uso de break fuera de switch
 }

@@ -71,29 +71,22 @@ public class GuardiaFactory {
 		}
 
 		// Validaciones específicas por tipo
+		boolean valido = true;
 		switch(tipo) {
-		case RECUPERACION:
-			if (!(persona instanceof Estudiante) || 
-					!((Estudiante)persona).tieneGuardiasPendientes()) {
-				return false;
-			}
-			break;
-
-		case VOLUNTARIA:
-			if (!(persona instanceof Trabajador) || 
-					!((Trabajador)persona).getVoluntario()) {
-				return false;
-			}
-			break;
-
-		case FESTIVO:
-			// Validar máximo de 3 guardias festivas por persona
-			if (persona.getCantidadGuardiasFestivo() >= 3) {
-				return false;
-			}
-			break;
-		default:
-			break;
+			case RECUPERACION:
+				valido = (persona instanceof Estudiante) && ((Estudiante)persona).tieneGuardiasPendientes();
+				break;
+			case VOLUNTARIA:
+				valido = (persona instanceof Trabajador) && ((Trabajador)persona).getVoluntario();
+				break;
+			case FESTIVO:
+				valido = persona.getCantidadGuardiasFestivo() < 3;
+				break;
+			default:
+				break;
+		}
+		if (!valido) {
+			return false;
 		}
 
 		// Crear guardia
@@ -124,25 +117,25 @@ public class GuardiaFactory {
 	// REGISTRAR CUMPLIMIENTO MEJORADO
 	public boolean registrarCumplimientoGuardia(int idGuardia) {
 		Guardia g = buscarGuardiaPorId(idGuardia);
-		if (g == null) return false;
-
-		Persona p = g.getPersona();
-
-		if (p instanceof Estudiante) {
-			Estudiante est = (Estudiante) p;
-			est.registrarGuardiaCumplida();
-
-			// Si es guardia de recuperación, reducir pendientes
-			if (g.getTipo() == TipoGuardia.RECUPERACION) {
-				est.setGuardiasAsignadas(est.getGuardiasAsignadas() - 1);
+		boolean resultado = false;
+		if (g != null) {
+			Persona p = g.getPersona();
+			if (p instanceof Estudiante) {
+				Estudiante est = (Estudiante) p;
+				est.registrarGuardiaCumplida();
+				// Si es guardia de recuperación, reducir pendientes
+				if (g.getTipo() == TipoGuardia.RECUPERACION) {
+					est.setGuardiasAsignadas(est.getGuardiasAsignadas() - 1);
+				}
 			}
+			// Marcar la guardia como cumplida y pasarla al grupo de guardias cumplidas
+			g.setCumplida(true);
+			if (!guardiasCumplidas.contains(g)) {
+				guardiasCumplidas.add(g);
+			}
+			resultado = true;
 		}
-		// Marcar la guardia como cumplida y pasarla al grupo de guardias cumplidas
-		g.setCumplida(true);
-		if (!guardiasCumplidas.contains(g)) {
-			guardiasCumplidas.add(g);
-		}
-		return true;
+		return resultado;
 	}
 
 	// BUSCAR POR ID (compatible)
