@@ -137,6 +137,11 @@ public class GuardiaFactory {
 				est.setGuardiasAsignadas(est.getGuardiasAsignadas() - 1);
 			}
 		}
+		// Marcar la guardia como cumplida y pasarla al grupo de guardias cumplidas
+		g.setCumplida(true);
+		if (!guardiasCumplidas.contains(g)) {
+			guardiasCumplidas.add(g);
+		}
 		return true;
 	}
 
@@ -209,8 +214,6 @@ public class GuardiaFactory {
 		List<Estudiante> estudiantesM = new ArrayList<>();
 		List<Estudiante> estudiantesF = new ArrayList<>();
 
-		java.time.YearMonth yearMonth = java.time.YearMonth.of(anio, mes);
-
 		// Clasificar personas
 		for (Persona p : personas) {
 			if (p instanceof Trabajador && p.getActivo()) {
@@ -225,9 +228,50 @@ public class GuardiaFactory {
 			}
 		}
 
-		// Si es la primera vez (no hay guardias planificadas), planifica dos meses completos
 		boolean primeraVez = guardias.isEmpty();
 		int mesesAPlanificar = primeraVez ? 2 : 1;
+
+		// Revisar solo guardias del mes N-2 para asignar recuperaciones
+		if (!primeraVez) {
+			int mesARevisar = mes - 2;
+			int anioARevisar = anio;
+			while (mesARevisar < 1) {
+				mesARevisar += 12;
+				anioARevisar -= 1;
+			}
+			java.time.YearMonth ymARevisar = java.time.YearMonth.of(anioARevisar, mesARevisar);
+
+			for (Guardia g : new ArrayList<>(guardias)) {
+				if (g.getHorario().getDia().getYear() == ymARevisar.getYear() &&
+					g.getHorario().getDia().getMonthValue() == ymARevisar.getMonthValue() &&
+					g.getTipo() == TipoGuardia.NORMAL) {
+					Persona p = g.getPersona();
+					boolean cumplida = false;
+					for (Guardia gc : guardiasCumplidas) {
+						if (gc.getId() == g.getId()) {
+							cumplida = true;
+							break;
+						}
+					}
+					if (!cumplida && p instanceof Estudiante) {
+						Estudiante est = (Estudiante) p;
+						// Solo si no está ya en guardiasIncumplidas
+						boolean yaIncumplida = false;
+						for (Guardia gi : guardiasIncumplidas) {
+							if (gi.getId() == g.getId()) {
+								yaIncumplida = true;
+								break;
+							}
+						}
+						if (!yaIncumplida) {
+							guardiasIncumplidas.add(g);
+							est.setGuardiasRecuperacion(est.getGuardiasRecuperacion() + 1);
+							est.setGuardiasIncumplidas(est.getGuardiasIncumplidas() + 1);
+						}
+					}
+				}
+			}
+		}
 
 		for (int m = 0; m < mesesAPlanificar; m++) {
 			java.time.YearMonth ym = java.time.YearMonth.of(anio, mes + m);
@@ -238,22 +282,59 @@ public class GuardiaFactory {
 
 				// Guardias de estudiantes hombres: todos los días, 20:00-08:00
 				if (!estudiantesM.isEmpty()) {
-					Estudiante est = seleccionarEstudianteParaGuardia(estudiantesM);
+					Estudiante est = seleccionarEstudianteRecuperacionPrimero(estudiantesM);
 					Horario h = new Horario(fecha, LocalTime.of(20, 0), LocalTime.of(8, 0));
-					if (est != null && est.puedeHacerGuardia(h)) {
-						nuevasGuardias.add(new Guardia(nextId++, TipoGuardia.NORMAL, est, h));
-						est.setGuardiasAsignadas(est.getGuardiasAsignadas() + 1);
+					// Verificar si ya existe una guardia para este estudiante, día y horario
+					boolean existe = false;
+					for (int i = 0; i < guardias.size(); i++) {
+						Guardia existente = guardias.get(i);
+						if (existente.getPersona().equals(est) &&
+							existente.getHorario().getDia().equals(h.getDia()) &&
+							existente.getHorario().getHoraInicio().equals(h.getHoraInicio()) &&
+							existente.getHorario().getHoraFin().equals(h.getHoraFin())) {
+							existe = true;
+							break;
+						}
+					}
+					if (!existe) {
+						if (est != null && est.puedeHacerGuardia(h)) {
+							if (est.getGuardiasRecuperacion() > 0) {
+								nuevasGuardias.add(new Guardia(nextId++, TipoGuardia.RECUPERACION, est, h));
+								est.setGuardiasRecuperacion(est.getGuardiasRecuperacion() - 1);
+							} else {
+								nuevasGuardias.add(new Guardia(nextId++, TipoGuardia.NORMAL, est, h));
+								est.setGuardiasAsignadas(est.getGuardiasAsignadas() + 1);
+							}
+						}
 					}
 				}
 
 				// Guardias de estudiantes mujeres: solo fines de semana, alternando con trabajadores
-				if (dow == 6 || dow == 7) { // Sábado o Domingo
+				if (dow == 6 || dow == 7) {
 					if (finSemanaMujer && !estudiantesF.isEmpty()) {
-						Estudiante est = seleccionarEstudianteParaGuardia(estudiantesF);
+						Estudiante est = seleccionarEstudianteRecuperacionPrimero(estudiantesF);
 						Horario h = new Horario(fecha, LocalTime.of(8, 0), LocalTime.of(20, 0));
-						if (est != null && est.puedeHacerGuardia(h)) {
-							nuevasGuardias.add(new Guardia(nextId++, TipoGuardia.NORMAL, est, h));
-							est.setGuardiasAsignadas(est.getGuardiasAsignadas() + 1);
+						boolean existe = false;
+						for (int i = 0; i < guardias.size(); i++) {
+							Guardia existente = guardias.get(i);
+							if (existente.getPersona().equals(est) &&
+								existente.getHorario().getDia().equals(h.getDia()) &&
+								existente.getHorario().getHoraInicio().equals(h.getHoraInicio()) &&
+								existente.getHorario().getHoraFin().equals(h.getHoraFin())) {
+								existe = true;
+								break;
+							}
+						}
+						if (!existe) {
+							if (est != null && est.puedeHacerGuardia(h)) {
+								if (est.getGuardiasRecuperacion() > 0) {
+									nuevasGuardias.add(new Guardia(nextId++, TipoGuardia.RECUPERACION, est, h));
+									est.setGuardiasRecuperacion(est.getGuardiasRecuperacion() - 1);
+								} else {
+									nuevasGuardias.add(new Guardia(nextId++, TipoGuardia.NORMAL, est, h));
+									est.setGuardiasAsignadas(est.getGuardiasAsignadas() + 1);
+								}
+							}
 						}
 					} else if (!finSemanaMujer && !trabajadores.isEmpty()) {
 						// Trabajadores: 9-14 y 14-19
@@ -262,9 +343,22 @@ public class GuardiaFactory {
 								? new Horario(fecha, LocalTime.of(9, 0), LocalTime.of(14, 0))
 								: new Horario(fecha, LocalTime.of(14, 0), LocalTime.of(19, 0));
 							Trabajador t = seleccionarTrabajadorParaGuardia(trabajadores);
-							if (t != null && t.puedeHacerGuardia(h)) {
-								nuevasGuardias.add(new Guardia(nextId++, TipoGuardia.NORMAL, t, h));
-								t.setGuardiasAsignadas(t.getGuardiasAsignadas() + 1);
+							boolean existe = false;
+							for (int i = 0; i < guardias.size(); i++) {
+								Guardia existente = guardias.get(i);
+								if (existente.getPersona().equals(t) &&
+									existente.getHorario().getDia().equals(h.getDia()) &&
+									existente.getHorario().getHoraInicio().equals(h.getHoraInicio()) &&
+									existente.getHorario().getHoraFin().equals(h.getHoraFin())) {
+									existe = true;
+									break;
+								}
+							}
+							if (!existe) {
+								if (t != null && t.puedeHacerGuardia(h)) {
+									nuevasGuardias.add(new Guardia(nextId++, TipoGuardia.NORMAL, t, h));
+									t.setGuardiasAsignadas(t.getGuardiasAsignadas() + 1);
+								}
 							}
 						}
 					}
@@ -274,62 +368,29 @@ public class GuardiaFactory {
 			}
 		}
 
-		// Si no es la primera vez, revisar el primer mes planificado y asignar recuperaciones
-		if (!primeraVez) {
-			// Buscar el mes anterior al actual
-			int mesAnterior = mes - 1;
-			int anioAnterior = anio;
-			if (mesAnterior < 1) {
-				mesAnterior = 12;
-				anioAnterior = anio - 1;
-			}
-			java.time.YearMonth ymPrevio = java.time.YearMonth.of(anioAnterior, mesAnterior);
-
-			// Buscar guardias normales del mes anterior
-			for (Guardia g : guardias) {
-				if (g.getHorario().getDia().getYear() == ymPrevio.getYear() &&
-					g.getHorario().getDia().getMonthValue() == ymPrevio.getMonthValue() &&
-					g.getTipo() == TipoGuardia.NORMAL) {
-					Persona p = g.getPersona();
-					boolean cumplida = false;
-					// Buscar si está en guardiasCumplidas
-					for (Guardia gc : guardiasCumplidas) {
-						if (gc.getId() == g.getId()) {
-							cumplida = true;
-							break;
-						}
-					}
-					if (!cumplida && p instanceof Estudiante) {
-						Estudiante est = (Estudiante) p;
-						// Asignar guardia de recuperación en el mes actual
-						LocalDate fechaRec = LocalDate.of(anio, mes, 1);
-						Horario hRec;
-						if (est.getSexo() == Sexo.MASCULINO) {
-							hRec = new Horario(fechaRec, LocalTime.of(20, 0), LocalTime.of(8, 0));
-						} else {
-							// Buscar primer fin de semana del mes
-							while (fechaRec.getDayOfWeek() != java.time.DayOfWeek.SATURDAY &&
-								   fechaRec.getDayOfWeek() != java.time.DayOfWeek.SUNDAY) {
-								fechaRec = fechaRec.plusDays(1);
-								if (fechaRec.getMonthValue() != mes) break;
-							}
-							hRec = new Horario(fechaRec, LocalTime.of(8, 0), LocalTime.of(20, 0));
-						}
-						nuevasGuardias.add(new Guardia(nextId++, TipoGuardia.RECUPERACION, est, hRec));
-						est.setGuardiasRecuperacion(est.getGuardiasRecuperacion() + 1);
-						est.setGuardiasIncumplidas(est.getGuardiasIncumplidas() + 1);
-					}
+		// Solo agregar guardias nuevas que no estén ya en la lista global
+		for (int i = 0; i < nuevasGuardias.size(); i++) {
+			Guardia nueva = nuevasGuardias.get(i);
+			boolean existe = false;
+			for (int j = 0; j < guardias.size(); j++) {
+				Guardia existente = guardias.get(j);
+				if (existente.getPersona().equals(nueva.getPersona()) &&
+					existente.getHorario().getDia().equals(nueva.getHorario().getDia()) &&
+					existente.getHorario().getHoraInicio().equals(nueva.getHorario().getHoraInicio()) &&
+					existente.getHorario().getHoraFin().equals(nueva.getHorario().getHoraFin())) {
+					existe = true;
+					break;
 				}
 			}
+			if (!existe) {
+				guardias.add(nueva);
+			}
 		}
-
-		// Agregar las nuevas guardias a la lista general
-		guardias.addAll(nuevasGuardias);
 		return nuevasGuardias;
 	}
 
 	// Selecciona primero con guardias de recuperación, si no, el de menos guardias asignadas
-	private Estudiante seleccionarEstudianteParaGuardia(List<Estudiante> lista) {
+	private Estudiante seleccionarEstudianteRecuperacionPrimero(List<Estudiante> lista) {
 		Estudiante conRec = null;
 		int minAsignadas = Integer.MAX_VALUE;
 		Estudiante minEst = null;
@@ -423,5 +484,37 @@ public class GuardiaFactory {
 			}
 		}
 	}
-}
 
+	public static class GuardiasPorPersona {
+		public List<Guardia> asignadas;
+		public List<Guardia> cumplidas;
+		public List<Guardia> incumplidas;
+		public GuardiasPorPersona(List<Guardia> asignadas, List<Guardia> cumplidas, List<Guardia> incumplidas) {
+			this.asignadas = asignadas;
+			this.cumplidas = cumplidas;
+			this.incumplidas = incumplidas;
+		}
+	}
+
+	public GuardiasPorPersona obtenerGuardiasPorPersona(Persona persona) {
+		List<Guardia> asignadas = new ArrayList<>();
+		List<Guardia> cumplidas = new ArrayList<>();
+		List<Guardia> incumplidas = new ArrayList<>();
+		for (Guardia g : getGuardias()) {
+			if (g.getPersona() != null && g.getPersona().equals(persona)) {
+				asignadas.add(g);
+			}
+		}
+		for (Guardia g : getGuardiasCumplidas()) {
+			if (g.getPersona() != null && g.getPersona().equals(persona)) {
+				cumplidas.add(g);
+			}
+		}
+		for (Guardia g : getGuardiasIncumplidas()) {
+			if (g.getPersona() != null && g.getPersona().equals(persona)) {
+				incumplidas.add(g);
+			}
+		}
+		return new GuardiasPorPersona(asignadas, cumplidas, incumplidas);
+	}
+}

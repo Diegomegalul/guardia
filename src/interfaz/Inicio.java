@@ -329,7 +329,19 @@ public class Inicio extends JFrame {
 		reporteRecuperacion.setBorder(BorderFactory.createLineBorder(negro, 1));
 		reporteRecuperacion.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				JOptionPane.showMessageDialog(Inicio.this, "Reporte de guardias de recuperación (próximamente).");
+				boolean found = false;
+				for (Frame frame : JFrame.getFrames()) {
+					if (frame instanceof GuardiasRecuperacion && frame.isVisible()) {
+						frame.toFront();
+						frame.requestFocus();
+						found = true;
+						break;
+					}
+				}
+				if (!found) {
+					GuardiasRecuperacion frame = new GuardiasRecuperacion();
+					frame.setVisible(true);
+				}
 			}
 		});
 
@@ -340,7 +352,19 @@ public class Inicio extends JFrame {
 		reporteVoluntarios.setBorder(BorderFactory.createLineBorder(negro, 1));
 		reporteVoluntarios.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				JOptionPane.showMessageDialog(Inicio.this, "Reporte de profesores voluntarios (próximamente).");
+				boolean found = false;
+				for (Frame frame : JFrame.getFrames()) {
+					if (frame instanceof ProfVoluntarios && frame.isVisible()) {
+						frame.toFront();
+						frame.requestFocus();
+						found = true;
+						break;
+					}
+				}
+				if (!found) {
+					ProfVoluntarios frame = new ProfVoluntarios();
+					frame.setVisible(true);
+				}
 			}
 		});
 
@@ -351,7 +375,19 @@ public class Inicio extends JFrame {
 		reporteEstInactivos.setBorder(BorderFactory.createLineBorder(negro, 1));
 		reporteEstInactivos.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				JOptionPane.showMessageDialog(Inicio.this, "Reporte de estudiantes inactivos (próximamente).");
+				boolean found = false;
+				for (Frame frame : JFrame.getFrames()) {
+					if (frame instanceof EstInactivos && frame.isVisible()) {
+						frame.toFront();
+						frame.requestFocus();
+						found = true;
+						break;
+					}
+				}
+				if (!found) {
+					EstInactivos frame = new EstInactivos();
+					frame.setVisible(true);
+				}
 			}
 		});
 
@@ -362,7 +398,19 @@ public class Inicio extends JFrame {
 		reporteFestivas.setBorder(BorderFactory.createLineBorder(negro, 1));
 		reporteFestivas.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				JOptionPane.showMessageDialog(Inicio.this, "Reporte de guardias festivas (próximamente).");
+				boolean found = false;
+				for (Frame frame : JFrame.getFrames()) {
+					if (frame instanceof GuardiasFestivas && frame.isVisible()) {
+						frame.toFront();
+						frame.requestFocus();
+						found = true;
+						break;
+					}
+				}
+				if (!found) {
+					GuardiasFestivas frame = new GuardiasFestivas();
+					frame.setVisible(true);
+				}
 			}
 		});
 
@@ -557,7 +605,7 @@ public class Inicio extends JFrame {
 				for (int i = 0; i < 8; i++) {
 					double angle = Math.PI/4 * i;
 					int x1 = (int)(x+16+Math.cos(angle)*14);
-					int y1 = (int)(y+16+Math.sin(angle)*14);
+					int y1 = (int)(x+16+Math.sin(angle)*14);
 					int x2 = (int)(x+16+Math.cos(angle)*24);
 					int y2 = (int)(x+16+Math.sin(angle)*24);
 					g2.drawLine(x1, y1, x2, y2);

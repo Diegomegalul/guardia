@@ -259,11 +259,8 @@ public class PlanGuardias extends JFrame {
 					return;
 				}
 
-				// Añadir las nuevas guardias a las existentes (no borrar las de otros meses)
-				java.util.List<logica.Guardia> nuevas = new java.util.ArrayList<logica.Guardia>(guardiasExistentes);
-				nuevas.addAll(guardiasPlanificadas);
-				planificador.getGuardiaFactory().setGuardias(nuevas);
-
+				// NO agregar de nuevo las guardias a la lista global, ya lo hace planificarGuardiasMes
+				// Solo recargar la tabla
 				cargarGuardiasEnTabla();
 			}
 		});

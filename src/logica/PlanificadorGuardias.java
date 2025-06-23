@@ -119,15 +119,15 @@ public class PlanificadorGuardias {
 		List<GrupoRecuperacionOrdenado> resultado = new ArrayList<GrupoRecuperacionOrdenado>();
 		for (Map.Entry<Integer, List<Estudiante>> entry : mapa.entrySet()) {
 			List<Estudiante> estudiantes = entry.getValue();
-			// Ordenar estudiantes dentro del grupo por guardias de recuperación (desc)
+			// Ordenar estudiantes dentro del grupo por guardias incumplidas (desc)
 			Collections.sort(estudiantes, new Comparator<Estudiante>() {
 				public int compare(Estudiante a, Estudiante b) {
-					return Integer.compare(b.getGuardiasRecuperacion(), a.getGuardiasRecuperacion());
+					return Integer.compare(b.getGuardiasIncumplidas(), a.getGuardiasIncumplidas());
 				}
 			});
 			int suma = 0;
 			for (Estudiante est : estudiantes) {
-				suma += est.getGuardiasRecuperacion();
+				suma += est.getGuardiasIncumplidas();
 			}
 			resultado.add(new GrupoRecuperacionOrdenado(entry.getKey(), suma, estudiantes));
 		}
@@ -420,6 +420,33 @@ public class PlanificadorGuardias {
 			this.cantidadInactivos = cantidadInactivos;
 			this.estudiantesInactivos = estudiantesInactivos;
 		}
+	}
+
+	// :) 
+	public List<Trabajador> buscarTrabajadores(String filtro) {
+		List<Trabajador> resultado = new ArrayList<>();
+		for (Persona p : facultad.getPersonas()) {
+			if (p instanceof Trabajador) {
+				Trabajador t = (Trabajador) p;
+				boolean coincide = false;
+				if (filtro == null) {
+					coincide = true;
+				} else {
+					String ci = t.getCi().toLowerCase();
+					String nombre = t.getNombre().toLowerCase();
+					String apellidos = t.getApellidos().toLowerCase();
+					String fecha = t.getFechaDeIncorporacion() != null ? t.getFechaDeIncorporacion().toString() : "";
+					String voluntario = t.getVoluntario() ? "sí" : "no";
+					if (ci.contains(filtro) || nombre.contains(filtro) || apellidos.contains(filtro) || fecha.contains(filtro) || voluntario.contains(filtro)) {
+						coincide = true;
+					}
+				}
+				if (coincide) {
+					resultado.add(t);
+				}
+			}
+		}
+		return resultado;
 	}
 }
 
