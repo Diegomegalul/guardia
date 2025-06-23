@@ -1,11 +1,12 @@
 Clase: Persona (abstracta)
-- ci: String
-- nombre: String
-- apellidos: String
-- sexo: Sexo
-- activo: boolean
-- guardiasAsignadas: int
-- cantidadGuardiasFestivo: int
+# ci: String
+# nombre: String
+# apellidos: String
+# sexo: Sexo
+# activo: boolean
+# guardiasAsignadas: int
+# cantidadGuardiasFestivo: int
++ Persona(String, String, String, Sexo, boolean, int, int)
 + getCi(): String
 + setCi(String)
 + getNombre(): String
@@ -29,6 +30,7 @@ Clase: Estudiante extends Persona
 - guardiasCumplidas: int
 - guardiasRecuperacion: int
 - guardiasIncumplidas: int
++ Estudiante(String, String, String, Sexo, boolean, int, int, int, int, int)
 + isLicenciaMatricula(): boolean
 + setLicenciaMatricula(boolean)
 + isBaja(): boolean
@@ -50,10 +52,14 @@ Clase: Estudiante extends Persona
 Clase: Trabajador extends Persona
 - fechaDeIncorporacion: LocalDate
 - voluntario: boolean
+- fechaGuardiaVoluntaria: LocalDate
++ Trabajador(String, String, String, Sexo, boolean, LocalDate, int, int, boolean, LocalDate)
 + getFechaDeIncorporacion(): LocalDate
 + setFechaDeIncorporacion(LocalDate)
 + getVoluntario(): boolean
 + setVoluntario(boolean)
++ getFechaGuardiaVoluntaria(): LocalDate
++ setFechaGuardiaVoluntaria(LocalDate)
 + puedeHacerGuardia(Horario): boolean
 
 Clase: Guardia
@@ -61,6 +67,7 @@ Clase: Guardia
 - tipo: TipoGuardia
 - persona: Persona
 - horario: Horario
++ Guardia(int, TipoGuardia, Persona, Horario)
 + getId(): int
 + setId(int)
 + getTipo(): TipoGuardia
@@ -74,6 +81,7 @@ Clase: Horario
 - dia: LocalDate
 - horaInicio: LocalTime
 - horaFin: LocalTime
++ Horario(LocalDate, LocalTime, LocalTime)
 + getDia(): LocalDate
 + setDia(LocalDate)
 + getHoraInicio(): LocalTime
@@ -84,6 +92,7 @@ Clase: Horario
 Clase: Facultad
 - personas: List<Persona>
 - nombre: String
++ Facultad(String)
 + getPersonas(): List<Persona>
 + agregarPersona(Persona)
 + eliminarPersona(Persona)
@@ -97,7 +106,10 @@ Clase: GuardiaFactory
 - calendario: Calendario
 - guardias: List<Guardia>
 - guardiasCumplidas: List<Guardia>
+- guardiasIncumplidas: List<Guardia>
 - nextId: int
++ GuardiaFactory()
++ getGuardiasIncumplidas(): List<Guardia>
 + getGuardiasCumplidas(): List<Guardia>
 + getCalendario(): Calendario
 + setCalendario(Calendario)
@@ -112,6 +124,8 @@ Clase: GuardiaFactory
 + eliminarGuardia(int): boolean
 + planificarGuardiasMes(Facultad, int, int): List<Guardia>
 + planificarGuardiasRecuperacion(int, int)
++ obtenerGuardiasPorPersona(Persona): GuardiasPorPersona
+# GuardiasPorPersona (clase interna): asignadas, cumplidas, incumplidas
 
 Clase: PlanificadorGuardias (Singleton)
 - facultad: Facultad
@@ -127,14 +141,17 @@ Clase: PlanificadorGuardias (Singleton)
 + agregarProfesoresPrueba()
 + agregarEstudiantesVaronesPrueba()
 + agregarEstudiantesMujeresPrueba()
-+ reporteProfesoresVoluntariosEnVacaciones(): List<String>
++ reporteProfesoresVoluntariosEnVacaciones(): List<Trabajador>
 + listaGuardiasEnDiasFestivos(): List<Guardia>
 + planificarGuardiasRecuperacion(int, int)
 + reportePersonasInactivas(): ReporteInactivos
+# GrupoRecuperacionReporte, PersonaRecuperacion, GrupoRecuperacionOrdenado, ReporteInactivos, GrupoInactivos (clases internas)
++ buscarTrabajadores(String): List<Trabajador>
 
 Clase: DiaFestivo
 - fecha: LocalDate
 - descripcion: String
++ DiaFestivo(LocalDate, String)
 + getFecha(): LocalDate
 + setFecha(LocalDate)
 + getDescripcion(): String
@@ -143,6 +160,7 @@ Clase: DiaFestivo
 
 Clase: Calendario
 - diasFestivos: List<DiaFestivo>
++ Calendario()
 + setDiasFestivos(List<DiaFestivo>)
 + getDiasFestivos(): List<DiaFestivo>
 + agregarDiaFestivo(DiaFestivo)
@@ -150,6 +168,7 @@ Clase: Calendario
 + actualizarDiaFestivo(LocalDate, String): boolean
 + eliminarDiaFestivo(LocalDate): boolean
 + existeDiaFestivo(LocalDate): boolean
++ agregarDiasFestivosPrueba()
 
 Relaciones entre clases (tipo y cardinalidad):
 
@@ -157,6 +176,7 @@ Relaciones entre clases (tipo y cardinalidad):
 - Facultad 1 --- * Persona (composición): Una Facultad contiene muchos Personas.
 - GuardiaFactory 1 --- * Guardia (composición): Un GuardiaFactory contiene muchas Guardias.
 - GuardiaFactory 1 --- * Guardia (composición): Un GuardiaFactory contiene muchas guardiasCumplidas.
+- GuardiaFactory 1 --- * Guardia (composición): Un GuardiaFactory contiene muchas guardiasIncumplidas.
 - GuardiaFactory 1 --- 1 Calendario (asociación): Un GuardiaFactory tiene un Calendario.
 - GuardiaFactory 1 --- 1 Horario (asociación): Un GuardiaFactory tiene un Horario.
 - Guardia 1 --- 1 Persona (asociación): Una Guardia está asociada a una Persona.

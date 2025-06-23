@@ -281,7 +281,6 @@ public class GuardiaFactory {
 						}
 					}
 				}
-				// Eliminar las guardias no cumplidas de la lista de asignadas
 				guardias.removeAll(guardiasNoCumplidas);
 			}
 
