@@ -13,6 +13,7 @@ import javax.swing.table.DefaultTableModel;
 
 import logica.Guardia;
 import logica.Persona;
+import logica.Trabajador;
 
 public class VerGuardiasPersona extends JFrame {
 
@@ -54,7 +55,6 @@ public class VerGuardiasPersona extends JFrame {
 		lblDatos.setBorder(new EmptyBorder(10, 0, 10, 0));
 		contentPane.add(lblDatos, BorderLayout.NORTH);
 
-		// Usar la lógica centralizada
 		logica.GuardiaFactory.GuardiasPorPersona guardiasPorPersona =
 			logica.PlanificadorGuardias.getInstancia().getGuardiaFactory().obtenerGuardiasPorPersona(persona);
 
@@ -62,7 +62,6 @@ public class VerGuardiasPersona extends JFrame {
 		List<Guardia> cumplidas = guardiasPorPersona.cumplidas;
 		List<Guardia> incumplidas = guardiasPorPersona.incumplidas;
 
-		// Tabla de guardias asignadas
 		String[] columnas = {"Fecha", "Hora Inicio", "Hora Fin", "Tipo"};
 		DefaultTableModel modelAsignadas = new DefaultTableModel(columnas, 0) {
 			private static final long serialVersionUID = 1L;
@@ -85,57 +84,62 @@ public class VerGuardiasPersona extends JFrame {
 		JScrollPane scrollAsignadas = new JScrollPane(tablaAsignadas);
 		scrollAsignadas.setBorder(BorderFactory.createTitledBorder("Guardias asignadas (" + asignadas.size() + ")"));
 
-		// Tabla de guardias cumplidas
-		DefaultTableModel modelCumplidas = new DefaultTableModel(columnas, 0) {
-			private static final long serialVersionUID = 1L;
-			public boolean isCellEditable(int row, int column) { return false; }
-		};
-		for (int i = 0; i < cumplidas.size(); i++) {
-			Guardia g = cumplidas.get(i);
-			if (g != null && g.getHorario() != null) {
-				modelCumplidas.addRow(new Object[] {
-					g.getHorario().getDia(),
-					g.getHorario().getHoraInicio(),
-					g.getHorario().getHoraFin(),
-					g.getTipo()
-				});
-			}
-		}
-		JTable tablaCumplidas = new JTable(modelCumplidas);
-		tablaCumplidas.setFont(new Font("Arial", Font.PLAIN, 14));
-		tablaCumplidas.getTableHeader().setFont(new Font("Arial", Font.BOLD, 14));
-		JScrollPane scrollCumplidas = new JScrollPane(tablaCumplidas);
-		scrollCumplidas.setBorder(BorderFactory.createTitledBorder("Guardias cumplidas (" + cumplidas.size() + ")"));
-
-		// Tabla de guardias incumplidas
-		DefaultTableModel modelIncumplidas = new DefaultTableModel(columnas, 0) {
-			private static final long serialVersionUID = 1L;
-			public boolean isCellEditable(int row, int column) { return false; }
-		};
-		for (int i = 0; i < incumplidas.size(); i++) {
-			Guardia g = incumplidas.get(i);
-			if (g != null && g.getHorario() != null) {
-				modelIncumplidas.addRow(new Object[] {
-					g.getHorario().getDia(),
-					g.getHorario().getHoraInicio(),
-					g.getHorario().getHoraFin(),
-					g.getTipo()
-				});
-			}
-		}
-		JTable tablaIncumplidas = new JTable(modelIncumplidas);
-		tablaIncumplidas.setFont(new Font("Arial", Font.PLAIN, 14));
-		tablaIncumplidas.getTableHeader().setFont(new Font("Arial", Font.BOLD, 14));
-		JScrollPane scrollIncumplidas = new JScrollPane(tablaIncumplidas);
-		scrollIncumplidas.setBorder(BorderFactory.createTitledBorder("Guardias incumplidas (" + incumplidas.size() + ")"));
-
-		// Panel central con las tres tablas
+		// Solo mostrar tabla de asignadas si es Trabajador, si no mostrar las tres
 		JPanel panelTablas = new JPanel();
 		panelTablas.setLayout(new BoxLayout(panelTablas, BoxLayout.Y_AXIS));
 		panelTablas.setBackground(amarillo);
-		panelTablas.add(scrollAsignadas);
-		panelTablas.add(scrollCumplidas);
-		panelTablas.add(scrollIncumplidas);
+
+		if (persona instanceof Trabajador) {
+			panelTablas.add(scrollAsignadas);
+		} else {
+			// Tabla de guardias cumplidas
+			DefaultTableModel modelCumplidas = new DefaultTableModel(columnas, 0) {
+				private static final long serialVersionUID = 1L;
+				public boolean isCellEditable(int row, int column) { return false; }
+			};
+			for (int i = 0; i < cumplidas.size(); i++) {
+				Guardia g = cumplidas.get(i);
+				if (g != null && g.getHorario() != null) {
+					modelCumplidas.addRow(new Object[] {
+						g.getHorario().getDia(),
+						g.getHorario().getHoraInicio(),
+						g.getHorario().getHoraFin(),
+						g.getTipo()
+					});
+				}
+			}
+			JTable tablaCumplidas = new JTable(modelCumplidas);
+			tablaCumplidas.setFont(new Font("Arial", Font.PLAIN, 14));
+			tablaCumplidas.getTableHeader().setFont(new Font("Arial", Font.BOLD, 14));
+			JScrollPane scrollCumplidas = new JScrollPane(tablaCumplidas);
+			scrollCumplidas.setBorder(BorderFactory.createTitledBorder("Guardias cumplidas (" + cumplidas.size() + ")"));
+
+			// Tabla de guardias incumplidas
+			DefaultTableModel modelIncumplidas = new DefaultTableModel(columnas, 0) {
+				private static final long serialVersionUID = 1L;
+				public boolean isCellEditable(int row, int column) { return false; }
+			};
+			for (int i = 0; i < incumplidas.size(); i++) {
+				Guardia g = incumplidas.get(i);
+				if (g != null && g.getHorario() != null) {
+					modelIncumplidas.addRow(new Object[] {
+						g.getHorario().getDia(),
+						g.getHorario().getHoraInicio(),
+						g.getHorario().getHoraFin(),
+						g.getTipo()
+					});
+				}
+			}
+			JTable tablaIncumplidas = new JTable(modelIncumplidas);
+			tablaIncumplidas.setFont(new Font("Arial", Font.PLAIN, 14));
+			tablaIncumplidas.getTableHeader().setFont(new Font("Arial", Font.BOLD, 14));
+			JScrollPane scrollIncumplidas = new JScrollPane(tablaIncumplidas);
+			scrollIncumplidas.setBorder(BorderFactory.createTitledBorder("Guardias incumplidas (" + incumplidas.size() + ")"));
+
+			panelTablas.add(scrollAsignadas);
+			panelTablas.add(scrollCumplidas);
+			panelTablas.add(scrollIncumplidas);
+		}
 
 		contentPane.add(panelTablas, BorderLayout.CENTER);
 

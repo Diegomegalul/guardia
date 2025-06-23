@@ -231,13 +231,13 @@ public class PlanificadorGuardias {
 		Estudiante j = new Estudiante("05090266900","Herbert Luis","Navarro Valdés",utiles.Sexo.MASCULINO,true,0,0,11, 0, 0);	
 		Estudiante k = new Estudiante("05032112157","Gabriel","Rodríguez Delgado",utiles.Sexo.MASCULINO,true,0,0,13, 0, 0);
 		Estudiante l = new Estudiante("05090266900","Darell","Perdomo Gonzalez",utiles.Sexo.MASCULINO,true,0,0,13, 0, 0);
-		Estudiante m = new Estudiante("05090266900","Leonardo David","Guirado Garcia",utiles.Sexo.MASCULINO,true,0,0,13, 0, 0);
+		Estudiante m = new Estudiante("05090266900","Leonardo David","Guirado Garcia",utiles.Sexo.MASCULINO,false,0,0,13, 0, 0);
 		Estudiante n = new Estudiante("05090266900","Jhonathan","Salgado Torres",utiles.Sexo.MASCULINO,true,0,0,13, 0, 0);
 		Estudiante o = new Estudiante("05090266900","Haisel","Reino  Bello",utiles.Sexo.MASCULINO,true,0,0,13, 0, 0);
 		Estudiante q = new Estudiante("05090266900","Frank","Delgado Durán",utiles.Sexo.MASCULINO,true,0,0,14, 0, 0);
-		Estudiante r = new Estudiante("05090266900","Chayanne","Suárez Villches",utiles.Sexo.MASCULINO,true,0,0,14, 0, 0);
+		Estudiante r = new Estudiante("05090266900","Chayanne","Suárez Villches",utiles.Sexo.MASCULINO,false,0,0,14, 0, 0);
 		Estudiante s = new Estudiante("05090266900","Ernesto Javier","Diego Rodriguez",utiles.Sexo.MASCULINO,true,0,0,14, 0, 0);
-		Estudiante t = new Estudiante("05090266900","David","Mayeta Martinez",utiles.Sexo.MASCULINO,true,0,0,14, 0, 0);
+		Estudiante t = new Estudiante("05090266900","David","Mayeta Martinez",utiles.Sexo.MASCULINO,false,0,0,14, 0, 0);
 		Estudiante p = new Estudiante("05090266900","Eduardo","Ortega Alfonso",utiles.Sexo.MASCULINO,true,0,0,14, 0, 0);
 		facultad.agregarPersona(a);
 		facultad.agregarPersona(b);
