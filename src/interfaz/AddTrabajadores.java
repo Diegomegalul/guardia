@@ -30,7 +30,11 @@ public class AddTrabajadores extends JFrame {
 	@SuppressWarnings("unused")
 	private PlanificadorGuardias planificador;
 	private JDateChooser dateChooserFechaIncorporacion;
+	private JDateChooser dateChooserFechaVoluntaria; // Nuevo campo para fecha voluntaria
 
+	/**
+	 * @wbp.parser.constructor
+	 */
 	public AddTrabajadores(final PlanificadorGuardias planificador,  final Trabajador trabajador, final VerTrabajadores verTrabajadores) {
 		setIconImage(Toolkit.getDefaultToolkit().getImage(Login.class.getResource("/imagenes/logo.jpg")));
 		setMinimumSize(new Dimension(500, 530));
@@ -72,6 +76,16 @@ public class AddTrabajadores extends JFrame {
 				RowSpec.decode("20dlu:grow"),
 				FormFactory.RELATED_GAP_ROWSPEC,
 				RowSpec.decode("fill:20dlu:grow"),
+				FormFactory.RELATED_GAP_ROWSPEC,
+				RowSpec.decode("20dlu:grow"),
+				FormFactory.RELATED_GAP_ROWSPEC,
+				RowSpec.decode("20dlu:grow"),
+				FormFactory.RELATED_GAP_ROWSPEC,
+				RowSpec.decode("20dlu:grow"),
+				FormFactory.RELATED_GAP_ROWSPEC,
+				RowSpec.decode("20dlu:grow"),
+				FormFactory.RELATED_GAP_ROWSPEC,
+				RowSpec.decode("20dlu:grow"),
 				FormFactory.RELATED_GAP_ROWSPEC,
 				RowSpec.decode("20dlu:grow"),
 				FormFactory.RELATED_GAP_ROWSPEC,
@@ -212,6 +226,16 @@ public class AddTrabajadores extends JFrame {
 		panelForm.add(Fecha, "2, 12, center, center");
 		panelForm.add(dateChooserFechaIncorporacion, "4, 12, center, center");
 
+		// Fecha Guardia Voluntaria (solo julio/agosto)
+		dateChooserFechaVoluntaria = new JDateChooser();
+		dateChooserFechaVoluntaria.setDateFormatString("yyyy-MM-dd");
+		dateChooserFechaVoluntaria.setFont(new Font("Arial", Font.PLAIN, 15));
+		dateChooserFechaVoluntaria.setBackground(blanco);
+		dateChooserFechaVoluntaria.setForeground(negro);
+		JLabel lblFechaVoluntaria = new JLabel("Fecha Guardia Voluntaria");
+		panelForm.add(lblFechaVoluntaria, "2, 20, center, center");
+		panelForm.add(dateChooserFechaVoluntaria, "4, 20, center, center");
+
 		// Guardias Asignadas
 		txtGuardiasAsignadas = new JTextField("0", 15);
 		txtGuardiasAsignadas.setFont(new Font("Arial", Font.PLAIN, 15));
@@ -255,6 +279,12 @@ public class AddTrabajadores extends JFrame {
 			} else {
 				dateChooserFechaIncorporacion.setDate(null);
 			}
+			// Setear fecha voluntaria si existe
+			if (trabajador.getFechaGuardiaVoluntaria() != null) {
+				dateChooserFechaVoluntaria.setDate(java.sql.Date.valueOf(trabajador.getFechaGuardiaVoluntaria()));
+			} else {
+				dateChooserFechaVoluntaria.setDate(null);
+			}
 		}
 
 		// Botón guardar
@@ -292,6 +322,7 @@ public class AddTrabajadores extends JFrame {
 				int guardiasAsignadas = 0;
 				int guardiasFestivo = 0;
 				LocalDate fechaIncorporacion = null;
+				LocalDate fechaVoluntaria = null;
 				boolean datosValidos = true;
 				String mensajeError = "";
 
@@ -301,16 +332,25 @@ public class AddTrabajadores extends JFrame {
 					java.util.Date utilDate = dateChooserFechaIncorporacion.getDate();
 					if (utilDate == null) throw new Exception("Fecha no seleccionada");
 					fechaIncorporacion = new java.sql.Date(utilDate.getTime()).toLocalDate();
+
+					java.util.Date utilDateVoluntaria = dateChooserFechaVoluntaria.getDate();
+					if (utilDateVoluntaria != null) {
+						fechaVoluntaria = new java.sql.Date(utilDateVoluntaria.getTime()).toLocalDate();
+						int mes = fechaVoluntaria.getMonthValue();
+						if (mes != 7 && mes != 8) {
+							throw new Exception("La fecha voluntaria debe ser en julio o agosto.");
+						}
+					}
 				} catch (Exception ex) {
 					datosValidos = false;
-					mensajeError = "Verifique los campos numéricos y la fecha.";
+					mensajeError = "Verifique los campos numéricos y la fecha.\n" + ex.getMessage();
 				}
 				if (datosValidos && (ci.isEmpty() || nombre.isEmpty() || apellidos.isEmpty())) {
 					datosValidos = false;
 					mensajeError = "Complete todos los campos obligatorios.";
 				}
 				if (datosValidos) {
-					Trabajador nuevoTrabajador = new Trabajador(ci, nombre, apellidos, Sexo.valueOf(sexoStr), activo, fechaIncorporacion, guardiasAsignadas, guardiasFestivo, voluntario);
+					Trabajador nuevoTrabajador = new Trabajador(ci, nombre, apellidos, Sexo.valueOf(sexoStr), activo, fechaIncorporacion, guardiasAsignadas, guardiasFestivo, voluntario, fechaVoluntaria);
 					if (trabajador == null) {
 						planificador.getFacultad().agregarPersona(nuevoTrabajador);
 						JLabel label = new JLabel("Trabajador guardado correctamente");

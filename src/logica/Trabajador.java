@@ -8,15 +8,27 @@ import java.time.Month;
 import utiles.Sexo;
 
 public class Trabajador extends Persona {
+	//Atributos
 	private LocalDate fechaDeIncorporacion;
 	private boolean voluntario;
+	private LocalDate fechaGuardiaVoluntaria; // Nueva fecha para guardia voluntaria
+
 	//Constructor
-	public Trabajador(String ci,String nombre,String apellidos,Sexo sexo,boolean activo,LocalDate fechaDeIncorporacion,int guardiasAsignadas,int cantidadGuardiasFestivo,boolean voluntario){
+	public Trabajador(String ci,String nombre,String apellidos,Sexo sexo,boolean activo,LocalDate fechaDeIncorporacion,int guardiasAsignadas,int cantidadGuardiasFestivo,boolean voluntario,LocalDate fechaGuardiaVoluntaria) {
 		super(ci, nombre,apellidos, sexo, activo, guardiasAsignadas,cantidadGuardiasFestivo); 
 		setFechaDeIncorporacion(fechaDeIncorporacion);
 		setVoluntario(voluntario);
+		setFechaGuardiaVoluntaria(fechaGuardiaVoluntaria); 
 	}
+
 	//Getters y setters
+	public void setFechaGuardiaVoluntaria(LocalDate fechaGuardiaVoluntaria) {
+		this.fechaGuardiaVoluntaria = fechaGuardiaVoluntaria;
+	}
+
+	public LocalDate getFechaGuardiaVoluntaria() {
+		return fechaGuardiaVoluntaria;
+	}
 
 	public void setFechaDeIncorporacion(LocalDate fechaDeIncorporacion) {
 		this.fechaDeIncorporacion = fechaDeIncorporacion;		
