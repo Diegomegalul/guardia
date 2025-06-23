@@ -57,6 +57,7 @@ public class VerTrabajadores extends JFrame {
 		setTitle("Listado de Trabajadores");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 800, 550);
+		setLocationRelativeTo(null);
 
 		Color amarillo = new Color(255, 215, 0);
 		Color negro = Color.BLACK;
