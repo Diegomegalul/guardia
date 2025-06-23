@@ -137,6 +137,11 @@ public class GuardiaFactory {
 				est.setGuardiasAsignadas(est.getGuardiasAsignadas() - 1);
 			}
 		}
+		// Marcar la guardia como cumplida y pasarla al grupo de guardias cumplidas
+		g.setCumplida(true);
+		if (!guardiasCumplidas.contains(g)) {
+			guardiasCumplidas.add(g);
+		}
 		return true;
 	}
 
@@ -226,9 +231,9 @@ public class GuardiaFactory {
 		boolean primeraVez = guardias.isEmpty();
 		int mesesAPlanificar = primeraVez ? 2 : 1;
 
-		// Si es la segunda o posteriores planificaciones, revisar el mes más antiguo aún no revisado
+		// Revisar solo guardias del mes N-2 para asignar recuperaciones
 		if (!primeraVez) {
-			int mesARevisar = mes - mesesAPlanificar;
+			int mesARevisar = mes - 2;
 			int anioARevisar = anio;
 			while (mesARevisar < 1) {
 				mesARevisar += 12;
@@ -275,36 +280,60 @@ public class GuardiaFactory {
 				LocalDate fecha = LocalDate.of(ym.getYear(), ym.getMonthValue(), day);
 				int dow = fecha.getDayOfWeek().getValue(); // 1=Lunes ... 7=Domingo
 
-				// Guardias de recuperación de estudiantes hombres: todos los días, 20:00-08:00
+				// Guardias de estudiantes hombres: todos los días, 20:00-08:00
 				if (!estudiantesM.isEmpty()) {
 					Estudiante est = seleccionarEstudianteRecuperacionPrimero(estudiantesM);
 					Horario h = new Horario(fecha, LocalTime.of(20, 0), LocalTime.of(8, 0));
-					if (est != null && est.puedeHacerGuardia(h)) {
-						if (est.getGuardiasRecuperacion() > 0) {
-							nuevasGuardias.add(new Guardia(nextId++, TipoGuardia.RECUPERACION, est, h));
-							est.setGuardiasRecuperacion(est.getGuardiasRecuperacion() - 1);
-							// No aumentar guardiasAsignadas
-						} else {
-							nuevasGuardias.add(new Guardia(nextId++, TipoGuardia.NORMAL, est, h));
-							est.setGuardiasAsignadas(est.getGuardiasAsignadas() + 1);
+					// Verificar si ya existe una guardia para este estudiante, día y horario
+					boolean existe = false;
+					for (int i = 0; i < guardias.size(); i++) {
+						Guardia existente = guardias.get(i);
+						if (existente.getPersona().equals(est) &&
+							existente.getHorario().getDia().equals(h.getDia()) &&
+							existente.getHorario().getHoraInicio().equals(h.getHoraInicio()) &&
+							existente.getHorario().getHoraFin().equals(h.getHoraFin())) {
+							existe = true;
+							break;
 						}
 					}
-				}
-
-				// Guardias de recuperación de estudiantes mujeres: solo fines de semana, alternando con trabajadores
-				if (dow == 6 || dow == 7) // Sábado o Domingo
-				{
-					if (finSemanaMujer && !estudiantesF.isEmpty()) {
-						Estudiante est = seleccionarEstudianteRecuperacionPrimero(estudiantesF);
-						Horario h = new Horario(fecha, LocalTime.of(8, 0), LocalTime.of(20, 0));
+					if (!existe) {
 						if (est != null && est.puedeHacerGuardia(h)) {
 							if (est.getGuardiasRecuperacion() > 0) {
 								nuevasGuardias.add(new Guardia(nextId++, TipoGuardia.RECUPERACION, est, h));
 								est.setGuardiasRecuperacion(est.getGuardiasRecuperacion() - 1);
-								// No aumentar guardiasAsignadas
 							} else {
 								nuevasGuardias.add(new Guardia(nextId++, TipoGuardia.NORMAL, est, h));
 								est.setGuardiasAsignadas(est.getGuardiasAsignadas() + 1);
+							}
+						}
+					}
+				}
+
+				// Guardias de estudiantes mujeres: solo fines de semana, alternando con trabajadores
+				if (dow == 6 || dow == 7) {
+					if (finSemanaMujer && !estudiantesF.isEmpty()) {
+						Estudiante est = seleccionarEstudianteRecuperacionPrimero(estudiantesF);
+						Horario h = new Horario(fecha, LocalTime.of(8, 0), LocalTime.of(20, 0));
+						boolean existe = false;
+						for (int i = 0; i < guardias.size(); i++) {
+							Guardia existente = guardias.get(i);
+							if (existente.getPersona().equals(est) &&
+								existente.getHorario().getDia().equals(h.getDia()) &&
+								existente.getHorario().getHoraInicio().equals(h.getHoraInicio()) &&
+								existente.getHorario().getHoraFin().equals(h.getHoraFin())) {
+								existe = true;
+								break;
+							}
+						}
+						if (!existe) {
+							if (est != null && est.puedeHacerGuardia(h)) {
+								if (est.getGuardiasRecuperacion() > 0) {
+									nuevasGuardias.add(new Guardia(nextId++, TipoGuardia.RECUPERACION, est, h));
+									est.setGuardiasRecuperacion(est.getGuardiasRecuperacion() - 1);
+								} else {
+									nuevasGuardias.add(new Guardia(nextId++, TipoGuardia.NORMAL, est, h));
+									est.setGuardiasAsignadas(est.getGuardiasAsignadas() + 1);
+								}
 							}
 						}
 					} else if (!finSemanaMujer && !trabajadores.isEmpty()) {
@@ -314,9 +343,22 @@ public class GuardiaFactory {
 								? new Horario(fecha, LocalTime.of(9, 0), LocalTime.of(14, 0))
 								: new Horario(fecha, LocalTime.of(14, 0), LocalTime.of(19, 0));
 							Trabajador t = seleccionarTrabajadorParaGuardia(trabajadores);
-							if (t != null && t.puedeHacerGuardia(h)) {
-								nuevasGuardias.add(new Guardia(nextId++, TipoGuardia.NORMAL, t, h));
-								t.setGuardiasAsignadas(t.getGuardiasAsignadas() + 1);
+							boolean existe = false;
+							for (int i = 0; i < guardias.size(); i++) {
+								Guardia existente = guardias.get(i);
+								if (existente.getPersona().equals(t) &&
+									existente.getHorario().getDia().equals(h.getDia()) &&
+									existente.getHorario().getHoraInicio().equals(h.getHoraInicio()) &&
+									existente.getHorario().getHoraFin().equals(h.getHoraFin())) {
+									existe = true;
+									break;
+								}
+							}
+							if (!existe) {
+								if (t != null && t.puedeHacerGuardia(h)) {
+									nuevasGuardias.add(new Guardia(nextId++, TipoGuardia.NORMAL, t, h));
+									t.setGuardiasAsignadas(t.getGuardiasAsignadas() + 1);
+								}
 							}
 						}
 					}
@@ -326,7 +368,24 @@ public class GuardiaFactory {
 			}
 		}
 
-		guardias.addAll(nuevasGuardias);
+		// Solo agregar guardias nuevas que no estén ya en la lista global
+		for (int i = 0; i < nuevasGuardias.size(); i++) {
+			Guardia nueva = nuevasGuardias.get(i);
+			boolean existe = false;
+			for (int j = 0; j < guardias.size(); j++) {
+				Guardia existente = guardias.get(j);
+				if (existente.getPersona().equals(nueva.getPersona()) &&
+					existente.getHorario().getDia().equals(nueva.getHorario().getDia()) &&
+					existente.getHorario().getHoraInicio().equals(nueva.getHorario().getHoraInicio()) &&
+					existente.getHorario().getHoraFin().equals(nueva.getHorario().getHoraFin())) {
+					existe = true;
+					break;
+				}
+			}
+			if (!existe) {
+				guardias.add(nueva);
+			}
+		}
 		return nuevasGuardias;
 	}
 

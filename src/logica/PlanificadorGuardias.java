@@ -119,15 +119,15 @@ public class PlanificadorGuardias {
 		List<GrupoRecuperacionOrdenado> resultado = new ArrayList<GrupoRecuperacionOrdenado>();
 		for (Map.Entry<Integer, List<Estudiante>> entry : mapa.entrySet()) {
 			List<Estudiante> estudiantes = entry.getValue();
-			// Ordenar estudiantes dentro del grupo por guardias de recuperación (desc)
+			// Ordenar estudiantes dentro del grupo por guardias incumplidas (desc)
 			Collections.sort(estudiantes, new Comparator<Estudiante>() {
 				public int compare(Estudiante a, Estudiante b) {
-					return Integer.compare(b.getGuardiasRecuperacion(), a.getGuardiasRecuperacion());
+					return Integer.compare(b.getGuardiasIncumplidas(), a.getGuardiasIncumplidas());
 				}
 			});
 			int suma = 0;
 			for (Estudiante est : estudiantes) {
-				suma += est.getGuardiasRecuperacion();
+				suma += est.getGuardiasIncumplidas();
 			}
 			resultado.add(new GrupoRecuperacionOrdenado(entry.getKey(), suma, estudiantes));
 		}

@@ -22,6 +22,7 @@ public class VerGuardiasPersona extends JFrame {
 		setTitle("Guardias de " + (persona != null ? persona.getNombre() + " " + persona.getApellidos() : ""));
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 600, 400);
+		setLocationRelativeTo(null); // Centrar en pantalla
 
 		Color amarillo = new Color(255, 215, 0);
 		Color negro = Color.BLACK;
@@ -52,99 +53,105 @@ public class VerGuardiasPersona extends JFrame {
 		lblDatos.setBorder(new EmptyBorder(10, 0, 10, 0));
 		contentPane.add(lblDatos, BorderLayout.NORTH);
 
-		// Tabla de guardias asignadas (únicas)
+		// Obtener todas las guardias de la persona desde GuardiaFactory
+		List<Guardia> todasGuardias = new java.util.ArrayList<Guardia>();
+		List<Guardia> guardiasCumplidas = logica.PlanificadorGuardias.getInstancia().getGuardiaFactory().getGuardiasCumplidas();
+		List<Guardia> guardiasIncumplidas = logica.PlanificadorGuardias.getInstancia().getGuardiaFactory().getGuardiasIncumplidas();
+		List<Guardia> guardiasAsignadas = logica.PlanificadorGuardias.getInstancia().getGuardiaFactory().getGuardias();
+
+		// Clasificar guardias de la persona
+		java.util.List<Guardia> asignadas = new java.util.ArrayList<Guardia>();
+		java.util.List<Guardia> cumplidas = new java.util.ArrayList<Guardia>();
+		java.util.List<Guardia> incumplidas = new java.util.ArrayList<Guardia>();
+
+		// Guardias asignadas (todas las guardias de la persona)
+		for (int i = 0; i < guardiasAsignadas.size(); i++) {
+			Guardia g = guardiasAsignadas.get(i);
+			if (g != null && g.getPersona() != null && g.getPersona().equals(persona)) {
+				asignadas.add(g);
+			}
+		}
+		// Guardias cumplidas
+		for (int i = 0; i < guardiasCumplidas.size(); i++) {
+			Guardia g = guardiasCumplidas.get(i);
+			if (g != null && g.getPersona() != null && g.getPersona().equals(persona)) {
+				cumplidas.add(g);
+			}
+		}
+		// Guardias incumplidas
+		for (int i = 0; i < guardiasIncumplidas.size(); i++) {
+			Guardia g = guardiasIncumplidas.get(i);
+			if (g != null && g.getPersona() != null && g.getPersona().equals(persona)) {
+				incumplidas.add(g);
+			}
+		}
+
+		// Tabla de guardias asignadas
 		String[] columnas = {"Fecha", "Hora Inicio", "Hora Fin", "Tipo"};
 		DefaultTableModel modelAsignadas = new DefaultTableModel(columnas, 0) {
 			private static final long serialVersionUID = 1L;
 			public boolean isCellEditable(int row, int column) { return false; }
 		};
-		java.util.HashSet<String> guardiasUnicas = new java.util.HashSet<String>();
-		if (guardias != null) {
-			for (Guardia g : guardias) {
-				if (g != null && g.getHorario() != null) {
-					String key = g.getHorario().getDia() + "|" + g.getHorario().getHoraInicio() + "|" + g.getHorario().getHoraFin() + "|" + g.getTipo();
-					if (!guardiasUnicas.contains(key)) {
-						modelAsignadas.addRow(new Object[] {
-							g.getHorario().getDia(),
-							g.getHorario().getHoraInicio(),
-							g.getHorario().getHoraFin(),
-							g.getTipo()
-						});
-						guardiasUnicas.add(key);
-					}
-				}
+		for (int i = 0; i < asignadas.size(); i++) {
+			Guardia g = asignadas.get(i);
+			if (g != null && g.getHorario() != null) {
+				modelAsignadas.addRow(new Object[] {
+					g.getHorario().getDia(),
+					g.getHorario().getHoraInicio(),
+					g.getHorario().getHoraFin(),
+					g.getTipo()
+				});
 			}
 		}
 		JTable tablaAsignadas = new JTable(modelAsignadas);
 		tablaAsignadas.setFont(new Font("Arial", Font.PLAIN, 14));
 		tablaAsignadas.getTableHeader().setFont(new Font("Arial", Font.BOLD, 14));
 		JScrollPane scrollAsignadas = new JScrollPane(tablaAsignadas);
-		scrollAsignadas.setBorder(BorderFactory.createTitledBorder("Guardias asignadas"));
+		scrollAsignadas.setBorder(BorderFactory.createTitledBorder("Guardias asignadas (" + asignadas.size() + ")"));
 
-		// Guardias cumplidas
-		String[] columnasCumplidas = {"Fecha", "Hora Inicio", "Hora Fin", "Tipo"};
-		DefaultTableModel modelCumplidas = new DefaultTableModel(columnasCumplidas, 0) {
+		// Tabla de guardias cumplidas
+		DefaultTableModel modelCumplidas = new DefaultTableModel(columnas, 0) {
 			private static final long serialVersionUID = 1L;
 			public boolean isCellEditable(int row, int column) { return false; }
 		};
-		// Obtener guardias cumplidas de GuardiaFactory
-		List<Guardia> guardiasCumplidas = logica.PlanificadorGuardias.getInstancia().getGuardiaFactory().getGuardiasCumplidas();
-		if (guardiasCumplidas != null && persona != null) {
-			java.util.HashSet<String> guardiasCumplidasUnicas = new java.util.HashSet<String>();
-			for (Guardia g : guardiasCumplidas) {
-				if (g != null && g.getPersona() != null && g.getPersona().equals(persona) && g.getHorario() != null) {
-					String key = g.getHorario().getDia() + "|" + g.getHorario().getHoraInicio() + "|" + g.getHorario().getHoraFin() + "|" + g.getTipo();
-					if (!guardiasCumplidasUnicas.contains(key)) {
-						modelCumplidas.addRow(new Object[] {
-							g.getHorario().getDia(),
-							g.getHorario().getHoraInicio(),
-							g.getHorario().getHoraFin(),
-							g.getTipo()
-						});
-						guardiasCumplidasUnicas.add(key);
-					}
-				}
+		for (int i = 0; i < cumplidas.size(); i++) {
+			Guardia g = cumplidas.get(i);
+			if (g != null && g.getHorario() != null) {
+				modelCumplidas.addRow(new Object[] {
+					g.getHorario().getDia(),
+					g.getHorario().getHoraInicio(),
+					g.getHorario().getHoraFin(),
+					g.getTipo()
+				});
 			}
 		}
 		JTable tablaCumplidas = new JTable(modelCumplidas);
 		tablaCumplidas.setFont(new Font("Arial", Font.PLAIN, 14));
 		tablaCumplidas.getTableHeader().setFont(new Font("Arial", Font.BOLD, 14));
 		JScrollPane scrollCumplidas = new JScrollPane(tablaCumplidas);
-		scrollCumplidas.setBorder(BorderFactory.createTitledBorder("Guardias cumplidas"));
+		scrollCumplidas.setBorder(BorderFactory.createTitledBorder("Guardias cumplidas (" + cumplidas.size() + ")"));
 
-		// Guardias incumplidas (asignadas - cumplidas)
-		String[] columnasIncumplidas = {"Fecha", "Hora Inicio", "Hora Fin", "Tipo"};
-		DefaultTableModel modelIncumplidas = new DefaultTableModel(columnasIncumplidas, 0) {
+		// Tabla de guardias incumplidas
+		DefaultTableModel modelIncumplidas = new DefaultTableModel(columnas, 0) {
 			private static final long serialVersionUID = 1L;
 			public boolean isCellEditable(int row, int column) { return false; }
 		};
-		if (guardias != null && persona != null) {
-			java.util.HashSet<String> clavesCumplidas = new java.util.HashSet<String>();
-			for (Guardia g : guardiasCumplidas) {
-				if (g != null && g.getPersona() != null && g.getPersona().equals(persona) && g.getHorario() != null) {
-					String key = g.getHorario().getDia() + "|" + g.getHorario().getHoraInicio() + "|" + g.getHorario().getHoraFin() + "|" + g.getTipo();
-					clavesCumplidas.add(key);
-				}
-			}
-			for (Guardia g : guardias) {
-				if (g != null && g.getHorario() != null) {
-					String key = g.getHorario().getDia() + "|" + g.getHorario().getHoraInicio() + "|" + g.getHorario().getHoraFin() + "|" + g.getTipo();
-					if (!clavesCumplidas.contains(key)) {
-						modelIncumplidas.addRow(new Object[] {
-							g.getHorario().getDia(),
-							g.getHorario().getHoraInicio(),
-							g.getHorario().getHoraFin(),
-							g.getTipo()
-						});
-					}
-				}
+		for (int i = 0; i < incumplidas.size(); i++) {
+			Guardia g = incumplidas.get(i);
+			if (g != null && g.getHorario() != null) {
+				modelIncumplidas.addRow(new Object[] {
+					g.getHorario().getDia(),
+					g.getHorario().getHoraInicio(),
+					g.getHorario().getHoraFin(),
+					g.getTipo()
+				});
 			}
 		}
 		JTable tablaIncumplidas = new JTable(modelIncumplidas);
 		tablaIncumplidas.setFont(new Font("Arial", Font.PLAIN, 14));
 		tablaIncumplidas.getTableHeader().setFont(new Font("Arial", Font.BOLD, 14));
 		JScrollPane scrollIncumplidas = new JScrollPane(tablaIncumplidas);
-		scrollIncumplidas.setBorder(BorderFactory.createTitledBorder("Guardias incumplidas"));
+		scrollIncumplidas.setBorder(BorderFactory.createTitledBorder("Guardias incumplidas (" + incumplidas.size() + ")"));
 
 		// Panel central con las tres tablas
 		JPanel panelTablas = new JPanel();

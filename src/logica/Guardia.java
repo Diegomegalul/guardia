@@ -7,6 +7,7 @@ public class Guardia {
 	private TipoGuardia tipo;
 	private Persona persona;
 	private Horario horario;
+	private boolean cumplida; // Nuevo atributo
 
 	//Constructor
 	public Guardia(int id, TipoGuardia tipo, Persona persona, Horario horario) {
@@ -14,6 +15,7 @@ public class Guardia {
 		setTipo(tipo);
 		setPersona(persona);
 		setHorario(horario);
+		this.cumplida = false;
 	}
 
 	// Getters y Setters
@@ -46,6 +48,14 @@ public class Guardia {
 
 	public void setPersona(Persona persona) {
 		this.persona = persona;
+	}
+
+	public boolean getCumplida() {
+		return cumplida;
+	}
+
+	public void setCumplida(boolean cumplida) {
+		this.cumplida = cumplida;
 	}
 
 	//Metodos
