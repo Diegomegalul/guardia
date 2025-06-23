@@ -30,7 +30,7 @@ public class EstInactivos extends JFrame {
 
 	public EstInactivos() {
 		setTitle("Estudiantes Inactivos por Grupo");
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 700, 500);
 		setLocationRelativeTo(null);
 

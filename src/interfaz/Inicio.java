@@ -475,8 +475,26 @@ public class Inicio extends JFrame {
 			}
 		});
 
+		JMenuItem itemDiasFestivos = new JMenuItem("Días Festivos");
+		itemDiasFestivos.setFont(new Font("Arial", Font.PLAIN, 15));
+		itemDiasFestivos.setBackground(darkBg);
+		itemDiasFestivos.setForeground(amarillo);
+		itemDiasFestivos.setBorder(BorderFactory.createLineBorder(negro, 1));
+		itemDiasFestivos.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(java.awt.event.ActionEvent e) {
+				PlanificadorGuardias.getInstancia().getCalendario().agregarDiasFestivosPrueba();
+				JOptionPane.showMessageDialog(
+					Inicio.this,
+					"Días festivos de prueba cargados correctamente.",
+					"Información",
+					JOptionPane.INFORMATION_MESSAGE
+				);
+			}
+		});
+
 		menuValores.add(valoresEstudiantes);
 		menuValores.add(valoresTrabajadores);
+		menuValores.add(itemDiasFestivos);
 		menuBar.add(menuValores);
 
 		setJMenuBar(menuBar);

@@ -73,5 +73,13 @@ public class Calendario {
 		return obtenerDiaFestivo(fecha) != null;
 	}
 
+	public void agregarDiasFestivosPrueba() {
+		agregarDiaFestivo(new DiaFestivo(java.time.LocalDate.of(2025, 1, 1), "Año Nuevo"));
+		agregarDiaFestivo(new DiaFestivo(java.time.LocalDate.of(2025, 5, 1), "Día del Trabajador"));
+		agregarDiaFestivo(new DiaFestivo(java.time.LocalDate.of(2025, 7, 26), "Día de la Rebeldía Nacional"));
+		agregarDiaFestivo(new DiaFestivo(java.time.LocalDate.of(2025, 12, 25), "Navidad"));
+		agregarDiaFestivo(new DiaFestivo(java.time.LocalDate.of(2025, 10, 10), "Inicio de las Guerras de Independencia"));
+	}
+
 }
 
