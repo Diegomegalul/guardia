@@ -484,4 +484,37 @@ public class GuardiaFactory {
 			}
 		}
 	}
+
+	public static class GuardiasPorPersona {
+		public List<Guardia> asignadas;
+		public List<Guardia> cumplidas;
+		public List<Guardia> incumplidas;
+		public GuardiasPorPersona(List<Guardia> asignadas, List<Guardia> cumplidas, List<Guardia> incumplidas) {
+			this.asignadas = asignadas;
+			this.cumplidas = cumplidas;
+			this.incumplidas = incumplidas;
+		}
+	}
+
+	public GuardiasPorPersona obtenerGuardiasPorPersona(Persona persona) {
+		List<Guardia> asignadas = new ArrayList<>();
+		List<Guardia> cumplidas = new ArrayList<>();
+		List<Guardia> incumplidas = new ArrayList<>();
+		for (Guardia g : getGuardias()) {
+			if (g.getPersona() != null && g.getPersona().equals(persona)) {
+				asignadas.add(g);
+			}
+		}
+		for (Guardia g : getGuardiasCumplidas()) {
+			if (g.getPersona() != null && g.getPersona().equals(persona)) {
+				cumplidas.add(g);
+			}
+		}
+		for (Guardia g : getGuardiasIncumplidas()) {
+			if (g.getPersona() != null && g.getPersona().equals(persona)) {
+				incumplidas.add(g);
+			}
+		}
+		return new GuardiasPorPersona(asignadas, cumplidas, incumplidas);
+	}
 }

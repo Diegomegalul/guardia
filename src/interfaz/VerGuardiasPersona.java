@@ -1,3 +1,4 @@
+// :)
 package interfaz;
 
 import java.awt.BorderLayout;
@@ -53,38 +54,13 @@ public class VerGuardiasPersona extends JFrame {
 		lblDatos.setBorder(new EmptyBorder(10, 0, 10, 0));
 		contentPane.add(lblDatos, BorderLayout.NORTH);
 
-		// Obtener todas las guardias de la persona desde GuardiaFactory
-		List<Guardia> todasGuardias = new java.util.ArrayList<Guardia>();
-		List<Guardia> guardiasCumplidas = logica.PlanificadorGuardias.getInstancia().getGuardiaFactory().getGuardiasCumplidas();
-		List<Guardia> guardiasIncumplidas = logica.PlanificadorGuardias.getInstancia().getGuardiaFactory().getGuardiasIncumplidas();
-		List<Guardia> guardiasAsignadas = logica.PlanificadorGuardias.getInstancia().getGuardiaFactory().getGuardias();
+		// Usar la lógica centralizada
+		logica.GuardiaFactory.GuardiasPorPersona guardiasPorPersona =
+			logica.PlanificadorGuardias.getInstancia().getGuardiaFactory().obtenerGuardiasPorPersona(persona);
 
-		// Clasificar guardias de la persona
-		java.util.List<Guardia> asignadas = new java.util.ArrayList<Guardia>();
-		java.util.List<Guardia> cumplidas = new java.util.ArrayList<Guardia>();
-		java.util.List<Guardia> incumplidas = new java.util.ArrayList<Guardia>();
-
-		// Guardias asignadas (todas las guardias de la persona)
-		for (int i = 0; i < guardiasAsignadas.size(); i++) {
-			Guardia g = guardiasAsignadas.get(i);
-			if (g != null && g.getPersona() != null && g.getPersona().equals(persona)) {
-				asignadas.add(g);
-			}
-		}
-		// Guardias cumplidas
-		for (int i = 0; i < guardiasCumplidas.size(); i++) {
-			Guardia g = guardiasCumplidas.get(i);
-			if (g != null && g.getPersona() != null && g.getPersona().equals(persona)) {
-				cumplidas.add(g);
-			}
-		}
-		// Guardias incumplidas
-		for (int i = 0; i < guardiasIncumplidas.size(); i++) {
-			Guardia g = guardiasIncumplidas.get(i);
-			if (g != null && g.getPersona() != null && g.getPersona().equals(persona)) {
-				incumplidas.add(g);
-			}
-		}
+		List<Guardia> asignadas = guardiasPorPersona.asignadas;
+		List<Guardia> cumplidas = guardiasPorPersona.cumplidas;
+		List<Guardia> incumplidas = guardiasPorPersona.incumplidas;
 
 		// Tabla de guardias asignadas
 		String[] columnas = {"Fecha", "Hora Inicio", "Hora Fin", "Tipo"};

@@ -1,3 +1,4 @@
+// :)
 package interfaz;
 
 import java.awt.*;

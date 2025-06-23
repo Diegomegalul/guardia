@@ -421,5 +421,32 @@ public class PlanificadorGuardias {
 			this.estudiantesInactivos = estudiantesInactivos;
 		}
 	}
+
+	// :) 
+	public List<Trabajador> buscarTrabajadores(String filtro) {
+		List<Trabajador> resultado = new ArrayList<>();
+		for (Persona p : facultad.getPersonas()) {
+			if (p instanceof Trabajador) {
+				Trabajador t = (Trabajador) p;
+				boolean coincide = false;
+				if (filtro == null) {
+					coincide = true;
+				} else {
+					String ci = t.getCi().toLowerCase();
+					String nombre = t.getNombre().toLowerCase();
+					String apellidos = t.getApellidos().toLowerCase();
+					String fecha = t.getFechaDeIncorporacion() != null ? t.getFechaDeIncorporacion().toString() : "";
+					String voluntario = t.getVoluntario() ? "sí" : "no";
+					if (ci.contains(filtro) || nombre.contains(filtro) || apellidos.contains(filtro) || fecha.contains(filtro) || voluntario.contains(filtro)) {
+						coincide = true;
+					}
+				}
+				if (coincide) {
+					resultado.add(t);
+				}
+			}
+		}
+		return resultado;
+	}
 }
 

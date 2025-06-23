@@ -1,3 +1,4 @@
+// :)
 package interfaz;
 
 import java.awt.BorderLayout;
@@ -223,40 +224,21 @@ public class VerTrabajadores extends JFrame {
 
 	private void cargarTrabajadores(String filtro) {
 		model.setRowCount(0);
-		List<Persona> personas = planificador.getFacultad().getPersonas();
 		trabajadoresFiltrados = new java.util.ArrayList<Persona>();
-		for (int i = 0; i < personas.size(); i++) {
-			Persona p = personas.get(i);
-			if (p instanceof Trabajador) {
-				Trabajador t = (Trabajador) p;
-				boolean coincide = false;
-				if (filtro == null) {
-					coincide = true;
-				} else {
-					String ci = t.getCi().toLowerCase();
-					String nombre = t.getNombre().toLowerCase();
-					String apellidos = t.getApellidos().toLowerCase();
-					String fecha = t.getFechaDeIncorporacion() != null ? t.getFechaDeIncorporacion().toString() : "";
-					String voluntario = t.getVoluntario() ? "sí" : "no";
-					if (ci.contains(filtro) || nombre.contains(filtro) || apellidos.contains(filtro) || fecha.contains(filtro) || voluntario.contains(filtro)) {
-						coincide = true;
-					}
-				}
-				if (coincide) {
-					trabajadoresFiltrados.add(t);
-					model.addRow(new Object[] {
-						t.getCi(),
-						t.getNombre(),
-						t.getApellidos(),
-						t.getSexo(),
-						t.getActivo() ? "Sí" : "No",
-						t.getFechaDeIncorporacion() != null ? t.getFechaDeIncorporacion().toString() : "",
-						t.getGuardiasAsignadas(),
-						t.getCantidadGuardiasFestivo(),
-						t.getVoluntario() ? "Sí" : "No"
-					});
-				}
-			}
+		List<Trabajador> trabajadores = planificador.buscarTrabajadores(filtro);
+		for (Trabajador t : trabajadores) {
+			trabajadoresFiltrados.add(t);
+			model.addRow(new Object[] {
+				t.getCi(),
+				t.getNombre(),
+				t.getApellidos(),
+				t.getSexo(),
+				t.getActivo() ? "Sí" : "No",
+				t.getFechaDeIncorporacion() != null ? t.getFechaDeIncorporacion().toString() : "",
+				t.getGuardiasAsignadas(),
+				t.getCantidadGuardiasFestivo(),
+				t.getVoluntario() ? "Sí" : "No"
+			});
 		}
 	}
 
