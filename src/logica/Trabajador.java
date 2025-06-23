@@ -42,7 +42,8 @@ public class Trabajador extends Persona {
 			LocalDate fecha = horario.getDia();
 			LocalTime inicio = horario.getHoraInicio();
 			LocalTime fin = horario.getHoraFin();
-			if (!fecha.isBefore(fechaDeIncorporacion)) {
+			// Validar que la fecha de incorporación no sea null
+			if (fechaDeIncorporacion != null && !fecha.isBefore(fechaDeIncorporacion)) {
 				DayOfWeek diaSemana = fecha.getDayOfWeek();
 				if (diaSemana == DayOfWeek.SATURDAY || diaSemana == DayOfWeek.SUNDAY) {
 					boolean turnoValido = false;

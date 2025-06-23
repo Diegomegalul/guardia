@@ -305,8 +305,8 @@ public class PlanificadorGuardias {
 	}
 	//REPORTES
 	//Profesores voluntarios en vacaciones
-	public List<String> reporteProfesoresVoluntariosEnVacaciones() {
-		List<String> voluntarios = new ArrayList<>();
+	public List<Trabajador> reporteProfesoresVoluntariosEnVacaciones() {
+		List<Trabajador> voluntarios = new ArrayList<Trabajador>();
 		boolean tieneGuardiaEnVacaciones;
 
 		for (Persona persona : facultad.getPersonas()) {
@@ -326,9 +326,8 @@ public class PlanificadorGuardias {
 					}
 
 					if (tieneGuardiaEnVacaciones) {
-						String nombreCompleto = trabajador.getNombre() + " " + trabajador.getApellidos();
-						if (!voluntarios.contains(nombreCompleto)) {
-							voluntarios.add(nombreCompleto);
+						if (!voluntarios.contains(trabajador)) {
+							voluntarios.add(trabajador);
 						}
 					}
 				}

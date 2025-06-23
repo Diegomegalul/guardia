@@ -7,6 +7,8 @@ import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.List;
 
 import javax.swing.BorderFactory;
@@ -122,6 +124,18 @@ public class VerTrabajadores extends JFrame {
 		table.setBackground(Color.WHITE);
 		table.setForeground(negro);
 		table.setRowHeight(28);
+
+		// Doble clic para abrir VerGuardiasPersona
+		table.addMouseListener(new MouseAdapter() {
+			public void mouseClicked(MouseEvent e) {
+				if (e.getClickCount() == 2 && table.getSelectedRow() != -1) {
+					int fila = table.getSelectedRow();
+					Trabajador trabajador = (Trabajador) trabajadoresFiltrados.get(table.convertRowIndexToModel(fila));
+					VerGuardiasPersona frame = new VerGuardiasPersona(trabajador, null);
+					frame.setVisible(true);
+				}
+			}
+		});
 
 		JScrollPane scrollPane = new JScrollPane(table);
 		scrollPane.getViewport().setBackground(Color.WHITE);

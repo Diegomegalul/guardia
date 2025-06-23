@@ -9,6 +9,9 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 import logica.PlanificadorGuardias;
+import logica.Trabajador;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class ProfVoluntarios extends JFrame {
 
@@ -51,22 +54,35 @@ public class ProfVoluntarios extends JFrame {
 		contentPane.add(lblTitulo, BorderLayout.NORTH);
 
 		// Tabla de profesores voluntarios
-		String[] columnas = {"Nombre Completo"};
+		String[] columnas = {"Carnet", "Nombre", "Apellidos"};
 		DefaultTableModel model = new DefaultTableModel(columnas, 0) {
 			private static final long serialVersionUID = 1L;
 			public boolean isCellEditable(int row, int column) { return false; }
 		};
-		JTable tabla = new JTable(model);
+		final JTable tabla = new JTable(model);
 		tabla.getTableHeader().setFont(new Font("Arial", Font.BOLD, 15));
 		tabla.setFont(new Font("Arial", Font.PLAIN, 14));
 		tabla.setRowHeight(28);
 
 		// Obtener datos del reporte
-		List<String> voluntarios = PlanificadorGuardias.getInstancia().reporteProfesoresVoluntariosEnVacaciones();
+		List<Trabajador> voluntarios = PlanificadorGuardias.getInstancia().reporteProfesoresVoluntariosEnVacaciones();
 		for (int i = 0; i < voluntarios.size(); i++) {
-			String nombre = voluntarios.get(i);
-			model.addRow(new Object[] { nombre });
+			Trabajador t = voluntarios.get(i);
+			model.addRow(new Object[] { t.getCi(), t.getNombre(), t.getApellidos() });
 		}
+
+		// Doble clic para abrir VerGuardiasPersona
+		final List<Trabajador> voluntariosRef = voluntarios;
+		tabla.addMouseListener(new MouseAdapter() {
+			public void mouseClicked(MouseEvent e) {
+				if (e.getClickCount() == 2 && tabla.getSelectedRow() != -1) {
+					int fila = tabla.getSelectedRow();
+					Trabajador trabajador = voluntariosRef.get(fila);
+					VerGuardiasPersona frame = new VerGuardiasPersona(trabajador, null);
+					frame.setVisible(true);
+				}
+			}
+		});
 
 		JScrollPane scrollPane = new JScrollPane(tabla);
 		scrollPane.getViewport().setBackground(Color.WHITE);
