@@ -67,6 +67,7 @@ Clase: Guardia
 - tipo: TipoGuardia
 - persona: Persona
 - horario: Horario
+- cumplida: boolean
 + Guardia(int, TipoGuardia, Persona, Horario)
 + getId(): int
 + setId(int)
@@ -76,6 +77,8 @@ Clase: Guardia
 + setPersona(Persona)
 + getHorario(): Horario
 + setHorario(Horario)
++ getCumplida(): boolean
++ setCumplida(boolean)
 
 Clase: Horario
 - dia: LocalDate
@@ -119,6 +122,7 @@ Clase: GuardiaFactory
 + setGuardias(List<Guardia>)
 + crearGuardia(TipoGuardia, Persona, Horario): boolean
 + registrarCumplimientoGuardia(int): boolean
++ registrarIncumplimientoGuardia(int): boolean
 + buscarGuardiaPorId(int): Guardia
 + actualizarGuardia(int, TipoGuardia, Persona, Horario): boolean
 + eliminarGuardia(int): boolean
@@ -126,6 +130,16 @@ Clase: GuardiaFactory
 + planificarGuardiasRecuperacion(int, int)
 + obtenerGuardiasPorPersona(Persona): GuardiasPorPersona
 # GuardiasPorPersona (clase interna): asignadas, cumplidas, incumplidas
+// Métodos que faltaban en el txt:
++ clasificarPersonas(List<Persona>, List<Trabajador>, List<Estudiante>, List<Estudiante>): void
++ revisarGuardiasIncumplidas(int, int): void
++ planificarGuardiasJulioAgosto(List<Trabajador>, List<Guardia>, int, int): void
++ planificarGuardiasRestoDelAnio(List<Estudiante>, List<Estudiante>, List<Trabajador>, List<Guardia>, int, int): void
++ existeGuardia(Persona, Horario): boolean
++ agregarGuardiasNoDuplicadas(List<Guardia>): void
++ seleccionarEstudianteRecuperacionPrimero(List<Estudiante>): Estudiante
++ seleccionarTrabajadorParaGuardia(List<Trabajador>): Trabajador
+
 
 Clase: PlanificadorGuardias (Singleton)
 - facultad: Facultad
@@ -145,8 +159,8 @@ Clase: PlanificadorGuardias (Singleton)
 + listaGuardiasEnDiasFestivos(): List<Guardia>
 + planificarGuardiasRecuperacion(int, int)
 + reportePersonasInactivas(): ReporteInactivos
-# GrupoRecuperacionReporte, PersonaRecuperacion, GrupoRecuperacionOrdenado, ReporteInactivos, GrupoInactivos (clases internas)
 + buscarTrabajadores(String): List<Trabajador>
+
 
 Clase: DiaFestivo
 - fecha: LocalDate
@@ -169,6 +183,7 @@ Clase: Calendario
 + eliminarDiaFestivo(LocalDate): boolean
 + existeDiaFestivo(LocalDate): boolean
 + agregarDiasFestivosPrueba()
++ getInstancia(): Calendario
 
 Relaciones entre clases (tipo y cardinalidad):
 
