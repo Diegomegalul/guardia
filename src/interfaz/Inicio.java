@@ -181,36 +181,12 @@ public class Inicio extends JFrame {
 		menuPlanificar.add(planificarAuto);
 		menuBar.add(menuPlanificar);
 		
-				mostrarGuardiasPlanificadas = new JMenuItem("Guardias planificadas");
+				mostrarGuardiasPlanificadas = new JMenuItem("G.Planificadas");
 				menuPlanificar.add(mostrarGuardiasPlanificadas);
 				mostrarGuardiasPlanificadas.setFont(new Font("Arial", Font.PLAIN, 15));
 				mostrarGuardiasPlanificadas.setBackground(darkBg);
 				mostrarGuardiasPlanificadas.setForeground(amarillo);
 				mostrarGuardiasPlanificadas.setBorder(BorderFactory.createLineBorder(negro, 1));
-				
-						mostrarGuardiasCumplidas = new JMenuItem("Guardias cumplidas");
-						menuPlanificar.add(mostrarGuardiasCumplidas);
-						mostrarGuardiasCumplidas.setFont(new Font("Arial", Font.PLAIN, 15));
-						mostrarGuardiasCumplidas.setBackground(darkBg);
-						mostrarGuardiasCumplidas.setForeground(amarillo);
-						mostrarGuardiasCumplidas.setBorder(BorderFactory.createLineBorder(negro, 1));
-						mostrarGuardiasCumplidas.addActionListener(new ActionListener() {
-							public void actionPerformed(ActionEvent e) {
-								boolean found = false;
-								for (Frame frame : JFrame.getFrames()) {
-									if (frame instanceof GuardiasCumplidas && frame.isVisible()) {
-										frame.toFront();
-										frame.requestFocus();
-										found = true;
-										break;
-									}
-								}
-								if (!found) {
-									GuardiasCumplidas frame = new GuardiasCumplidas();
-									frame.setVisible(true);
-								}
-							}
-						});
 				mostrarGuardiasPlanificadas.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
 						boolean found = false;
@@ -228,6 +204,55 @@ public class Inicio extends JFrame {
 						}
 					}
 				});
+
+		mostrarGuardiasCumplidas = new JMenuItem("G.Cumplidas");
+		menuPlanificar.add(mostrarGuardiasCumplidas);
+		mostrarGuardiasCumplidas.setFont(new Font("Arial", Font.PLAIN, 15));
+		mostrarGuardiasCumplidas.setBackground(darkBg);
+		mostrarGuardiasCumplidas.setForeground(amarillo);
+		mostrarGuardiasCumplidas.setBorder(BorderFactory.createLineBorder(negro, 1));
+		mostrarGuardiasCumplidas.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				boolean found = false;
+				for (Frame frame : JFrame.getFrames()) {
+					if (frame instanceof GuardiasCumplidas && frame.isVisible()) {
+						frame.toFront();
+						frame.requestFocus();
+						found = true;
+						break;
+					}
+				}
+				if (!found) {
+					GuardiasCumplidas frame = new GuardiasCumplidas();
+					frame.setVisible(true);
+				}
+			}
+		});
+
+		// Nuevo submenu G.Incumplidas
+		JMenuItem mostrarGuardiasIncumplidas = new JMenuItem("G.Incumplidas");
+		menuPlanificar.add(mostrarGuardiasIncumplidas);
+		mostrarGuardiasIncumplidas.setFont(new Font("Arial", Font.PLAIN, 15));
+		mostrarGuardiasIncumplidas.setBackground(darkBg);
+		mostrarGuardiasIncumplidas.setForeground(amarillo);
+		mostrarGuardiasIncumplidas.setBorder(BorderFactory.createLineBorder(negro, 1));
+		mostrarGuardiasIncumplidas.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				boolean found = false;
+				for (Frame frame : JFrame.getFrames()) {
+					if (frame instanceof GuardiasIncumplidas && frame.isVisible()) {
+						frame.toFront();
+						frame.requestFocus();
+						found = true;
+						break;
+					}
+				}
+				if (!found) {
+					GuardiasIncumplidas frame = new GuardiasIncumplidas();
+					frame.setVisible(true);
+				}
+			}
+		});
 
 		// Menú Editar Calendario (después de Planificar)
 		JMenuItem menuCalendario = new JMenuItem("Editar Calendario");
