@@ -285,20 +285,31 @@ public class GuardiaFactory {
 						LocalDate fecha = t.getFechaGuardiaVoluntaria();
 						if (fecha.getYear() == anioPlan && fecha.getMonthValue() == mesPlan) {
 							int cantidad = guardiasPorDia.containsKey(fecha) ? guardiasPorDia.get(fecha) : 0;
+							boolean esFestivo = (calendario != null && calendario.existeDiaFestivo(fecha));
 							if (cantidad == 0) {
 								Horario h1 = new Horario(fecha, LocalTime.of(9, 0), LocalTime.of(14, 0));
 								if (t.puedeHacerGuardia(h1)) {
-									nuevasGuardias.add(new Guardia(nextId++, utiles.TipoGuardia.VOLUNTARIA, t, h1));
-									guardias.add(nuevasGuardias.get(nuevasGuardias.size() - 1));
+									TipoGuardia tipo = esFestivo ? TipoGuardia.FESTIVO : TipoGuardia.VOLUNTARIA;
+									Guardia g = new Guardia(nextId++, tipo, t, h1);
+									nuevasGuardias.add(g);
+									guardias.add(g);
 									t.setGuardiasAsignadas(t.getGuardiasAsignadas() + 1);
+									if (esFestivo) {
+										t.setCantidadGuardiasFestivo(t.getCantidadGuardiasFestivo() + 1);
+									}
 									guardiasPorDia.put(fecha, 1);
 								}
 							} else if (cantidad == 1) {
 								Horario h2 = new Horario(fecha, LocalTime.of(14, 0), LocalTime.of(19, 0));
 								if (t.puedeHacerGuardia(h2)) {
-									nuevasGuardias.add(new Guardia(nextId++, utiles.TipoGuardia.VOLUNTARIA, t, h2));
-									guardias.add(nuevasGuardias.get(nuevasGuardias.size() - 1));
+									TipoGuardia tipo = esFestivo ? TipoGuardia.FESTIVO : TipoGuardia.VOLUNTARIA;
+									Guardia g = new Guardia(nextId++, tipo, t, h2);
+									nuevasGuardias.add(g);
+									guardias.add(g);
 									t.setGuardiasAsignadas(t.getGuardiasAsignadas() + 1);
+									if (esFestivo) {
+										t.setCantidadGuardiasFestivo(t.getCantidadGuardiasFestivo() + 1);
+									}
 									guardiasPorDia.put(fecha, 2);
 								}
 							}

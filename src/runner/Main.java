@@ -21,9 +21,30 @@ public class Main {
 
 //Diooooos como hago para sacarla de mi cabeza
 
-//TIMØ - Quiero Saber ;)
+//TIMØ - Quiero Saber 
 
-//La unica flecha q no está bien fue la q cupido no te dio conmigo :(
+//d4vd - Crashing
+
+//d4vd - Here With Me
+
+//Will Paquin - Chandelier
+
+//ZOE - Azul
+
+//Gracie Abrams - Mess It Up
+
+//d4vd - Feel It (From The Original Series  Invincible )
+
+//Tame Impala - Borderline
+
+//Lola Young - Conceited
+
+//Surf Curse - Freaks
+
+//Maroon 5 - Cold
+
+//Avicii - Without You
+
 
 
 
