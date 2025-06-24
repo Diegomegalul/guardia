@@ -35,7 +35,7 @@ public class AddTrabajadores extends JFrame {
 	/**
 	 * @wbp.parser.constructor
 	 */
-	public AddTrabajadores(final PlanificadorGuardias planificador,  final Trabajador trabajador, final VerTrabajadores verTrabajadores) {
+	public AddTrabajadores(final PlanificadorGuardias planificador,final Trabajador trabajador,final VerTrabajadores verTrabajadores) {
 		setIconImage(Toolkit.getDefaultToolkit().getImage(Login.class.getResource("/imagenes/logo.jpg")));
 		setMinimumSize(new Dimension(500, 550));
 		this.planificador = planificador;
@@ -46,7 +46,7 @@ public class AddTrabajadores extends JFrame {
 
 		setTitle(trabajador == null ? "Añadir Trabajador" : "Editar Trabajador");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); // No cierra la app
-		setBounds(100, 100, 500, 550);
+		setBounds(100, 100, 500, 570);
 		setLocationRelativeTo(null);
 
 		contentPane = new JPanel();
@@ -87,88 +87,7 @@ public class AddTrabajadores extends JFrame {
 				FormFactory.RELATED_GAP_ROWSPEC,
 				RowSpec.decode("20dlu:grow"),
 				FormFactory.RELATED_GAP_ROWSPEC,
-				RowSpec.decode("20dlu:grow"),
-				FormFactory.RELATED_GAP_ROWSPEC,
-				RowSpec.decode("20dlu:grow"),
-				FormFactory.RELATED_GAP_ROWSPEC,
-				RowSpec.decode("20dlu:grow"),
-				FormFactory.RELATED_GAP_ROWSPEC,
-				RowSpec.decode("20dlu:grow"),
-				FormFactory.RELATED_GAP_ROWSPEC,
-				RowSpec.decode("20dlu:grow"),
-				FormFactory.RELATED_GAP_ROWSPEC,
-				RowSpec.decode("20dlu:grow"),
-				FormFactory.RELATED_GAP_ROWSPEC,
-				RowSpec.decode("20dlu:grow"),
-				FormFactory.RELATED_GAP_ROWSPEC,
-				RowSpec.decode("20dlu:grow"),
-				FormFactory.RELATED_GAP_ROWSPEC,
-				RowSpec.decode("20dlu:grow"),
-				FormFactory.RELATED_GAP_ROWSPEC,
-				RowSpec.decode("20dlu:grow"),
-				FormFactory.RELATED_GAP_ROWSPEC,
-				RowSpec.decode("20dlu:grow"),
-				FormFactory.RELATED_GAP_ROWSPEC,
-				RowSpec.decode("20dlu:grow"),
-				FormFactory.RELATED_GAP_ROWSPEC,
-				RowSpec.decode("20dlu:grow"),
-				FormFactory.RELATED_GAP_ROWSPEC,
-				RowSpec.decode("20dlu:grow"),
-				FormFactory.RELATED_GAP_ROWSPEC,
-				RowSpec.decode("20dlu:grow"),
-				FormFactory.RELATED_GAP_ROWSPEC,
-				RowSpec.decode("20dlu:grow"),
-				FormFactory.RELATED_GAP_ROWSPEC,
-				RowSpec.decode("20dlu:grow"),
-				FormFactory.RELATED_GAP_ROWSPEC,
-				RowSpec.decode("20dlu:grow"),
-				FormFactory.RELATED_GAP_ROWSPEC,
-				RowSpec.decode("20dlu:grow"),
-				FormFactory.RELATED_GAP_ROWSPEC,
-				RowSpec.decode("20dlu:grow"),
-				FormFactory.RELATED_GAP_ROWSPEC,
-				RowSpec.decode("20dlu:grow"),
-				FormFactory.RELATED_GAP_ROWSPEC,
-				RowSpec.decode("20dlu:grow"),
-				FormFactory.RELATED_GAP_ROWSPEC,
-				RowSpec.decode("20dlu:grow"),
-				FormFactory.RELATED_GAP_ROWSPEC,
-				RowSpec.decode("20dlu:grow"),
-				FormFactory.RELATED_GAP_ROWSPEC,
-				RowSpec.decode("20dlu:grow"),
-				FormFactory.RELATED_GAP_ROWSPEC,
-				RowSpec.decode("20dlu:grow"),
-				FormFactory.RELATED_GAP_ROWSPEC,
-				RowSpec.decode("20dlu:grow"),
-				FormFactory.RELATED_GAP_ROWSPEC,
-				RowSpec.decode("20dlu:grow"),
-				FormFactory.RELATED_GAP_ROWSPEC,
-				RowSpec.decode("20dlu:grow"),
-				FormFactory.RELATED_GAP_ROWSPEC,
-				RowSpec.decode("20dlu:grow"),
-				FormFactory.RELATED_GAP_ROWSPEC,
-				RowSpec.decode("20dlu:grow"),
-				FormFactory.RELATED_GAP_ROWSPEC,
-				RowSpec.decode("20dlu:grow"),
-				FormFactory.RELATED_GAP_ROWSPEC,
-				RowSpec.decode("20dlu:grow"),
-				FormFactory.RELATED_GAP_ROWSPEC,
-				RowSpec.decode("20dlu:grow"),
-				FormFactory.RELATED_GAP_ROWSPEC,
-				RowSpec.decode("20dlu:grow"),
-				FormFactory.RELATED_GAP_ROWSPEC,
-				RowSpec.decode("20dlu:grow"),
-				FormFactory.RELATED_GAP_ROWSPEC,
-				RowSpec.decode("20dlu:grow"),
-				FormFactory.RELATED_GAP_ROWSPEC,
-				RowSpec.decode("20dlu:grow"),
-				FormFactory.RELATED_GAP_ROWSPEC,
-				RowSpec.decode("20dlu:grow"),
-				FormFactory.RELATED_GAP_ROWSPEC,
-				RowSpec.decode("20dlu:grow"),
-				FormFactory.RELATED_GAP_ROWSPEC,
-				RowSpec.decode("20dlu:grow"),
-		}));
+				RowSpec.decode("20dlu:grow"),}));
 
 		// CI
 		txtCi = new JTextField(15);
@@ -178,6 +97,14 @@ public class AddTrabajadores extends JFrame {
 		JLabel Ci = new JLabel("CI:");
 		panelForm.add(Ci, "2, 2, center, center");
 		panelForm.add(txtCi, "4, 2, center, center");
+
+		// Voluntario
+		chkVoluntario = new JCheckBox();
+		chkVoluntario.setBackground(amarillo);
+		chkVoluntario.setSelected(false);
+		JLabel Voluntario = new JLabel("Voluntario:");
+		panelForm.add(Voluntario, "2, 18, center, center");
+		panelForm.add(chkVoluntario, "4, 18, center, center");
 
 		// Nombre
 		txtNombre = new JTextField(15);
@@ -222,6 +149,7 @@ public class AddTrabajadores extends JFrame {
 		dateChooserFechaIncorporacion.setFont(new Font("Arial", Font.PLAIN, 15));
 		dateChooserFechaIncorporacion.setBackground(blanco);
 		dateChooserFechaIncorporacion.setForeground(negro);
+		dateChooserFechaIncorporacion.setEnabled(!chkActivo.isSelected()); // Solo editable si NO está activo
 		JLabel Fecha = new JLabel("Fecha Incorporación:");
 		panelForm.add(Fecha, "2, 12, center, center");
 		panelForm.add(dateChooserFechaIncorporacion, "4, 12, center, center");
@@ -232,6 +160,7 @@ public class AddTrabajadores extends JFrame {
 		dateChooserFechaVoluntaria.setFont(new Font("Arial", Font.PLAIN, 15));
 		dateChooserFechaVoluntaria.setBackground(blanco);
 		dateChooserFechaVoluntaria.setForeground(negro);
+		dateChooserFechaVoluntaria.setEnabled(chkVoluntario.isSelected()); // Solo editable si voluntario está activo
 		JLabel lblFechaVoluntaria = new JLabel("Fecha Guardia Voluntaria");
 		panelForm.add(lblFechaVoluntaria, "2, 20, center, center");
 		panelForm.add(dateChooserFechaVoluntaria, "4, 20, center, center");
@@ -254,56 +183,66 @@ public class AddTrabajadores extends JFrame {
 		panelForm.add(GFestivo, "2, 16, center, center");
 		panelForm.add(txtGuardiasFestivo, "4, 16, center, center");
 
-		// Voluntario
-		chkVoluntario = new JCheckBox();
-		chkVoluntario.setBackground(amarillo);
-		chkVoluntario.setSelected(false);
-		JLabel Voluntario = new JLabel("Voluntario:");
-		panelForm.add(Voluntario, "2, 18, center, center");
-		panelForm.add(chkVoluntario, "4, 18, center, center");
+		// --- Habilitar/Deshabilitar campos dependientes ---
+		// Listener para habilitar/deshabilitar fecha de incorporación
+		chkActivo.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				dateChooserFechaIncorporacion.setEnabled(!chkActivo.isSelected());
+			}
+		});
+		// Listener para habilitar/deshabilitar fecha voluntaria
+		chkVoluntario.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				dateChooserFechaVoluntaria.setEnabled(chkVoluntario.isSelected());
+			}
+		});
 
 		contentPane.add(panelForm, BorderLayout.CENTER);
 
 		// --- LLENAR CAMPOS SI ES EDICIÓN ---
 		if (trabajador != null) {
-			txtCi.setText(trabajador.getCi());
-			txtNombre.setText(trabajador.getNombre());
-			txtApellidos.setText(trabajador.getApellidos());
-			comboSexo.setSelectedItem(trabajador.getSexo().toString());
-			chkActivo.setSelected(trabajador.getActivo());
-			txtGuardiasAsignadas.setText(String.valueOf(trabajador.getGuardiasAsignadas()));
-			txtGuardiasFestivo.setText(String.valueOf(trabajador.getCantidadGuardiasFestivo()));
-			chkVoluntario.setSelected(trabajador.getVoluntario());
-			if (trabajador.getFechaDeIncorporacion() != null) {
-				dateChooserFechaIncorporacion.setDate(java.sql.Date.valueOf(trabajador.getFechaDeIncorporacion()));
-			} else {
-				dateChooserFechaIncorporacion.setDate(null);
+			if (txtCi != null) txtCi.setText(trabajador.getCi());
+			if (txtNombre != null) txtNombre.setText(trabajador.getNombre());
+			if (txtApellidos != null) txtApellidos.setText(trabajador.getApellidos());
+			if (comboSexo != null) comboSexo.setSelectedItem(trabajador.getSexo().toString());
+			if (chkActivo != null) chkActivo.setSelected(trabajador.getActivo());
+			if (txtGuardiasAsignadas != null) txtGuardiasAsignadas.setText(String.valueOf(trabajador.getGuardiasAsignadas()));
+			if (txtGuardiasFestivo != null) txtGuardiasFestivo.setText(String.valueOf(trabajador.getCantidadGuardiasFestivo()));
+			if (chkVoluntario != null) chkVoluntario.setSelected(trabajador.getVoluntario());
+			if (dateChooserFechaIncorporacion != null) {
+				if (trabajador.getFechaDeIncorporacion() != null) {
+					dateChooserFechaIncorporacion.setDate(java.sql.Date.valueOf(trabajador.getFechaDeIncorporacion()));
+				} else {
+					dateChooserFechaIncorporacion.setDate(null);
+				}
 			}
-			// Setear fecha voluntaria si existe
-			if (trabajador.getFechaGuardiaVoluntaria() != null) {
-				dateChooserFechaVoluntaria.setDate(java.sql.Date.valueOf(trabajador.getFechaGuardiaVoluntaria()));
-			} else {
-				dateChooserFechaVoluntaria.setDate(null);
+			if (dateChooserFechaVoluntaria != null) {
+				if (trabajador.getFechaGuardiaVoluntaria() != null) {
+					dateChooserFechaVoluntaria.setDate(java.sql.Date.valueOf(trabajador.getFechaGuardiaVoluntaria()));
+				} else {
+					dateChooserFechaVoluntaria.setDate(null);
+				}
 			}
+			if (txtCi != null) txtCi.setEditable(false);
 		}
 
 		// Botón guardar
 		JPanel panelBoton = new JPanel();
 		panelBoton.setBackground(amarillo);
-		JButton btnGuardar = new JButton(trabajador == null ? "Guardar" : "Actualizar") {
-			private static final long serialVersionUID = 1L;
-			protected void paintComponent(Graphics g) {
-				if (isContentAreaFilled()) {
-					Graphics2D g2 = (Graphics2D) g.create();
-					g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-					g2.setColor(getBackground());
-					g2.fillRoundRect(0, 0, getWidth(), getHeight(), 20, 20);
-					g2.dispose();
-				}
-				super.paintComponent(g);
-			}
-		};
-		btnGuardar.setFont(new Font("Arial", Font.BOLD, 16));
+		panelBoton.setLayout(new FormLayout(new ColumnSpec[] {
+				ColumnSpec.decode("left:5dlu:grow"),
+				ColumnSpec.decode("left:60dlu:grow"),
+				FormFactory.RELATED_GAP_COLSPEC,
+				ColumnSpec.decode("20dlu:grow"),
+				FormFactory.RELATED_GAP_COLSPEC,
+				ColumnSpec.decode("right:60dlu:grow"),
+				ColumnSpec.decode("right:5dlu:grow"),},
+				new RowSpec[] {
+				RowSpec.decode("1dlu"),
+				RowSpec.decode("20px"),}));
+
+		JButton btnGuardar = new JButton(trabajador == null ? "Guardar" : "Actualizar");
+		btnGuardar.setFont(new Font("Arial", Font.BOLD, 15));
 		btnGuardar.setBackground(negro);
 		btnGuardar.setForeground(amarillo);
 		btnGuardar.setFocusPainted(false);
@@ -390,23 +329,13 @@ public class AddTrabajadores extends JFrame {
 				}
 			}
 		});
-		panelBoton.add(btnGuardar);
+		panelBoton.add(btnGuardar, "4, 2, center, center");
 		contentPane.add(panelBoton, BorderLayout.SOUTH);
 	}
 
 	public AddTrabajadores(PlanificadorGuardias planificador, Trabajador trabajador) {
 		this(planificador, trabajador, null); // Llama al constructor principal
-		// Llenar los campos con los datos del trabajador
-		txtCi.setText(trabajador.getCi());
-		txtNombre.setText(trabajador.getNombre());
-		txtApellidos.setText(trabajador.getApellidos());
-		comboSexo.setSelectedItem(trabajador.getSexo().toString());
-		chkActivo.setSelected(trabajador.getActivo());
-		txtGuardiasAsignadas.setText(String.valueOf(trabajador.getGuardiasAsignadas()));
-		txtGuardiasFestivo.setText(String.valueOf(trabajador.getCantidadGuardiasFestivo()));
-		chkVoluntario.setSelected(trabajador.getVoluntario());
-		// Puedes deshabilitar el campo CI si no quieres que se edite
-		txtCi.setEditable(false);
+		// No rellenar campos aquí, ya lo hace el constructor principal si trabajador != null
 	}
 
 	public void aplicarModoOscuro(boolean oscuro, Color fondo, Color texto, Color boton, Color amarilloSec) {
