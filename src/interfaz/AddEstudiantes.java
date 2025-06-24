@@ -49,6 +49,9 @@ public class AddEstudiantes extends JFrame {
 	private VerEstudiantes framePadre = null;
 
 	// Constructor para añadir
+	/**
+	 * @wbp.parser.constructor
+	 */
 	public AddEstudiantes(final PlanificadorGuardias planificador) {
 		this(planificador, null, null);
 	}

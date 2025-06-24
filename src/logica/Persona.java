@@ -27,6 +27,10 @@ public abstract class Persona {
 	}
 
 	public void setCi(String ci) {
+		// Validar que el CI tenga exactamente 11 dígitos y sean todos números
+		if (ci == null || ci.length() != 11 || !ci.matches("\\d{11}")) {
+			throw new IllegalArgumentException("El CI debe tener exactamente 11 dígitos numéricos.");
+		}
 		this.ci = ci;
 	}
 
