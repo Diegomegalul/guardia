@@ -3,15 +3,23 @@ package logica;
 import java.util.ArrayList;
 import java.util.List;
 import java.time.LocalDate;
-import logica.DiaFestivo;
 
 public class Calendario {
 	//Atributos
 	private List<DiaFestivo> diasFestivos;
+	private static Calendario instancia; // Singleton
 
-	//Constructor
-	public Calendario(){
+	//Constructor privado para Singleton
+	private Calendario(){
 		this.diasFestivos = new ArrayList<>();
+	}
+
+	// Singleton: obtener instancia única
+	public static synchronized Calendario getInstancia() {
+		if (instancia == null) {
+			instancia = new Calendario();
+		}
+		return instancia;
 	}
 
 	//Setters y getters

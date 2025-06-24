@@ -18,8 +18,10 @@ public class PlanificadorGuardias {
 	//Constructor
 	private PlanificadorGuardias() {
 		this.facultad = new Facultad("Informatica"); 
-		this.calendario = new Calendario();  
+		this.calendario = Calendario.getInstancia(); // Usar singleton
 		this.guardiaFactory = new GuardiaFactory();  
+		// Enlazar el calendario singleton al guardiaFactory
+		this.guardiaFactory.setCalendario(this.calendario);
 	}
 	//Setters y Getters
 	public Facultad getFacultad() {
