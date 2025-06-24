@@ -87,6 +87,8 @@ public class AddTrabajadores extends JFrame {
 				FormFactory.RELATED_GAP_ROWSPEC,
 				RowSpec.decode("20dlu:grow"),
 				FormFactory.RELATED_GAP_ROWSPEC,
+				RowSpec.decode("20dlu:grow"),
+				FormFactory.RELATED_GAP_ROWSPEC,
 				RowSpec.decode("20dlu:grow"),}));
 
 		// CI
@@ -273,10 +275,8 @@ public class AddTrabajadores extends JFrame {
 
 					// Validaciones de lógica de negocio
 					if (activo) {
-						if (utilDate != null) {
-							datosValidos = false;
-							mensajeError = "Un trabajador activo no debe tener fecha de incorporación.";
-						}
+						// Si está activo, ignorar el contenido del dateChooser y pasar null
+						fechaIncorporacion = null;
 					} else {
 						if (utilDate == null) {
 							datosValidos = false;
@@ -299,23 +299,15 @@ public class AddTrabajadores extends JFrame {
 							}
 						}
 					} else {
-						if (utilDateVoluntaria != null) {
-							datosValidos = false;
-							mensajeError = "No debe seleccionar fecha de guardia voluntaria si el trabajador no es voluntario.";
-						}
+						// Si no es voluntario, ignorar el contenido del dateChooser y pasar null
+						fechaVoluntaria = null;
 					}
 
-					if (datosValidos && activo) {
-						fechaIncorporacion = null;
-					}
-
-					// Validación de CI antes de crear el Trabajador
 					if (datosValidos) {
 						if (ci == null || ci.length() != 11 || !ci.matches("\\d{11}")) {
 							throw new IllegalArgumentException("El CI debe tener exactamente 11 dígitos numéricos.");
 						}
 					}
-
 					// Validación de nombre y apellidos solo letras (opcional, ya está en setNombre/setApellidos)
 				} catch (IllegalArgumentException ex) {
 					datosValidos = false;
