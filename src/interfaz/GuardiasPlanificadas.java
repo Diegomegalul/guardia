@@ -101,7 +101,7 @@ public class GuardiasPlanificadas extends JFrame {
 		tablaGuardias.setFont(new Font("Consolas", Font.PLAIN, 13));
 		tablaGuardias.setRowHeight(24);
 
-		// Listener para marcar cumplidas (sin lambda)
+		// Listener para marcar cumplidas
 		tablaGuardias.getModel().addTableModelListener(new TableModelListener() {
 			public void tableChanged(TableModelEvent e) {
 				if (e.getType() == TableModelEvent.UPDATE && e.getColumn() == 7) {
@@ -113,7 +113,7 @@ public class GuardiasPlanificadas extends JFrame {
 					}
 					if (checked != null && checked.booleanValue()) {
 						int id = Integer.parseInt(tablaModel.getValueAt(row, 0).toString());
-						marcarGuardiaCumplida(id);
+						PlanificadorGuardias.getInstancia().getGuardiaFactory().registrarCumplimientoGuardia(id);
 						tablaModel.removeRow(row);
 					}
 				}
@@ -170,28 +170,6 @@ public class GuardiasPlanificadas extends JFrame {
 							Boolean.FALSE
 					});
 				}
-			}
-		}
-	}
-
-	private void marcarGuardiaCumplida(int idGuardia) {
-		List<?> guardias = planificador.getGuardiaFactory().getGuardias();
-		List<Guardia> cumplidas = planificador.getGuardiaFactory().getGuardiasCumplidas();
-		for (int i = 0; i < guardias.size(); i++) {
-			Guardia g = (Guardia) guardias.get(i);
-			if (g.getId() == idGuardia) {
-				// Aumentar el contador de guardias cumplidas de la persona
-				logica.Persona p = g.getPersona();
-				if (p instanceof logica.Estudiante) {
-					((logica.Estudiante) p).setGuardiasCumplidas(((logica.Estudiante) p).getGuardiasCumplidas() + 1);
-				} else if (p instanceof logica.Trabajador) {
-					// Si quieres llevar un contador para trabajadores, agrégalo aquí
-				}
-				// Pasar la guardia al arrayList de guardias cumplidas
-				if (!cumplidas.contains(g)) {
-					cumplidas.add(g);
-				}
-				break;
 			}
 		}
 	}

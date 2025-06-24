@@ -11,7 +11,7 @@ Dia-8: El menu inicio ya lo tiene todo creo <br>
 Dia-9: Voy a empezar a resolver detalles de funcionalidad <br>
 Dia-10: Hice pila de frames en cuanto me tome un 10 hago los reportes <br>
 Dia-11: Hoy lo termino si o si la v1.0, bueno sera mañana, faltan las guardias festivas <br>
-Dia-12: Ya todo funciona bien, voy a corregir errores y depues voy a pasar todo a un mismo frame <br>
+Dia-12: Ya todo funciona bien, voy a corregir errores, vuelvo a tener fe en la vida :) <br>
 
 # Cuando quieras hacer cosas en el proyecto
 
