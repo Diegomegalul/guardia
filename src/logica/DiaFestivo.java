@@ -9,8 +9,8 @@ public class DiaFestivo {
 
 	//Contructor
 	public DiaFestivo(LocalDate fecha, String descripcion) {
-		this.fecha = fecha;
-		this.descripcion = descripcion;
+		setFecha(fecha);
+		setDescripcion(descripcion);
 	}
 
 	//Setters y Getters

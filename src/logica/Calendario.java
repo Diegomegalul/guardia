@@ -70,7 +70,15 @@ public class Calendario {
 
 	// Verificar si existe un día festivo por fecha
 	public boolean existeDiaFestivo(LocalDate fecha) {
-		return obtenerDiaFestivo(fecha) != null;
+		if (fecha == null || diasFestivos == null || diasFestivos.isEmpty()) {
+			return false;
+		}
+		for (DiaFestivo d : diasFestivos) {
+			if (d != null && fecha.equals(d.getFecha())) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	public void agregarDiasFestivosPrueba() {

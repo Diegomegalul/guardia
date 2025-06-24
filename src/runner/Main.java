@@ -21,6 +21,18 @@ public class Main {
 
 //Diooooos como hago para sacarla de mi cabeza
 
+//Me encantas, lo sabes?
+
+//De que sirve que seamos amigos si no me miras como yo a ti?
+
+//Tengo ganas de arruinar esta amistad
+
+//A veces me pregunto si te gustaria que fueramos algo mas
+
+//Estoy cansado de que me veas como un amigo
+
+//Me encanta todo de ti, incluso tus defectos
+
 //TIMØ - Quiero Saber 
 
 //d4vd - Crashing
