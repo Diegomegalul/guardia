@@ -208,7 +208,7 @@ public class AddTrabajadores extends JFrame {
 			if (txtApellidos != null) txtApellidos.setText(trabajador.getApellidos());
 			if (comboSexo != null) comboSexo.setSelectedItem(trabajador.getSexo().toString());
 			if (chkActivo != null) chkActivo.setSelected(trabajador.getActivo());
-			if (txtGuardiasAsignadas != null) txtGuardiasAsignadas.setText(String.valueOf(trabajador.getGuardiasAsignadas()));
+			if (txtGuardiasAsignadas != null) txtGuardiasAsignadas.setText(String.valueOf(trabajador.getGuardiasCumplidas()));
 			if (txtGuardiasFestivo != null) txtGuardiasFestivo.setText(String.valueOf(trabajador.getCantidadGuardiasFestivo()));
 			if (chkVoluntario != null) chkVoluntario.setSelected(trabajador.getVoluntario());
 			if (dateChooserFechaIncorporacion != null) {
@@ -260,7 +260,7 @@ public class AddTrabajadores extends JFrame {
 				String sexoStr = (String) comboSexo.getSelectedItem();
 				boolean activo = chkActivo.isSelected();
 				boolean voluntario = chkVoluntario.isSelected();
-				int guardiasAsignadas = 0;
+				int guardiasCumplidas = 0;
 				int guardiasFestivo = 0;
 				LocalDate fechaIncorporacion = null;
 				LocalDate fechaVoluntaria = null;
@@ -268,7 +268,7 @@ public class AddTrabajadores extends JFrame {
 				String mensajeError = "";
 
 				try {
-					guardiasAsignadas = Integer.parseInt(txtGuardiasAsignadas.getText().trim());
+					guardiasCumplidas = Integer.parseInt(txtGuardiasAsignadas.getText().trim());
 					guardiasFestivo = Integer.parseInt(txtGuardiasFestivo.getText().trim());
 					java.util.Date utilDate = dateChooserFechaIncorporacion.getDate();
 					java.util.Date utilDateVoluntaria = dateChooserFechaVoluntaria.getDate();
@@ -322,7 +322,7 @@ public class AddTrabajadores extends JFrame {
 				}
 				if (datosValidos) {
 					try {
-						Trabajador nuevoTrabajador = new Trabajador(ci, nombre, apellidos, Sexo.valueOf(sexoStr), activo, fechaIncorporacion, guardiasAsignadas, guardiasFestivo, voluntario, fechaVoluntaria);
+						Trabajador nuevoTrabajador = new Trabajador(ci, nombre, apellidos, Sexo.valueOf(sexoStr), activo, fechaIncorporacion, 0, guardiasFestivo, guardiasCumplidas, voluntario, fechaVoluntaria);
 						if (trabajador == null) {
 							planificador.getFacultad().agregarPersona(nuevoTrabajador);
 							JLabel label = new JLabel("Trabajador guardado correctamente");

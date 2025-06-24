@@ -1,17 +1,21 @@
 package logica;
+
 import utiles.Sexo;
 
 public abstract class Persona {
-	//Atributos
+	// Atributos
 	protected int guardiasAsignadas;
 	protected String ci;
 	protected String nombre;
 	protected String apellidos;
-	protected Sexo sexo; 
+	protected Sexo sexo;
 	protected boolean activo;
 	protected int cantidadGuardiasFestivo;
-	//Contructor
-	protected Persona(String ci,String nombre,String apellidos,Sexo sexo,boolean activo,int guardiasAsignadas,int cantidadGuardiasFestivo){
+	protected int guardiasCumplidas;
+
+	// Contructor
+	protected Persona(String ci, String nombre, String apellidos, Sexo sexo, boolean activo, int guardiasAsignadas,
+			int cantidadGuardiasFestivo, int guardiasCumplidas) {
 		setCi(ci);
 		setNombre(nombre);
 		setApellidos(apellidos);
@@ -19,11 +23,12 @@ public abstract class Persona {
 		setActivo(activo);
 		setGuardiasAsignadas(guardiasAsignadas);
 		setCantidadGuardiasFestivo(cantidadGuardiasFestivo);
+		setGuardiasCumplidas(guardiasCumplidas);
 	}
 
 	// Getters y Setters
-	public String getCi() { 
-		return ci; 
+	public String getCi() {
+		return ci;
 	}
 
 	public void setCi(String ci) {
@@ -46,7 +51,7 @@ public abstract class Persona {
 		this.nombre = nombre;
 	}
 
-	public String getApellidos() { 
+	public String getApellidos() {
 		return apellidos;
 	}
 
@@ -58,7 +63,7 @@ public abstract class Persona {
 		this.apellidos = apellidos;
 	}
 
-	public Sexo getSexo() { 
+	public Sexo getSexo() {
 		return sexo;
 	}
 
@@ -70,11 +75,11 @@ public abstract class Persona {
 		this.activo = activo;
 	}
 
-	public void setGuardiasAsignadas(int guardiasAsignadas){
+	public void setGuardiasAsignadas(int guardiasAsignadas) {
 		this.guardiasAsignadas = guardiasAsignadas;
 	}
 
-	public int getGuardiasAsignadas(){
+	public int getGuardiasAsignadas() {
 		return guardiasAsignadas;
 	}
 
@@ -86,12 +91,20 @@ public abstract class Persona {
 		this.cantidadGuardiasFestivo = cantidadGuardiasFestivo;
 	}
 
-	public int getCantidadGuardiasFestivo(){
+	public int getCantidadGuardiasFestivo() {
 		return cantidadGuardiasFestivo;
 	}
 
-	//Metodos
-	public abstract boolean puedeHacerGuardia(Horario horario);
-	// No hay métodos con dos returns en caminos alternativos ni uso de break fuera de switch.
-}
+	public void setGuardiasCumplidas(int guardiasCumplidas) {
+		this.guardiasCumplidas = guardiasCumplidas;
+	}
 
+	public int getGuardiasCumplidas() {
+		return guardiasCumplidas;
+	}
+
+	// Metodos
+	public abstract boolean puedeHacerGuardia(Horario horario);
+	// No hay métodos con dos returns en caminos alternativos ni uso de break fuera
+	// de switch.
+}

@@ -8,20 +8,22 @@ import java.time.Month;
 import utiles.Sexo;
 
 public class Trabajador extends Persona {
-	//Atributos
+	// Atributos
 	private LocalDate fechaDeIncorporacion;
 	private boolean voluntario;
 	private LocalDate fechaGuardiaVoluntaria; // Nueva fecha para guardia voluntaria
 
-	//Constructor
-	public Trabajador(String ci,String nombre,String apellidos,Sexo sexo,boolean activo,LocalDate fechaDeIncorporacion,int guardiasAsignadas,int cantidadGuardiasFestivo,boolean voluntario,LocalDate fechaGuardiaVoluntaria) {
-		super(ci, nombre,apellidos, sexo, activo, guardiasAsignadas,cantidadGuardiasFestivo); 
+	// Constructor
+	public Trabajador(String ci, String nombre, String apellidos, Sexo sexo, boolean activo,
+			LocalDate fechaDeIncorporacion, int guardiasAsignadas, int cantidadGuardiasFestivo, int guardiasCumplidas,
+			boolean voluntario, LocalDate fechaGuardiaVoluntaria) {
+		super(ci, nombre, apellidos, sexo, activo, guardiasAsignadas, cantidadGuardiasFestivo, guardiasCumplidas);
 		setFechaDeIncorporacion(fechaDeIncorporacion);
 		setVoluntario(voluntario);
-		setFechaGuardiaVoluntaria(fechaGuardiaVoluntaria); 
+		setFechaGuardiaVoluntaria(fechaGuardiaVoluntaria);
 	}
 
-	//Getters y setters
+	// Getters y setters
 	public void setFechaGuardiaVoluntaria(LocalDate fechaGuardiaVoluntaria) {
 		this.fechaGuardiaVoluntaria = fechaGuardiaVoluntaria;
 	}
@@ -31,10 +33,10 @@ public class Trabajador extends Persona {
 	}
 
 	public void setFechaDeIncorporacion(LocalDate fechaDeIncorporacion) {
-		this.fechaDeIncorporacion = fechaDeIncorporacion;		
+		this.fechaDeIncorporacion = fechaDeIncorporacion;
 	}
 
-	public LocalDate getFechaDeIncorporacion(){
+	public LocalDate getFechaDeIncorporacion() {
 		return fechaDeIncorporacion;
 	}
 
@@ -46,7 +48,7 @@ public class Trabajador extends Persona {
 		this.voluntario = voluntario;
 	}
 
-	//Metodos
+	// Metodos
 	@Override
 	public boolean puedeHacerGuardia(Horario horario) {
 		boolean puede = false;
@@ -56,7 +58,7 @@ public class Trabajador extends Persona {
 			LocalTime fin = horario.getHoraFin();
 			Month mes = fecha.getMonth();
 			boolean turnoValido = (inicio.equals(LocalTime.of(9, 0)) && fin.equals(LocalTime.of(14, 0)))
-				|| (inicio.equals(LocalTime.of(14, 0)) && fin.equals(LocalTime.of(19, 0)));
+					|| (inicio.equals(LocalTime.of(14, 0)) && fin.equals(LocalTime.of(19, 0)));
 			// Permitir si no hay restricción de antigüedad
 			boolean incorporacionOk = (fechaDeIncorporacion == null) || !fecha.isBefore(fechaDeIncorporacion);
 			if (incorporacionOk) {
@@ -73,7 +75,7 @@ public class Trabajador extends Persona {
 			}
 		}
 		return puede;
-	} 
-	// No hay métodos con dos returns en caminos alternativos ni uso de break fuera de switch.
+	}
+	// No hay métodos con dos returns en caminos alternativos ni uso de break fuera
+	// de switch.
 }
-

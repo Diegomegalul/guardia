@@ -5,46 +5,38 @@ import java.time.LocalTime;
 
 import utiles.Sexo;
 
-public class Estudiante extends Persona{
-	//Atributos
+public class Estudiante extends Persona {
+	// Atributos
 	private boolean licenciaMatricula;
 	private boolean baja;
 	private int grupo; // Nuevo atributo grupo
-	private int guardiasCumplidas;  //Nuevo atributo guardiasCumplidas
 	private int guardiasRecuperacion; // Nuevo atributo guardias de recuperacion
 	private int guardiasIncumplidas; // Nuevo atributo guardias incumplidas
 
-	//Constructor
-	public Estudiante (String ci, String nombre,String apellidos, Sexo sexo, boolean activo, int guardiasAsignadas , int cantidadGuardiasFestivo, int grupo,int guardiasCumplidas, int guardiasRecuperacion) {
-		super(ci, nombre, apellidos, sexo, activo, guardiasAsignadas, cantidadGuardiasFestivo);
+	// Constructor
+	public Estudiante(String ci, String nombre, String apellidos, Sexo sexo, boolean activo, int guardiasAsignadas,
+			int cantidadGuardiasFestivo, int grupo, int guardiasCumplidas, int guardiasRecuperacion) {
+		super(ci, nombre, apellidos, sexo, activo, guardiasAsignadas, cantidadGuardiasFestivo, guardiasCumplidas);
 		setGrupo(grupo);
-		setGuardiasCumplidas(guardiasCumplidas);
 		setGuardiasRecuperacion(guardiasRecuperacion);
 		this.guardiasIncumplidas = 0;
 	}
-	//Getters y setters
+
+	// Getters y setters
 	public void setGuardiasRecuperacion(int guardiasRecuperacion) {
 		this.guardiasRecuperacion = guardiasRecuperacion;
 	}
-	
+
 	public int getGuardiasRecuperacion() {
 		return guardiasRecuperacion;
 	}
-	
+
 	public boolean isLicenciaMatricula() {
 		return licenciaMatricula;
 	}
 
 	public void setLicenciaMatricula(boolean licenciaMatricula) {
 		this.licenciaMatricula = licenciaMatricula;
-	}
-
-	public void setGuardiasCumplidas(int guardiasCumplidas){
-		this.guardiasCumplidas = guardiasCumplidas;
-	}
-
-	public int getGuardiasCumplidas(){
-		return guardiasCumplidas;
 	}
 
 	public boolean isBaja() {
@@ -61,8 +53,8 @@ public class Estudiante extends Persona{
 
 	public int getGrupo() {
 		return grupo;
-	}  
-	
+	}
+
 	public void setGuardiasIncumplidas(int guardiasIncumplidas) {
 		this.guardiasIncumplidas = guardiasIncumplidas;
 	}
@@ -70,7 +62,8 @@ public class Estudiante extends Persona{
 	public int getGuardiasIncumplidas() {
 		return guardiasIncumplidas;
 	}
-	//Metodos
+
+	// Metodos
 	@Override
 	public boolean puedeHacerGuardia(Horario horario) {
 		boolean puede = false;
@@ -81,14 +74,14 @@ public class Estudiante extends Persona{
 				LocalTime fin = horario.getHoraFin();
 				DayOfWeek dia = horario.getDia().getDayOfWeek();
 				switch (getSexo()) {
-				case MASCULINO:
-					puede = esHorarioNocturnoValido(inicio, fin);
-					break;
-				case FEMENINO:
-					puede = esFinDeSemana(dia) && esHorarioDiurnoValido(inicio, fin);
-					break;
-				default:
-					puede = false;
+					case MASCULINO:
+						puede = esHorarioNocturnoValido(inicio, fin);
+						break;
+					case FEMENINO:
+						puede = esFinDeSemana(dia) && esHorarioDiurnoValido(inicio, fin);
+						break;
+					default:
+						puede = false;
 				}
 			}
 		}
@@ -96,12 +89,12 @@ public class Estudiante extends Persona{
 	}
 
 	private boolean esHorarioNocturnoValido(LocalTime inicio, LocalTime fin) {
-		return inicio.equals(LocalTime.of(20, 0)) && 
+		return inicio.equals(LocalTime.of(20, 0)) &&
 				fin.equals(LocalTime.of(8, 0));
 	}
 
 	private boolean esHorarioDiurnoValido(LocalTime inicio, LocalTime fin) {
-		return inicio.equals(LocalTime.of(8, 0)) && 
+		return inicio.equals(LocalTime.of(8, 0)) &&
 				fin.equals(LocalTime.of(20, 0));
 	}
 
@@ -124,5 +117,6 @@ public class Estudiante extends Persona{
 	public boolean tieneGuardiasPendientes() {
 		return calcularGuardiasPendientes() > 0;
 	}
-	// No hay métodos con dos returns en caminos alternativos ni uso de break fuera de switch
+	// No hay métodos con dos returns en caminos alternativos ni uso de break fuera
+	// de switch
 }

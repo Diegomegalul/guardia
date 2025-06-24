@@ -184,26 +184,26 @@ public class PlanificadorGuardias {
 	public void agregarProfesoresPrueba() {
 		if (profesoresPruebaAgregados) return;
 		profesoresPruebaAgregados = true;
-		facultad.agregarPersona(new Trabajador("12345678901","Carlos","Pérez Gómez",utiles.Sexo.MASCULINO,false,java.time.LocalDate.of(2025, 1, 1),0,0,true,null));
-		facultad.agregarPersona(new Trabajador("23456789012","María","López Fernández",utiles.Sexo.FEMENINO,true,null,0,0,true,java.time.LocalDate.of(2025, 7, 10)));
-		facultad.agregarPersona(new Trabajador("34567890123","Juan","Martínez Ruiz",utiles.Sexo.MASCULINO,true,null,0,0,true,java.time.LocalDate.of(2025, 8, 5)));
-		facultad.agregarPersona(new Trabajador("45678901234","Ana","García Torres",utiles.Sexo.FEMENINO,true,null,0,0,true,java.time.LocalDate.of(2025, 7, 20)));
-		facultad.agregarPersona(new Trabajador("56789012345","Luis","Sánchez Díaz",utiles.Sexo.MASCULINO,true,null,0,0,true,java.time.LocalDate.of(2025, 8, 15)));
-		facultad.agregarPersona(new Trabajador("67890123456","Elena","Romero Castro",utiles.Sexo.FEMENINO,true,null,0,0,true,java.time.LocalDate.of(2025, 7, 25)));
-		facultad.agregarPersona(new Trabajador("78901234567","Miguel","Vega Herrera",utiles.Sexo.MASCULINO,true,null,0,0,true,java.time.LocalDate.of(2025, 8, 2)));
-		facultad.agregarPersona(new Trabajador("89012345678","Lucía","Jiménez Morales",utiles.Sexo.FEMENINO,false,java.time.LocalDate.of(2025, 4, 12),0,0,false,null));
-		facultad.agregarPersona(new Trabajador("90123456789","Pedro","Navarro Ramos",utiles.Sexo.MASCULINO,true,null,0,0,true,java.time.LocalDate.of(2025, 7, 30)));
-		facultad.agregarPersona(new Trabajador("11223344556","Sofía","Molina Pérez",utiles.Sexo.FEMENINO,true,null,0,0,true,java.time.LocalDate.of(2025, 8, 8)));
-		facultad.agregarPersona(new Trabajador("22334455667","Javier","Castro López",utiles.Sexo.MASCULINO,true,null,0,0,true,java.time.LocalDate.of(2025, 7, 18)));
-		facultad.agregarPersona(new Trabajador("33445566778","Patricia","Ortega Gil",utiles.Sexo.FEMENINO,true,null,0,0,false,null));
-		facultad.agregarPersona(new Trabajador("44556677889","Raúl","Domínguez León",utiles.Sexo.MASCULINO,true,null,0,0,true,java.time.LocalDate.of(2025, 8, 12)));
-		facultad.agregarPersona(new Trabajador("55667788990","Isabel","Serrano Cruz",utiles.Sexo.FEMENINO,true,null,0,0,true,java.time.LocalDate.of(2025, 7, 26)));
-		facultad.agregarPersona(new Trabajador("66778899001","Alberto","Morales Peña",utiles.Sexo.MASCULINO,true,null,0,0,true,java.time.LocalDate.of(2025, 8, 20)));
-		facultad.agregarPersona(new Trabajador("77889900112","Teresa","Ramos Soto",utiles.Sexo.FEMENINO,false,java.time.LocalDate.of(2025, 9, 23),0,0,true,null));
-		facultad.agregarPersona(new Trabajador("88990011223","Francisco","Cano Vargas",utiles.Sexo.MASCULINO,true,null,0,0,true,java.time.LocalDate.of(2025, 7, 14)));
-		facultad.agregarPersona(new Trabajador("99001122334","Marta","Reyes Flores",utiles.Sexo.FEMENINO,true,null,0,0,true,java.time.LocalDate.of(2025, 8, 3)));
-		facultad.agregarPersona(new Trabajador("10111213141","Andrés","Suárez Bravo",utiles.Sexo.MASCULINO,true,null,0,0,true,java.time.LocalDate.of(2025, 7, 22)));
-		facultad.agregarPersona(new Trabajador("12131415161","Beatriz","Medina Pardo",utiles.Sexo.FEMENINO,true,null,0,0,false,null));
+		facultad.agregarPersona(new Trabajador("12345678901","Carlos","Pérez Gómez",utiles.Sexo.MASCULINO,false,java.time.LocalDate.of(2025, 1, 1),0,0,0,true,null));
+		facultad.agregarPersona(new Trabajador("23456789012","María","López Fernández",utiles.Sexo.FEMENINO,true,null,0,0,0,true,java.time.LocalDate.of(2025, 7, 10)));
+		facultad.agregarPersona(new Trabajador("34567890123","Juan","Martínez Ruiz",utiles.Sexo.MASCULINO,true,null,0,0,0,true,java.time.LocalDate.of(2025, 8, 5)));
+		facultad.agregarPersona(new Trabajador("45678901234","Ana","García Torres",utiles.Sexo.FEMENINO,true,null,0,0,0,true,java.time.LocalDate.of(2025, 7, 20)));
+		facultad.agregarPersona(new Trabajador("56789012345","Luis","Sánchez Díaz",utiles.Sexo.MASCULINO,true,null,0,0,0,true,java.time.LocalDate.of(2025, 8, 15)));
+		facultad.agregarPersona(new Trabajador("67890123456","Elena","Romero Castro",utiles.Sexo.FEMENINO,true,null,0,0,0,true,java.time.LocalDate.of(2025, 7, 25)));
+		facultad.agregarPersona(new Trabajador("78901234567","Miguel","Vega Herrera",utiles.Sexo.MASCULINO,true,null,0,0,0,true,java.time.LocalDate.of(2025, 8, 2)));
+		facultad.agregarPersona(new Trabajador("89012345678","Lucía","Jiménez Morales",utiles.Sexo.FEMENINO,false,java.time.LocalDate.of(2025, 4, 12),0,0,0,false,null));
+		facultad.agregarPersona(new Trabajador("90123456789","Pedro","Navarro Ramos",utiles.Sexo.MASCULINO,true,null,0,0,0,true,java.time.LocalDate.of(2025, 7, 30)));
+		facultad.agregarPersona(new Trabajador("11223344556","Sofía","Molina Pérez",utiles.Sexo.FEMENINO,true,null,0,0,0, true,java.time.LocalDate.of(2025, 8, 8)));
+		facultad.agregarPersona(new Trabajador("22334455667","Javier","Castro López",utiles.Sexo.MASCULINO,true,null,0,0,0, true,java.time.LocalDate.of(2025, 7, 18)));
+		facultad.agregarPersona(new Trabajador("33445566778","Patricia","Ortega Gil",utiles.Sexo.FEMENINO,true,null,0,0,0, false,null));
+		facultad.agregarPersona(new Trabajador("44556677889","Raúl","Domínguez León",utiles.Sexo.MASCULINO,true,null,0,0,0, true,java.time.LocalDate.of(2025, 8, 12)));
+		facultad.agregarPersona(new Trabajador("55667788990","Isabel","Serrano Cruz",utiles.Sexo.FEMENINO,true,null,0,0,0, true,java.time.LocalDate.of(2025, 7, 26)));
+		facultad.agregarPersona(new Trabajador("66778899001","Alberto","Morales Peña",utiles.Sexo.MASCULINO,true,null,0,0,0, true,java.time.LocalDate.of(2025, 8, 20)));
+		facultad.agregarPersona(new Trabajador("77889900112","Teresa","Ramos Soto",utiles.Sexo.FEMENINO,false,java.time.LocalDate.of(2025, 9, 23),0,0,0, true,null));
+		facultad.agregarPersona(new Trabajador("88990011223","Francisco","Cano Vargas",utiles.Sexo.MASCULINO,true,null,0,0,0, true,java.time.LocalDate.of(2025, 7, 14)));
+		facultad.agregarPersona(new Trabajador("99001122334","Marta","Reyes Flores",utiles.Sexo.FEMENINO,true,null,0,0,0, true,java.time.LocalDate.of(2025, 8, 3)));
+		facultad.agregarPersona(new Trabajador("10111213141","Andrés","Suárez Bravo",utiles.Sexo.MASCULINO,true,null,0,0,0, true,java.time.LocalDate.of(2025, 7, 22)));
+		facultad.agregarPersona(new Trabajador("12131415161","Beatriz","Medina Pardo",utiles.Sexo.FEMENINO,true,null,0,0,0, false,null));
 	}
 
 	public void agregarEstudiantesVaronesPrueba() {
