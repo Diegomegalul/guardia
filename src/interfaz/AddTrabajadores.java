@@ -46,7 +46,7 @@ public class AddTrabajadores extends JFrame {
 
 		setTitle(trabajador == null ? "Añadir Trabajador" : "Editar Trabajador");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); // No cierra la app
-		setBounds(100, 100, 500, 570);
+		setBounds(100, 100, 500, 550);
 		setLocationRelativeTo(null);
 
 		contentPane = new JPanel();
@@ -172,7 +172,7 @@ public class AddTrabajadores extends JFrame {
 		txtGuardiasAsignadas.setFont(new Font("Arial", Font.PLAIN, 15));
 		txtGuardiasAsignadas.setBackground(blanco);
 		txtGuardiasAsignadas.setForeground(negro);
-		JLabel GAsignadas = new JLabel("Guardias Asignadas:");
+		JLabel GAsignadas = new JLabel("Guardias Realizadas:");
 		panelForm.add(GAsignadas, "2, 14, center, center");
 		panelForm.add(txtGuardiasAsignadas, "4, 14, center, center");
 
@@ -181,7 +181,7 @@ public class AddTrabajadores extends JFrame {
 		txtGuardiasFestivo.setFont(new Font("Arial", Font.PLAIN, 15));
 		txtGuardiasFestivo.setBackground(blanco);
 		txtGuardiasFestivo.setForeground(negro);
-		JLabel GFestivo = new JLabel("Guardias Festivo:");
+		JLabel GFestivo = new JLabel("Guardias Realizadas en dias Festivos:");
 		panelForm.add(GFestivo, "2, 16, center, center");
 		panelForm.add(txtGuardiasFestivo, "4, 16, center, center");
 

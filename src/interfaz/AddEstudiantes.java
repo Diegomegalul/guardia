@@ -189,16 +189,16 @@ public class AddEstudiantes extends JFrame {
 		chkActivo.setBackground(amarillo);
 		chkActivo.setSelected(true);
 		panelForm.add(chkActivo, "4, 10, center, center");
-		JLabel label_5 = new JLabel("Guardias Asignadas:");
-		panelForm.add(label_5, "2, 12, center, center");
+		JLabel lblGuardiasRealizadas = new JLabel("Guardias Realizadas:");
+		panelForm.add(lblGuardiasRealizadas, "2, 12, center, center");
 
 		txtGuardiasAsignadas = new JTextField("0", 15);
 		txtGuardiasAsignadas.setFont(new Font("Arial", Font.PLAIN, 15));
 		txtGuardiasAsignadas.setBackground(blanco);
 		txtGuardiasAsignadas.setForeground(negro);
 		panelForm.add(txtGuardiasAsignadas, "4, 12, center, center");
-		JLabel label_6 = new JLabel("Guardias Festivo:");
-		panelForm.add(label_6, "2, 14, center, center");
+		JLabel lblGuardiasRealizadasEn = new JLabel("Guardias Realizadas en dias Festivos:");
+		panelForm.add(lblGuardiasRealizadasEn, "2, 14, center, center");
 
 		txtGuardiasFestivo = new JTextField("0", 15);
 		txtGuardiasFestivo.setFont(new Font("Arial", Font.PLAIN, 15));
@@ -230,6 +230,22 @@ public class AddEstudiantes extends JFrame {
 		// Botón guardar/actualizar
 		JPanel panelBoton = new JPanel();
 		panelBoton.setBackground(amarillo);
+		panelBoton.setLayout(new com.jgoodies.forms.layout.FormLayout(
+			new com.jgoodies.forms.layout.ColumnSpec[] {
+				com.jgoodies.forms.layout.ColumnSpec.decode("left:5dlu:grow"),
+				com.jgoodies.forms.layout.ColumnSpec.decode("left:60dlu:grow"),
+				FormFactory.RELATED_GAP_COLSPEC,
+				com.jgoodies.forms.layout.ColumnSpec.decode("20dlu:grow"),
+				FormFactory.RELATED_GAP_COLSPEC,
+				com.jgoodies.forms.layout.ColumnSpec.decode("right:60dlu:grow"),
+				com.jgoodies.forms.layout.ColumnSpec.decode("right:5dlu:grow"),
+			},
+			new com.jgoodies.forms.layout.RowSpec[] {
+				com.jgoodies.forms.layout.RowSpec.decode("1dlu"),
+				com.jgoodies.forms.layout.RowSpec.decode("20px"),
+			}
+		));
+
 		JButton btnGuardar = new JButton(estudiante == null ? "Guardar" : "Actualizar") {
 			private static final long serialVersionUID = 1L;
 			protected void paintComponent(Graphics g) {
@@ -243,6 +259,10 @@ public class AddEstudiantes extends JFrame {
 				super.paintComponent(g);
 			}
 		};
+		btnGuardar.setAlignmentX(Component.CENTER_ALIGNMENT);
+		btnGuardar.setMinimumSize(new Dimension(71, 23));
+		btnGuardar.setMaximumSize(new Dimension(71, 23));
+		btnGuardar.setPreferredSize(new Dimension(71, 23));
 		btnGuardar.setFont(new Font("Arial", Font.BOLD, 16));
 		btnGuardar.setBackground(negro);
 		btnGuardar.setForeground(amarillo);
@@ -320,7 +340,7 @@ public class AddEstudiantes extends JFrame {
 				dispose();
 			}
 		});
-		panelBoton.add(btnGuardar);
+		panelBoton.add(btnGuardar, "4, 2, center, center");
 		contentPane.add(panelBoton, BorderLayout.SOUTH);
 	}
 
