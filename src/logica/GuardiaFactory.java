@@ -146,6 +146,21 @@ public class GuardiaFactory {
 			if (!guardiasCumplidas.contains(g)) {
 				guardiasCumplidas.add(g);
 			}
+			guardias.remove(g); // Eliminar de la lista de guardias planificadas
+			resultado = true;
+		}
+		return resultado;
+	}
+
+	// Marcar guardia como incumplida: la elimina de guardias y la pasa a incumplidas
+	public boolean registrarIncumplimientoGuardia(int idGuardia) {
+		Guardia g = buscarGuardiaPorId(idGuardia);
+		boolean resultado = false;
+		if (g != null) {
+			if (!guardiasIncumplidas.contains(g)) {
+				guardiasIncumplidas.add(g);
+			}
+			guardias.remove(g); // Eliminar de la lista de guardias planificadas
 			resultado = true;
 		}
 		return resultado;
