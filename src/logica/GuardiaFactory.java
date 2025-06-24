@@ -183,7 +183,7 @@ public class GuardiaFactory {
 					p.setCantidadGuardiasFestivo(p.getCantidadGuardiasFestivo() - 1);
 				}
 
-				// Contador espec�fico para estudiantes
+				// Contador especifico para estudiantes
 				if (p instanceof Estudiante && g.getTipo() == TipoGuardia.NORMAL) {
 					((Estudiante)p).setGuardiasAsignadas(((Estudiante)p).getGuardiasAsignadas() - 1);
 				}
@@ -224,17 +224,14 @@ public class GuardiaFactory {
 				anioPlan += 1;
 			}
 			boolean esJA = (mesPlan == 7 || mesPlan == 8);
-			System.out.println("Planificando mes: " + mesPlan + " año: " + anioPlan + " esJA=" + esJA);
 
 			if (!primeraVez && offset == 0) {
 				revisarGuardiasIncumplidas(mes, anio);
 			}
 
 			if (esJA) {
-				System.out.println("Planificando guardias de julio/agosto (solo voluntarios)");
 				planificarGuardiasJulioAgosto(trabajadores, nuevasGuardias, anioPlan, mesPlan);
 			} else {
-				System.out.println("Planificando guardias resto del año");
 				planificarGuardiasRestoDelAnio(estudiantesM, estudiantesF, trabajadores, nuevasGuardias, anioPlan, mesPlan);
 			}
 		}
@@ -351,13 +348,8 @@ public class GuardiaFactory {
 		for (int day = 1; day <= ym.lengthOfMonth(); day++) {
 			LocalDate fecha = LocalDate.of(ym.getYear(), ym.getMonthValue(), day);
 			int dow = fecha.getDayOfWeek().getValue(); // 1=Lunes ... 7=Domingo
-
 			// Validar si el día es festivo antes de planificar
 			boolean esFestivo = (calendario != null && calendario.existeDiaFestivo(fecha));
-			if (esFestivo) {
-				System.out.println("Día festivo detectado: " + fecha);
-			}
-
 			// Guardias de estudiantes hombres: todos los días, 20:00-08:00
 			if (!estudiantesM.isEmpty()) {
 				Estudiante est = seleccionarEstudianteRecuperacionPrimero(estudiantesM);
@@ -365,7 +357,6 @@ public class GuardiaFactory {
 				boolean existe = existeGuardia(est, h);
 				if (!existe && est != null && est.puedeHacerGuardia(h)) {
 					TipoGuardia tipo = esFestivo ? TipoGuardia.FESTIVO : TipoGuardia.NORMAL;
-					System.out.println("Asignando guardia a estudiante M: " + est.getNombre() + " " + est.getApellidos() + " fecha=" + fecha + " tipo=" + tipo);
 					nuevasGuardias.add(new Guardia(nextId++, tipo, est, h));
 					est.setGuardiasAsignadas(est.getGuardiasAsignadas() + 1);
 					if (tipo == TipoGuardia.FESTIVO) {
@@ -373,7 +364,6 @@ public class GuardiaFactory {
 					}
 				}
 			}
-
 			// Guardias de estudiantes mujeres: solo fines de semana, alternando con trabajadores
 			if (dow == 6 || dow == 7) {
 				if (finSemanaMujer && !estudiantesF.isEmpty()) {
@@ -382,7 +372,6 @@ public class GuardiaFactory {
 					boolean existe = existeGuardia(est, h);
 					if (!existe && est != null && est.puedeHacerGuardia(h)) {
 						TipoGuardia tipo = esFestivo ? TipoGuardia.FESTIVO : TipoGuardia.NORMAL;
-						System.out.println("Asignando guardia a estudiante F: " + est.getNombre() + " " + est.getApellidos() + " fecha=" + fecha + " tipo=" + tipo);
 						nuevasGuardias.add(new Guardia(nextId++, tipo, est, h));
 						est.setGuardiasAsignadas(est.getGuardiasAsignadas() + 1);
 						if (tipo == TipoGuardia.FESTIVO) {
@@ -400,7 +389,6 @@ public class GuardiaFactory {
 						boolean existe = existeGuardia(t, h);
 						if (!existe && t != null && t.puedeHacerGuardia(h)) {
 							TipoGuardia tipo = esFestivo ? TipoGuardia.FESTIVO : TipoGuardia.NORMAL;
-							System.out.println("Asignando guardia a trabajador: " + t.getNombre() + " " + t.getApellidos() + " fecha=" + fecha + " tipo=" + tipo);
 							nuevasGuardias.add(new Guardia(nextId++, tipo, t, h));
 							t.setGuardiasAsignadas(t.getGuardiasAsignadas() + 1);
 							if (tipo == TipoGuardia.FESTIVO) {
