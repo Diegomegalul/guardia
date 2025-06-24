@@ -6,6 +6,7 @@ Clase: Persona (abstracta)
 # activo: boolean
 # guardiasAsignadas: int
 # cantidadGuardiasFestivo: int
+# guardiasCumplidas: int
 + Persona(String, String, String, Sexo, boolean, int, int)
 + getCi(): String
 + setCi(String)
@@ -19,6 +20,8 @@ Clase: Persona (abstracta)
 + setActivo(boolean)
 + getGuardiasAsignadas(): int
 + setGuardiasAsignadas(int)
++ getGuardiasCumplidas(): int
++ setGuardiasCumplidas(int)
 + getCantidadGuardiasFestivo(): int
 + setCantidadGuardiasFestivo(int)
 # puedeHacerGuardia(Horario): boolean (abstracto)
@@ -27,7 +30,6 @@ Clase: Estudiante extends Persona
 - licenciaMatricula: boolean
 - baja: boolean
 - grupo: int
-- guardiasCumplidas: int
 - guardiasRecuperacion: int
 - guardiasIncumplidas: int
 + Estudiante(String, String, String, Sexo, boolean, int, int, int, int, int)
@@ -53,7 +55,7 @@ Clase: Trabajador extends Persona
 - fechaDeIncorporacion: LocalDate
 - voluntario: boolean
 - fechaGuardiaVoluntaria: LocalDate
-+ Trabajador(String, String, String, Sexo, boolean, LocalDate, int, int, boolean, LocalDate)
++ Trabajador(String, String, String, Sexo, boolean, LocalDate, int, int, int, boolean, LocalDate)
 + getFechaDeIncorporacion(): LocalDate
 + setFechaDeIncorporacion(LocalDate)
 + getVoluntario(): boolean
