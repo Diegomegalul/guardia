@@ -269,17 +269,57 @@ public class AddTrabajadores extends JFrame {
 					guardiasAsignadas = Integer.parseInt(txtGuardiasAsignadas.getText().trim());
 					guardiasFestivo = Integer.parseInt(txtGuardiasFestivo.getText().trim());
 					java.util.Date utilDate = dateChooserFechaIncorporacion.getDate();
-					if (utilDate == null) throw new Exception("Fecha no seleccionada");
-					fechaIncorporacion = new java.sql.Date(utilDate.getTime()).toLocalDate();
-
 					java.util.Date utilDateVoluntaria = dateChooserFechaVoluntaria.getDate();
-					if (utilDateVoluntaria != null) {
-						fechaVoluntaria = new java.sql.Date(utilDateVoluntaria.getTime()).toLocalDate();
-						int mes = fechaVoluntaria.getMonthValue();
-						if (mes != 7 && mes != 8) {
-							throw new Exception("La fecha voluntaria debe ser en julio o agosto.");
+
+					// Validaciones de lógica de negocio
+					if (activo) {
+						if (utilDate != null) {
+							datosValidos = false;
+							mensajeError = "Un trabajador activo no debe tener fecha de incorporación.";
+						}
+					} else {
+						if (utilDate == null) {
+							datosValidos = false;
+							mensajeError = "Debe seleccionar la fecha de incorporación para un trabajador inactivo.";
+						} else {
+							fechaIncorporacion = new java.sql.Date(utilDate.getTime()).toLocalDate();
 						}
 					}
+
+					if (voluntario) {
+						if (utilDateVoluntaria == null) {
+							datosValidos = false;
+							mensajeError = "Debe seleccionar la fecha de guardia voluntaria para un voluntario.";
+						} else {
+							fechaVoluntaria = new java.sql.Date(utilDateVoluntaria.getTime()).toLocalDate();
+							int mes = fechaVoluntaria.getMonthValue();
+							if (mes != 7 && mes != 8) {
+								datosValidos = false;
+								mensajeError = "La fecha de guardia voluntaria debe ser en julio o agosto.";
+							}
+						}
+					} else {
+						if (utilDateVoluntaria != null) {
+							datosValidos = false;
+							mensajeError = "No debe seleccionar fecha de guardia voluntaria si el trabajador no es voluntario.";
+						}
+					}
+
+					if (datosValidos && activo) {
+						fechaIncorporacion = null;
+					}
+
+					// Validación de CI antes de crear el Trabajador
+					if (datosValidos) {
+						if (ci == null || ci.length() != 11 || !ci.matches("\\d{11}")) {
+							throw new IllegalArgumentException("El CI debe tener exactamente 11 dígitos numéricos.");
+						}
+					}
+
+					// Validación de nombre y apellidos solo letras (opcional, ya está en setNombre/setApellidos)
+				} catch (IllegalArgumentException ex) {
+					datosValidos = false;
+					mensajeError = ex.getMessage();
 				} catch (Exception ex) {
 					datosValidos = false;
 					mensajeError = "Verifique los campos numéricos y la fecha.\n" + ex.getMessage();
@@ -289,41 +329,45 @@ public class AddTrabajadores extends JFrame {
 					mensajeError = "Complete todos los campos obligatorios.";
 				}
 				if (datosValidos) {
-					Trabajador nuevoTrabajador = new Trabajador(ci, nombre, apellidos, Sexo.valueOf(sexoStr), activo, fechaIncorporacion, guardiasAsignadas, guardiasFestivo, voluntario, fechaVoluntaria);
-					if (trabajador == null) {
-						planificador.getFacultad().agregarPersona(nuevoTrabajador);
-						JLabel label = new JLabel("Trabajador guardado correctamente");
-						label.setFont(new Font("Arial", Font.BOLD, 16));
-						label.setForeground(negro);
-						JPanel panel = new JPanel();
-						panel.setBackground(amarillo);
-						panel.add(label);
-						JOptionPane.showMessageDialog(
-								AddTrabajadores.this,
-								panel,
-								"Guardado",
-								JOptionPane.INFORMATION_MESSAGE
-								);
-					} else {
-						planificador.getFacultad().eliminarPersona(trabajador);
-						planificador.getFacultad().agregarPersona(nuevoTrabajador);
-						JLabel label = new JLabel("Trabajador actualizado correctamente");
-						label.setFont(new Font("Arial", Font.BOLD, 16));
-						label.setForeground(negro);
-						JPanel panel = new JPanel();
-						panel.setBackground(amarillo);
-						panel.add(label);
-						JOptionPane.showMessageDialog(
-								AddTrabajadores.this,
-								panel,
-								"Actualizado",
-								JOptionPane.INFORMATION_MESSAGE
-								);
+					try {
+						Trabajador nuevoTrabajador = new Trabajador(ci, nombre, apellidos, Sexo.valueOf(sexoStr), activo, fechaIncorporacion, guardiasAsignadas, guardiasFestivo, voluntario, fechaVoluntaria);
+						if (trabajador == null) {
+							planificador.getFacultad().agregarPersona(nuevoTrabajador);
+							JLabel label = new JLabel("Trabajador guardado correctamente");
+							label.setFont(new Font("Arial", Font.BOLD, 16));
+							label.setForeground(negro);
+							JPanel panel = new JPanel();
+							panel.setBackground(amarillo);
+							panel.add(label);
+							JOptionPane.showMessageDialog(
+									AddTrabajadores.this,
+									panel,
+									"Guardado",
+									JOptionPane.INFORMATION_MESSAGE
+									);
+						} else {
+							planificador.getFacultad().eliminarPersona(trabajador);
+							planificador.getFacultad().agregarPersona(nuevoTrabajador);
+							JLabel label = new JLabel("Trabajador actualizado correctamente");
+							label.setFont(new Font("Arial", Font.BOLD, 16));
+							label.setForeground(negro);
+							JPanel panel = new JPanel();
+							panel.setBackground(amarillo);
+							panel.add(label);
+							JOptionPane.showMessageDialog(
+									AddTrabajadores.this,
+									panel,
+									"Actualizado",
+									JOptionPane.INFORMATION_MESSAGE
+									);
+						}
+						if (verTrabajadores != null) {
+							verTrabajadores.refrescarTabla();
+						}
+						dispose();
+					} catch (IllegalArgumentException ex) {
+						JOptionPane.showMessageDialog(AddTrabajadores.this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
 					}
-					if (verTrabajadores != null) {
-						verTrabajadores.refrescarTabla();
-					}
-					dispose();
 				} else {
 					JOptionPane.showMessageDialog(AddTrabajadores.this, mensajeError, "Error", JOptionPane.ERROR_MESSAGE);
 				}

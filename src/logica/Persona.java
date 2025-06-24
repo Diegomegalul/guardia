@@ -39,6 +39,10 @@ public abstract class Persona {
 	}
 
 	public void setNombre(String nombre) {
+		// Validar que el nombre solo contenga letras y espacios
+		if (nombre == null || !nombre.matches("[a-zA-ZáéíóúÁÉÍÓÚüÜñÑ\\s]+")) {
+			throw new IllegalArgumentException("El nombre solo debe contener letras y espacios.");
+		}
 		this.nombre = nombre;
 	}
 
@@ -47,6 +51,10 @@ public abstract class Persona {
 	}
 
 	public void setApellidos(String apellidos) {
+		// Validar que los apellidos solo contengan letras y espacios
+		if (apellidos == null || !apellidos.matches("[a-zA-ZáéíóúÁÉÍÓÚüÜñÑ\\s]+")) {
+			throw new IllegalArgumentException("Los apellidos solo deben contener letras y espacios.");
+		}
 		this.apellidos = apellidos;
 	}
 
