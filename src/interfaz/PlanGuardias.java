@@ -185,7 +185,7 @@ public class PlanGuardias extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				int fila = tablaGuardias.getSelectedRow();
 				if (fila == -1) {
-					JOptionPane.showMessageDialog(PlanGuardias.this, "Seleccione una guardia para editar.", "Error", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(PlanGuardias.this, "Seleccione una guardia para intercambiar.", "Error", JOptionPane.ERROR_MESSAGE);
 					return;
 				}
 				int id = Integer.parseInt(tablaModel.getValueAt(fila, 0).toString());
@@ -205,8 +205,12 @@ public class PlanGuardias extends JFrame {
 					JOptionPane.showMessageDialog(PlanGuardias.this, "Seleccione una guardia para editar.", "Error", JOptionPane.ERROR_MESSAGE);
 					return;
 				}
-				EditGuardia frame = new EditGuardia();
-				frame.setVisible(true);
+				int id = Integer.parseInt(tablaModel.getValueAt(fila, 0).toString());
+				logica.Guardia g = buscarGuardiaPorId(id);
+				if (g != null) {
+					EditGuardia frame = new EditGuardia(g);
+					frame.setVisible(true);
+				}
 			}
 		});
 
@@ -227,11 +231,11 @@ public class PlanGuardias extends JFrame {
 				}
 				int id = Integer.parseInt(tablaModel.getValueAt(fila, 0).toString());
 				int confirm = JOptionPane.showConfirmDialog(
-					PlanGuardias.this,
-					"¿Está seguro de eliminar la guardia seleccionada?",
-					"Confirmar eliminación",
-					JOptionPane.YES_NO_OPTION
-				);
+						PlanGuardias.this,
+						"¿Está seguro de eliminar la guardia seleccionada?",
+						"Confirmar eliminación",
+						JOptionPane.YES_NO_OPTION
+						);
 				if (confirm == JOptionPane.YES_OPTION) {
 					boolean eliminado = PlanificadorGuardias.getInstancia().getGuardiaFactory().eliminarGuardia(id);
 					if (eliminado) {
@@ -278,11 +282,11 @@ public class PlanGuardias extends JFrame {
 
 				if (yaPlanificado) {
 					JOptionPane.showMessageDialog(
-						PlanGuardias.this,
-						"Todas las guardias para este mes ya se han planificado.",
-						"Información",
-						JOptionPane.INFORMATION_MESSAGE
-					);
+							PlanGuardias.this,
+							"Todas las guardias para este mes ya se han planificado.",
+							"Información",
+							JOptionPane.INFORMATION_MESSAGE
+							);
 					cargarGuardiasEnTabla();
 					return;
 				}
@@ -292,11 +296,11 @@ public class PlanGuardias extends JFrame {
 
 				if (guardiasPlanificadas == null || guardiasPlanificadas.isEmpty()) {
 					JOptionPane.showMessageDialog(
-						PlanGuardias.this,
-						"No hay guardias para planificar en este mes.",
-						"Información",
-						JOptionPane.INFORMATION_MESSAGE
-					);
+							PlanGuardias.this,
+							"No hay guardias para planificar en este mes.",
+							"Información",
+							JOptionPane.INFORMATION_MESSAGE
+							);
 					cargarGuardiasEnTabla();
 					return;
 				}
@@ -319,13 +323,13 @@ public class PlanGuardias extends JFrame {
 			java.time.LocalDate fecha = g.getHorario().getDia();
 			if (fecha.getMonthValue() == mes && fecha.getYear() == anio) {
 				tablaModel.addRow(new Object[] {
-					g.getId(),
-					g.getTipo(),
-					g.getPersona().getNombre() + " " + g.getPersona().getApellidos(),
-					g.getPersona().getCi(),
-					g.getHorario().getDia(),
-					g.getHorario().getHoraInicio(),
-					g.getHorario().getHoraFin()
+						g.getId(),
+						g.getTipo(),
+						g.getPersona().getNombre() + " " + g.getPersona().getApellidos(),
+						g.getPersona().getCi(),
+						g.getHorario().getDia(),
+						g.getHorario().getHoraInicio(),
+						g.getHorario().getHoraFin()
 				});
 			}
 		}
