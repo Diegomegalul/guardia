@@ -3,7 +3,6 @@ package interfaz;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -26,9 +25,9 @@ import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
-import logica.Trabajador;
 import logica.Persona;
 import logica.PlanificadorGuardias;
+import logica.Trabajador;
 
 public class VerTrabajadores extends JFrame {
 
@@ -39,19 +38,6 @@ public class VerTrabajadores extends JFrame {
 	private JTextField txtBusqueda;
 	private PlanificadorGuardias planificador;
 	private List<Persona> trabajadoresFiltrados;
-
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					VerTrabajadores frame = new VerTrabajadores();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
 
 	public VerTrabajadores() {
 		setTitle("Listado de Trabajadores");

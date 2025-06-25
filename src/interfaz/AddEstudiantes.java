@@ -222,7 +222,7 @@ public class AddEstudiantes extends JFrame {
 			txtApellidos.setText(estudiante.getApellidos());
 			comboSexo.setSelectedItem(estudiante.getSexo().toString());
 			chkActivo.setSelected(estudiante.getActivo());
-			txtGuardiasAsignadas.setText(String.valueOf(estudiante.getGuardiasAsignadas()));
+			txtGuardiasAsignadas.setText(String.valueOf(estudiante.getGuardiasPlanificadas()));
 			txtGuardiasFestivo.setText(String.valueOf(estudiante.getCantidadGuardiasFestivo()));
 			txtGrupo.setText(String.valueOf(estudiante.getGrupo()));
 		}
