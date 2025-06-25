@@ -96,13 +96,16 @@ public class VerEstudiantes extends JFrame {
 		contentPane.add(panelBusqueda, BorderLayout.BEFORE_FIRST_LINE);
 
 		// Tabla de estudiantes
-		String[] columnas = {"CI", "Nombre", "Apellidos", "Sexo", "Activo", "Grupo", "G.Asignadas", "G.Cumplidas", "G.Incumplidas"};
+		String[] columnas = { "CI", "Nombre", "Apellidos", "Sexo", "Activo", "Grupo", "G.Planificadas", "G.Cumplidas",
+				"G.Incumplidas" };
 		model = new DefaultTableModel(columnas, 0) {
 			private static final long serialVersionUID = 1L;
+
 			@Override
 			public boolean isCellEditable(int row, int column) {
 				return false;
 			}
+
 			@Override
 			public Class<?> getColumnClass(int columnIndex) {
 				// Solo las columnas numéricas deben ser Integer.class
@@ -123,10 +126,12 @@ public class VerEstudiantes extends JFrame {
 		table.setRowHeight(28);
 
 		// Habilitar ordenamiento por columnas numéricas
-		final javax.swing.table.TableRowSorter<DefaultTableModel> sorter = new javax.swing.table.TableRowSorter<>(model);
+		final javax.swing.table.TableRowSorter<DefaultTableModel> sorter = new javax.swing.table.TableRowSorter<>(
+				model);
 		table.setRowSorter(sorter);
 
-		// Ordenar de mayor a menor al hacer click en las columnas de guardias (sin lambda)
+		// Ordenar de mayor a menor al hacer click en las columnas de guardias (sin
+		// lambda)
 		table.getTableHeader().addMouseListener(new java.awt.event.MouseAdapter() {
 			public void mouseClicked(java.awt.event.MouseEvent e) {
 				int col = table.columnAtPoint(e.getPoint());
@@ -206,16 +211,19 @@ public class VerEstudiantes extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				int fila = table.getSelectedRow();
 				if (fila == -1) {
-					JOptionPane.showMessageDialog(VerEstudiantes.this, "Seleccione un estudiante para eliminar.", "Error", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(VerEstudiantes.this, "Seleccione un estudiante para eliminar.",
+							"Error", JOptionPane.ERROR_MESSAGE);
 					return;
 				}
 				String ci = (String) model.getValueAt(fila, 0);
 				Persona p = planificador.getFacultad().buscarPersonaPorCI(ci);
 				if (p != null && p instanceof Estudiante) {
-					int confirm = JOptionPane.showConfirmDialog(VerEstudiantes.this, "¿Está seguro de eliminar al estudiante?", "Confirmar", JOptionPane.YES_NO_OPTION);
+					int confirm = JOptionPane.showConfirmDialog(VerEstudiantes.this,
+							"¿Está seguro de eliminar al estudiante?", "Confirmar", JOptionPane.YES_NO_OPTION);
 					if (confirm == JOptionPane.YES_OPTION) {
 						planificador.getFacultad().eliminarPersona(p);
-						cargarEstudiantes(txtBusqueda.getText().trim().isEmpty() ? null : txtBusqueda.getText().trim().toLowerCase());
+						cargarEstudiantes(txtBusqueda.getText().trim().isEmpty() ? null
+								: txtBusqueda.getText().trim().toLowerCase());
 					}
 				}
 			}
@@ -226,7 +234,8 @@ public class VerEstudiantes extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				int fila = table.getSelectedRow();
 				if (fila == -1) {
-					JOptionPane.showMessageDialog(VerEstudiantes.this, "Seleccione un estudiante para editar.", "Error", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(VerEstudiantes.this, "Seleccione un estudiante para editar.", "Error",
+							JOptionPane.ERROR_MESSAGE);
 					return;
 				}
 				String ci = (String) model.getValueAt(fila, 0);
@@ -289,22 +298,23 @@ public class VerEstudiantes extends JFrame {
 					String nombre = e.getNombre().toLowerCase();
 					String apellidos = e.getApellidos().toLowerCase();
 					String grupoStr = String.valueOf(e.getGrupo());
-					if (ci.contains(filtro) || nombre.contains(filtro) || apellidos.contains(filtro) || grupoStr.contains(filtro)) {
+					if (ci.contains(filtro) || nombre.contains(filtro) || apellidos.contains(filtro)
+							|| grupoStr.contains(filtro)) {
 						coincide = true;
 					}
 				}
 				if (coincide) {
 					estudiantesFiltrados.add(e);
 					model.addRow(new Object[] {
-						e.getCi(),
-						e.getNombre(),
-						e.getApellidos(),
-						e.getSexo().toString(), // Convertir Sexo a String para evitar ClassCastException
-						e.getActivo() ? "Sí" : "No",
-						e.getGrupo(),
-						e.getGuardiasPlanificadas(),
-						e.getGuardiasCumplidas(),
-						e.getGuardiasIncumplidas()
+							e.getCi(),
+							e.getNombre(),
+							e.getApellidos(),
+							e.getSexo().toString(),
+							e.getActivo() ? "Sí" : "No",
+							e.getGrupo(),
+							e.getGuardiasPlanificadas(), // Mostrar el número real de guardias planificadas
+							e.getGuardiasCumplidas(),
+							e.getGuardiasIncumplidas()
 					});
 				}
 			}

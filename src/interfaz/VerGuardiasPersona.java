@@ -79,7 +79,9 @@ public class VerGuardiasPersona extends JFrame {
 		};
 		for (Guardia g : planificadas) {
 			if (g != null && g.getHorario() != null
-					&& (g.getTipo() == utiles.TipoGuardia.NORMAL || g.getTipo() == utiles.TipoGuardia.FESTIVO)) {
+					&& (g.getTipo() == utiles.TipoGuardia.NORMAL || g.getTipo() == utiles.TipoGuardia.FESTIVO
+							|| g.getTipo() == utiles.TipoGuardia.RECUPERACION
+							|| g.getTipo() == utiles.TipoGuardia.RECUPERACION_FESTIVO)) {
 				modelPlanificadas.addRow(new Object[] {
 						g.getHorario().getDia(),
 						g.getHorario().getHoraInicio(),

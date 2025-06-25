@@ -97,9 +97,11 @@ public class VerTrabajadores extends JFrame {
 		contentPane.add(panelBusqueda, BorderLayout.BEFORE_FIRST_LINE);
 
 		// Tabla de trabajadores
-		String[] columnas = {"CI", "Nombre", "Apellidos", "Sexo", "Activo", "Fecha Incorp.", "G.Asignadas", "G.Festivo", "Voluntario"};
+		String[] columnas = { "CI", "Nombre", "Apellidos", "Sexo", "Activo", "Fecha Incorp.", "G.Planificadas",
+				"G.Festivo", "Voluntario" };
 		model = new DefaultTableModel(columnas, 0) {
 			private static final long serialVersionUID = 1L;
+
 			@Override
 			public boolean isCellEditable(int row, int column) {
 				return false;
@@ -192,14 +194,17 @@ public class VerTrabajadores extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				int fila = table.getSelectedRow();
 				if (fila == -1) {
-					JOptionPane.showMessageDialog(VerTrabajadores.this, "Seleccione un trabajador para eliminar.", "Error", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(VerTrabajadores.this, "Seleccione un trabajador para eliminar.",
+							"Error", JOptionPane.ERROR_MESSAGE);
 					return;
 				}
 				Trabajador trabajador = (Trabajador) trabajadoresFiltrados.get(table.convertRowIndexToModel(fila));
-				int confirm = JOptionPane.showConfirmDialog(VerTrabajadores.this, "¿Está seguro de eliminar al trabajador?", "Confirmar", JOptionPane.YES_NO_OPTION);
+				int confirm = JOptionPane.showConfirmDialog(VerTrabajadores.this,
+						"¿Está seguro de eliminar al trabajador?", "Confirmar", JOptionPane.YES_NO_OPTION);
 				if (confirm == JOptionPane.YES_OPTION) {
 					planificador.getFacultad().eliminarPersona(trabajador);
-					cargarTrabajadores(txtBusqueda.getText().trim().isEmpty() ? null : txtBusqueda.getText().trim().toLowerCase());
+					cargarTrabajadores(
+							txtBusqueda.getText().trim().isEmpty() ? null : txtBusqueda.getText().trim().toLowerCase());
 				}
 			}
 		});
@@ -209,11 +214,13 @@ public class VerTrabajadores extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				int selectedRow = table.getSelectedRow();
 				if (selectedRow >= 0) {
-					Trabajador trabajador = (Trabajador) trabajadoresFiltrados.get(table.convertRowIndexToModel(selectedRow));
+					Trabajador trabajador = (Trabajador) trabajadoresFiltrados
+							.get(table.convertRowIndexToModel(selectedRow));
 					AddTrabajadores frame = new AddTrabajadores(planificador, trabajador);
 					frame.setVisible(true);
 				} else {
-					JOptionPane.showMessageDialog(VerTrabajadores.this, "Seleccione un trabajador para editar.", "Aviso", JOptionPane.WARNING_MESSAGE);
+					JOptionPane.showMessageDialog(VerTrabajadores.this, "Seleccione un trabajador para editar.",
+							"Aviso", JOptionPane.WARNING_MESSAGE);
 				}
 			}
 		});
@@ -232,15 +239,15 @@ public class VerTrabajadores extends JFrame {
 		for (Trabajador t : trabajadores) {
 			trabajadoresFiltrados.add(t);
 			model.addRow(new Object[] {
-				t.getCi(),
-				t.getNombre(),
-				t.getApellidos(),
-				t.getSexo(),
-				t.getActivo() ? "Sí" : "No",
-				t.getFechaDeIncorporacion() != null ? t.getFechaDeIncorporacion().toString() : "",
-				t.getGuardiasPlanificadas(),
-				t.getCantidadGuardiasFestivo(),
-				t.getVoluntario() ? "Sí" : "No"
+					t.getCi(),
+					t.getNombre(),
+					t.getApellidos(),
+					t.getSexo(),
+					t.getActivo() ? "Sí" : "No",
+					t.getFechaDeIncorporacion() != null ? t.getFechaDeIncorporacion().toString() : "",
+					t.getGuardiasPlanificadas(),
+					t.getCantidadGuardiasFestivo(),
+					t.getVoluntario() ? "Sí" : "No"
 			});
 		}
 	}
@@ -250,5 +257,3 @@ public class VerTrabajadores extends JFrame {
 		cargarTrabajadores(txtBusqueda.getText().trim().isEmpty() ? null : txtBusqueda.getText().trim().toLowerCase());
 	}
 }
-
-

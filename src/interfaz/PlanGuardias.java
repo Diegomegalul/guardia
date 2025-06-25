@@ -260,6 +260,14 @@ public class PlanGuardias extends JFrame {
 		// --- Cargar guardias existentes al abrir la ventana ---
 		cargarGuardiasEnTabla();
 
+		// Seleccionar mes y año por defecto: mes siguiente al último mes planificado
+		java.time.LocalDate ultimoPlan = PlanificadorGuardias.getInstancia().getGuardiaFactory().getUltimoMesPlanificado();
+		if (ultimoPlan != null) {
+			java.time.LocalDate siguiente = ultimoPlan.plusMonths(1);
+			monthChooser.setMonth(siguiente.getMonthValue() - 1);
+			yearChooser.setYear(siguiente.getYear());
+		}
+
 		// Actualizar tabla al cambiar mes o año
 		monthChooser.addPropertyChangeListener("month", new java.beans.PropertyChangeListener() {
 			public void propertyChange(java.beans.PropertyChangeEvent evt) {
@@ -356,15 +364,11 @@ public class PlanGuardias extends JFrame {
 		int mes = monthChooser.getMonth() + 1;
 		int anio = yearChooser.getYear();
 		java.util.List<logica.Guardia> guardias = PlanificadorGuardias.getInstancia().getGuardiaFactory().getGuardias();
-		// Ordenar por fecha descendente y luego por ID ascendente
+		// Ordenar por ID ascendente (menor a mayor)
 		java.util.Collections.sort(guardias, new java.util.Comparator<logica.Guardia>() {
 			@Override
 			public int compare(logica.Guardia g1, logica.Guardia g2) {
-				int cmp = g2.getHorario().getDia().compareTo(g1.getHorario().getDia());
-				if (cmp == 0) {
-					return Integer.compare(g1.getId(), g2.getId());
-				}
-				return cmp;
+				return Integer.compare(g1.getId(), g2.getId());
 			}
 		});
 		for (int i = 0; i < guardias.size(); i++) {
