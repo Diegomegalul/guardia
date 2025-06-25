@@ -12,7 +12,7 @@ import logica.Horario;
 import logica.Calendario;
 
 public class GuardiaFactory {
-	//Atributos
+	// Atributos
 	private Horario horario;
 	private Calendario calendario;
 	private List<Guardia> guardias;
@@ -20,15 +20,15 @@ public class GuardiaFactory {
 	private List<Guardia> guardiasIncumplidas;
 	private int nextId = 1;
 
-	//Constructor
+	// Constructor
 	public GuardiaFactory() {
-		this.guardias = new ArrayList<>(); 
+		this.guardias = new ArrayList<>();
 		this.guardiasCumplidas = new ArrayList<>();
 		this.guardiasIncumplidas = new ArrayList<>();
 		this.calendario = Calendario.getInstancia(); // Usar singleton
 	}
 
-	//Setters y Getters
+	// Setters y Getters
 	public List<Guardia> getGuardiasIncumplidas() {
 		return guardiasIncumplidas;
 	}
@@ -58,9 +58,9 @@ public class GuardiaFactory {
 	}
 
 	public void setGuardias(List<Guardia> guardias) {
-		this.guardias = new ArrayList<>(guardias);  // Copia defensiva
+		this.guardias = new ArrayList<>(guardias); // Copia defensiva
 	}
-	//Metodos
+	// Metodos
 
 	// --- CRUD MEJORADO --- //
 
@@ -83,14 +83,14 @@ public class GuardiaFactory {
 
 		// Validaciones específicas por tipo
 		boolean valido = true;
-		switch(tipo) {
+		switch (tipo) {
 			case RECUPERACION:
 			case RECUPERACION_FESTIVO:
-				valido = (persona instanceof Estudiante) && ((Estudiante)persona).tieneGuardiasPendientes();
+				valido = (persona instanceof Estudiante) && ((Estudiante) persona).tieneGuardiasPendientes();
 				break;
 			case VOLUNTARIA:
 			case VOLUNTARIA_FESTIVO:
-				valido = (persona instanceof Trabajador) && ((Trabajador)persona).getVoluntario();
+				valido = (persona instanceof Trabajador) && ((Trabajador) persona).getVoluntario();
 				break;
 			case FESTIVO:
 				valido = persona.getCantidadGuardiasFestivo() < 3;
@@ -110,7 +110,8 @@ public class GuardiaFactory {
 		persona.setGuardiasAsignadas(persona.getGuardiasAsignadas() + 1);
 
 		// Si es festivo, aumentar contador
-		if (tipo == TipoGuardia.FESTIVO || tipo == TipoGuardia.RECUPERACION_FESTIVO || tipo == TipoGuardia.VOLUNTARIA_FESTIVO) {
+		if (tipo == TipoGuardia.FESTIVO || tipo == TipoGuardia.RECUPERACION_FESTIVO
+				|| tipo == TipoGuardia.VOLUNTARIA_FESTIVO) {
 			persona.setCantidadGuardiasFestivo(persona.getCantidadGuardiasFestivo() + 1);
 		} else {
 			// Si el día es festivo según el calendario, también cuenta como festivo
@@ -120,8 +121,9 @@ public class GuardiaFactory {
 		}
 
 		// Contador específico para estudiantes
-		if (persona instanceof Estudiante && (tipo == TipoGuardia.NORMAL || tipo == TipoGuardia.RECUPERACION || tipo == TipoGuardia.RECUPERACION_FESTIVO)) {
-			((Estudiante)persona).incrementarGuardiasAsignadas();
+		if (persona instanceof Estudiante && (tipo == TipoGuardia.NORMAL || tipo == TipoGuardia.RECUPERACION
+				|| tipo == TipoGuardia.RECUPERACION_FESTIVO)) {
+			((Estudiante) persona).incrementarGuardiasAsignadas();
 		}
 
 		return true;
@@ -152,7 +154,8 @@ public class GuardiaFactory {
 		return resultado;
 	}
 
-	// Marcar guardia como incumplida: la elimina de guardias y la pasa a incumplidas
+	// Marcar guardia como incumplida: la elimina de guardias y la pasa a
+	// incumplidas
 	public boolean registrarIncumplimientoGuardia(int idGuardia) {
 		Guardia g = buscarGuardiaPorId(idGuardia);
 		boolean resultado = false;
@@ -212,7 +215,7 @@ public class GuardiaFactory {
 
 				// Contador especifico para estudiantes
 				if (p instanceof Estudiante && g.getTipo() == TipoGuardia.NORMAL) {
-					((Estudiante)p).setGuardiasAsignadas(((Estudiante)p).getGuardiasAsignadas() - 1);
+					((Estudiante) p).setGuardiasAsignadas(((Estudiante) p).getGuardiasAsignadas() - 1);
 				}
 
 				it.remove();
@@ -223,11 +226,12 @@ public class GuardiaFactory {
 	}
 
 	/*
-	Planifica automáticamente las guardias para un mes y año dados.
-	La primera vez planifica dos meses completos. 
-	A partir de la segunda vez, revisa el primer mes planificado y asigna guardias de recuperación a quienes no cumplieron, 
-	incrementando guardiasIncumplidas.
-	*/
+	 * Planifica automáticamente las guardias para un mes y año dados.
+	 * La primera vez planifica dos meses completos.
+	 * A partir de la segunda vez, revisa el primer mes planificado y asigna
+	 * guardias de recuperación a quienes no cumplieron,
+	 * incrementando guardiasIncumplidas.
+	 */
 	// Método principal: planificar guardias para uno o dos meses
 	public List<Guardia> planificarGuardiasMes(Facultad facultad, int anio, int mes) {
 		ArrayList<Guardia> nuevasGuardias = new ArrayList<>();
@@ -258,7 +262,8 @@ public class GuardiaFactory {
 			if (esJA) {
 				planificarGuardiasJulioAgosto(trabajadores, nuevasGuardias, anioPlan, mesPlan);
 			} else {
-				planificarGuardiasRestoDelAnio(estudiantesM, estudiantesF, trabajadores, nuevasGuardias, anioPlan, mesPlan);
+				planificarGuardiasRestoDelAnio(estudiantesM, estudiantesF, trabajadores, nuevasGuardias, anioPlan,
+						mesPlan);
 			}
 		}
 
@@ -267,7 +272,8 @@ public class GuardiaFactory {
 	}
 
 	// Clasifica personas en listas de trabajadores y estudiantes por sexo
-	private void clasificarPersonas(List<Persona> personas, List<Trabajador> trabajadores, List<Estudiante> estudiantesM, List<Estudiante> estudiantesF) {
+	private void clasificarPersonas(List<Persona> personas, List<Trabajador> trabajadores,
+			List<Estudiante> estudiantesM, List<Estudiante> estudiantesF) {
 		for (Persona p : personas) {
 			if (p instanceof Trabajador && p.getActivo()) {
 				trabajadores.add((Trabajador) p);
@@ -282,7 +288,8 @@ public class GuardiaFactory {
 		}
 	}
 
-	// Revisa guardias incumplidas del mes N-2 (excepto si es septiembre, que revisa junio)
+	// Revisa guardias incumplidas del mes N-2 (excepto si es septiembre, que revisa
+	// junio)
 	private void revisarGuardiasIncumplidas(int mes, int anio) {
 		int mesARevisar;
 		int anioARevisar = anio;
@@ -300,8 +307,8 @@ public class GuardiaFactory {
 		List<Guardia> guardiasNoCumplidas = new ArrayList<>();
 		for (Guardia g : new ArrayList<>(guardias)) {
 			if (g.getHorario().getDia().getYear() == ymARevisar.getYear() &&
-				g.getHorario().getDia().getMonthValue() == ymARevisar.getMonthValue() &&
-				g.getTipo() == TipoGuardia.NORMAL) {
+					g.getHorario().getDia().getMonthValue() == ymARevisar.getMonthValue() &&
+					g.getTipo() == TipoGuardia.NORMAL) {
 				Persona p = g.getPersona();
 				boolean cumplida = false;
 				for (Guardia gc : guardiasCumplidas) {
@@ -322,7 +329,8 @@ public class GuardiaFactory {
 					if (!yaIncumplida) {
 						guardiasNoCumplidas.add(g);
 						guardiasIncumplidas.add(g);
-						// Siempre aumentar el contador de recuperación si incumple, incluso en julio/agosto
+						// Siempre aumentar el contador de recuperación si incumple, incluso en
+						// julio/agosto
 						est.setGuardiasRecuperacion(est.getGuardiasRecuperacion() + 1);
 						est.setGuardiasIncumplidas(est.getGuardiasIncumplidas() + 1);
 					}
@@ -333,7 +341,8 @@ public class GuardiaFactory {
 	}
 
 	// Planifica guardias para julio/agosto (solo voluntarios)
-	private void planificarGuardiasJulioAgosto(List<Trabajador> trabajadores, List<Guardia> nuevasGuardias, int anioPlan, int mesPlan) {
+	private void planificarGuardiasJulioAgosto(List<Trabajador> trabajadores, List<Guardia> nuevasGuardias,
+			int anioPlan, int mesPlan) {
 		java.util.Map<LocalDate, Integer> guardiasPorDia = new java.util.HashMap<LocalDate, Integer>();
 		for (Trabajador t : trabajadores) {
 			if (t.getVoluntario() && t.getFechaGuardiaVoluntaria() != null) {
@@ -374,7 +383,8 @@ public class GuardiaFactory {
 	}
 
 	// Planifica guardias para el resto del año
-	private void planificarGuardiasRestoDelAnio(List<Estudiante> estudiantesM, List<Estudiante> estudiantesF, List<Trabajador> trabajadores, List<Guardia> nuevasGuardias, int anioPlan, int mesPlan) {
+	private void planificarGuardiasRestoDelAnio(List<Estudiante> estudiantesM, List<Estudiante> estudiantesF,
+			List<Trabajador> trabajadores, List<Guardia> nuevasGuardias, int anioPlan, int mesPlan) {
 		java.time.YearMonth ym = java.time.YearMonth.of(anioPlan, mesPlan);
 		boolean finSemanaMujer = true;
 		for (int day = 1; day <= ym.lengthOfMonth(); day++) {
@@ -401,7 +411,8 @@ public class GuardiaFactory {
 					}
 				}
 			}
-			// Guardias de estudiantes mujeres: solo fines de semana, alternando con trabajadores
+			// Guardias de estudiantes mujeres: solo fines de semana, alternando con
+			// trabajadores
 			if (dow == 6 || dow == 7) {
 				if (finSemanaMujer && !estudiantesF.isEmpty()) {
 					Estudiante est = seleccionarEstudianteRecuperacionPrimero(estudiantesF);
@@ -421,13 +432,12 @@ public class GuardiaFactory {
 							est.setCantidadGuardiasFestivo(est.getCantidadGuardiasFestivo() + 1);
 						}
 					}
-				} 
-				else if (!finSemanaMujer && !trabajadores.isEmpty()) {
+				} else if (!finSemanaMujer && !trabajadores.isEmpty()) {
 					// Trabajadores: 9-14 y 14-19 (solo fuera de julio/agosto)
 					for (int turno = 0; turno < 2; turno++) {
 						Horario h = (turno == 0)
-							? new Horario(fecha, LocalTime.of(9, 0), LocalTime.of(14, 0))
-							: new Horario(fecha, LocalTime.of(14, 0), LocalTime.of(19, 0));
+								? new Horario(fecha, LocalTime.of(9, 0), LocalTime.of(14, 0))
+								: new Horario(fecha, LocalTime.of(14, 0), LocalTime.of(19, 0));
 						Trabajador t = seleccionarTrabajadorParaGuardia(trabajadores);
 						boolean existe = existeGuardia(t, h);
 						if (!existe && t != null && t.puedeHacerGuardia(h)) {
@@ -440,7 +450,8 @@ public class GuardiaFactory {
 						}
 					}
 				}
-				if (dow == 7) finSemanaMujer = !finSemanaMujer;
+				if (dow == 7)
+					finSemanaMujer = !finSemanaMujer;
 			}
 		}
 	}
@@ -449,9 +460,9 @@ public class GuardiaFactory {
 	private boolean existeGuardia(Persona persona, Horario horario) {
 		for (Guardia existente : guardias) {
 			if (existente.getPersona().equals(persona) &&
-				existente.getHorario().getDia().equals(horario.getDia()) &&
-				existente.getHorario().getHoraInicio().equals(horario.getHoraInicio()) &&
-				existente.getHorario().getHoraFin().equals(horario.getHoraFin())) {
+					existente.getHorario().getDia().equals(horario.getDia()) &&
+					existente.getHorario().getHoraInicio().equals(horario.getHoraInicio()) &&
+					existente.getHorario().getHoraFin().equals(horario.getHoraFin())) {
 				return true;
 			}
 		}
@@ -464,9 +475,9 @@ public class GuardiaFactory {
 			boolean existe = false;
 			for (Guardia existente : guardias) {
 				if (existente.getPersona().equals(nueva.getPersona()) &&
-					existente.getHorario().getDia().equals(nueva.getHorario().getDia()) &&
-					existente.getHorario().getHoraInicio().equals(nueva.getHorario().getHoraInicio()) &&
-					existente.getHorario().getHoraFin().equals(nueva.getHorario().getHoraFin())) {
+						existente.getHorario().getDia().equals(nueva.getHorario().getDia()) &&
+						existente.getHorario().getHoraInicio().equals(nueva.getHorario().getHoraInicio()) &&
+						existente.getHorario().getHoraFin().equals(nueva.getHorario().getHoraFin())) {
 					existe = true;
 					break;
 				}
@@ -479,7 +490,8 @@ public class GuardiaFactory {
 
 	/**
 	 * Planifica guardias de recuperación para estudiantes con guardias pendientes
-	 * que hayan pasado al menos dos meses desde la asignación de la guardia pendiente.
+	 * que hayan pasado al menos dos meses desde la asignación de la guardia
+	 * pendiente.
 	 * Se asigna la guardia de recuperación en el mes siguiente disponible.
 	 */
 	public void planificarGuardiasRecuperacion(int anio, int mes) {
@@ -516,19 +528,23 @@ public class GuardiaFactory {
 							for (int i = 0; i < pendientes; i++) {
 								// Buscar un día hábil en el mes para la guardia de recuperación
 								LocalDate dia = fechaPlanificada.plusDays(i);
-								if (dia.getMonthValue() != mes) break;
+								if (dia.getMonthValue() != mes)
+									break;
 								// Horario nocturno para hombres, diurno para mujeres
 								Horario horario;
 								if (est.getSexo() == utiles.Sexo.MASCULINO) {
-									horario = new Horario(dia, java.time.LocalTime.of(20, 0), java.time.LocalTime.of(8, 0));
+									horario = new Horario(dia, java.time.LocalTime.of(20, 0),
+											java.time.LocalTime.of(8, 0));
 								} else {
 									// Buscar fin de semana
 									while (dia.getDayOfWeek() != java.time.DayOfWeek.SATURDAY &&
 											dia.getDayOfWeek() != java.time.DayOfWeek.SUNDAY) {
 										dia = dia.plusDays(1);
-										if (dia.getMonthValue() != mes) break;
+										if (dia.getMonthValue() != mes)
+											break;
 									}
-									horario = new Horario(dia, java.time.LocalTime.of(8, 0), java.time.LocalTime.of(20, 0));
+									horario = new Horario(dia, java.time.LocalTime.of(8, 0),
+											java.time.LocalTime.of(20, 0));
 								}
 								// Solo si puede hacer guardia
 								if (est.puedeHacerGuardia(horario)) {
@@ -546,6 +562,7 @@ public class GuardiaFactory {
 		public List<Guardia> asignadas;
 		public List<Guardia> cumplidas;
 		public List<Guardia> incumplidas;
+
 		public GuardiasPorPersona(List<Guardia> asignadas, List<Guardia> cumplidas, List<Guardia> incumplidas) {
 			this.asignadas = asignadas;
 			this.cumplidas = cumplidas;
@@ -575,7 +592,8 @@ public class GuardiaFactory {
 		return new GuardiasPorPersona(asignadas, cumplidas, incumplidas);
 	}
 
-	// Selecciona primero un estudiante con guardias de recuperación, si no, el de menos guardias asignadas
+	// Selecciona primero un estudiante con guardias de recuperación, si no, el de
+	// menos guardias asignadas
 	private Estudiante seleccionarEstudianteRecuperacionPrimero(List<Estudiante> lista) {
 		Estudiante seleccionado = null;
 		int minAsignadas = Integer.MAX_VALUE;
@@ -586,15 +604,15 @@ public class GuardiaFactory {
 			if (e.getGuardiasRecuperacion() > 0) {
 				// Prioridad a los de recuperación
 				if (seleccionado == null ||
-					asignadas < minAsignadas ||
-					(asignadas == minAsignadas && cumplidas < minCumplidas)) {
+						asignadas < minAsignadas ||
+						(asignadas == minAsignadas && cumplidas < minCumplidas)) {
 					seleccionado = e;
 					minAsignadas = asignadas;
 					minCumplidas = cumplidas;
 				}
 			} else if (seleccionado == null || seleccionado.getGuardiasRecuperacion() == 0) {
 				if (asignadas < minAsignadas ||
-					(asignadas == minAsignadas && cumplidas < minCumplidas)) {
+						(asignadas == minAsignadas && cumplidas < minCumplidas)) {
 					seleccionado = e;
 					minAsignadas = asignadas;
 					minCumplidas = cumplidas;
@@ -604,7 +622,8 @@ public class GuardiaFactory {
 		return seleccionado;
 	}
 
-	// Selecciona el trabajador con menos guardias asignadas y menos guardias cumplidas
+	// Selecciona el trabajador con menos guardias asignadas y menos guardias
+	// cumplidas
 	private Trabajador seleccionarTrabajadorParaGuardia(List<Trabajador> lista) {
 		Trabajador seleccionado = null;
 		int minAsignadas = Integer.MAX_VALUE;
@@ -619,13 +638,59 @@ public class GuardiaFactory {
 				}
 			}
 			if (seleccionado == null ||
-				asignadas < minAsignadas ||
-				(asignadas == minAsignadas && cumplidas < minCumplidas)) {
+					asignadas < minAsignadas ||
+					(asignadas == minAsignadas && cumplidas < minCumplidas)) {
 				seleccionado = t;
 				minAsignadas = asignadas;
 				minCumplidas = cumplidas;
 			}
 		}
 		return seleccionado;
+	}
+
+	// Devuelve una lista de personas con guardias del mismo tipo y clase
+	// (Estudiante/Trabajador)
+	public List<Persona> obtenerPersonasMismoTipoYGuardia(Persona persona, utiles.TipoGuardia tipo) {
+		List<Persona> lista = new ArrayList<>();
+		for (Guardia g : guardias) {
+			if (g.getTipo() == tipo && g.getPersona() != null) {
+				if (persona instanceof Estudiante && g.getPersona() instanceof Estudiante) {
+					lista.add(g.getPersona());
+				} else if (persona instanceof Trabajador && g.getPersona() instanceof Trabajador) {
+					lista.add(g.getPersona());
+				}
+			}
+		}
+		return lista;
+	}
+
+	// Busca una guardia de una persona y tipo
+	public Guardia buscarGuardiaDePersona(Persona persona, utiles.TipoGuardia tipo) {
+		for (Guardia g : guardias) {
+			if (g.getPersona() != null && g.getPersona().getCi().equals(persona.getCi()) && g.getTipo() == tipo) {
+				return g;
+			}
+		}
+		return null;
+	}
+
+	// Busca una guardia de una persona y tipo (alias)
+	public Guardia buscarGuardiaPorPersonaYTipo(Persona persona, utiles.TipoGuardia tipo) {
+		return buscarGuardiaDePersona(persona, tipo);
+	}
+
+	// Verifica si existe una guardia para una persona en una fecha y horario,
+	// ignorando una guardia específica
+	public boolean existeGuardiaParaPersonaEnHorario(Persona persona, java.time.LocalDate fecha,
+			java.time.LocalTime inicio, java.time.LocalTime fin, Guardia ignorar) {
+		for (Guardia g : guardias) {
+			if (g != ignorar && g.getPersona() != null && g.getPersona().getCi().equals(persona.getCi()) &&
+					g.getHorario().getDia().equals(fecha) &&
+					g.getHorario().getHoraInicio().equals(inicio) &&
+					g.getHorario().getHoraFin().equals(fin)) {
+				return true;
+			}
+		}
+		return false;
 	}
 }

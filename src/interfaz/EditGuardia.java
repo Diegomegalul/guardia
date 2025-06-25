@@ -142,15 +142,11 @@ public class EditGuardia extends JFrame {
 					return;
 				}
 				// Validar que no exista otra guardia para esa persona en ese día y horario
-				List<Guardia> guardias = logica.PlanificadorGuardias.getInstancia().getGuardiaFactory().getGuardias();
-				for (Guardia g : guardias) {
-					if (g != guardia && g.getPersona().getCi().equals(persona.getCi()) &&
-						g.getHorario().getDia().equals(fecha) &&
-						g.getHorario().getHoraInicio().equals(inicio) &&
-						g.getHorario().getHoraFin().equals(fin)) {
-						JOptionPane.showMessageDialog(EditGuardia.this, "Ya existe una guardia para esa persona en ese horario.", "Error", JOptionPane.ERROR_MESSAGE);
-						return;
-					}
+				boolean existeSolapamiento = logica.PlanificadorGuardias.getInstancia().getGuardiaFactory()
+					.existeGuardiaParaPersonaEnHorario(persona, fecha, inicio, fin, guardia);
+				if (existeSolapamiento) {
+					JOptionPane.showMessageDialog(EditGuardia.this, "Ya existe una guardia para esa persona en ese horario.", "Error", JOptionPane.ERROR_MESSAGE);
+					return;
 				}
 				// Guardar cambios
 				guardia.setTipo(tipo);

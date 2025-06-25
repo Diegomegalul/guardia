@@ -7,25 +7,22 @@ import java.awt.Font;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.BorderFactory;
+import javax.swing.DefaultListCellRenderer;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
-import javax.swing.DefaultListCellRenderer;
-import javax.swing.JList;
 
 import logica.Guardia;
 import logica.Persona;
-import logica.Estudiante;
-import logica.Trabajador;
 import utiles.TipoGuardia;
 
 public class IntercambioPersona extends JFrame {
@@ -70,7 +67,8 @@ public class IntercambioPersona extends JFrame {
 		lblSeleccion.setHorizontalAlignment(SwingConstants.CENTER);
 		panelCentral.add(lblSeleccion, BorderLayout.NORTH);
 
-		personasIntercambio = obtenerPersonasMismoTipoYGuardia(personaActual, tipoGuardia);
+		personasIntercambio = logica.PlanificadorGuardias.getInstancia().getGuardiaFactory()
+				.obtenerPersonasMismoTipoYGuardia(personaActual, tipoGuardia);
 		comboPersonas = new JComboBox<>();
 		for (Persona p : personasIntercambio) {
 			if (!p.getCi().equals(personaActual.getCi())) {
@@ -113,7 +111,8 @@ public class IntercambioPersona extends JFrame {
 							"Error", JOptionPane.ERROR_MESSAGE);
 					return;
 				}
-				Guardia guardiaSeleccionada = buscarGuardiaDePersona(seleccionada, tipoGuardia);
+				Guardia guardiaSeleccionada = logica.PlanificadorGuardias.getInstancia().getGuardiaFactory()
+						.buscarGuardiaDePersona(seleccionada, tipoGuardia);
 				if (guardiaSeleccionada == null) {
 					JOptionPane.showMessageDialog(IntercambioPersona.this,
 							"No se encontró guardia para la persona seleccionada.", "Error", JOptionPane.ERROR_MESSAGE);
@@ -137,30 +136,5 @@ public class IntercambioPersona extends JFrame {
 			}
 		});
 		contentPane.add(btnIntercambiar, BorderLayout.SOUTH);
-	}
-
-	private List<Persona> obtenerPersonasMismoTipoYGuardia(Persona persona, TipoGuardia tipo) {
-		List<Persona> lista = new ArrayList<>();
-		List<Guardia> guardias = logica.PlanificadorGuardias.getInstancia().getGuardiaFactory().getGuardias();
-		for (Guardia g : guardias) {
-			if (g.getTipo() == tipo && g.getPersona() != null) {
-				if (persona instanceof Estudiante && g.getPersona() instanceof Estudiante) {
-					lista.add(g.getPersona());
-				} else if (persona instanceof Trabajador && g.getPersona() instanceof Trabajador) {
-					lista.add(g.getPersona());
-				}
-			}
-		}
-		return lista;
-	}
-
-	private Guardia buscarGuardiaDePersona(Persona persona, TipoGuardia tipo) {
-		List<Guardia> guardias = logica.PlanificadorGuardias.getInstancia().getGuardiaFactory().getGuardias();
-		for (Guardia g : guardias) {
-			if (g.getPersona() != null && g.getPersona().getCi().equals(persona.getCi()) && g.getTipo() == tipo) {
-				return g;
-			}
-		}
-		return null;
 	}
 }
