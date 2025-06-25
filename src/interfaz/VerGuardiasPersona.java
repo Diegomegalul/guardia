@@ -4,6 +4,7 @@ package interfaz;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.util.List;
 
@@ -27,6 +28,7 @@ public class VerGuardiasPersona extends JFrame {
 	private JPanel contentPane;
 
 	public VerGuardiasPersona(Persona persona, List<Guardia> guardias) {
+		setIconImage(Toolkit.getDefaultToolkit().getImage(Login.class.getResource("/imagenes/logo.jpg")));
 		setTitle("Guardias de " + (persona != null ? persona.getNombre() + " " + persona.getApellidos() : ""));
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 600, 400);

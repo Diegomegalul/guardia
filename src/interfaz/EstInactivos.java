@@ -2,9 +2,11 @@ package interfaz;
 
 import java.awt.*;
 import java.util.List;
+
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
+
 import logica.PlanificadorGuardias;
 import logica.PlanificadorGuardias.ReporteInactivos;
 import logica.PlanificadorGuardias.GrupoInactivos;
@@ -29,6 +31,7 @@ public class EstInactivos extends JFrame {
 	}
 
 	public EstInactivos() {
+		setIconImage(Toolkit.getDefaultToolkit().getImage(Login.class.getResource("/imagenes/logo.jpg")));
 		setTitle("Estudiantes Inactivos por Grupo");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 700, 500);

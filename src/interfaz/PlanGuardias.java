@@ -392,6 +392,14 @@ public class PlanGuardias extends JFrame {
 		}
 		// Permitir ordenar la tabla por columnas
 		TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(tablaModel);
+		sorter.setComparator(0, new java.util.Comparator<Object>() {
+			@Override
+			public int compare(Object o1, Object o2) {
+				Integer i1 = Integer.valueOf(o1.toString());
+				Integer i2 = Integer.valueOf(o2.toString());
+				return i1.compareTo(i2);
+			}
+		});
 		tablaGuardias.setRowSorter(sorter);
 	}
 

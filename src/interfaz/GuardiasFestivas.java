@@ -2,9 +2,11 @@ package interfaz;
 
 import java.awt.*;
 import java.util.List;
+
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
+
 import logica.PlanificadorGuardias;
 import logica.Guardia;
 
@@ -27,6 +29,7 @@ public class GuardiasFestivas extends JFrame {
 	}
 
 	public GuardiasFestivas() {
+		setIconImage(Toolkit.getDefaultToolkit().getImage(Login.class.getResource("/imagenes/logo.jpg")));
 		setTitle("Guardias en Días Festivos");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 800, 500);

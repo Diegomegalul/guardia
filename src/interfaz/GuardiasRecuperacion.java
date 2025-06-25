@@ -3,14 +3,17 @@ package interfaz;
 
 import java.awt.*;
 import java.util.List;
+
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
+
 import logica.PlanificadorGuardias;
 import logica.PlanificadorGuardias.GrupoRecuperacionOrdenado;
 import logica.Estudiante;
 import logica.Guardia;
 import utiles.TipoGuardia;
+
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
@@ -33,6 +36,7 @@ public class GuardiasRecuperacion extends JFrame {
 	}
 
 	public GuardiasRecuperacion() {
+		setIconImage(Toolkit.getDefaultToolkit().getImage(Login.class.getResource("/imagenes/logo.jpg")));
 		setTitle("Guardias de Recuperación por Grupo");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 900, 600);

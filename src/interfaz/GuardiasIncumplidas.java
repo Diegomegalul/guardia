@@ -4,9 +4,11 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.List;
+
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
+
 import logica.Guardia;
 import logica.Persona;
 import logica.PlanificadorGuardias;
@@ -30,6 +32,7 @@ public class GuardiasIncumplidas extends JFrame {
 	}
 
 	public GuardiasIncumplidas() {
+		setIconImage(Toolkit.getDefaultToolkit().getImage(Login.class.getResource("/imagenes/logo.jpg")));
 		setTitle("Guardias Incumplidas");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 800, 500);

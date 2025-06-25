@@ -27,6 +27,7 @@ public class EditGuardia extends JFrame {
 	private JComboBox<String> comboTurno;
 
 	public EditGuardia(final Guardia guardia) {
+		setIconImage(Toolkit.getDefaultToolkit().getImage(Login.class.getResource("/imagenes/logo.jpg")));
 		setTitle("Editar Guardia");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 500, 350);
