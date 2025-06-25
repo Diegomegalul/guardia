@@ -145,14 +145,10 @@ public class GuardiaFactory {
 		boolean resultado = false;
 		if (g != null) {
 			Persona p = g.getPersona();
-			if (p instanceof Estudiante) {
-				Estudiante est = (Estudiante) p;
-				est.registrarGuardiaCumplida();
-				// Si es guardia de recuperación, reducir pendientes
-				if (g.getTipo() == TipoGuardia.RECUPERACION) {
-					est.setGuardiasPlanificadas(est.getGuardiasPlanificadas() - 1);
-				}
-			}
+			// Disminuir guardias planificadas
+			p.setGuardiasPlanificadas(p.getGuardiasPlanificadas() - 1);
+			// Aumentar guardias cumplidas
+			p.setGuardiasCumplidas(p.getGuardiasCumplidas() + 1);
 			// Marcar la guardia como cumplida y pasarla al grupo de guardias cumplidas
 			g.setCumplida(true);
 			if (!guardiasCumplidas.contains(g)) {
@@ -170,10 +166,18 @@ public class GuardiaFactory {
 		Guardia g = buscarGuardiaPorId(idGuardia);
 		boolean resultado = false;
 		if (g != null) {
+			Persona p = g.getPersona();
+			// Siempre disminuir guardias planificadas
+			p.setGuardiasPlanificadas(p.getGuardiasPlanificadas() - 1);
+			if (p instanceof Estudiante) {
+				Estudiante est = (Estudiante) p;
+				est.setGuardiasIncumplidas(est.getGuardiasIncumplidas() + 1);
+				est.setGuardiasRecuperacion(est.getGuardiasRecuperacion() + 1);
+			}
 			if (!guardiasIncumplidas.contains(g)) {
 				guardiasIncumplidas.add(g);
 			}
-			guardias.remove(g); // Eliminar de la lista de guardias planificadas
+			guardias.remove(g);
 			resultado = true;
 		}
 		return resultado;
@@ -383,8 +387,11 @@ public class GuardiaFactory {
 	private void revisarGuardiasIncumplidas(int mes, int anio) {
 		int mesARevisar;
 		int anioARevisar = anio;
-		if (mes == 9) {
+		if (mes == 10) {
 			mesARevisar = 6; // Junio
+		}
+		if (mes == 9) {
+			mesARevisar = 5; // Mayo
 		} else {
 			mesARevisar = mes - 2;
 			while (mesARevisar < 1) {
@@ -394,12 +401,10 @@ public class GuardiaFactory {
 		}
 		java.time.YearMonth ymARevisar = java.time.YearMonth.of(anioARevisar, mesARevisar);
 
-		List<Guardia> guardiasNoCumplidas = new ArrayList<>();
 		for (Guardia g : new ArrayList<>(guardias)) {
 			if (g.getHorario().getDia().getYear() == ymARevisar.getYear() &&
 					g.getHorario().getDia().getMonthValue() == ymARevisar.getMonthValue() &&
 					g.getTipo() == TipoGuardia.NORMAL) {
-				Persona p = g.getPersona();
 				boolean cumplida = false;
 				for (Guardia gc : guardiasCumplidas) {
 					if (gc.getId() == g.getId()) {
@@ -407,27 +412,18 @@ public class GuardiaFactory {
 						break;
 					}
 				}
-				if (!cumplida && p instanceof Estudiante) {
-					Estudiante est = (Estudiante) p;
-					boolean yaIncumplida = false;
-					for (Guardia gi : guardiasIncumplidas) {
-						if (gi.getId() == g.getId()) {
-							yaIncumplida = true;
-							break;
-						}
+				boolean yaIncumplida = false;
+				for (Guardia gi : guardiasIncumplidas) {
+					if (gi.getId() == g.getId()) {
+						yaIncumplida = true;
+						break;
 					}
-					if (!yaIncumplida) {
-						guardiasNoCumplidas.add(g);
-						guardiasIncumplidas.add(g);
-						// Siempre aumentar el contador de recuperación si incumple, incluso en
-						// julio/agosto
-						est.setGuardiasRecuperacion(est.getGuardiasRecuperacion() + 1);
-						est.setGuardiasIncumplidas(est.getGuardiasIncumplidas() + 1);
-					}
+				}
+				if (!cumplida && !yaIncumplida) {
+					registrarIncumplimientoGuardia(g.getId());
 				}
 			}
 		}
-		guardias.removeAll(guardiasNoCumplidas);
 	}
 
 	// Planifica guardias para julio/agosto (solo voluntarios)
