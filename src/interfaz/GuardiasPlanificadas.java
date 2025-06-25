@@ -58,7 +58,8 @@ public class GuardiasPlanificadas extends JFrame {
 		panelSuperior.add(lblMes);
 
 		comboMes = new JComboBox<String>();
-		String[] meses = {"Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"};
+		String[] meses = { "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre",
+				"Octubre", "Noviembre", "Diciembre" };
 		for (int i = 0; i < meses.length; i++) {
 			comboMes.addItem(meses[i]);
 		}
@@ -85,14 +86,17 @@ public class GuardiasPlanificadas extends JFrame {
 
 		contentPane.add(panelSuperior, BorderLayout.NORTH);
 
-		String[] columnas = {"ID", "Tipo", "Persona", "CI", "Fecha", "Hora Inicio", "Hora Fin", "Cumplida"};
+		String[] columnas = { "ID", "Tipo", "Persona", "CI", "Fecha", "Hora Inicio", "Hora Fin", "Cumplida" };
 		tablaModel = new DefaultTableModel(columnas, 0) {
 			private static final long serialVersionUID = 1L;
+
 			public boolean isCellEditable(int row, int col) {
 				return col == 7;
 			}
+
 			public Class<?> getColumnClass(int columnIndex) {
-				if (columnIndex == 7) return Boolean.class;
+				if (columnIndex == 7)
+					return Boolean.class;
 				return String.class;
 			}
 		};
@@ -137,6 +141,15 @@ public class GuardiasPlanificadas extends JFrame {
 				cargarGuardiasEnTabla();
 			}
 		});
+
+		// Seleccionar mes y año por defecto: mes n-1 del último mes planificado
+		java.time.LocalDate ultimoPlan = PlanificadorGuardias.getInstancia().getGuardiaFactory()
+				.getUltimoMesPlanificado();
+		if (ultimoPlan != null) {
+			java.time.LocalDate mesAnterior = ultimoPlan.minusMonths(1);
+			comboMes.setSelectedIndex(mesAnterior.getMonthValue() - 1);
+			comboAnio.setSelectedItem(String.valueOf(mesAnterior.getYear()));
+		}
 	}
 
 	private void cargarGuardiasEnTabla() {

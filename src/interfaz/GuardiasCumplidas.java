@@ -56,7 +56,8 @@ public class GuardiasCumplidas extends JFrame {
 		panelSuperior.add(lblMes);
 
 		comboMes = new JComboBox<String>();
-		String[] meses = {"Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"};
+		String[] meses = { "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre",
+				"Octubre", "Noviembre", "Diciembre" };
 		for (int i = 0; i < meses.length; i++) {
 			comboMes.addItem(meses[i]);
 		}
@@ -83,12 +84,14 @@ public class GuardiasCumplidas extends JFrame {
 
 		contentPane.add(panelSuperior, BorderLayout.NORTH);
 
-		String[] columnas = {"ID", "Tipo", "Persona", "CI", "Fecha", "Hora Inicio", "Hora Fin"};
+		String[] columnas = { "ID", "Tipo", "Persona", "CI", "Fecha", "Hora Inicio", "Hora Fin" };
 		tablaModel = new DefaultTableModel(columnas, 0) {
 			private static final long serialVersionUID = 1L;
+
 			public boolean isCellEditable(int row, int col) {
 				return false;
 			}
+
 			public Class<?> getColumnClass(int columnIndex) {
 				return String.class;
 			}
@@ -115,6 +118,15 @@ public class GuardiasCumplidas extends JFrame {
 				cargarGuardiasEnTabla();
 			}
 		});
+
+		// Seleccionar mes y año por defecto: mes n-2 del último mes planificado
+		java.time.LocalDate ultimoPlan = PlanificadorGuardias.getInstancia().getGuardiaFactory()
+				.getUltimoMesPlanificado();
+		if (ultimoPlan != null) {
+			java.time.LocalDate mesDosAntes = ultimoPlan.minusMonths(2);
+			comboMes.setSelectedIndex(mesDosAntes.getMonthValue() - 1);
+			comboAnio.setSelectedItem(String.valueOf(mesDosAntes.getYear()));
+		}
 	}
 
 	private void cargarGuardiasEnTabla() {
@@ -127,13 +139,13 @@ public class GuardiasCumplidas extends JFrame {
 			LocalDate fecha = g.getHorario().getDia();
 			if (fecha.getMonthValue() == mes && fecha.getYear() == anio) {
 				tablaModel.addRow(new Object[] {
-					g.getId(),
-					g.getTipo(),
-					g.getPersona().getNombre() + " " + g.getPersona().getApellidos(),
-					g.getPersona().getCi(),
-					g.getHorario().getDia(),
-					g.getHorario().getHoraInicio(),
-					g.getHorario().getHoraFin()
+						g.getId(),
+						g.getTipo(),
+						g.getPersona().getNombre() + " " + g.getPersona().getApellidos(),
+						g.getPersona().getCi(),
+						g.getHorario().getDia(),
+						g.getHorario().getHoraInicio(),
+						g.getHorario().getHoraFin()
 				});
 			}
 		}
