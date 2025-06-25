@@ -22,7 +22,7 @@ public class PlanificadorGuardias {
 		this.facultad = new Facultad("Informatica");
 		this.calendario = Calendario.getInstancia(); // Usar singleton
 		this.guardiaFactory = new GuardiaFactory();
-		// Enlazar el calendario singleton al guardiaFactory
+		// Enlazar el calendario singleton al guardiaFactory porque no queria pinchar
 		this.guardiaFactory.setCalendario(this.calendario);
 	}
 
@@ -40,7 +40,7 @@ public class PlanificadorGuardias {
 	}
 
 	// Metodos
-	// M�todo para obtener la instancia Singleton (OJO)
+	// Metodo para obtener la instancia Singleton (OJO)
 	public static synchronized PlanificadorGuardias getInstancia() {
 		if (instancia == null) {
 			instancia = new PlanificadorGuardias();
@@ -51,7 +51,7 @@ public class PlanificadorGuardias {
 	/**
 	 * Reporte de grupos con más guardias de recuperación.
 	 * 
-	 * @return Lista ordenada de grupos y personas con guardias de recuperación.
+	 * return Lista ordenada de grupos y personas con guardias de recuperación.
 	 */
 	public List<GrupoRecuperacionReporte> reporteGuardiasRecuperacionPorGrupo() {
 		Map<Integer, Map<Persona, Integer>> grupoPersonasRec = new HashMap<Integer, Map<Persona, Integer>>();
@@ -78,7 +78,7 @@ public class PlanificadorGuardias {
 			int grupo = entry.getKey();
 			Map<Persona, Integer> personas = entry.getValue();
 
-			// Ordenar personas por cantidad de guardias de recuperación (desc)
+			// Ordenar personas por cantidad de guardias de recuperación 
 			List<PersonaRecuperacion> personasOrdenadas = new ArrayList<PersonaRecuperacion>();
 			for (Map.Entry<Persona, Integer> pe : personas.entrySet()) {
 				personasOrdenadas.add(new PersonaRecuperacion(pe.getKey(), pe.getValue()));
@@ -88,9 +88,6 @@ public class PlanificadorGuardias {
 					return Integer.compare(b.cantidad, a.cantidad);
 				}
 			});
-
-			// int totalGrupo =
-			// personas.values().stream().mapToInt(Integer::intValue).sum();
 			int totalGrupo = 0;
 			for (Integer val : personas.values()) {
 				totalGrupo += val;
@@ -98,7 +95,6 @@ public class PlanificadorGuardias {
 			reporte.add(new GrupoRecuperacionReporte(grupo, totalGrupo, personasOrdenadas));
 		}
 
-		// Ordenar grupos por total de guardias de recuperación (desc)
 		Collections.sort(reporte, new Comparator<GrupoRecuperacionReporte>() {
 			public int compare(GrupoRecuperacionReporte a, GrupoRecuperacionReporte b) {
 				return Integer.compare(b.totalGuardias, a.totalGuardias);
@@ -131,7 +127,7 @@ public class PlanificadorGuardias {
 		List<GrupoRecuperacionOrdenado> resultado = new ArrayList<GrupoRecuperacionOrdenado>();
 		for (Map.Entry<Integer, List<Estudiante>> entry : mapa.entrySet()) {
 			List<Estudiante> estudiantes = entry.getValue();
-			// Ordenar estudiantes dentro del grupo por guardias incumplidas (desc)
+			// Ordenar estudiantes dentro del grupo por guardias incumplidas 
 			Collections.sort(estudiantes, new Comparator<Estudiante>() {
 				public int compare(Estudiante a, Estudiante b) {
 					return Integer.compare(b.getGuardiasIncumplidas(), a.getGuardiasIncumplidas());
@@ -143,7 +139,7 @@ public class PlanificadorGuardias {
 			}
 			resultado.add(new GrupoRecuperacionOrdenado(entry.getKey(), suma, estudiantes));
 		}
-		// Ordenar lista de grupos por suma de guardias de recuperación (desc)
+		// Ordenar lista de grupos por suma de guardias de recuperación 
 		Collections.sort(resultado, new Comparator<GrupoRecuperacionOrdenado>() {
 			public int compare(GrupoRecuperacionOrdenado a, GrupoRecuperacionOrdenado b) {
 				return Integer.compare(b.totalRecuperacion, a.totalRecuperacion);
@@ -366,15 +362,30 @@ public class PlanificadorGuardias {
 	// Listado de gurdias en dias festivos
 	public List<Guardia> listaGuardiasEnDiasFestivos() {
 		List<Guardia> resultado = new ArrayList<>();
-
+		// Guardias planificadas
 		for (Guardia guardia : guardiaFactory.getGuardias()) {
-			if (guardia.getTipo() == TipoGuardia.FESTIVO) {
-				if (calendario.existeDiaFestivo(guardia.getHorario().getDia())) {
-					resultado.add(guardia);
-				}
+			utiles.TipoGuardia tipo = guardia.getTipo();
+			if ((tipo == utiles.TipoGuardia.FESTIVO || tipo == utiles.TipoGuardia.VOLUNTARIA_FESTIVO || tipo == utiles.TipoGuardia.RECUPERACION_FESTIVO)
+				&& calendario.existeDiaFestivo(guardia.getHorario().getDia())) {
+				resultado.add(guardia);
 			}
 		}
-
+		// Guardias cumplidas
+		for (Guardia guardia : guardiaFactory.getGuardiasCumplidas()) {
+			utiles.TipoGuardia tipo = guardia.getTipo();
+			if ((tipo == utiles.TipoGuardia.FESTIVO || tipo == utiles.TipoGuardia.VOLUNTARIA_FESTIVO || tipo == utiles.TipoGuardia.RECUPERACION_FESTIVO)
+				&& calendario.existeDiaFestivo(guardia.getHorario().getDia())) {
+				resultado.add(guardia);
+			}
+		}
+		// Guardias incumplidas
+		for (Guardia guardia : guardiaFactory.getGuardiasIncumplidas()) {
+			utiles.TipoGuardia tipo = guardia.getTipo();
+			if ((tipo == utiles.TipoGuardia.FESTIVO || tipo == utiles.TipoGuardia.VOLUNTARIA_FESTIVO || tipo == utiles.TipoGuardia.RECUPERACION_FESTIVO)
+				&& calendario.existeDiaFestivo(guardia.getHorario().getDia())) {
+				resultado.add(guardia);
+			}
+		}
 		return resultado;
 	}
 
@@ -499,8 +510,5 @@ public class PlanificadorGuardias {
 		}
 		return resultado;
 	}
-	// Hay varios métodos con break en bucles for, pero todos son para salir del
-	// bucle (no de switch), lo cual es válido y común.
-	// No hay métodos con dos returns en caminos alternativos (solo returns
-	// tempranos para validación o al final del método).
+
 }

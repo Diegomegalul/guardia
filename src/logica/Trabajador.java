@@ -50,7 +50,7 @@ public class Trabajador extends Persona {
 
 	// Metodos
 	@Override
-	public boolean puedeHacerGuardia(Horario horario) {
+	public boolean puedeHacerGuardia(Horario horario) { //siento que se me desprende un pedazo del cerebro
 		boolean puede = false;
 		if (getActivo() && horario != null) {
 			LocalDate fecha = horario.getDia();
@@ -76,6 +76,5 @@ public class Trabajador extends Persona {
 		}
 		return puede;
 	}
-	// No hay métodos con dos returns en caminos alternativos ni uso de break fuera
-	// de switch.
+	
 }

@@ -21,16 +21,22 @@ public class GuardiasRecuperacion extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
+	private static GuardiasRecuperacion instancia = null;
+
+	public static void mostrarVentana() {
+		if (instancia == null || !instancia.isDisplayable()) {
+			instancia = new GuardiasRecuperacion();
+			instancia.setVisible(true);
+		} else {
+			instancia.toFront();
+			instancia.setState(JFrame.NORMAL);
+		}
+	}
 
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
-				try {
-					GuardiasRecuperacion frame = new GuardiasRecuperacion();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
+				mostrarVentana();
 			}
 		});
 	}
@@ -64,7 +70,8 @@ public class GuardiasRecuperacion extends JFrame {
 		// Obtener todas las guardias de recuperación del sistema
 		List<Guardia> guardiasRecuperacion = planificador.getGuardiaFactory().getGuardias();
 		final java.util.List<Guardia> guardiasRecuperacionAsignadas = new java.util.ArrayList<>();
-		final java.util.List<Guardia> guardiasRecuperacionCumplidas = planificador.getGuardiaFactory().getGuardiasCumplidas();
+		final java.util.List<Guardia> guardiasRecuperacionCumplidas = planificador.getGuardiaFactory()
+				.getGuardiasCumplidas();
 
 		for (Guardia g : guardiasRecuperacion) {
 			if (g.getTipo() == TipoGuardia.RECUPERACION) {
@@ -76,7 +83,8 @@ public class GuardiasRecuperacion extends JFrame {
 		for (int i = 0; i < grupos.size(); i++) {
 			GrupoRecuperacionOrdenado grupo = grupos.get(i);
 
-			// Ordenar estudiantes por la suma de guardias de recuperación asignadas y cumplidas (desc)
+			// Ordenar estudiantes por la suma de guardias de recuperación asignadas y
+			// cumplidas (desc)
 			List<Estudiante> estudiantesOrdenados = new java.util.ArrayList<Estudiante>(grupo.estudiantes);
 			java.util.Collections.sort(estudiantesOrdenados, new java.util.Comparator<Estudiante>() {
 				public int compare(Estudiante a, Estudiante b) {
@@ -100,7 +108,8 @@ public class GuardiasRecuperacion extends JFrame {
 					break;
 				}
 			}
-			if (!grupoTieneRecuperacion) continue;
+			if (!grupoTieneRecuperacion)
+				continue;
 			hayGrupos = true;
 
 			JLabel lblGrupo = new JLabel("Grupo " + grupo.grupo + " (Total: " + grupo.totalRecuperacion + ")");
@@ -110,21 +119,24 @@ public class GuardiasRecuperacion extends JFrame {
 			lblGrupo.setBorder(new EmptyBorder(10, 0, 5, 0));
 			contentPane.add(lblGrupo);
 
-			String[] columnas = {"CI", "Nombre", "Apellidos", "Recuperación Asignadas", "Recuperación Cumplidas"};
+			String[] columnas = { "CI", "Nombre", "Apellidos", "Recuperación Asignadas", "Recuperación Cumplidas" };
 			DefaultTableModel model = new DefaultTableModel(columnas, 0) {
 				private static final long serialVersionUID = 1L;
-				public boolean isCellEditable(int row, int col) { return false; }
+
+				public boolean isCellEditable(int row, int col) {
+					return false;
+				}
 			};
 			for (Estudiante e : estudiantesOrdenados) {
 				int asignadas = contarGuardiasRecuperacionAsignadas(guardiasRecuperacionAsignadas, e);
 				int cumplidas = contarGuardiasRecuperacionCumplidas(guardiasRecuperacionCumplidas, e);
 				if (asignadas > 0 || cumplidas > 0) {
 					model.addRow(new Object[] {
-						e.getCi(),
-						e.getNombre(),
-						e.getApellidos(),
-						asignadas,
-						cumplidas
+							e.getCi(),
+							e.getNombre(),
+							e.getApellidos(),
+							asignadas,
+							cumplidas
 					});
 				}
 			}
@@ -184,8 +196,8 @@ public class GuardiasRecuperacion extends JFrame {
 		int count = 0;
 		for (Guardia g : guardias) {
 			if (g.getPersona() instanceof Estudiante &&
-				g.getPersona().equals(estudiante) &&
-				g.getTipo() == TipoGuardia.RECUPERACION) {
+					g.getPersona().equals(estudiante) &&
+					g.getTipo() == TipoGuardia.RECUPERACION) {
 				count++;
 			}
 		}
@@ -196,8 +208,8 @@ public class GuardiasRecuperacion extends JFrame {
 		int count = 0;
 		for (Guardia g : guardiasCumplidas) {
 			if (g.getPersona() instanceof Estudiante &&
-				g.getPersona().equals(estudiante) &&
-				g.getTipo() == TipoGuardia.RECUPERACION) {
+					g.getPersona().equals(estudiante) &&
+					g.getTipo() == TipoGuardia.RECUPERACION) {
 				count++;
 			}
 		}

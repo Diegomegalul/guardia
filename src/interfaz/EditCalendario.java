@@ -31,6 +31,18 @@ public class EditCalendario extends JFrame {
 	private DefaultListModel<String> modeloLista;
 	private JList<String> listaFestivos;
 
+	private static EditCalendario instancia = null;
+
+	public static void mostrarVentana(PlanificadorGuardias planificador) {
+		if (instancia == null || !instancia.isDisplayable()) {
+			instancia = new EditCalendario(planificador);
+			instancia.setVisible(true);
+		} else {
+			instancia.toFront();
+			instancia.setState(JFrame.NORMAL);
+		}
+	}
+
 	public EditCalendario(final PlanificadorGuardias planificador) {
 		setIconImage(Toolkit.getDefaultToolkit().getImage(Login.class.getResource("/imagenes/logo.jpg")));
 		this.planificador = planificador;
@@ -61,18 +73,18 @@ public class EditCalendario extends JFrame {
 				FormFactory.RELATED_GAP_COLSPEC,
 				ColumnSpec.decode("center:200px:grow"),
 				FormFactory.RELATED_GAP_COLSPEC,
-				ColumnSpec.decode("center:220px:grow"),},
-			new RowSpec[] {
-				FormFactory.RELATED_GAP_ROWSPEC,
-				RowSpec.decode("top:20dlu:grow"),
-				FormFactory.RELATED_GAP_ROWSPEC,
-				RowSpec.decode("20dlu:grow"),
-				FormFactory.RELATED_GAP_ROWSPEC,
-				RowSpec.decode("20dlu:grow"),
-				FormFactory.RELATED_GAP_ROWSPEC,
-				RowSpec.decode("20dlu:grow"),
-				FormFactory.RELATED_GAP_ROWSPEC,
-				RowSpec.decode("20dlu:grow"),}));
+				ColumnSpec.decode("center:220px:grow"), },
+				new RowSpec[] {
+						FormFactory.RELATED_GAP_ROWSPEC,
+						RowSpec.decode("top:20dlu:grow"),
+						FormFactory.RELATED_GAP_ROWSPEC,
+						RowSpec.decode("20dlu:grow"),
+						FormFactory.RELATED_GAP_ROWSPEC,
+						RowSpec.decode("20dlu:grow"),
+						FormFactory.RELATED_GAP_ROWSPEC,
+						RowSpec.decode("20dlu:grow"),
+						FormFactory.RELATED_GAP_ROWSPEC,
+						RowSpec.decode("20dlu:grow"), }));
 
 		// Fecha
 		dateChooser = new JDateChooser();
@@ -135,7 +147,8 @@ public class EditCalendario extends JFrame {
 				java.util.Date utilDate = dateChooser.getDate();
 				String descripcion = txtDescripcion.getText().trim();
 				if (utilDate == null || descripcion.isEmpty()) {
-					JOptionPane.showMessageDialog(EditCalendario.this, "Ingrese fecha y descripción.", "Error", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(EditCalendario.this, "Ingrese fecha y descripción.", "Error",
+							JOptionPane.ERROR_MESSAGE);
 					return;
 				}
 				LocalDate fecha = new java.sql.Date(utilDate.getTime()).toLocalDate();
@@ -153,13 +166,15 @@ public class EditCalendario extends JFrame {
 				java.util.Date utilDate = dateChooser.getDate();
 				String descripcion = txtDescripcion.getText().trim();
 				if (idx == -1 || utilDate == null || descripcion.isEmpty()) {
-					JOptionPane.showMessageDialog(EditCalendario.this, "Seleccione un día y complete los campos.", "Error", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(EditCalendario.this, "Seleccione un día y complete los campos.",
+							"Error", JOptionPane.ERROR_MESSAGE);
 					return;
 				}
 				String selected = modeloLista.getElementAt(idx);
 				String[] partes = selected.split(" - ", 2);
 				if (partes.length != 2) {
-					JOptionPane.showMessageDialog(EditCalendario.this, "Error al obtener el día seleccionado.", "Error", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(EditCalendario.this, "Error al obtener el día seleccionado.", "Error",
+							JOptionPane.ERROR_MESSAGE);
 					return;
 				}
 				LocalDate fechaOriginal = LocalDate.parse(partes[0]);
@@ -169,12 +184,14 @@ public class EditCalendario extends JFrame {
 				if (!fechaOriginal.equals(fechaNueva)) {
 					boolean eliminado = planificador.getCalendario().eliminarDiaFestivo(fechaOriginal);
 					if (!eliminado) {
-						JOptionPane.showMessageDialog(EditCalendario.this, "No se pudo actualizar la fecha.", "Error", JOptionPane.ERROR_MESSAGE);
+						JOptionPane.showMessageDialog(EditCalendario.this, "No se pudo actualizar la fecha.", "Error",
+								JOptionPane.ERROR_MESSAGE);
 						return;
 					}
 					planificador.getCalendario().agregarDiaFestivo(new DiaFestivo(fechaNueva, descripcion));
 					actualizarLista();
-					JOptionPane.showMessageDialog(EditCalendario.this, "Día festivo actualizado.", "Actualizado", JOptionPane.INFORMATION_MESSAGE);
+					JOptionPane.showMessageDialog(EditCalendario.this, "Día festivo actualizado.", "Actualizado",
+							JOptionPane.INFORMATION_MESSAGE);
 					// Limpiar campos
 					txtDescripcion.setText("");
 					dateChooser.setDate(null);
@@ -183,12 +200,14 @@ public class EditCalendario extends JFrame {
 					boolean actualizado = planificador.getCalendario().actualizarDiaFestivo(fechaNueva, descripcion);
 					if (actualizado) {
 						actualizarLista();
-						JOptionPane.showMessageDialog(EditCalendario.this, "Día festivo actualizado.", "Actualizado", JOptionPane.INFORMATION_MESSAGE);
+						JOptionPane.showMessageDialog(EditCalendario.this, "Día festivo actualizado.", "Actualizado",
+								JOptionPane.INFORMATION_MESSAGE);
 						// Limpiar campos
 						txtDescripcion.setText("");
 						dateChooser.setDate(null);
 					} else {
-						JOptionPane.showMessageDialog(EditCalendario.this, "No se pudo actualizar.", "Error", JOptionPane.ERROR_MESSAGE);
+						JOptionPane.showMessageDialog(EditCalendario.this, "No se pudo actualizar.", "Error",
+								JOptionPane.ERROR_MESSAGE);
 					}
 				}
 			}
@@ -198,7 +217,8 @@ public class EditCalendario extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				int idx = listaFestivos.getSelectedIndex();
 				if (idx == -1) {
-					JOptionPane.showMessageDialog(EditCalendario.this, "Seleccione un día para eliminar.", "Error", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(EditCalendario.this, "Seleccione un día para eliminar.", "Error",
+							JOptionPane.ERROR_MESSAGE);
 					return;
 				}
 				String selected = modeloLista.getElementAt(idx);
@@ -207,9 +227,11 @@ public class EditCalendario extends JFrame {
 				boolean eliminado = planificador.getCalendario().eliminarDiaFestivo(fecha);
 				if (eliminado) {
 					actualizarLista();
-					JOptionPane.showMessageDialog(EditCalendario.this, "Día festivo eliminado.", "Eliminado", JOptionPane.INFORMATION_MESSAGE);
+					JOptionPane.showMessageDialog(EditCalendario.this, "Día festivo eliminado.", "Eliminado",
+							JOptionPane.INFORMATION_MESSAGE);
 				} else {
-					JOptionPane.showMessageDialog(EditCalendario.this, "No se pudo eliminar.", "Error", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(EditCalendario.this, "No se pudo eliminar.", "Error",
+							JOptionPane.ERROR_MESSAGE);
 				}
 			}
 		});
@@ -240,7 +262,8 @@ public class EditCalendario extends JFrame {
 		listaFestivos.setForeground(oscuro ? Color.WHITE : texto);
 	}
 
-	private void setComponentColors(Component comp, boolean oscuro, Color fondo, Color texto, Color boton, Color amarilloSec) {
+	private void setComponentColors(Component comp, boolean oscuro, Color fondo, Color texto, Color boton,
+			Color amarilloSec) {
 		if (comp instanceof JPanel) {
 			comp.setBackground(fondo);
 			for (Component child : ((JPanel) comp).getComponents()) {

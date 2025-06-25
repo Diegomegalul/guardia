@@ -15,50 +15,32 @@ public class Main {
 					e.printStackTrace();
 				}
 			}
-		}); 
+		});
 	}
 }
 
-//Diooooos como hago para sacarla de mi cabeza
+// TIMØ - Quiero Saber
 
-//Me encantas, lo sabes?
+// d4vd - Crashing
 
-//De que sirve que seamos amigos si no me miras como yo a ti?
+// d4vd - Here With Me
 
-//Tengo ganas de arruinar esta amistad
+// Will Paquin - Chandelier
 
-//A veces me pregunto si te gustaria que fueramos algo mas
+// ZOE - Azul
 
-//Estoy cansado de que me veas como un amigo
+// Gracie Abrams - Mess It Up
 
-//Me encanta todo de ti, incluso tus defectos
+// d4vd - Feel It (From The Original Series Invincible )
 
-//TIMØ - Quiero Saber 
+// Tame Impala - Borderline
 
-//d4vd - Crashing
+// Lola Young - Conceited
 
-//d4vd - Here With Me
+// Surf Curse - Freaks
 
-//Will Paquin - Chandelier
+// Maroon 5 - Cold
 
-//ZOE - Azul
+// Avicii - Without You
 
-//Gracie Abrams - Mess It Up
-
-//d4vd - Feel It (From The Original Series  Invincible )
-
-//Tame Impala - Borderline
-
-//Lola Young - Conceited
-
-//Surf Curse - Freaks
-
-//Maroon 5 - Cold
-
-//Avicii - Without You
-
-//d4vd - This Is How It Feels
-
-
-
-
+// d4vd - This Is How It Feels

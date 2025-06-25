@@ -16,16 +16,22 @@ public class EstInactivos extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
+	private static EstInactivos instancia = null;
+
+	public static void mostrarVentana() {
+		if (instancia == null || !instancia.isDisplayable()) {
+			instancia = new EstInactivos();
+			instancia.setVisible(true);
+		} else {
+			instancia.toFront();
+			instancia.setState(JFrame.NORMAL);
+		}
+	}
 
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
-				try {
-					EstInactivos frame = new EstInactivos();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
+				mostrarVentana();
 			}
 		});
 	}
@@ -74,17 +80,20 @@ public class EstInactivos extends JFrame {
 					lblGrupo.setBorder(new EmptyBorder(10, 0, 5, 0));
 					contentPane.add(lblGrupo);
 
-					String[] columnas = {"CI", "Nombre", "Apellidos", "Sexo"};
+					String[] columnas = { "CI", "Nombre", "Apellidos", "Sexo" };
 					DefaultTableModel model = new DefaultTableModel(columnas, 0) {
 						private static final long serialVersionUID = 1L;
-						public boolean isCellEditable(int row, int col) { return false; }
+
+						public boolean isCellEditable(int row, int col) {
+							return false;
+						}
 					};
 					for (Estudiante e : grupo.estudiantesInactivos) {
 						model.addRow(new Object[] {
-							e.getCi(),
-							e.getNombre(),
-							e.getApellidos(),
-							e.getSexo()
+								e.getCi(),
+								e.getNombre(),
+								e.getApellidos(),
+								e.getSexo()
 						});
 					}
 					JTable tabla = new JTable(model);

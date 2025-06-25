@@ -2,6 +2,7 @@ package interfaz;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.EventQueue;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Toolkit;
@@ -30,6 +31,7 @@ public class GuardiasIncumplidas extends JFrame {
 	private JComboBox<String> comboMes;
 	private JComboBox<String> comboAnio;
 	private PlanificadorGuardias planificador;
+	private static GuardiasIncumplidas instancia = null;
 
 	public GuardiasIncumplidas() {
 		setIconImage(Toolkit.getDefaultToolkit().getImage(Login.class.getResource("/imagenes/logo.jpg")));
@@ -145,5 +147,23 @@ public class GuardiasIncumplidas extends JFrame {
 				});
 			}
 		}
+	}
+
+	public static void mostrarVentana() {
+		if (instancia == null || !instancia.isDisplayable()) {
+			instancia = new GuardiasIncumplidas();
+			instancia.setVisible(true);
+		} else {
+			instancia.toFront();
+			instancia.setState(JFrame.NORMAL);
+		}
+	}
+
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				mostrarVentana();
+			}
+		});
 	}
 }

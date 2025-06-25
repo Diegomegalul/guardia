@@ -21,16 +21,22 @@ public class ProfVoluntarios extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
+	private static ProfVoluntarios instancia = null;
+
+	public static void mostrarVentana() {
+		if (instancia == null || !instancia.isDisplayable()) {
+			instancia = new ProfVoluntarios();
+			instancia.setVisible(true);
+		} else {
+			instancia.toFront();
+			instancia.setState(JFrame.NORMAL);
+		}
+	}
 
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
-				try {
-					ProfVoluntarios frame = new ProfVoluntarios();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
+				mostrarVentana();
 			}
 		});
 	}
@@ -59,10 +65,13 @@ public class ProfVoluntarios extends JFrame {
 		contentPane.add(lblTitulo, BorderLayout.NORTH);
 
 		// Tabla de profesores voluntarios
-		String[] columnas = {"Carnet", "Nombre", "Apellidos"};
+		String[] columnas = { "Carnet", "Nombre", "Apellidos" };
 		DefaultTableModel model = new DefaultTableModel(columnas, 0) {
 			private static final long serialVersionUID = 1L;
-			public boolean isCellEditable(int row, int column) { return false; }
+
+			public boolean isCellEditable(int row, int column) {
+				return false;
+			}
 		};
 		final JTable tabla = new JTable(model);
 		tabla.getTableHeader().setFont(new Font("Arial", Font.BOLD, 15));

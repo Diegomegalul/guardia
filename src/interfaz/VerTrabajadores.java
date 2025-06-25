@@ -39,6 +39,7 @@ public class VerTrabajadores extends JFrame {
 	private JTextField txtBusqueda;
 	private PlanificadorGuardias planificador;
 	private List<Persona> trabajadoresFiltrados;
+	private static VerTrabajadores instancia = null;
 
 	public VerTrabajadores() {
 		setIconImage(Toolkit.getDefaultToolkit().getImage(Login.class.getResource("/imagenes/logo.jpg")));
@@ -255,5 +256,15 @@ public class VerTrabajadores extends JFrame {
 	// Método para refrescar la tabla desde AddTrabajadores tras editar
 	public void refrescarTabla() {
 		cargarTrabajadores(txtBusqueda.getText().trim().isEmpty() ? null : txtBusqueda.getText().trim().toLowerCase());
+	}
+
+	public static void mostrarVentana() {
+		if (instancia == null || !instancia.isDisplayable()) {
+			instancia = new VerTrabajadores();
+			instancia.setVisible(true);
+		} else {
+			instancia.toFront();
+			instancia.setState(JFrame.NORMAL);
+		}
 	}
 }

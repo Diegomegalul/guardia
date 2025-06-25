@@ -41,5 +41,4 @@ public class Horario {
 		return horaFin;
 	}
 
-	// No hay métodos con dos returns en caminos alternativos ni uso de break fuera de switch.
 }

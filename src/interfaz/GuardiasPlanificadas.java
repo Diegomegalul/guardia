@@ -24,15 +24,22 @@ public class GuardiasPlanificadas extends JFrame {
 	private JComboBox<String> comboAnio;
 	private PlanificadorGuardias planificador;
 
+	private static GuardiasPlanificadas instancia = null;
+
+	public static void mostrarVentana() {
+		if (instancia == null || !instancia.isDisplayable()) {
+			instancia = new GuardiasPlanificadas();
+			instancia.setVisible(true);
+		} else {
+			instancia.toFront();
+			instancia.setState(JFrame.NORMAL);
+		}
+	}
+
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
-				try {
-					GuardiasPlanificadas frame = new GuardiasPlanificadas();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
+				mostrarVentana();
 			}
 		});
 	}

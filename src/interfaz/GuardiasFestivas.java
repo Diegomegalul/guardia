@@ -14,16 +14,22 @@ public class GuardiasFestivas extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
+	private static GuardiasFestivas instancia = null;
+
+	public static void mostrarVentana() {
+		if (instancia == null || !instancia.isDisplayable()) {
+			instancia = new GuardiasFestivas();
+			instancia.setVisible(true);
+		} else {
+			instancia.toFront();
+			instancia.setState(JFrame.NORMAL);
+		}
+	}
 
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
-				try {
-					GuardiasFestivas frame = new GuardiasFestivas();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
+				mostrarVentana();
 			}
 		});
 	}
@@ -51,24 +57,31 @@ public class GuardiasFestivas extends JFrame {
 		lblTitulo.setBorder(new EmptyBorder(10, 0, 10, 0));
 		contentPane.add(lblTitulo, BorderLayout.NORTH);
 
-		String[] columnas = {"CI", "Nombre", "Apellidos", "Fecha", "Hora Inicio", "Hora Fin", "Tipo"};
+		String[] columnas = { "CI", "Nombre", "Apellidos", "Fecha", "Hora Inicio", "Hora Fin", "Tipo" };
 		DefaultTableModel model = new DefaultTableModel(columnas, 0) {
 			private static final long serialVersionUID = 1L;
-			public boolean isCellEditable(int row, int column) { return false; }
+
+			public boolean isCellEditable(int row, int column) {
+				return false;
+			}
 		};
 
 		List<Guardia> guardiasFestivas = PlanificadorGuardias.getInstancia().listaGuardiasEnDiasFestivos();
 		for (Guardia g : guardiasFestivas) {
 			if (g.getPersona() != null && g.getHorario() != null) {
-				model.addRow(new Object[] {
-					g.getPersona().getCi(),
-					g.getPersona().getNombre(),
-					g.getPersona().getApellidos(),
-					g.getHorario().getDia(),
-					g.getHorario().getHoraInicio(),
-					g.getHorario().getHoraFin(),
-					g.getTipo()
-				});
+				utiles.TipoGuardia tipo = g.getTipo();
+				if (tipo == utiles.TipoGuardia.FESTIVO || tipo == utiles.TipoGuardia.VOLUNTARIA_FESTIVO
+						|| tipo == utiles.TipoGuardia.RECUPERACION_FESTIVO) {
+					model.addRow(new Object[] {
+							g.getPersona().getCi(),
+							g.getPersona().getNombre(),
+							g.getPersona().getApellidos(),
+							g.getHorario().getDia(),
+							g.getHorario().getHoraInicio(),
+							g.getHorario().getHoraFin(),
+							g.getTipo()
+					});
+				}
 			}
 		}
 

@@ -36,6 +36,17 @@ public class VerEstudiantes extends JFrame {
 	private JTextField txtBusqueda;
 	private PlanificadorGuardias planificador;
 	private List<Persona> estudiantesFiltrados;
+	private static VerEstudiantes instancia = null;
+
+	public static void mostrarVentana(PlanificadorGuardias planificador) {
+		if (instancia == null || !instancia.isDisplayable()) {
+			instancia = new VerEstudiantes(planificador);
+			instancia.setVisible(true);
+		} else {
+			instancia.toFront();
+			instancia.setState(JFrame.NORMAL);
+		}
+	}
 
 	public VerEstudiantes(PlanificadorGuardias planificadorplanificador) {
 		setIconImage(Toolkit.getDefaultToolkit().getImage(Login.class.getResource("/imagenes/logo.jpg")));

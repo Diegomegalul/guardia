@@ -68,7 +68,7 @@ public class GuardiaFactory {
 	}
 
 	public void setGuardias(List<Guardia> guardias) {
-		this.guardias = new ArrayList<>(guardias); // Copia defensiva
+		this.guardias = new ArrayList<>(guardias); // 
 	}
 	// Metodos
 
@@ -167,7 +167,6 @@ public class GuardiaFactory {
 		boolean resultado = false;
 		if (g != null) {
 			Persona p = g.getPersona();
-			// Siempre disminuir guardias planificadas
 			p.setGuardiasPlanificadas(p.getGuardiasPlanificadas() - 1);
 			if (p instanceof Estudiante) {
 				Estudiante est = (Estudiante) p;

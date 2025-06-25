@@ -58,4 +58,3 @@ public class Facultad {
 		this.nombre = nombre;
 	}
 }
-// No hay métodos con dos returns en caminos alternativos ni uso de break fuera de switch

@@ -48,28 +48,29 @@ public class AddEstudiantes extends JFrame {
 	@SuppressWarnings("unused")
 	private VerEstudiantes framePadre = null;
 
-	// Constructor para añadir
+	// Constructor para añadir :V
 	/**
-	 * @wbp.parser.constructor
+	 * @wbp.parser.constructor :)
 	 */
 	public AddEstudiantes(final PlanificadorGuardias planificador) {
 		this(planificador, null, null);
 	}
 
-	// Constructor para editar
-	public AddEstudiantes(final PlanificadorGuardias planificador, Estudiante estudiante, final VerEstudiantes framePadre) {
+	// Constructor para editar :V
+	public AddEstudiantes(final PlanificadorGuardias planificador, Estudiante estudiante,
+			final VerEstudiantes framePadre) {
 		setIconImage(Toolkit.getDefaultToolkit().getImage(Login.class.getResource("/imagenes/logo.jpg")));
 		setMinimumSize(new Dimension(510, 550));
 		this.planificador = planificador;
 		this.estudianteEditado = estudiante;
 		this.framePadre = framePadre;
-		// Colores institucionales
+		// Colores institucionales :)
 		final Color amarillo = new Color(255, 215, 0);
 		final Color negro = Color.BLACK;
 		final Color blanco = Color.WHITE;
 
 		setTitle(estudiante == null ? "Añadir Estudiante" : "Editar Estudiante");
-		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); // No cierra la app
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); // No cierra la app :V
 		setBounds(100, 100, 510, 550);
 		setLocationRelativeTo(null);
 
@@ -93,48 +94,51 @@ public class AddEstudiantes extends JFrame {
 		gbc.fill = GridBagConstraints.HORIZONTAL;
 		gbc.weightx = 1.0;
 
-		// Inicializar los campos antes de agregarlos al panel
+		// Inicializar los campos antes de agregarlos al panel :)
 		txtCi = new JTextField(15);
 		txtCi.setFont(new Font("Arial", Font.PLAIN, 15));
 		txtCi.setBackground(blanco);
 		txtCi.setForeground(negro);
 
-		// CI
-		gbc.gridx = 0; gbc.gridy = 0;
+		// CI :V
+		gbc.gridx = 0;
+		gbc.gridy = 0;
 		panelForm.setLayout(new FormLayout(new ColumnSpec[] {
 				FormFactory.RELATED_GAP_COLSPEC,
 				ColumnSpec.decode("center:200px:grow"),
 				FormFactory.RELATED_GAP_COLSPEC,
-				ColumnSpec.decode("center:220px:grow"),},
+				ColumnSpec.decode("center:220px:grow"), },
 				new RowSpec[] {
-				FormFactory.RELATED_GAP_ROWSPEC,
-				RowSpec.decode("top:20dlu:grow"),
-				FormFactory.RELATED_GAP_ROWSPEC,
-				RowSpec.decode("20dlu:grow"),
-				FormFactory.RELATED_GAP_ROWSPEC,
-				RowSpec.decode("20dlu:grow"),
-				FormFactory.RELATED_GAP_ROWSPEC,
-				RowSpec.decode("fill:20dlu:grow"),
-				FormFactory.RELATED_GAP_ROWSPEC,
-				RowSpec.decode("20dlu:grow"),
-				FormFactory.RELATED_GAP_ROWSPEC,
-				RowSpec.decode("20dlu:grow"),
-				FormFactory.RELATED_GAP_ROWSPEC,
-				RowSpec.decode("20dlu:grow"),
-				FormFactory.RELATED_GAP_ROWSPEC,
-				RowSpec.decode("fill:20dlu:grow"),}));
+						FormFactory.RELATED_GAP_ROWSPEC,
+						RowSpec.decode("top:20dlu:grow"),
+						FormFactory.RELATED_GAP_ROWSPEC,
+						RowSpec.decode("20dlu:grow"),
+						FormFactory.RELATED_GAP_ROWSPEC,
+						RowSpec.decode("20dlu:grow"),
+						FormFactory.RELATED_GAP_ROWSPEC,
+						RowSpec.decode("fill:20dlu:grow"),
+						FormFactory.RELATED_GAP_ROWSPEC,
+						RowSpec.decode("20dlu:grow"),
+						FormFactory.RELATED_GAP_ROWSPEC,
+						RowSpec.decode("20dlu:grow"),
+						FormFactory.RELATED_GAP_ROWSPEC,
+						RowSpec.decode("20dlu:grow"),
+						FormFactory.RELATED_GAP_ROWSPEC,
+						RowSpec.decode("fill:20dlu:grow"), }));
 		panelForm.add(new JLabel("CI:"), "2, 2, center, center");
 		gbc.gridx = 1;
 		panelForm.add(txtCi, "4, 2, center, center");
 
-		// Nombre
-		gbc.gridx = 0; gbc.gridy = 1;
+		// Nombre :)
+		gbc.gridx = 0;
+		gbc.gridy = 1;
 		gbc.gridx = 1;
 		JLabel label_1 = new JLabel("Nombre:");
 		panelForm.add(label_1, "2, 4, center, center");
 
-		// Apellidos
-		gbc.gridx = 0; gbc.gridy = 2;
+		// Apellidos :V
+		gbc.gridx = 0;
+		gbc.gridy = 2;
 
 		txtNombre = new JTextField(15);
 		txtNombre.setFont(new Font("Arial", Font.PLAIN, 15));
@@ -145,8 +149,9 @@ public class AddEstudiantes extends JFrame {
 		JLabel label_2 = new JLabel("Apellidos:");
 		panelForm.add(label_2, "2, 6, center, center");
 
-		// Sexo
-		gbc.gridx = 0; gbc.gridy = 3;
+		// Sexo :)
+		gbc.gridx = 0;
+		gbc.gridy = 3;
 
 		txtApellidos = new JTextField(15);
 		txtApellidos.setFont(new Font("Arial", Font.PLAIN, 15));
@@ -155,20 +160,24 @@ public class AddEstudiantes extends JFrame {
 		panelForm.add(txtApellidos, "4, 6, center, center");
 		gbc.gridx = 1;
 
-		// Activo
-		gbc.gridx = 0; gbc.gridy = 4;
+		// Activo :V
+		gbc.gridx = 0;
+		gbc.gridy = 4;
 		gbc.gridx = 1;
 
-		// Guardias Asignadas
-		gbc.gridx = 0; gbc.gridy = 5;
+		// Guardias Asignadas :)
+		gbc.gridx = 0;
+		gbc.gridy = 5;
 		gbc.gridx = 1;
 
-		// Guardias Festivo
-		gbc.gridx = 0; gbc.gridy = 6;
+		// Guardias Festivo :V
+		gbc.gridx = 0;
+		gbc.gridy = 6;
 		gbc.gridx = 1;
 
-		// Grupo
-		gbc.gridx = 0; gbc.gridy = 7;
+		// Grupo :)
+		gbc.gridx = 0;
+		gbc.gridy = 7;
 		gbc.gridx = 1;
 
 		contentPane.add(panelForm, BorderLayout.CENTER);
@@ -214,7 +223,7 @@ public class AddEstudiantes extends JFrame {
 		txtGrupo.setForeground(negro);
 		panelForm.add(txtGrupo, "4, 16, center, center");
 
-		// Si es edición, llenar los campos
+		// Si es edición, llenar los campos :V
 		if (estudiante != null) {
 			txtCi.setText(estudiante.getCi());
 			// txtCi.setEditable(false); // Permitir editar el CI
@@ -227,27 +236,27 @@ public class AddEstudiantes extends JFrame {
 			txtGrupo.setText(String.valueOf(estudiante.getGrupo()));
 		}
 
-		// Botón guardar/actualizar
+		// Botón guardar/actualizar :)
 		JPanel panelBoton = new JPanel();
 		panelBoton.setBackground(amarillo);
 		panelBoton.setLayout(new com.jgoodies.forms.layout.FormLayout(
-			new com.jgoodies.forms.layout.ColumnSpec[] {
-				com.jgoodies.forms.layout.ColumnSpec.decode("left:5dlu:grow"),
-				com.jgoodies.forms.layout.ColumnSpec.decode("left:60dlu:grow"),
-				FormFactory.RELATED_GAP_COLSPEC,
-				com.jgoodies.forms.layout.ColumnSpec.decode("20dlu:grow"),
-				FormFactory.RELATED_GAP_COLSPEC,
-				com.jgoodies.forms.layout.ColumnSpec.decode("right:60dlu:grow"),
-				com.jgoodies.forms.layout.ColumnSpec.decode("right:5dlu:grow"),
-			},
-			new com.jgoodies.forms.layout.RowSpec[] {
-				com.jgoodies.forms.layout.RowSpec.decode("1dlu"),
-				com.jgoodies.forms.layout.RowSpec.decode("20px"),
-			}
-		));
+				new com.jgoodies.forms.layout.ColumnSpec[] {
+						com.jgoodies.forms.layout.ColumnSpec.decode("left:5dlu:grow"),
+						com.jgoodies.forms.layout.ColumnSpec.decode("left:60dlu:grow"),
+						FormFactory.RELATED_GAP_COLSPEC,
+						com.jgoodies.forms.layout.ColumnSpec.decode("20dlu:grow"),
+						FormFactory.RELATED_GAP_COLSPEC,
+						com.jgoodies.forms.layout.ColumnSpec.decode("right:60dlu:grow"),
+						com.jgoodies.forms.layout.ColumnSpec.decode("right:5dlu:grow"),
+				},
+				new com.jgoodies.forms.layout.RowSpec[] {
+						com.jgoodies.forms.layout.RowSpec.decode("1dlu"),
+						com.jgoodies.forms.layout.RowSpec.decode("20px"),
+				}));
 
 		JButton btnGuardar = new JButton(estudiante == null ? "Guardar" : "Actualizar") {
 			private static final long serialVersionUID = 1L;
+
 			protected void paintComponent(Graphics g) {
 				if (isContentAreaFilled()) {
 					Graphics2D g2 = (Graphics2D) g.create();
@@ -288,21 +297,25 @@ public class AddEstudiantes extends JFrame {
 					guardiasFestivo = Integer.parseInt(txtGuardiasFestivo.getText().trim());
 					grupo = Integer.parseInt(txtGrupo.getText().trim());
 				} catch (Exception ex) {
-					JOptionPane.showMessageDialog(AddEstudiantes.this, "Verifique los campos numéricos.", "Error", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(AddEstudiantes.this, "Verifique los campos numéricos.", "Error",
+							JOptionPane.ERROR_MESSAGE);
 					return;
 				}
-				// Validación de CI: debe tener 11 dígitos numéricos
+				// Validación de CI: debe tener 11 dígitos numéricos :V
 				if (ci.length() != 11 || !ci.matches("\\d{11}")) {
-					JOptionPane.showMessageDialog(AddEstudiantes.this, "El CI debe tener exactamente 11 números.", "Error", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(AddEstudiantes.this, "El CI debe tener exactamente 11 números.",
+							"Error", JOptionPane.ERROR_MESSAGE);
 					return;
 				}
 				if (ci.isEmpty() || nombre.isEmpty() || apellidos.isEmpty()) {
-					JOptionPane.showMessageDialog(AddEstudiantes.this, "Complete todos los campos obligatorios.", "Error", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(AddEstudiantes.this, "Complete todos los campos obligatorios.",
+							"Error", JOptionPane.ERROR_MESSAGE);
 					return;
 				}
 				if (estudianteEditado == null) {
-					// Nuevo estudiante
-					Estudiante estudiante = new Estudiante(ci, nombre, apellidos, utiles.Sexo.valueOf(sexoStr), activo, guardiasAsignadas, guardiasFestivo, grupo, guardiasCumplidas, guardiasRecuperacion);
+					// Nuevo estudiante :)
+					Estudiante estudiante = new Estudiante(ci, nombre, apellidos, utiles.Sexo.valueOf(sexoStr), activo,
+							guardiasAsignadas, guardiasFestivo, grupo, guardiasCumplidas, guardiasRecuperacion);
 					planificador.getFacultad().agregarPersona(estudiante);
 					JLabel label = new JLabel("Estudiante guardado correctamente");
 					label.setFont(new Font("Arial", Font.BOLD, 16));
@@ -314,11 +327,11 @@ public class AddEstudiantes extends JFrame {
 							AddEstudiantes.this,
 							panel,
 							"Guardado",
-							JOptionPane.INFORMATION_MESSAGE
-							);
+							JOptionPane.INFORMATION_MESSAGE);
 				} else {
 					// Editar existente (puede cambiar el CI)
-					Estudiante nuevo = new Estudiante(ci, nombre, apellidos, utiles.Sexo.valueOf(sexoStr), activo, guardiasAsignadas, guardiasFestivo, grupo, guardiasCumplidas, guardiasRecuperacion);
+					Estudiante nuevo = new Estudiante(ci, nombre, apellidos, utiles.Sexo.valueOf(sexoStr), activo,
+							guardiasAsignadas, guardiasFestivo, grupo, guardiasCumplidas, guardiasRecuperacion);
 					planificador.getFacultad().eliminarPersona(estudianteEditado);
 					planificador.getFacultad().agregarPersona(nuevo);
 					JLabel label = new JLabel("Estudiante actualizado correctamente");
@@ -331,10 +344,10 @@ public class AddEstudiantes extends JFrame {
 							AddEstudiantes.this,
 							panel,
 							"Actualizado",
-							JOptionPane.INFORMATION_MESSAGE
-							);
+							JOptionPane.INFORMATION_MESSAGE);
 				}
 				if (framePadre != null) {
+					// Método para refrescar la tabla desde AddEstudiantes tras editar :V
 					framePadre.refrescarTabla();
 				}
 				dispose();
@@ -349,7 +362,8 @@ public class AddEstudiantes extends JFrame {
 		setComponentColors(contentPane, oscuro, fondo, texto, boton, amarilloSec);
 	}
 
-	private void setComponentColors(Component comp, boolean oscuro, Color fondo, Color texto, Color boton, Color amarilloSec) {
+	private void setComponentColors(Component comp, boolean oscuro, Color fondo, Color texto, Color boton,
+			Color amarilloSec) {
 		if (comp instanceof JPanel) {
 			comp.setBackground(fondo);
 			for (Component child : ((JPanel) comp).getComponents()) {

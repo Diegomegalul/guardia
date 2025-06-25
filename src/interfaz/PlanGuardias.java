@@ -44,11 +44,22 @@ public class PlanGuardias extends JFrame {
 	private DefaultTableModel tablaModel;
 	@SuppressWarnings("unused")
 	private PlanificadorGuardias planificador;
-	private JScrollPane scroll; // <-- cambia a atributo para poder acceder
-
-	// Referencias para modo oscuro
+	private JScrollPane scroll; // 
+	// Referencias para modo oscuro no lo he terminado
 	private Color amarillo = new Color(255, 215, 0);
 	private Color negro = Color.BLACK;
+
+	private static PlanGuardias instancia = null;
+
+	public static void mostrarVentana(PlanificadorGuardias planificador) {
+		if (instancia == null || !instancia.isDisplayable()) {
+			instancia = new PlanGuardias(planificador);
+			instancia.setVisible(true);
+		} else {
+			instancia.toFront();
+			instancia.setState(JFrame.NORMAL);
+		}
+	}
 
 	public PlanGuardias(final PlanificadorGuardias planificador) {
 		setIconImage(Toolkit.getDefaultToolkit().getImage(Login.class.getResource("/imagenes/logo.jpg")));
@@ -261,7 +272,8 @@ public class PlanGuardias extends JFrame {
 		cargarGuardiasEnTabla();
 
 		// Seleccionar mes y año por defecto: mes siguiente al último mes planificado
-		java.time.LocalDate ultimoPlan = PlanificadorGuardias.getInstancia().getGuardiaFactory().getUltimoMesPlanificado();
+		java.time.LocalDate ultimoPlan = PlanificadorGuardias.getInstancia().getGuardiaFactory()
+				.getUltimoMesPlanificado();
 		if (ultimoPlan != null) {
 			java.time.LocalDate siguiente = ultimoPlan.plusMonths(1);
 			monthChooser.setMonth(siguiente.getMonthValue() - 1);
