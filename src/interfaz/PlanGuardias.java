@@ -136,7 +136,7 @@ public class PlanGuardias extends JFrame {
 		JPanel panelBoton = new JPanel();
 		panelBoton.setBackground(amarillo);
 
-		JButton btnEditar = new JButton("Editar");
+		JButton btnEditar = new JButton("Intercambiar");
 		btnEditar.setFont(new Font("Arial", Font.BOLD, 15));
 		btnEditar.setBackground(negro);
 		btnEditar.setForeground(amarillo);
@@ -169,7 +169,7 @@ public class PlanGuardias extends JFrame {
 				int id = Integer.parseInt(tablaModel.getValueAt(fila, 0).toString());
 				logica.Guardia g = buscarGuardiaPorId(id);
 				if (g != null) {
-					FormularioGuardia frame = new FormularioGuardia(g);
+					IntercambioPersona frame = new IntercambioPersona(g);
 					frame.setVisible(true);
 				}
 			}

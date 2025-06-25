@@ -59,7 +59,7 @@ public class AddEstudiantes extends JFrame {
 	// Constructor para editar
 	public AddEstudiantes(final PlanificadorGuardias planificador, Estudiante estudiante, final VerEstudiantes framePadre) {
 		setIconImage(Toolkit.getDefaultToolkit().getImage(Login.class.getResource("/imagenes/logo.jpg")));
-		setMinimumSize(new Dimension(500, 500));
+		setMinimumSize(new Dimension(510, 550));
 		this.planificador = planificador;
 		this.estudianteEditado = estudiante;
 		this.framePadre = framePadre;
@@ -70,7 +70,7 @@ public class AddEstudiantes extends JFrame {
 
 		setTitle(estudiante == null ? "Añadir Estudiante" : "Editar Estudiante");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); // No cierra la app
-		setBounds(100, 100, 500, 500);
+		setBounds(100, 100, 510, 550);
 		setLocationRelativeTo(null);
 
 		contentPane = new JPanel();

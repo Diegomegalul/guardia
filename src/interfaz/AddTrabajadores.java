@@ -37,7 +37,7 @@ public class AddTrabajadores extends JFrame {
 	 */
 	public AddTrabajadores(final PlanificadorGuardias planificador,final Trabajador trabajador,final VerTrabajadores verTrabajadores) {
 		setIconImage(Toolkit.getDefaultToolkit().getImage(Login.class.getResource("/imagenes/logo.jpg")));
-		setMinimumSize(new Dimension(500, 550));
+		setMinimumSize(new Dimension(510, 550));
 		this.planificador = planificador;
 		// Colores institucionales
 		final Color amarillo = new Color(255, 215, 0);
@@ -46,7 +46,7 @@ public class AddTrabajadores extends JFrame {
 
 		setTitle(trabajador == null ? "Añadir Trabajador" : "Editar Trabajador");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); // No cierra la app
-		setBounds(100, 100, 500, 550);
+		setBounds(100, 100, 510, 550);
 		setLocationRelativeTo(null);
 
 		contentPane = new JPanel();
