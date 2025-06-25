@@ -1,4 +1,5 @@
 package logica;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -10,20 +11,22 @@ import java.util.Map;
 import utiles.TipoGuardia;
 
 public class PlanificadorGuardias {
-	//Atributos
+	// Atributos
 	private final Facultad facultad;
 	private final Calendario calendario;
 	private final GuardiaFactory guardiaFactory;
-	private static PlanificadorGuardias instancia;//para el Singleton :v
-	//Constructor
+	private static PlanificadorGuardias instancia;// para el Singleton :v
+	// Constructor
+
 	private PlanificadorGuardias() {
-		this.facultad = new Facultad("Informatica"); 
+		this.facultad = new Facultad("Informatica");
 		this.calendario = Calendario.getInstancia(); // Usar singleton
-		this.guardiaFactory = new GuardiaFactory();  
+		this.guardiaFactory = new GuardiaFactory();
 		// Enlazar el calendario singleton al guardiaFactory
 		this.guardiaFactory.setCalendario(this.calendario);
 	}
-	//Setters y Getters
+
+	// Setters y Getters
 	public Facultad getFacultad() {
 		return facultad;
 	}
@@ -35,8 +38,9 @@ public class PlanificadorGuardias {
 	public GuardiaFactory getGuardiaFactory() {
 		return guardiaFactory;
 	}
-	//Metodos
-	//M�todo para obtener la instancia Singleton (OJO)
+
+	// Metodos
+	// M�todo para obtener la instancia Singleton (OJO)
 	public static synchronized PlanificadorGuardias getInstancia() {
 		if (instancia == null) {
 			instancia = new PlanificadorGuardias();
@@ -46,6 +50,7 @@ public class PlanificadorGuardias {
 
 	/**
 	 * Reporte de grupos con más guardias de recuperación.
+	 * 
 	 * @return Lista ordenada de grupos y personas con guardias de recuperación.
 	 */
 	public List<GrupoRecuperacionReporte> reporteGuardiasRecuperacionPorGrupo() {
@@ -84,7 +89,8 @@ public class PlanificadorGuardias {
 				}
 			});
 
-			// int totalGrupo = personas.values().stream().mapToInt(Integer::intValue).sum();
+			// int totalGrupo =
+			// personas.values().stream().mapToInt(Integer::intValue).sum();
 			int totalGrupo = 0;
 			for (Integer val : personas.values()) {
 				totalGrupo += val;
@@ -102,9 +108,13 @@ public class PlanificadorGuardias {
 	}
 
 	/**
-	 * Devuelve una lista de grupos ordenados de mayor a menor según la suma de guardias de recuperación.
-	 * Dentro de cada grupo, los estudiantes están ordenados de mayor a menor guardias de recuperación.
-	 * @return Lista de objetos GrupoRecuperacionOrdenado con grupo y lista de estudiantes ordenados
+	 * Devuelve una lista de grupos ordenados de mayor a menor según la suma de
+	 * guardias de recuperación.
+	 * Dentro de cada grupo, los estudiantes están ordenados de mayor a menor
+	 * guardias de recuperación.
+	 * 
+	 * @return Lista de objetos GrupoRecuperacionOrdenado con grupo y lista de
+	 *         estudiantes ordenados
 	 */
 	public List<GrupoRecuperacionOrdenado> estudiantesPorGrupoRecuperacionDesc() {
 		Map<Integer, List<Estudiante>> mapa = new HashMap<>();
@@ -182,81 +192,145 @@ public class PlanificadorGuardias {
 	private boolean estudiantesMujeresPruebaAgregados = false;
 
 	public void agregarProfesoresPrueba() {
-		if (profesoresPruebaAgregados) return;
+		if (profesoresPruebaAgregados)
+			return;
 		profesoresPruebaAgregados = true;
-		facultad.agregarPersona(new Trabajador("12345678901","Carlos","Pérez Gómez",utiles.Sexo.MASCULINO,false,java.time.LocalDate.of(2025, 1, 1),0,0,0,true,null));
-		facultad.agregarPersona(new Trabajador("23456789012","María","López Fernández",utiles.Sexo.FEMENINO,true,null,0,0,0,true,java.time.LocalDate.of(2025, 7, 10)));
-		facultad.agregarPersona(new Trabajador("34567890123","Juan","Martínez Ruiz",utiles.Sexo.MASCULINO,true,null,0,0,0,true,java.time.LocalDate.of(2025, 8, 5)));
-		facultad.agregarPersona(new Trabajador("45678901234","Ana","García Torres",utiles.Sexo.FEMENINO,true,null,0,0,0,true,java.time.LocalDate.of(2025, 7, 20)));
-		facultad.agregarPersona(new Trabajador("56789012345","Luis","Sánchez Díaz",utiles.Sexo.MASCULINO,true,null,0,0,0,true,java.time.LocalDate.of(2025, 8, 15)));
-		facultad.agregarPersona(new Trabajador("67890123456","Elena","Romero Castro",utiles.Sexo.FEMENINO,true,null,0,0,0,true,java.time.LocalDate.of(2025, 7, 25)));
-		facultad.agregarPersona(new Trabajador("78901234567","Miguel","Vega Herrera",utiles.Sexo.MASCULINO,true,null,0,0,0,true,java.time.LocalDate.of(2025, 8, 2)));
-		facultad.agregarPersona(new Trabajador("89012345678","Lucía","Jiménez Morales",utiles.Sexo.FEMENINO,false,java.time.LocalDate.of(2025, 4, 12),0,0,0,false,null));
-		facultad.agregarPersona(new Trabajador("90123456789","Pedro","Navarro Ramos",utiles.Sexo.MASCULINO,true,null,0,0,0,true,java.time.LocalDate.of(2025, 7, 30)));
-		facultad.agregarPersona(new Trabajador("11223344556","Sofía","Molina Pérez",utiles.Sexo.FEMENINO,true,null,0,0,0, true,java.time.LocalDate.of(2025, 8, 8)));
-		facultad.agregarPersona(new Trabajador("22334455667","Javier","Castro López",utiles.Sexo.MASCULINO,true,null,0,0,0, true,java.time.LocalDate.of(2025, 7, 18)));
-		facultad.agregarPersona(new Trabajador("33445566778","Patricia","Ortega Gil",utiles.Sexo.FEMENINO,true,null,0,0,0, false,null));
-		facultad.agregarPersona(new Trabajador("44556677889","Raúl","Domínguez León",utiles.Sexo.MASCULINO,true,null,0,0,0, true,java.time.LocalDate.of(2025, 8, 12)));
-		facultad.agregarPersona(new Trabajador("55667788990","Isabel","Serrano Cruz",utiles.Sexo.FEMENINO,true,null,0,0,0, true,java.time.LocalDate.of(2025, 7, 26)));
-		facultad.agregarPersona(new Trabajador("66778899001","Alberto","Morales Peña",utiles.Sexo.MASCULINO,true,null,0,0,0, true,java.time.LocalDate.of(2025, 8, 20)));
-		facultad.agregarPersona(new Trabajador("77889900112","Teresa","Ramos Soto",utiles.Sexo.FEMENINO,false,java.time.LocalDate.of(2025, 9, 23),0,0,0, true,null));
-		facultad.agregarPersona(new Trabajador("88990011223","Francisco","Cano Vargas",utiles.Sexo.MASCULINO,true,null,0,0,0, true,java.time.LocalDate.of(2025, 7, 14)));
-		facultad.agregarPersona(new Trabajador("99001122334","Marta","Reyes Flores",utiles.Sexo.FEMENINO,true,null,0,0,0, true,java.time.LocalDate.of(2025, 8, 3)));
-		facultad.agregarPersona(new Trabajador("10111213141","Andrés","Suárez Bravo",utiles.Sexo.MASCULINO,true,null,0,0,0, true,java.time.LocalDate.of(2025, 7, 22)));
-		facultad.agregarPersona(new Trabajador("12131415161","Beatriz","Medina Pardo",utiles.Sexo.FEMENINO,true,null,0,0,0, false,null));
+		facultad.agregarPersona(new Trabajador("12345678901", "Carlos", "Pérez Gómez", utiles.Sexo.MASCULINO, false,
+				java.time.LocalDate.of(2025, 1, 1), 0, 0, 0, true, null));
+		facultad.agregarPersona(new Trabajador("23456789012", "María", "López Fernández", utiles.Sexo.FEMENINO, true,
+				null, 0, 0, 0, true, java.time.LocalDate.of(2025, 7, 10)));
+		facultad.agregarPersona(new Trabajador("34567890123", "Juan", "Martínez Ruiz", utiles.Sexo.MASCULINO, true,
+				null, 0, 0, 0, true, java.time.LocalDate.of(2025, 8, 5)));
+		facultad.agregarPersona(new Trabajador("45678901234", "Ana", "García Torres", utiles.Sexo.FEMENINO, true, null,
+				0, 0, 0, true, java.time.LocalDate.of(2025, 7, 20)));
+		facultad.agregarPersona(new Trabajador("56789012345", "Luis", "Sánchez Díaz", utiles.Sexo.MASCULINO, true, null,
+				0, 0, 0, true, java.time.LocalDate.of(2025, 8, 15)));
+		facultad.agregarPersona(new Trabajador("67890123456", "Elena", "Romero Castro", utiles.Sexo.FEMENINO, true,
+				null, 0, 0, 0, true, java.time.LocalDate.of(2025, 7, 25)));
+		facultad.agregarPersona(new Trabajador("78901234567", "Miguel", "Vega Herrera", utiles.Sexo.MASCULINO, true,
+				null, 0, 0, 0, true, java.time.LocalDate.of(2025, 8, 2)));
+		facultad.agregarPersona(new Trabajador("89012345678", "Lucía", "Jiménez Morales", utiles.Sexo.FEMENINO, false,
+				java.time.LocalDate.of(2025, 4, 12), 0, 0, 0, false, null));
+		facultad.agregarPersona(new Trabajador("90123456789", "Pedro", "Navarro Ramos", utiles.Sexo.MASCULINO, true,
+				null, 0, 0, 0, true, java.time.LocalDate.of(2025, 7, 30)));
+		facultad.agregarPersona(new Trabajador("11223344556", "Sofía", "Molina Pérez", utiles.Sexo.FEMENINO, true, null,
+				0, 0, 0, true, java.time.LocalDate.of(2025, 8, 8)));
+		facultad.agregarPersona(new Trabajador("22334455667", "Javier", "Castro López", utiles.Sexo.MASCULINO, true,
+				null, 0, 0, 0, true, java.time.LocalDate.of(2025, 7, 18)));
+		facultad.agregarPersona(new Trabajador("33445566778", "Patricia", "Ortega Gil", utiles.Sexo.FEMENINO, true,
+				null, 0, 0, 0, false, null));
+		facultad.agregarPersona(new Trabajador("44556677889", "Raúl", "Domínguez León", utiles.Sexo.MASCULINO, true,
+				null, 0, 0, 0, true, java.time.LocalDate.of(2025, 8, 12)));
+		facultad.agregarPersona(new Trabajador("55667788990", "Isabel", "Serrano Cruz", utiles.Sexo.FEMENINO, true,
+				null, 0, 0, 0, true, java.time.LocalDate.of(2025, 7, 26)));
+		facultad.agregarPersona(new Trabajador("66778899001", "Alberto", "Morales Peña", utiles.Sexo.MASCULINO, true,
+				null, 0, 0, 0, true, java.time.LocalDate.of(2025, 8, 20)));
+		facultad.agregarPersona(new Trabajador("77889900112", "Teresa", "Ramos Soto", utiles.Sexo.FEMENINO, false,
+				java.time.LocalDate.of(2025, 9, 23), 0, 0, 0, true, null));
+		facultad.agregarPersona(new Trabajador("88990011223", "Francisco", "Cano Vargas", utiles.Sexo.MASCULINO, true,
+				null, 0, 0, 0, true, java.time.LocalDate.of(2025, 7, 14)));
+		facultad.agregarPersona(new Trabajador("99001122334", "Marta", "Reyes Flores", utiles.Sexo.FEMENINO, true, null,
+				0, 0, 0, true, java.time.LocalDate.of(2025, 8, 3)));
+		facultad.agregarPersona(new Trabajador("10111213141", "Andrés", "Suárez Bravo", utiles.Sexo.MASCULINO, true,
+				null, 0, 0, 0, true, java.time.LocalDate.of(2025, 7, 22)));
+		facultad.agregarPersona(new Trabajador("12131415161", "Beatriz", "Medina Pardo", utiles.Sexo.FEMENINO, true,
+				null, 0, 0, 0, false, null));
 	}
 
 	public void agregarEstudiantesVaronesPrueba() {
-		if (estudiantesVaronesPruebaAgregados) return;
+		if (estudiantesVaronesPruebaAgregados)
+			return;
 		estudiantesVaronesPruebaAgregados = true;
-		facultad.agregarPersona(new Estudiante("05090266950","Diego","Canales Calvo",utiles.Sexo.MASCULINO,true,0,0,12, 0, 0));
-		facultad.agregarPersona(new Estudiante("04032448951","Aleksander","Castañeda Morales",utiles.Sexo.MASCULINO,true,0,0,12, 0, 0));
-		facultad.agregarPersona(new Estudiante("05090266900","Aniel","Varela  Hernández",utiles.Sexo.MASCULINO,true,0,0,12, 0, 0));
-		facultad.agregarPersona(new Estudiante("05090266900","Javier Angel","Soto Villanueva",utiles.Sexo.MASCULINO,true,0,0,12, 0, 0));
-		facultad.agregarPersona(new Estudiante("05090266900","Dariel","Velazco Falcón",utiles.Sexo.MASCULINO,true,0,0,12, 0, 0));
-		facultad.agregarPersona(new Estudiante("05090266900","Marcos Alejandro","Carrasco Pérez",utiles.Sexo.MASCULINO,true,0,0,11, 0, 0));
-		facultad.agregarPersona(new Estudiante("05090266900","Javier Omar","Cepero Carreño",utiles.Sexo.MASCULINO,true,0,0,11, 0, 0));
-		facultad.agregarPersona(new Estudiante("05090266900","Evian","Diaz Vázquez",utiles.Sexo.MASCULINO,true,0,0,11, 0, 0));
-		facultad.agregarPersona(new Estudiante("05090266900","Diego","González León",utiles.Sexo.MASCULINO,true,0,0,11, 0, 0));
-		facultad.agregarPersona(new Estudiante("05090266900","Herbert Luis","Navarro Valdés",utiles.Sexo.MASCULINO,true,0,0,11, 0, 0));
-		facultad.agregarPersona(new Estudiante("05032112157","Gabriel","Rodríguez Delgado",utiles.Sexo.MASCULINO,true,0,0,13, 0, 0));
-		facultad.agregarPersona(new Estudiante("05090266900","Darell","Perdomo Gonzalez",utiles.Sexo.MASCULINO,true,0,0,13, 0, 0));
-		facultad.agregarPersona(new Estudiante("05090266900","Leonardo David","Guirado Garcia",utiles.Sexo.MASCULINO,false,0,0,13, 0, 0));
-		facultad.agregarPersona(new Estudiante("05090266900","Jhonathan","Salgado Torres",utiles.Sexo.MASCULINO,true,0,0,13, 0, 0));
-		facultad.agregarPersona(new Estudiante("05090266900","Haisel","Reino  Bello",utiles.Sexo.MASCULINO,true,0,0,13, 0, 0));
-		facultad.agregarPersona(new Estudiante("05090266900","Frank","Delgado Durán",utiles.Sexo.MASCULINO,true,0,0,14, 0, 0));
-		facultad.agregarPersona(new Estudiante("05090266900","Chayanne","Suárez Villches",utiles.Sexo.MASCULINO,false,0,0,14, 0, 0));
-		facultad.agregarPersona(new Estudiante("05090266900","Ernesto Javier","Diego Rodriguez",utiles.Sexo.MASCULINO,true,0,0,14, 0, 0));
-		facultad.agregarPersona(new Estudiante("05090266900","David","Mayeta Martinez",utiles.Sexo.MASCULINO,false,0,0,14, 0, 0));
-		facultad.agregarPersona(new Estudiante("05090266900","Eduardo","Ortega Alfonso",utiles.Sexo.MASCULINO,true,0,0,14, 0, 0));
+		facultad.agregarPersona(
+				new Estudiante("05090266950", "Diego", "Canales Calvo", utiles.Sexo.MASCULINO, true, 0, 0, 12, 0, 0));
+		facultad.agregarPersona(new Estudiante("04032448951", "Aleksander", "Castañeda Morales", utiles.Sexo.MASCULINO,
+				true, 0, 0, 12, 0, 0));
+		facultad.agregarPersona(new Estudiante("05090266900", "Aniel", "Varela  Hernández", utiles.Sexo.MASCULINO, true,
+				0, 0, 12, 0, 0));
+		facultad.agregarPersona(new Estudiante("05090266900", "Javier Angel", "Soto Villanueva", utiles.Sexo.MASCULINO,
+				true, 0, 0, 12, 0, 0));
+		facultad.agregarPersona(
+				new Estudiante("05090266900", "Dariel", "Velazco Falcón", utiles.Sexo.MASCULINO, true, 0, 0, 12, 0, 0));
+		facultad.agregarPersona(new Estudiante("05090266900", "Marcos Alejandro", "Carrasco Pérez",
+				utiles.Sexo.MASCULINO, true, 0, 0, 11, 0, 0));
+		facultad.agregarPersona(new Estudiante("05090266900", "Javier Omar", "Cepero Carreño", utiles.Sexo.MASCULINO,
+				true, 0, 0, 11, 0, 0));
+		facultad.agregarPersona(
+				new Estudiante("05090266900", "Evian", "Diaz Vázquez", utiles.Sexo.MASCULINO, true, 0, 0, 11, 0, 0));
+		facultad.agregarPersona(
+				new Estudiante("05090266900", "Diego", "González León", utiles.Sexo.MASCULINO, true, 0, 0, 11, 0, 0));
+		facultad.agregarPersona(new Estudiante("05090266900", "Herbert Luis", "Navarro Valdés", utiles.Sexo.MASCULINO,
+				true, 0, 0, 11, 0, 0));
+		facultad.agregarPersona(new Estudiante("05032112157", "Gabriel", "Rodríguez Delgado", utiles.Sexo.MASCULINO,
+				true, 0, 0, 13, 0, 0));
+		facultad.agregarPersona(new Estudiante("05090266900", "Darell", "Perdomo Gonzalez", utiles.Sexo.MASCULINO, true,
+				0, 0, 13, 0, 0));
+		facultad.agregarPersona(new Estudiante("05090266900", "Leonardo David", "Guirado Garcia", utiles.Sexo.MASCULINO,
+				false, 0, 0, 13, 0, 0));
+		facultad.agregarPersona(new Estudiante("05090266900", "Jhonathan", "Salgado Torres", utiles.Sexo.MASCULINO,
+				true, 0, 0, 13, 0, 0));
+		facultad.agregarPersona(
+				new Estudiante("05090266900", "Haisel", "Reino  Bello", utiles.Sexo.MASCULINO, true, 0, 0, 13, 0, 0));
+		facultad.agregarPersona(
+				new Estudiante("05090266900", "Frank", "Delgado Durán", utiles.Sexo.MASCULINO, true, 0, 0, 14, 0, 0));
+		facultad.agregarPersona(new Estudiante("05090266900", "Chayanne", "Suárez Villches", utiles.Sexo.MASCULINO,
+				false, 0, 0, 14, 0, 0));
+		facultad.agregarPersona(new Estudiante("05090266900", "Ernesto Javier", "Diego Rodriguez",
+				utiles.Sexo.MASCULINO, true, 0, 0, 14, 0, 0));
+		facultad.agregarPersona(new Estudiante("05090266900", "David", "Mayeta Martinez", utiles.Sexo.MASCULINO, false,
+				0, 0, 14, 0, 0));
+		facultad.agregarPersona(new Estudiante("05090266900", "Eduardo", "Ortega Alfonso", utiles.Sexo.MASCULINO, true,
+				0, 0, 14, 0, 0));
 	}
 
 	public void agregarEstudiantesMujeresPrueba() {
-		if (estudiantesMujeresPruebaAgregados) return;
+		if (estudiantesMujeresPruebaAgregados)
+			return;
 		estudiantesMujeresPruebaAgregados = true;
-		facultad.agregarPersona(new Estudiante("06100948233","Daniela","Rodríguez Molina",utiles.Sexo.FEMENINO,true,0,0,12,0,0));
-		facultad.agregarPersona(new Estudiante("06030867876","Gloria","Santos Rosado",utiles.Sexo.FEMENINO,true,0,0,12,0,0));
-		facultad.agregarPersona(new Estudiante("06061368391","Aylin","Vázquez Alvarez",utiles.Sexo.FEMENINO,true,0,0,12,0,0));
-		facultad.agregarPersona(new Estudiante("06061368091","Naraisa de la Caridad","Pardo Flores",utiles.Sexo.FEMENINO,true,0,0,12,0,0));
-		facultad.agregarPersona(new Estudiante("06061368091","Ledydiana","Gómez Velázquez",utiles.Sexo.FEMENINO,true,0,0,12,0,0));
-		facultad.agregarPersona(new Estudiante("05032112157","Nicole","Ríos Rodríguez",utiles.Sexo.FEMENINO,true,0,0,13,0,0));
-		facultad.agregarPersona(new Estudiante("05032112157","María Karla","Martínez Pozo",utiles.Sexo.FEMENINO,true,0,0,13,0,0));
-		facultad.agregarPersona(new Estudiante("05032112157","Jennifer","Ramírez Hernández",utiles.Sexo.FEMENINO,true,0,0,13,0,0));
-		facultad.agregarPersona(new Estudiante("05032112157","Aranza María","Arias Matías",utiles.Sexo.FEMENINO,true,0,0,13,0,0));
-		facultad.agregarPersona(new Estudiante("06052915155","Sarahi","Perez Mendoza",utiles.Sexo.FEMENINO,true,0,0,13,0,0));
-		facultad.agregarPersona(new Estudiante("05032112157","Jade Bárbara","Córdova González",utiles.Sexo.FEMENINO,true,0,0,11,0,0));
-		facultad.agregarPersona(new Estudiante("05032112157","María Fernanda","Llopiz Fabelo",utiles.Sexo.FEMENINO,true,0,0,11,0,0));
-		facultad.agregarPersona(new Estudiante("05032112157","Jennifer de la Caridad","Rodríguez Barzola",utiles.Sexo.FEMENINO,true,0,0,11,0,0));
-		facultad.agregarPersona(new Estudiante("05032112157","Claudia","Salazar Martínez",utiles.Sexo.FEMENINO,true,0,0,11,0,0));
-		facultad.agregarPersona(new Estudiante("05032112157","Claudette","Caro Perez",utiles.Sexo.FEMENINO,true,0,0,11,0,0));
-		facultad.agregarPersona(new Estudiante("05032112157","Alison","Hidalgo  Guerra",utiles.Sexo.FEMENINO,true,0,0,14,0,0));
-		facultad.agregarPersona(new Estudiante("05032112157","Gabriela","Castillo Frias",utiles.Sexo.FEMENINO,true,0,0,14,0,0));
-		facultad.agregarPersona(new Estudiante("05032112157","Yeilin Dignora","De la Cruz Noriega",utiles.Sexo.FEMENINO,true,0,0,14,0,0));
-		facultad.agregarPersona(new Estudiante("05032112157","Daniela","Quintero Delfino",utiles.Sexo.FEMENINO,true,0,0,14,0,0));
-		facultad.agregarPersona(new Estudiante("05032112157","Patricia","Tomé Romero",utiles.Sexo.FEMENINO,true,0,0,14,0,0));
+		facultad.agregarPersona(new Estudiante("06100948233", "Daniela", "Rodríguez Molina", utiles.Sexo.FEMENINO, true,
+				0, 0, 12, 0, 0));
+		facultad.agregarPersona(
+				new Estudiante("06030867876", "Gloria", "Santos Rosado", utiles.Sexo.FEMENINO, true, 0, 0, 12, 0, 0));
+		facultad.agregarPersona(
+				new Estudiante("06061368391", "Aylin", "Vázquez Alvarez", utiles.Sexo.FEMENINO, true, 0, 0, 12, 0, 0));
+		facultad.agregarPersona(new Estudiante("06061368091", "Naraisa de la Caridad", "Pardo Flores",
+				utiles.Sexo.FEMENINO, true, 0, 0, 12, 0, 0));
+		facultad.agregarPersona(new Estudiante("06061368091", "Ledydiana", "Gómez Velázquez", utiles.Sexo.FEMENINO,
+				true, 0, 0, 12, 0, 0));
+		facultad.agregarPersona(
+				new Estudiante("05032112157", "Nicole", "Ríos Rodríguez", utiles.Sexo.FEMENINO, true, 0, 0, 13, 0, 0));
+		facultad.agregarPersona(new Estudiante("05032112157", "María Karla", "Martínez Pozo", utiles.Sexo.FEMENINO,
+				true, 0, 0, 13, 0, 0));
+		facultad.agregarPersona(new Estudiante("05032112157", "Jennifer", "Ramírez Hernández", utiles.Sexo.FEMENINO,
+				true, 0, 0, 13, 0, 0));
+		facultad.agregarPersona(new Estudiante("05032112157", "Aranza María", "Arias Matías", utiles.Sexo.FEMENINO,
+				true, 0, 0, 13, 0, 0));
+		facultad.agregarPersona(
+				new Estudiante("06052915155", "Sarahi", "Perez Mendoza", utiles.Sexo.FEMENINO, true, 0, 0, 13, 0, 0));
+		facultad.agregarPersona(new Estudiante("05032112157", "Jade Bárbara", "Córdova González", utiles.Sexo.FEMENINO,
+				true, 0, 0, 11, 0, 0));
+		facultad.agregarPersona(new Estudiante("05032112157", "María Fernanda", "Llopiz Fabelo", utiles.Sexo.FEMENINO,
+				true, 0, 0, 11, 0, 0));
+		facultad.agregarPersona(new Estudiante("05032112157", "Jennifer de la Caridad", "Rodríguez Barzola",
+				utiles.Sexo.FEMENINO, true, 0, 0, 11, 0, 0));
+		facultad.agregarPersona(new Estudiante("05032112157", "Claudia", "Salazar Martínez", utiles.Sexo.FEMENINO, true,
+				0, 0, 11, 0, 0));
+		facultad.agregarPersona(
+				new Estudiante("05032112157", "Claudette", "Caro Perez", utiles.Sexo.FEMENINO, true, 0, 0, 11, 0, 0));
+		facultad.agregarPersona(
+				new Estudiante("05032112157", "Alison", "Hidalgo  Guerra", utiles.Sexo.FEMENINO, true, 0, 0, 14, 0, 0));
+		facultad.agregarPersona(new Estudiante("05032112157", "Gabriela", "Castillo Frias", utiles.Sexo.FEMENINO, true,
+				0, 0, 14, 0, 0));
+		facultad.agregarPersona(new Estudiante("05032112157", "Yeilin Dignora", "De la Cruz Noriega",
+				utiles.Sexo.FEMENINO, true, 0, 0, 14, 0, 0));
+		facultad.agregarPersona(new Estudiante("05032112157", "Daniela", "Quintero Delfino", utiles.Sexo.FEMENINO, true,
+				0, 0, 14, 0, 0));
+		facultad.agregarPersona(
+				new Estudiante("05032112157", "Patricia", "Tomé Romero", utiles.Sexo.FEMENINO, true, 0, 0, 14, 0, 0));
 	}
-	//REPORTES
-	//Profesores voluntarios en vacaciones
+
+	// REPORTES
+	// Profesores voluntarios en vacaciones
 	public List<Trabajador> reporteProfesoresVoluntariosEnVacaciones() {
 		List<Trabajador> voluntarios = new ArrayList<Trabajador>();
 		boolean tieneGuardiaEnVacaciones;
@@ -288,12 +362,13 @@ public class PlanificadorGuardias {
 
 		return voluntarios;
 	}
-	//Listado de gurdias en dias festivos
+
+	// Listado de gurdias en dias festivos
 	public List<Guardia> listaGuardiasEnDiasFestivos() {
 		List<Guardia> resultado = new ArrayList<>();
 
 		for (Guardia guardia : guardiaFactory.getGuardias()) {
-			if(guardia.getTipo() == TipoGuardia.FESTIVO) {
+			if (guardia.getTipo() == TipoGuardia.FESTIVO) {
 				if (calendario.existeDiaFestivo(guardia.getHorario().getDia())) {
 					resultado.add(guardia);
 				}
@@ -312,7 +387,8 @@ public class PlanificadorGuardias {
 	}
 
 	/**
-	 * Reporte de estudiantes inactivos agrupados por grupo (ordenados de mayor a menor cantidad de inactivos)
+	 * Reporte de estudiantes inactivos agrupados por grupo (ordenados de mayor a
+	 * menor cantidad de inactivos)
 	 * y lista de trabajadores inactivos.
 	 */
 	public ReporteInactivos reportePersonasInactivas() {
@@ -356,7 +432,8 @@ public class PlanificadorGuardias {
 		public List<GrupoInactivos> gruposEstudiantesInactivos;
 		public List<Trabajador> trabajadoresInactivos;
 
-		public ReporteInactivos(List<GrupoInactivos> gruposEstudiantesInactivos, List<Trabajador> trabajadoresInactivos) {
+		public ReporteInactivos(List<GrupoInactivos> gruposEstudiantesInactivos,
+				List<Trabajador> trabajadoresInactivos) {
 			this.gruposEstudiantesInactivos = gruposEstudiantesInactivos;
 			this.trabajadoresInactivos = trabajadoresInactivos;
 		}
@@ -374,33 +451,56 @@ public class PlanificadorGuardias {
 		}
 	}
 
-	// :) 
-	public List<Trabajador> buscarTrabajadores(String filtro) {
-		List<Trabajador> resultado = new ArrayList<>();
-		for (Persona p : facultad.getPersonas()) {
-			if (p instanceof Trabajador) {
-				Trabajador t = (Trabajador) p;
-				boolean coincide = false;
-				if (filtro == null) {
-					coincide = true;
+	// :)
+	// Buscar estudiantes por filtro (nombre, apellidos, ci, grupo)
+	public List<Estudiante> buscarEstudiantes(String filtro) {
+		List<Estudiante> resultado = new ArrayList<>();
+		List<Persona> personas = getFacultad().getPersonas();
+		for (Persona p : personas) {
+			if (p instanceof Estudiante) {
+				Estudiante e = (Estudiante) p;
+				if (filtro == null || filtro.isEmpty()) {
+					resultado.add(e);
 				} else {
-					String ci = t.getCi().toLowerCase();
-					String nombre = t.getNombre().toLowerCase();
-					String apellidos = t.getApellidos().toLowerCase();
-					String fecha = t.getFechaDeIncorporacion() != null ? t.getFechaDeIncorporacion().toString() : "";
-					String voluntario = t.getVoluntario() ? "sí" : "no";
-					if (ci.contains(filtro) || nombre.contains(filtro) || apellidos.contains(filtro) || fecha.contains(filtro) || voluntario.contains(filtro)) {
-						coincide = true;
+					String ci = e.getCi().toLowerCase();
+					String nombre = e.getNombre().toLowerCase();
+					String apellidos = e.getApellidos().toLowerCase();
+					String grupoStr = String.valueOf(e.getGrupo());
+					filtro = filtro.toLowerCase();
+					if (ci.contains(filtro) || nombre.contains(filtro) || apellidos.contains(filtro)
+							|| grupoStr.contains(filtro)) {
+						resultado.add(e);
 					}
-				}
-				if (coincide) {
-					resultado.add(t);
 				}
 			}
 		}
 		return resultado;
 	}
-	// Hay varios métodos con break en bucles for, pero todos son para salir del bucle (no de switch), lo cual es válido y común.
-	// No hay métodos con dos returns en caminos alternativos (solo returns tempranos para validación o al final del método).
-}
 
+	// Buscar trabajadores por filtro (nombre, apellidos, ci)
+	public List<Trabajador> buscarTrabajadores(String filtro) {
+		List<Trabajador> resultado = new ArrayList<>();
+		List<Persona> personas = getFacultad().getPersonas();
+		for (Persona p : personas) {
+			if (p instanceof Trabajador) {
+				Trabajador t = (Trabajador) p;
+				if (filtro == null || filtro.isEmpty()) {
+					resultado.add(t);
+				} else {
+					String ci = t.getCi().toLowerCase();
+					String nombre = t.getNombre().toLowerCase();
+					String apellidos = t.getApellidos().toLowerCase();
+					filtro = filtro.toLowerCase();
+					if (ci.contains(filtro) || nombre.contains(filtro) || apellidos.contains(filtro)) {
+						resultado.add(t);
+					}
+				}
+			}
+		}
+		return resultado;
+	}
+	// Hay varios métodos con break en bucles for, pero todos son para salir del
+	// bucle (no de switch), lo cual es válido y común.
+	// No hay métodos con dos returns en caminos alternativos (solo returns
+	// tempranos para validación o al final del método).
+}

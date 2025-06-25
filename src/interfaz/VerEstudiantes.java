@@ -284,40 +284,21 @@ public class VerEstudiantes extends JFrame {
 
 	private void cargarEstudiantes(String filtro) {
 		model.setRowCount(0);
-		List<Persona> personas = planificador.getFacultad().getPersonas();
 		estudiantesFiltrados = new java.util.ArrayList<Persona>();
-		for (int i = 0; i < personas.size(); i++) {
-			Persona p = personas.get(i);
-			if (p instanceof Estudiante) {
-				Estudiante e = (Estudiante) p;
-				boolean coincide = false;
-				if (filtro == null) {
-					coincide = true;
-				} else {
-					String ci = e.getCi().toLowerCase();
-					String nombre = e.getNombre().toLowerCase();
-					String apellidos = e.getApellidos().toLowerCase();
-					String grupoStr = String.valueOf(e.getGrupo());
-					if (ci.contains(filtro) || nombre.contains(filtro) || apellidos.contains(filtro)
-							|| grupoStr.contains(filtro)) {
-						coincide = true;
-					}
-				}
-				if (coincide) {
-					estudiantesFiltrados.add(e);
-					model.addRow(new Object[] {
-							e.getCi(),
-							e.getNombre(),
-							e.getApellidos(),
-							e.getSexo().toString(),
-							e.getActivo() ? "Sí" : "No",
-							e.getGrupo(),
-							e.getGuardiasPlanificadas(), // Mostrar el número real de guardias planificadas
-							e.getGuardiasCumplidas(),
-							e.getGuardiasIncumplidas()
-					});
-				}
-			}
+		List<Estudiante> estudiantes = planificador.buscarEstudiantes(filtro);
+		for (Estudiante e : estudiantes) {
+			estudiantesFiltrados.add(e);
+			model.addRow(new Object[] {
+					e.getCi(),
+					e.getNombre(),
+					e.getApellidos(),
+					e.getSexo().toString(),
+					e.getActivo() ? "Sí" : "No",
+					e.getGrupo(),
+					e.getGuardiasPlanificadas(),
+					e.getGuardiasCumplidas(),
+					e.getGuardiasIncumplidas()
+			});
 		}
 	}
 
