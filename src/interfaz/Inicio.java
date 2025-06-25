@@ -14,7 +14,7 @@ public class Inicio extends JFrame {
 	private JPanel contentPane;
 	private PlanificadorGuardias planificador;
 
-	private boolean modoOscuro = true;
+	private boolean modoOscuro = false;
 	private Color amarillo = new Color(255, 215, 0);
 	private Color negro = Color.BLACK;
 	private Color darkBg = new Color(30, 32, 40); // color principal modo oscuro
@@ -104,7 +104,8 @@ public class Inicio extends JFrame {
 				}
 				if (!found) {
 					AddEstudiantes frame = new AddEstudiantes(planificador);
-					if (modoOscuro) frame.aplicarModoOscuro(modoOscuro, darkBg, darkFg, new Color(60, 63, 80), amarillo);
+					if (modoOscuro)
+						frame.aplicarModoOscuro(modoOscuro, darkBg, darkFg, new Color(60, 63, 80), amarillo);
 					frame.setVisible(true);
 				}
 			}
@@ -128,7 +129,8 @@ public class Inicio extends JFrame {
 				}
 				if (!found) {
 					AddTrabajadores frame = new AddTrabajadores(planificador, null, null);
-					if (modoOscuro) frame.aplicarModoOscuro(modoOscuro, darkBg, darkFg, new Color(60, 63, 80), amarillo);
+					if (modoOscuro)
+						frame.aplicarModoOscuro(modoOscuro, darkBg, darkFg, new Color(60, 63, 80), amarillo);
 					frame.setVisible(true);
 				}
 			}
@@ -171,8 +173,7 @@ public class Inicio extends JFrame {
 								darkBg,
 								darkFg,
 								new Color(60, 63, 80),
-								amarillo
-						);
+								amarillo);
 					}
 				}
 			}
@@ -180,30 +181,30 @@ public class Inicio extends JFrame {
 
 		menuPlanificar.add(planificarAuto);
 		menuBar.add(menuPlanificar);
-		
-				mostrarGuardiasPlanificadas = new JMenuItem("G.Planificadas");
-				menuPlanificar.add(mostrarGuardiasPlanificadas);
-				mostrarGuardiasPlanificadas.setFont(new Font("Arial", Font.PLAIN, 15));
-				mostrarGuardiasPlanificadas.setBackground(darkBg);
-				mostrarGuardiasPlanificadas.setForeground(amarillo);
-				mostrarGuardiasPlanificadas.setBorder(BorderFactory.createLineBorder(negro, 1));
-				mostrarGuardiasPlanificadas.addActionListener(new ActionListener() {
-					public void actionPerformed(ActionEvent e) {
-						boolean found = false;
-						for (Frame frame : JFrame.getFrames()) {
-							if (frame instanceof GuardiasPlanificadas && frame.isVisible()) {
-								frame.toFront();
-								frame.requestFocus();
-								found = true;
-								break;
-							}
-						}
-						if (!found) {
-							GuardiasPlanificadas frame = new GuardiasPlanificadas();
-							frame.setVisible(true);
-						}
+
+		mostrarGuardiasPlanificadas = new JMenuItem("G.Planificadas");
+		menuPlanificar.add(mostrarGuardiasPlanificadas);
+		mostrarGuardiasPlanificadas.setFont(new Font("Arial", Font.PLAIN, 15));
+		mostrarGuardiasPlanificadas.setBackground(darkBg);
+		mostrarGuardiasPlanificadas.setForeground(amarillo);
+		mostrarGuardiasPlanificadas.setBorder(BorderFactory.createLineBorder(negro, 1));
+		mostrarGuardiasPlanificadas.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				boolean found = false;
+				for (Frame frame : JFrame.getFrames()) {
+					if (frame instanceof GuardiasPlanificadas && frame.isVisible()) {
+						frame.toFront();
+						frame.requestFocus();
+						found = true;
+						break;
 					}
-				});
+				}
+				if (!found) {
+					GuardiasPlanificadas frame = new GuardiasPlanificadas();
+					frame.setVisible(true);
+				}
+			}
+		});
 
 		mostrarGuardiasCumplidas = new JMenuItem("G.Cumplidas");
 		menuPlanificar.add(mostrarGuardiasCumplidas);
@@ -274,7 +275,8 @@ public class Inicio extends JFrame {
 				}
 				if (!found) {
 					EditCalendario frame = new EditCalendario(planificador);
-					if (modoOscuro) frame.aplicarModoOscuro(modoOscuro, darkBg, darkFg, new Color(60, 63, 80), amarillo);
+					if (modoOscuro)
+						frame.aplicarModoOscuro(modoOscuro, darkBg, darkFg, new Color(60, 63, 80), amarillo);
 					frame.setVisible(true);
 				}
 			}
@@ -472,8 +474,10 @@ public class Inicio extends JFrame {
 				if (!found) {
 					// Solo agregar si no se han agregado antes
 					try {
-						java.lang.reflect.Field f1 = planificador.getClass().getDeclaredField("estudiantesMujeresPruebaAgregados");
-						java.lang.reflect.Field f2 = planificador.getClass().getDeclaredField("estudiantesVaronesPruebaAgregados");
+						java.lang.reflect.Field f1 = planificador.getClass()
+								.getDeclaredField("estudiantesMujeresPruebaAgregados");
+						java.lang.reflect.Field f2 = planificador.getClass()
+								.getDeclaredField("estudiantesVaronesPruebaAgregados");
 						f1.setAccessible(true);
 						f2.setAccessible(true);
 						boolean mujeresAgregadas = f1.getBoolean(planificador);
@@ -486,7 +490,8 @@ public class Inicio extends JFrame {
 							JOptionPane.showMessageDialog(Inicio.this, "Los estudiantes de prueba ya fueron cargados.");
 						}
 					} catch (Exception ex) {
-						JOptionPane.showMessageDialog(Inicio.this, "Error al verificar si los estudiantes ya fueron cargados.");
+						JOptionPane.showMessageDialog(Inicio.this,
+								"Error al verificar si los estudiantes ya fueron cargados.");
 					}
 				}
 			}
@@ -511,17 +516,20 @@ public class Inicio extends JFrame {
 				if (!found) {
 					// Solo agregar si no se han agregado antes
 					try {
-						java.lang.reflect.Field f = planificador.getClass().getDeclaredField("profesoresPruebaAgregados");
+						java.lang.reflect.Field f = planificador.getClass()
+								.getDeclaredField("profesoresPruebaAgregados");
 						f.setAccessible(true);
 						boolean yaAgregado = f.getBoolean(planificador);
 						if (!yaAgregado) {
 							planificador.agregarProfesoresPrueba();
 							JOptionPane.showMessageDialog(Inicio.this, "Trabajadores de prueba cargados.");
 						} else {
-							JOptionPane.showMessageDialog(Inicio.this, "Los trabajadores de prueba ya fueron cargados.");
+							JOptionPane.showMessageDialog(Inicio.this,
+									"Los trabajadores de prueba ya fueron cargados.");
 						}
 					} catch (Exception ex) {
-						JOptionPane.showMessageDialog(Inicio.this, "Error al verificar si los trabajadores ya fueron cargados.");
+						JOptionPane.showMessageDialog(Inicio.this,
+								"Error al verificar si los trabajadores ya fueron cargados.");
 					}
 				}
 			}
@@ -536,11 +544,10 @@ public class Inicio extends JFrame {
 			public void actionPerformed(java.awt.event.ActionEvent e) {
 				PlanificadorGuardias.getInstancia().getCalendario().agregarDiasFestivosPrueba();
 				JOptionPane.showMessageDialog(
-					Inicio.this,
-					"Días festivos de prueba cargados correctamente.",
-					"Información",
-					JOptionPane.INFORMATION_MESSAGE
-				);
+						Inicio.this,
+						"Días festivos de prueba cargados correctamente.",
+						"Información",
+						JOptionPane.INFORMATION_MESSAGE);
 			}
 		});
 
@@ -585,6 +592,7 @@ public class Inicio extends JFrame {
 
 		btnSalir = new JButton("Salir") {
 			private static final long serialVersionUID = 1L;
+
 			protected void paintComponent(Graphics g) {
 				if (isContentAreaFilled()) {
 					Graphics2D g2 = (Graphics2D) g.create();
@@ -605,8 +613,14 @@ public class Inicio extends JFrame {
 		btnSalir.setOpaque(true);
 
 		Icon iconoSalir = new Icon() {
-			public int getIconWidth() { return 20; }
-			public int getIconHeight() { return 20; }
+			public int getIconWidth() {
+				return 20;
+			}
+
+			public int getIconHeight() {
+				return 20;
+			}
+
 			public void paintIcon(Component c, Graphics g, int x, int y) {
 				Graphics2D g2 = (Graphics2D) g.create();
 				g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
@@ -614,8 +628,8 @@ public class Inicio extends JFrame {
 				g2.fillOval(x, y, 18, 18);
 				g2.setColor(Color.WHITE);
 				g2.setStroke(new BasicStroke(3));
-				g2.drawLine(x+5, y+5, x+13, y+13);
-				g2.drawLine(x+13, y+5, x+5, y+13);
+				g2.drawLine(x + 5, y + 5, x + 13, y + 13);
+				g2.drawLine(x + 13, y + 5, x + 5, y + 13);
 				g2.dispose();
 			}
 		};
@@ -633,6 +647,7 @@ public class Inicio extends JFrame {
 
 		btnLuna = new JButton() {
 			private static final long serialVersionUID = 1L;
+
 			protected void paintComponent(Graphics g) {
 				if (modoOscuro) {
 					setBackground(new Color(40, 40, 50));
@@ -651,33 +666,45 @@ public class Inicio extends JFrame {
 		btnLuna.setToolTipText("Cambiar modo oscuro");
 
 		iconoLuna = new Icon() {
-			public int getIconWidth() { return 32; }
-			public int getIconHeight() { return 32; }
+			public int getIconWidth() {
+				return 32;
+			}
+
+			public int getIconHeight() {
+				return 32;
+			}
+
 			public void paintIcon(Component c, Graphics g, int x, int y) {
 				Graphics2D g2 = (Graphics2D) g.create();
 				g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 				g2.setColor(new Color(240, 230, 140));
-				g2.fillArc(x+4, y+4, 24, 24, 45, 270);
+				g2.fillArc(x + 4, y + 4, 24, 24, 45, 270);
 				g2.setColor(new Color(30, 32, 40));
-				g2.fillArc(x+12, y+4, 24, 24, 45, 270);
+				g2.fillArc(x + 12, y + 4, 24, 24, 45, 270);
 				g2.dispose();
 			}
 		};
 		iconoSol = new Icon() {
-			public int getIconWidth() { return 32; }
-			public int getIconHeight() { return 32; }
+			public int getIconWidth() {
+				return 32;
+			}
+
+			public int getIconHeight() {
+				return 32;
+			}
+
 			public void paintIcon(Component c, Graphics g, int x, int y) {
 				Graphics2D g2 = (Graphics2D) g.create();
 				g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 				g2.setColor(new Color(255, 215, 0));
-				g2.fillOval(x+6, y+6, 20, 20);
+				g2.fillOval(x + 6, y + 6, 20, 20);
 				g2.setStroke(new BasicStroke(3));
 				for (int i = 0; i < 8; i++) {
-					double angle = Math.PI/4 * i;
-					int x1 = (int)(x+16+Math.cos(angle)*14);
-					int y1 = (int)(x+16+Math.sin(angle)*14);
-					int x2 = (int)(x+16+Math.cos(angle)*24);
-					int y2 = (int)(x+16+Math.sin(angle)*24);
+					double angle = Math.PI / 4 * i;
+					int x1 = (int) (x + 16 + Math.cos(angle) * 14);
+					int y1 = (int) (x + 16 + Math.sin(angle) * 14);
+					int x2 = (int) (x + 16 + Math.cos(angle) * 24);
+					int y2 = (int) (x + 16 + Math.sin(angle) * 24);
 					g2.drawLine(x1, y1, x2, y2);
 				}
 				g2.dispose();
@@ -703,7 +730,8 @@ public class Inicio extends JFrame {
 	}
 
 	private void actualizarImagenBienvenida() {
-		if (lblBienvenida == null) return;
+		if (lblBienvenida == null)
+			return;
 		ImageIcon iconoBase = modoOscuro ? fondoOscuroIcon : fondoClaroIcon;
 		if (iconoBase != null && iconoBase.getIconWidth() > 0 && iconoBase.getIconHeight() > 0) {
 			int ancho = lblBienvenida.getWidth();
@@ -727,9 +755,12 @@ public class Inicio extends JFrame {
 			menuBar.setBackground(amarillo);
 			menuBar.setOpaque(true);
 		}
-		if (contentPane != null) contentPane.setBackground(fondo);
-		if (panelCentral != null) panelCentral.setBackground(fondo);
-		if (panelInferior != null) panelInferior.setBackground(fondo);
+		if (contentPane != null)
+			contentPane.setBackground(fondo);
+		if (panelCentral != null)
+			panelCentral.setBackground(fondo);
+		if (panelInferior != null)
+			panelInferior.setBackground(fondo);
 		if (lblBienvenida != null) {
 			lblBienvenida.setForeground(texto);
 			actualizarImagenBienvenida();
@@ -828,11 +859,9 @@ public class Inicio extends JFrame {
 				panel,
 				"Confirmar salida",
 				JOptionPane.YES_NO_OPTION,
-				JOptionPane.QUESTION_MESSAGE
-		);
+				JOptionPane.QUESTION_MESSAGE);
 		if (opcion == JOptionPane.YES_OPTION) {
 			System.exit(0);
 		}
 	}
 }
-
