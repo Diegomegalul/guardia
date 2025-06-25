@@ -107,7 +107,7 @@ public class GuardiaFactory {
 		guardias.add(nuevaGuardia);
 
 		// Actualizar contadores
-		persona.setGuardiasAsignadas(persona.getGuardiasAsignadas() + 1);
+		persona.setGuardiasPlanificadas(persona.getGuardiasPlanificadas() + 1);
 
 		// Si es festivo, aumentar contador
 		if (tipo == TipoGuardia.FESTIVO || tipo == TipoGuardia.RECUPERACION_FESTIVO
@@ -140,7 +140,7 @@ public class GuardiaFactory {
 				est.registrarGuardiaCumplida();
 				// Si es guardia de recuperación, reducir pendientes
 				if (g.getTipo() == TipoGuardia.RECUPERACION) {
-					est.setGuardiasAsignadas(est.getGuardiasAsignadas() - 1);
+					est.setGuardiasPlanificadas(est.getGuardiasPlanificadas() - 1);
 				}
 			}
 			// Marcar la guardia como cumplida y pasarla al grupo de guardias cumplidas
@@ -207,7 +207,7 @@ public class GuardiaFactory {
 				Persona p = g.getPersona();
 
 				// Actualizar contadores generales
-				p.setGuardiasAsignadas(p.getGuardiasAsignadas() - 1);
+				p.setGuardiasPlanificadas(p.getGuardiasPlanificadas() - 1);
 
 				if (g.getTipo() == TipoGuardia.FESTIVO) {
 					p.setCantidadGuardiasFestivo(p.getCantidadGuardiasFestivo() - 1);
@@ -215,7 +215,7 @@ public class GuardiaFactory {
 
 				// Contador especifico para estudiantes
 				if (p instanceof Estudiante && g.getTipo() == TipoGuardia.NORMAL) {
-					((Estudiante) p).setGuardiasAsignadas(((Estudiante) p).getGuardiasAsignadas() - 1);
+					((Estudiante) p).setGuardiasPlanificadas(((Estudiante) p).getGuardiasPlanificadas() - 1);
 				}
 
 				it.remove();
@@ -357,7 +357,7 @@ public class GuardiaFactory {
 							Guardia g = new Guardia(nextId++, tipo, t, h1);
 							nuevasGuardias.add(g);
 							guardias.add(g);
-							t.setGuardiasAsignadas(t.getGuardiasAsignadas() + 1);
+							t.setGuardiasPlanificadas(t.getGuardiasPlanificadas() + 1);
 							if (esFestivo) {
 								t.setCantidadGuardiasFestivo(t.getCantidadGuardiasFestivo() + 1);
 							}
@@ -370,7 +370,7 @@ public class GuardiaFactory {
 							Guardia g = new Guardia(nextId++, tipo, t, h2);
 							nuevasGuardias.add(g);
 							guardias.add(g);
-							t.setGuardiasAsignadas(t.getGuardiasAsignadas() + 1);
+							t.setGuardiasPlanificadas(t.getGuardiasPlanificadas() + 1);
 							if (esFestivo) {
 								t.setCantidadGuardiasFestivo(t.getCantidadGuardiasFestivo() + 1);
 							}
@@ -406,7 +406,7 @@ public class GuardiaFactory {
 						tipo = esFestivo ? TipoGuardia.FESTIVO : TipoGuardia.NORMAL;
 					}
 					nuevasGuardias.add(new Guardia(nextId++, tipo, est, h));
-					est.setGuardiasAsignadas(est.getGuardiasAsignadas() + 1);
+					est.setGuardiasPlanificadas(est.getGuardiasPlanificadas() + 1);
 					if (tipo == TipoGuardia.FESTIVO || tipo == TipoGuardia.RECUPERACION_FESTIVO) {
 						est.setCantidadGuardiasFestivo(est.getCantidadGuardiasFestivo() + 1);
 					}
@@ -429,7 +429,7 @@ public class GuardiaFactory {
 							tipo = esFestivo ? TipoGuardia.FESTIVO : TipoGuardia.NORMAL;
 						}
 						nuevasGuardias.add(new Guardia(nextId++, tipo, est, h));
-						est.setGuardiasAsignadas(est.getGuardiasAsignadas() + 1);
+						est.setGuardiasPlanificadas(est.getGuardiasPlanificadas() + 1);
 						if (tipo == TipoGuardia.FESTIVO || tipo == TipoGuardia.RECUPERACION_FESTIVO) {
 							est.setCantidadGuardiasFestivo(est.getCantidadGuardiasFestivo() + 1);
 						}
@@ -445,7 +445,7 @@ public class GuardiaFactory {
 						if (!existe && t != null && t.puedeHacerGuardia(h)) {
 							TipoGuardia tipo = esFestivo ? TipoGuardia.FESTIVO : TipoGuardia.NORMAL;
 							nuevasGuardias.add(new Guardia(nextId++, tipo, t, h));
-							t.setGuardiasAsignadas(t.getGuardiasAsignadas() + 1);
+							t.setGuardiasPlanificadas(t.getGuardiasPlanificadas() + 1);
 							if (tipo == TipoGuardia.FESTIVO) {
 								t.setCantidadGuardiasFestivo(t.getCantidadGuardiasFestivo() + 1);
 							}
@@ -569,7 +569,7 @@ public class GuardiaFactory {
 		int minAsignadas = Integer.MAX_VALUE;
 		int minCumplidas = Integer.MAX_VALUE;
 		for (Estudiante e : lista) {
-			int asignadas = e.getGuardiasAsignadas();
+			int asignadas = e.getGuardiasPlanificadas();
 			int cumplidas = e.getGuardiasCumplidas();
 			if (e.getGuardiasRecuperacion() > 0) {
 				// Prioridad a los de recuperación
@@ -599,7 +599,7 @@ public class GuardiaFactory {
 		int minAsignadas = Integer.MAX_VALUE;
 		int minCumplidas = Integer.MAX_VALUE;
 		for (Trabajador t : lista) {
-			int asignadas = t.getGuardiasAsignadas();
+			int asignadas = t.getGuardiasPlanificadas();
 			int cumplidas = 0;
 			// Buscar cuántas guardias cumplidas tiene este trabajador
 			for (Guardia g : guardiasCumplidas) {

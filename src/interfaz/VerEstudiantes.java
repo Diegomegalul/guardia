@@ -302,7 +302,7 @@ public class VerEstudiantes extends JFrame {
 						e.getSexo().toString(), // Convertir Sexo a String para evitar ClassCastException
 						e.getActivo() ? "Sí" : "No",
 						e.getGrupo(),
-						e.getGuardiasAsignadas(),
+						e.getGuardiasPlanificadas(),
 						e.getGuardiasCumplidas(),
 						e.getGuardiasIncumplidas()
 					});

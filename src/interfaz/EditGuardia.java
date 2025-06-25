@@ -182,6 +182,12 @@ public class EditGuardia extends JFrame {
 					return;
 				}
 				// Guardar cambios
+				Persona personaAnterior = guardia.getPersona();
+				if (!personaAnterior.getCi().equals(persona.getCi())) {
+					// Actualizar contadores solo si cambia la persona
+					personaAnterior.setGuardiasPlanificadas(personaAnterior.getGuardiasPlanificadas() - 1);
+					persona.setGuardiasPlanificadas(persona.getGuardiasPlanificadas() + 1);
+				}
 				guardia.setTipo(tipo);
 				guardia.setPersona(persona);
 				guardia.getHorario().setDia(fecha);

@@ -49,37 +49,40 @@ public class VerGuardiasPersona extends JFrame {
 		String activo = persona != null ? (persona.getActivo() ? "Sí" : "No") : "";
 
 		JLabel lblDatos = new JLabel(
-			"<html><b>CI:</b> " + ci +
-			" &nbsp; <b>Nombre:</b> " + nombre +
-			" &nbsp; <b>Apellidos:</b> " + apellidos +
-			" &nbsp; <b>Sexo:</b> " + sexo +
-			" &nbsp; <b>Activo:</b> " + activo +
-			"</html>"
-		);
+				"<html><b>CI:</b> " + ci +
+						" &nbsp; <b>Nombre:</b> " + nombre +
+						" &nbsp; <b>Apellidos:</b> " + apellidos +
+						" &nbsp; <b>Sexo:</b> " + sexo +
+						" &nbsp; <b>Activo:</b> " + activo +
+						"</html>");
 		lblDatos.setFont(new Font("Arial", Font.PLAIN, 15));
 		lblDatos.setForeground(negro);
 		lblDatos.setBorder(new EmptyBorder(10, 0, 10, 0));
 		contentPane.add(lblDatos, BorderLayout.NORTH);
 
-		logica.GuardiaFactory.GuardiasPorPersona guardiasPorPersona =
-			logica.PlanificadorGuardias.getInstancia().getGuardiaFactory().obtenerGuardiasPorPersona(persona);
+		logica.GuardiaFactory.GuardiasPorPersona guardiasPorPersona = logica.PlanificadorGuardias.getInstancia()
+				.getGuardiaFactory().obtenerGuardiasPorPersona(persona);
 
 		List<Guardia> planificadas = guardiasPorPersona.asignadas;
 		List<Guardia> cumplidas = guardiasPorPersona.cumplidas;
 		List<Guardia> incumplidas = guardiasPorPersona.incumplidas;
 
-		String[] columnas = {"Fecha", "Hora Inicio", "Hora Fin", "Tipo"};
+		String[] columnas = { "Fecha", "Hora Inicio", "Hora Fin", "Tipo" };
 		DefaultTableModel modelPlanificadas = new DefaultTableModel(columnas, 0) {
 			private static final long serialVersionUID = 1L;
-			public boolean isCellEditable(int row, int column) { return false; }
+
+			public boolean isCellEditable(int row, int column) {
+				return false;
+			}
 		};
 		for (Guardia g : planificadas) {
-			if (g != null && g.getHorario() != null) {
+			if (g != null && g.getHorario() != null
+					&& (g.getTipo() == utiles.TipoGuardia.NORMAL || g.getTipo() == utiles.TipoGuardia.FESTIVO)) {
 				modelPlanificadas.addRow(new Object[] {
-					g.getHorario().getDia(),
-					g.getHorario().getHoraInicio(),
-					g.getHorario().getHoraFin(),
-					g.getTipo()
+						g.getHorario().getDia(),
+						g.getHorario().getHoraInicio(),
+						g.getHorario().getHoraFin(),
+						g.getTipo()
 				});
 			}
 		}
@@ -87,19 +90,23 @@ public class VerGuardiasPersona extends JFrame {
 		tablaPlanificadas.setFont(new Font("Arial", Font.PLAIN, 14));
 		tablaPlanificadas.getTableHeader().setFont(new Font("Arial", Font.BOLD, 14));
 		JScrollPane scrollPlanificadas = new JScrollPane(tablaPlanificadas);
-		scrollPlanificadas.setBorder(BorderFactory.createTitledBorder("Guardias planificadas (" + planificadas.size() + ")"));
+		scrollPlanificadas
+				.setBorder(BorderFactory.createTitledBorder("Guardias planificadas (" + planificadas.size() + ")"));
 
 		DefaultTableModel modelCumplidas = new DefaultTableModel(columnas, 0) {
 			private static final long serialVersionUID = 1L;
-			public boolean isCellEditable(int row, int column) { return false; }
+
+			public boolean isCellEditable(int row, int column) {
+				return false;
+			}
 		};
 		for (Guardia g : cumplidas) {
 			if (g != null && g.getHorario() != null) {
 				modelCumplidas.addRow(new Object[] {
-					g.getHorario().getDia(),
-					g.getHorario().getHoraInicio(),
-					g.getHorario().getHoraFin(),
-					g.getTipo()
+						g.getHorario().getDia(),
+						g.getHorario().getHoraInicio(),
+						g.getHorario().getHoraFin(),
+						g.getTipo()
 				});
 			}
 		}
@@ -111,15 +118,18 @@ public class VerGuardiasPersona extends JFrame {
 
 		DefaultTableModel modelIncumplidas = new DefaultTableModel(columnas, 0) {
 			private static final long serialVersionUID = 1L;
-			public boolean isCellEditable(int row, int column) { return false; }
+
+			public boolean isCellEditable(int row, int column) {
+				return false;
+			}
 		};
 		for (Guardia g : incumplidas) {
 			if (g != null && g.getHorario() != null) {
 				modelIncumplidas.addRow(new Object[] {
-					g.getHorario().getDia(),
-					g.getHorario().getHoraInicio(),
-					g.getHorario().getHoraFin(),
-					g.getTipo()
+						g.getHorario().getDia(),
+						g.getHorario().getHoraInicio(),
+						g.getHorario().getHoraFin(),
+						g.getTipo()
 				});
 			}
 		}
@@ -127,7 +137,8 @@ public class VerGuardiasPersona extends JFrame {
 		tablaIncumplidas.setFont(new Font("Arial", Font.PLAIN, 14));
 		tablaIncumplidas.getTableHeader().setFont(new Font("Arial", Font.BOLD, 14));
 		JScrollPane scrollIncumplidas = new JScrollPane(tablaIncumplidas);
-		scrollIncumplidas.setBorder(BorderFactory.createTitledBorder("Guardias incumplidas (" + incumplidas.size() + ")"));
+		scrollIncumplidas
+				.setBorder(BorderFactory.createTitledBorder("Guardias incumplidas (" + incumplidas.size() + ")"));
 
 		JPanel panelTablas = new JPanel();
 		panelTablas.setLayout(new BoxLayout(panelTablas, BoxLayout.Y_AXIS));

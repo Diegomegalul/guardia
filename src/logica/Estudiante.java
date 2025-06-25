@@ -14,9 +14,9 @@ public class Estudiante extends Persona {
 	private int guardiasIncumplidas; // Nuevo atributo guardias incumplidas
 
 	// Constructor
-	public Estudiante(String ci, String nombre, String apellidos, Sexo sexo, boolean activo, int guardiasAsignadas,
+	public Estudiante(String ci, String nombre, String apellidos, Sexo sexo, boolean activo, int guardiasPlanificadas,
 			int cantidadGuardiasFestivo, int grupo, int guardiasCumplidas, int guardiasRecuperacion) {
-		super(ci, nombre, apellidos, sexo, activo, guardiasAsignadas, cantidadGuardiasFestivo, guardiasCumplidas);
+		super(ci, nombre, apellidos, sexo, activo, guardiasPlanificadas, cantidadGuardiasFestivo, guardiasCumplidas);
 		setGrupo(grupo);
 		setGuardiasRecuperacion(guardiasRecuperacion);
 		this.guardiasIncumplidas = 0;
@@ -103,7 +103,7 @@ public class Estudiante extends Persona {
 	}
 
 	public void incrementarGuardiasAsignadas() {
-		this.guardiasAsignadas++;
+		this.guardiasPlanificadas++;
 	}
 
 	public void registrarGuardiaCumplida() {
@@ -111,7 +111,7 @@ public class Estudiante extends Persona {
 	}
 
 	public int calcularGuardiasPendientes() {
-		return guardiasAsignadas - guardiasCumplidas;
+		return guardiasPlanificadas - guardiasCumplidas;
 	}
 
 	public boolean tieneGuardiasPendientes() {

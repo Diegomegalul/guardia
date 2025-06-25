@@ -250,7 +250,7 @@ public class VerTrabajadores extends JFrame {
 				t.getSexo(),
 				t.getActivo() ? "Sí" : "No",
 				t.getFechaDeIncorporacion() != null ? t.getFechaDeIncorporacion().toString() : "",
-				t.getGuardiasAsignadas(),
+				t.getGuardiasPlanificadas(),
 				t.getCantidadGuardiasFestivo(),
 				t.getVoluntario() ? "Sí" : "No"
 			});
