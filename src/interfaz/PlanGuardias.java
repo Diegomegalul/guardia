@@ -25,6 +25,7 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
 
 import logica.PlanificadorGuardias;
 
@@ -277,6 +278,23 @@ public class PlanGuardias extends JFrame {
 				int anio = yearChooser.getYear();
 				PlanificadorGuardias planificador = PlanificadorGuardias.getInstancia();
 
+				// Validación: no permitir planificar meses anteriores al mes anterior al último
+				// mes planificado
+				java.time.LocalDate ultimoPlan = planificador.getGuardiaFactory().getUltimoMesPlanificado();
+				if (ultimoPlan != null) {
+					java.time.LocalDate mesActual = java.time.LocalDate.of(anio, mes, 1);
+					java.time.LocalDate mesAnteriorUltimo = ultimoPlan.minusMonths(1);
+					if (mesActual.isBefore(mesAnteriorUltimo)) {
+						JOptionPane.showMessageDialog(
+								PlanGuardias.this,
+								"No se puede planificar un mes anterior a " + mesAnteriorUltimo.getMonth() + " "
+										+ mesAnteriorUltimo.getYear() + ".",
+								"Mes inválido",
+								JOptionPane.ERROR_MESSAGE);
+						return;
+					}
+				}
+
 				// Verificar si ya hay guardias planificadas para este mes y año
 				java.util.List<logica.Guardia> guardiasExistentes = planificador.getGuardiaFactory().getGuardias();
 				boolean yaPlanificado = false;
@@ -338,6 +356,17 @@ public class PlanGuardias extends JFrame {
 		int mes = monthChooser.getMonth() + 1;
 		int anio = yearChooser.getYear();
 		java.util.List<logica.Guardia> guardias = PlanificadorGuardias.getInstancia().getGuardiaFactory().getGuardias();
+		// Ordenar por fecha descendente y luego por ID ascendente
+		java.util.Collections.sort(guardias, new java.util.Comparator<logica.Guardia>() {
+			@Override
+			public int compare(logica.Guardia g1, logica.Guardia g2) {
+				int cmp = g2.getHorario().getDia().compareTo(g1.getHorario().getDia());
+				if (cmp == 0) {
+					return Integer.compare(g1.getId(), g2.getId());
+				}
+				return cmp;
+			}
+		});
 		for (int i = 0; i < guardias.size(); i++) {
 			logica.Guardia g = guardias.get(i);
 			java.time.LocalDate fecha = g.getHorario().getDia();
@@ -347,7 +376,8 @@ public class PlanGuardias extends JFrame {
 					logica.Estudiante est = (logica.Estudiante) g.getPersona();
 					tipoPersona = "Estudiante " + (est.getSexo() == utiles.Sexo.MASCULINO ? "M" : "F");
 				} else if (g.getPersona() instanceof logica.Trabajador) {
-					tipoPersona = "Trabajador ";
+					logica.Trabajador trab = (logica.Trabajador) g.getPersona();
+					tipoPersona = "Trabajador " + (trab.getSexo() == utiles.Sexo.MASCULINO ? "M" : "F");
 				}
 				tablaModel.addRow(new Object[] {
 						g.getId(),
@@ -360,6 +390,9 @@ public class PlanGuardias extends JFrame {
 				});
 			}
 		}
+		// Permitir ordenar la tabla por columnas
+		TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(tablaModel);
+		tablaGuardias.setRowSorter(sorter);
 	}
 
 	public void aplicarModoOscuro(boolean oscuro, Color fondo, Color texto, Color boton, Color amarilloSec) {

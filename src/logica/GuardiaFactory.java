@@ -35,6 +35,10 @@ public class GuardiaFactory {
 	}
 
 	// Setters y Getters
+	public LocalDate getUltimoMesPlanificado() {
+		return ultimoMesPlanificado;
+	}
+
 	public List<Guardia> getGuardiasIncumplidas() {
 		return guardiasIncumplidas;
 	}
@@ -936,8 +940,11 @@ public class GuardiaFactory {
 				}
 			}
 		}
-		// Al finalizar, actualizar el último mes planificado
-		ultimoMesPlanificado = mesActual;
+		// Al finalizar, actualizar el último mes planificado solo si es posterior
+		if (ultimoMesPlanificado == null || mesActual.isAfter(ultimoMesPlanificado)) {
+			ultimoMesPlanificado = mesActual;
+		}
 		return guardiasAgregadas;
 	}
+
 }
