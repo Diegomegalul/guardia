@@ -92,6 +92,7 @@ public class PlanGuardias extends JFrame {
 
 		btnPlanificar = new JButton("Planificar") {
 			private static final long serialVersionUID = 1L;
+
 			protected void paintComponent(Graphics g) {
 				if (isContentAreaFilled()) {
 					Graphics2D g2 = (Graphics2D) g.create();
@@ -118,10 +119,13 @@ public class PlanGuardias extends JFrame {
 		contentPane.add(panelSuperior, BorderLayout.NORTH);
 
 		// Tabla de guardias planificadas
-		String[] columnas = {"ID", "Tipo", "Persona", "CI", "Fecha", "Hora Inicio", "Hora Fin"};
+		String[] columnas = { "ID", "Tipo", "Persona", "Tipo Persona", "Fecha", "Hora Inicio", "Hora Fin" };
 		tablaModel = new DefaultTableModel(columnas, 0) {
 			private static final long serialVersionUID = 1L;
-			public boolean isCellEditable(int row, int column) { return false; }
+
+			public boolean isCellEditable(int row, int column) {
+				return false;
+			}
 		};
 		tablaGuardias = new JTable(tablaModel);
 		tablaGuardias.getTableHeader().setFont(new Font("Arial", Font.BOLD, 14));
@@ -185,7 +189,8 @@ public class PlanGuardias extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				int fila = tablaGuardias.getSelectedRow();
 				if (fila == -1) {
-					JOptionPane.showMessageDialog(PlanGuardias.this, "Seleccione una guardia para intercambiar.", "Error", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(PlanGuardias.this, "Seleccione una guardia para intercambiar.",
+							"Error", JOptionPane.ERROR_MESSAGE);
 					return;
 				}
 				int id = Integer.parseInt(tablaModel.getValueAt(fila, 0).toString());
@@ -202,7 +207,8 @@ public class PlanGuardias extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				int fila = tablaGuardias.getSelectedRow();
 				if (fila == -1) {
-					JOptionPane.showMessageDialog(PlanGuardias.this, "Seleccione una guardia para editar.", "Error", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(PlanGuardias.this, "Seleccione una guardia para editar.", "Error",
+							JOptionPane.ERROR_MESSAGE);
 					return;
 				}
 				int id = Integer.parseInt(tablaModel.getValueAt(fila, 0).toString());
@@ -226,7 +232,8 @@ public class PlanGuardias extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				int fila = tablaGuardias.getSelectedRow();
 				if (fila == -1) {
-					JOptionPane.showMessageDialog(PlanGuardias.this, "Seleccione una guardia para eliminar.", "Error", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(PlanGuardias.this, "Seleccione una guardia para eliminar.", "Error",
+							JOptionPane.ERROR_MESSAGE);
 					return;
 				}
 				int id = Integer.parseInt(tablaModel.getValueAt(fila, 0).toString());
@@ -234,15 +241,16 @@ public class PlanGuardias extends JFrame {
 						PlanGuardias.this,
 						"¿Está seguro de eliminar la guardia seleccionada?",
 						"Confirmar eliminación",
-						JOptionPane.YES_NO_OPTION
-						);
+						JOptionPane.YES_NO_OPTION);
 				if (confirm == JOptionPane.YES_OPTION) {
 					boolean eliminado = PlanificadorGuardias.getInstancia().getGuardiaFactory().eliminarGuardia(id);
 					if (eliminado) {
-						JOptionPane.showMessageDialog(PlanGuardias.this, "Guardia eliminada correctamente.", "Eliminado", JOptionPane.INFORMATION_MESSAGE);
+						JOptionPane.showMessageDialog(PlanGuardias.this, "Guardia eliminada correctamente.",
+								"Eliminado", JOptionPane.INFORMATION_MESSAGE);
 						cargarGuardiasEnTabla();
 					} else {
-						JOptionPane.showMessageDialog(PlanGuardias.this, "No se pudo eliminar la guardia.", "Error", JOptionPane.ERROR_MESSAGE);
+						JOptionPane.showMessageDialog(PlanGuardias.this, "No se pudo eliminar la guardia.", "Error",
+								JOptionPane.ERROR_MESSAGE);
 					}
 				}
 			}
@@ -281,38 +289,50 @@ public class PlanGuardias extends JFrame {
 				}
 
 				if (yaPlanificado) {
-					JOptionPane.showMessageDialog(
-							PlanGuardias.this,
-							"Todas las guardias para este mes ya se han planificado.",
-							"Información",
-							JOptionPane.INFORMATION_MESSAGE
-							);
+					// Si ya está planificado, intentar planificar huecos disponibles
+					int nuevas = planificador.getGuardiaFactory()
+							.planificarGuardiasDisponiblesMes(planificador.getFacultad(), anio, mes);
+					if (nuevas > 0) {
+						JOptionPane.showMessageDialog(
+								PlanGuardias.this,
+								"Se agregaron " + nuevas + " nuevas guardias en huecos disponibles.",
+								"Guardias adicionales",
+								JOptionPane.INFORMATION_MESSAGE);
+					} else {
+						JOptionPane.showMessageDialog(
+								PlanGuardias.this,
+								"Todas las guardias para este mes ya se han planificado y no hay huecos disponibles.",
+								"Información",
+								JOptionPane.INFORMATION_MESSAGE);
+					}
 					cargarGuardiasEnTabla();
 					return;
 				}
 
 				// Planificar y guardar en GuardiaFactory
-				java.util.List<logica.Guardia> guardiasPlanificadas = planificador.getGuardiaFactory().planificarGuardiasMes(planificador.getFacultad(), anio, mes);
+				java.util.List<logica.Guardia> guardiasPlanificadas = planificador.getGuardiaFactory()
+						.planificarGuardiasMes(planificador.getFacultad(), anio, mes);
 
 				if (guardiasPlanificadas == null || guardiasPlanificadas.isEmpty()) {
 					JOptionPane.showMessageDialog(
 							PlanGuardias.this,
 							"No hay guardias para planificar en este mes.",
 							"Información",
-							JOptionPane.INFORMATION_MESSAGE
-							);
+							JOptionPane.INFORMATION_MESSAGE);
 					cargarGuardiasEnTabla();
 					return;
 				}
 
-				// NO agregar de nuevo las guardias a la lista global, ya lo hace planificarGuardiasMes
+				// NO agregar de nuevo las guardias a la lista global, ya lo hace
+				// planificarGuardiasMes
 				// Solo recargar la tabla
 				cargarGuardiasEnTabla();
 			}
 		});
 	}
 
-	// Método para cargar guardias existentes en la tabla según mes y año seleccionados
+	// Método para cargar guardias existentes en la tabla según mes y año
+	// seleccionados
 	private void cargarGuardiasEnTabla() {
 		tablaModel.setRowCount(0);
 		int mes = monthChooser.getMonth() + 1;
@@ -322,11 +342,18 @@ public class PlanGuardias extends JFrame {
 			logica.Guardia g = guardias.get(i);
 			java.time.LocalDate fecha = g.getHorario().getDia();
 			if (fecha.getMonthValue() == mes && fecha.getYear() == anio) {
+				String tipoPersona = "";
+				if (g.getPersona() instanceof logica.Estudiante) {
+					logica.Estudiante est = (logica.Estudiante) g.getPersona();
+					tipoPersona = "Estudiante " + (est.getSexo() == utiles.Sexo.MASCULINO ? "M" : "F");
+				} else if (g.getPersona() instanceof logica.Trabajador) {
+					tipoPersona = "Trabajador ";
+				}
 				tablaModel.addRow(new Object[] {
 						g.getId(),
 						g.getTipo(),
 						g.getPersona().getNombre() + " " + g.getPersona().getApellidos(),
-						g.getPersona().getCi(),
+						tipoPersona,
 						g.getHorario().getDia(),
 						g.getHorario().getHoraInicio(),
 						g.getHorario().getHoraFin()
@@ -348,7 +375,8 @@ public class PlanGuardias extends JFrame {
 		}
 	}
 
-	private void setComponentColors(Component comp, boolean oscuro, Color fondo, Color texto, Color boton, Color amarilloSec) {
+	private void setComponentColors(Component comp, boolean oscuro, Color fondo, Color texto, Color boton,
+			Color amarilloSec) {
 		if (comp instanceof JPanel) {
 			comp.setBackground(fondo);
 			for (Component child : ((JPanel) comp).getComponents()) {
@@ -375,7 +403,8 @@ public class PlanGuardias extends JFrame {
 	private logica.Guardia buscarGuardiaPorId(int id) {
 		java.util.List<logica.Guardia> guardias = PlanificadorGuardias.getInstancia().getGuardiaFactory().getGuardias();
 		for (logica.Guardia g : guardias) {
-			if (g.getId() == id) return g;
+			if (g.getId() == id)
+				return g;
 		}
 		return null;
 	}
