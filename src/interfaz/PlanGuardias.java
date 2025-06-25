@@ -30,6 +30,7 @@ import logica.PlanificadorGuardias;
 
 import com.toedter.calendar.JMonthChooser;
 import com.toedter.calendar.JYearChooser;
+import java.awt.Dimension;
 
 public class PlanGuardias extends JFrame {
 
@@ -102,6 +103,7 @@ public class PlanGuardias extends JFrame {
 				super.paintComponent(g);
 			}
 		};
+		btnPlanificar.setSize(new Dimension(33, 9));
 		btnPlanificar.setFont(new Font("Arial", Font.BOLD, 16));
 		btnPlanificar.setBackground(negro);
 		btnPlanificar.setForeground(amarillo);
@@ -145,6 +147,24 @@ public class PlanGuardias extends JFrame {
 		btnEditar.setContentAreaFilled(false);
 		btnEditar.setOpaque(true);
 
+		JButton btnEditarGuardia = new JButton("Editar");
+		btnEditarGuardia.setFont(new Font("Arial", Font.BOLD, 15));
+		btnEditarGuardia.setBackground(negro);
+		btnEditarGuardia.setForeground(amarillo);
+		btnEditarGuardia.setFocusPainted(false);
+		btnEditarGuardia.setBorder(BorderFactory.createLineBorder(negro, 2, true));
+		btnEditarGuardia.setContentAreaFilled(false);
+		btnEditarGuardia.setOpaque(true);
+
+		JButton btnActualizar = new JButton("Actualizar");
+		btnActualizar.setFont(new Font("Arial", Font.BOLD, 15));
+		btnActualizar.setBackground(negro);
+		btnActualizar.setForeground(amarillo);
+		btnActualizar.setFocusPainted(false);
+		btnActualizar.setBorder(BorderFactory.createLineBorder(negro, 2, true));
+		btnActualizar.setContentAreaFilled(false);
+		btnActualizar.setOpaque(true);
+
 		JButton btnEliminar = new JButton("Eliminar");
 		btnEliminar.setFont(new Font("Arial", Font.BOLD, 15));
 		btnEliminar.setBackground(negro);
@@ -155,10 +175,12 @@ public class PlanGuardias extends JFrame {
 		btnEliminar.setOpaque(true);
 
 		panelBoton.add(btnEditar);
+		panelBoton.add(btnEditarGuardia);
+		panelBoton.add(btnActualizar);
 		panelBoton.add(btnEliminar);
 		contentPane.add(panelBoton, BorderLayout.SOUTH);
 
-		// Acción editar
+		// Acción intercambiar
 		btnEditar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int fila = tablaGuardias.getSelectedRow();
@@ -172,6 +194,26 @@ public class PlanGuardias extends JFrame {
 					IntercambioPersona frame = new IntercambioPersona(g);
 					frame.setVisible(true);
 				}
+			}
+		});
+
+		// Acción editar guardia
+		btnEditarGuardia.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int fila = tablaGuardias.getSelectedRow();
+				if (fila == -1) {
+					JOptionPane.showMessageDialog(PlanGuardias.this, "Seleccione una guardia para editar.", "Error", JOptionPane.ERROR_MESSAGE);
+					return;
+				}
+				EditGuardia frame = new EditGuardia();
+				frame.setVisible(true);
+			}
+		});
+
+		// Acción actualizar
+		btnActualizar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				cargarGuardiasEnTabla();
 			}
 		});
 
