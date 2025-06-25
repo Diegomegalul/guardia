@@ -265,7 +265,6 @@ public class GuardiaFactory {
 			}
 			boolean esJA = (mesPlan == 7 || mesPlan == 8);
 
-			// Alternancia de fin de semana: si es un mes nuevo, usar el valor anterior
 			LocalDate mesActual = LocalDate.of(anioPlan, mesPlan, 1);
 			boolean finSemanaMujer = finSemanaMujerActual;
 			if (ultimoMesPlanificado == null || !mesActual.getMonth().equals(ultimoMesPlanificado.getMonth())
@@ -280,40 +279,20 @@ public class GuardiaFactory {
 				revisarGuardiasIncumplidas(mes, anio);
 			}
 
-			java.time.YearMonth ym = java.time.YearMonth.of(anioPlan, mesPlan);
-			for (int day = 1; day <= ym.lengthOfMonth(); day++) {
-				LocalDate fecha = LocalDate.of(ym.getYear(), ym.getMonthValue(), day);
-				int dow = fecha.getDayOfWeek().getValue(); // 1=Lunes ... 7=Domingo
-				boolean esFestivo = (calendario != null && calendario.existeDiaFestivo(fecha));
-				// Guardias de estudiantes hombres: todos los días, 20:00-08:00
-				if (!estudiantesM.isEmpty()) {
-					Estudiante est = seleccionarEstudianteRecuperacionPrimero(estudiantesM);
-					Horario h = new Horario(fecha, LocalTime.of(20, 0), LocalTime.of(8, 0));
-					boolean existe = existeGuardiaParaPersonaEnHorario(est, fecha, LocalTime.of(20, 0),
-							LocalTime.of(8, 0), null);
-					if (!existe && est != null && est.puedeHacerGuardia(h)) {
-						TipoGuardia tipo;
-						if (est.getGuardiasRecuperacion() > 0) {
-							tipo = esFestivo ? TipoGuardia.RECUPERACION_FESTIVO : TipoGuardia.RECUPERACION;
-							est.setGuardiasRecuperacion(est.getGuardiasRecuperacion() - 1);
-						} else {
-							tipo = esFestivo ? TipoGuardia.FESTIVO : TipoGuardia.NORMAL;
-						}
-						nuevasGuardias.add(new Guardia(nextId++, tipo, est, h));
-						est.setGuardiasPlanificadas(est.getGuardiasPlanificadas() + 1);
-						if (tipo == TipoGuardia.FESTIVO || tipo == TipoGuardia.RECUPERACION_FESTIVO) {
-							est.setCantidadGuardiasFestivo(est.getCantidadGuardiasFestivo() + 1);
-						}
-					}
-				}
-				// Guardias de estudiantes mujeres: solo fines de semana, alternando con
-				// trabajadores
-				if (dow == 6 || dow == 7) {
-					if (finSemanaMujer && !estudiantesF.isEmpty()) {
-						Estudiante est = seleccionarEstudianteRecuperacionPrimero(estudiantesF);
-						Horario h = new Horario(fecha, LocalTime.of(8, 0), LocalTime.of(20, 0));
-						boolean existe = existeGuardiaParaPersonaEnHorario(est, fecha, LocalTime.of(8, 0),
-								LocalTime.of(20, 0), null);
+			if (esJA) {
+				planificarGuardiasJulioAgosto(trabajadores, nuevasGuardias, anioPlan, mesPlan);
+			} else {
+				java.time.YearMonth ym = java.time.YearMonth.of(anioPlan, mesPlan);
+				for (int day = 1; day <= ym.lengthOfMonth(); day++) {
+					LocalDate fecha = LocalDate.of(ym.getYear(), ym.getMonthValue(), day);
+					int dow = fecha.getDayOfWeek().getValue(); // 1=Lunes ... 7=Domingo
+					boolean esFestivo = (calendario != null && calendario.existeDiaFestivo(fecha));
+					// Guardias de estudiantes hombres: todos los días, 20:00-08:00
+					if (!estudiantesM.isEmpty()) {
+						Estudiante est = seleccionarEstudianteRecuperacionPrimero(estudiantesM);
+						Horario h = new Horario(fecha, LocalTime.of(20, 0), LocalTime.of(8, 0));
+						boolean existe = existeGuardiaParaPersonaEnHorario(est, fecha, LocalTime.of(20, 0),
+								LocalTime.of(8, 0), null);
 						if (!existe && est != null && est.puedeHacerGuardia(h)) {
 							TipoGuardia tipo;
 							if (est.getGuardiasRecuperacion() > 0) {
@@ -328,26 +307,50 @@ public class GuardiaFactory {
 								est.setCantidadGuardiasFestivo(est.getCantidadGuardiasFestivo() + 1);
 							}
 						}
-					} else if (!finSemanaMujer && !trabajadores.isEmpty()) {
-						for (int turno = 0; turno < 2; turno++) {
-							LocalTime ini = (turno == 0) ? LocalTime.of(9, 0) : LocalTime.of(14, 0);
-							LocalTime fin = (turno == 0) ? LocalTime.of(14, 0) : LocalTime.of(19, 0);
-							Horario h = new Horario(fecha, ini, fin);
-							Trabajador t = seleccionarTrabajadorParaGuardia(trabajadores);
-							boolean existe = existeGuardiaParaPersonaEnHorario(t, fecha, ini, fin, null);
-							if (!existe && t != null && t.puedeHacerGuardia(h)) {
-								TipoGuardia tipo = esFestivo ? TipoGuardia.FESTIVO : TipoGuardia.NORMAL;
-								nuevasGuardias.add(new Guardia(nextId++, tipo, t, h));
-								t.setGuardiasPlanificadas(t.getGuardiasPlanificadas() + 1);
-								if (tipo == TipoGuardia.FESTIVO) {
-									t.setCantidadGuardiasFestivo(t.getCantidadGuardiasFestivo() + 1);
+					}
+					// Guardias de estudiantes mujeres: solo fines de semana, alternando con
+					// trabajadores
+					if (dow == 6 || dow == 7) {
+						if (finSemanaMujer && !estudiantesF.isEmpty()) {
+							Estudiante est = seleccionarEstudianteRecuperacionPrimero(estudiantesF);
+							Horario h = new Horario(fecha, LocalTime.of(8, 0), LocalTime.of(20, 0));
+							boolean existe = existeGuardiaParaPersonaEnHorario(est, fecha, LocalTime.of(8, 0),
+									LocalTime.of(20, 0), null);
+							if (!existe && est != null && est.puedeHacerGuardia(h)) {
+								TipoGuardia tipo;
+								if (est.getGuardiasRecuperacion() > 0) {
+									tipo = esFestivo ? TipoGuardia.RECUPERACION_FESTIVO : TipoGuardia.RECUPERACION;
+									est.setGuardiasRecuperacion(est.getGuardiasRecuperacion() - 1);
+								} else {
+									tipo = esFestivo ? TipoGuardia.FESTIVO : TipoGuardia.NORMAL;
+								}
+								nuevasGuardias.add(new Guardia(nextId++, tipo, est, h));
+								est.setGuardiasPlanificadas(est.getGuardiasPlanificadas() + 1);
+								if (tipo == TipoGuardia.FESTIVO || tipo == TipoGuardia.RECUPERACION_FESTIVO) {
+									est.setCantidadGuardiasFestivo(est.getCantidadGuardiasFestivo() + 1);
+								}
+							}
+						} else if (!finSemanaMujer && !trabajadores.isEmpty()) {
+							for (int turno = 0; turno < 2; turno++) {
+								LocalTime ini = (turno == 0) ? LocalTime.of(9, 0) : LocalTime.of(14, 0);
+								LocalTime fin = (turno == 0) ? LocalTime.of(14, 0) : LocalTime.of(19, 0);
+								Horario h = new Horario(fecha, ini, fin);
+								Trabajador t = seleccionarTrabajadorParaGuardia(trabajadores);
+								boolean existe = existeGuardiaParaPersonaEnHorario(t, fecha, ini, fin, null);
+								if (!existe && t != null && t.puedeHacerGuardia(h)) {
+									TipoGuardia tipo = esFestivo ? TipoGuardia.FESTIVO : TipoGuardia.NORMAL;
+									nuevasGuardias.add(new Guardia(nextId++, tipo, t, h));
+									t.setGuardiasPlanificadas(t.getGuardiasPlanificadas() + 1);
+									if (tipo == TipoGuardia.FESTIVO) {
+										t.setCantidadGuardiasFestivo(t.getCantidadGuardiasFestivo() + 1);
+									}
 								}
 							}
 						}
-					}
-					if (dow == 7) {
-						finSemanaMujer = !finSemanaMujer;
-						finSemanaMujerActual = finSemanaMujer;
+						if (dow == 7) {
+							finSemanaMujer = !finSemanaMujer;
+							finSemanaMujerActual = finSemanaMujer;
+						}
 					}
 				}
 			}
@@ -464,84 +467,6 @@ public class GuardiaFactory {
 							guardiasPorDia.put(fecha, 2);
 						}
 					}
-				}
-			}
-		}
-	}
-
-	// Planifica guardias para el resto del año
-	private void planificarGuardiasRestoDelAnio(List<Estudiante> estudiantesM, List<Estudiante> estudiantesF,
-			List<Trabajador> trabajadores, List<Guardia> nuevasGuardias, int anioPlan, int mesPlan) {
-		java.time.YearMonth ym = java.time.YearMonth.of(anioPlan, mesPlan);
-		boolean finSemanaMujer = true;
-		for (int day = 1; day <= ym.lengthOfMonth(); day++) {
-			LocalDate fecha = LocalDate.of(ym.getYear(), ym.getMonthValue(), day);
-			int dow = fecha.getDayOfWeek().getValue(); // 1=Lunes ... 7=Domingo
-			boolean esFestivo = (calendario != null && calendario.existeDiaFestivo(fecha));
-			// Guardias de estudiantes hombres: todos los días, 20:00-08:00
-			if (!estudiantesM.isEmpty()) {
-				Estudiante est = seleccionarEstudianteRecuperacionPrimero(estudiantesM);
-				Horario h = new Horario(fecha, LocalTime.of(20, 0), LocalTime.of(8, 0));
-				boolean existe = existeGuardiaParaPersonaEnHorario(est, fecha, LocalTime.of(20, 0), LocalTime.of(8, 0),
-						null);
-				if (!existe && est != null && est.puedeHacerGuardia(h)) {
-					TipoGuardia tipo;
-					if (est.getGuardiasRecuperacion() > 0) {
-						tipo = esFestivo ? TipoGuardia.RECUPERACION_FESTIVO : TipoGuardia.RECUPERACION;
-						est.setGuardiasRecuperacion(est.getGuardiasRecuperacion() - 1);
-					} else {
-						tipo = esFestivo ? TipoGuardia.FESTIVO : TipoGuardia.NORMAL;
-					}
-					nuevasGuardias.add(new Guardia(nextId++, tipo, est, h));
-					est.setGuardiasPlanificadas(est.getGuardiasPlanificadas() + 1);
-					if (tipo == TipoGuardia.FESTIVO || tipo == TipoGuardia.RECUPERACION_FESTIVO) {
-						est.setCantidadGuardiasFestivo(est.getCantidadGuardiasFestivo() + 1);
-					}
-				}
-			}
-			// Guardias de estudiantes mujeres: solo fines de semana, alternando con
-			// trabajadores
-			if (dow == 6 || dow == 7) {
-				if (finSemanaMujer && !estudiantesF.isEmpty()) {
-					Estudiante est = seleccionarEstudianteRecuperacionPrimero(estudiantesF);
-					Horario h = new Horario(fecha, LocalTime.of(8, 0), LocalTime.of(20, 0));
-					boolean existe = existeGuardiaParaPersonaEnHorario(est, fecha, LocalTime.of(8, 0),
-							LocalTime.of(20, 0), null);
-					if (!existe && est != null && est.puedeHacerGuardia(h)) {
-						TipoGuardia tipo;
-						if (est.getGuardiasRecuperacion() > 0) {
-							tipo = esFestivo ? TipoGuardia.RECUPERACION_FESTIVO : TipoGuardia.RECUPERACION;
-							est.setGuardiasRecuperacion(est.getGuardiasRecuperacion() - 1);
-						} else {
-							tipo = esFestivo ? TipoGuardia.FESTIVO : TipoGuardia.NORMAL;
-						}
-						nuevasGuardias.add(new Guardia(nextId++, tipo, est, h));
-						est.setGuardiasPlanificadas(est.getGuardiasPlanificadas() + 1);
-						if (tipo == TipoGuardia.FESTIVO || tipo == TipoGuardia.RECUPERACION_FESTIVO) {
-							est.setCantidadGuardiasFestivo(est.getCantidadGuardiasFestivo() + 1);
-						}
-					}
-				} else if (!finSemanaMujer && !trabajadores.isEmpty()) {
-					// Trabajadores: 9-14 y 14-19 (solo fuera de julio/agosto)
-					for (int turno = 0; turno < 2; turno++) {
-						LocalTime ini = (turno == 0) ? LocalTime.of(9, 0) : LocalTime.of(14, 0);
-						LocalTime fin = (turno == 0) ? LocalTime.of(14, 0) : LocalTime.of(19, 0);
-						Horario h = new Horario(fecha, ini, fin);
-						Trabajador t = seleccionarTrabajadorParaGuardia(trabajadores);
-						boolean existe = existeGuardiaParaPersonaEnHorario(t, fecha, ini, fin, null);
-						if (!existe && t != null && t.puedeHacerGuardia(h)) {
-							TipoGuardia tipo = esFestivo ? TipoGuardia.FESTIVO : TipoGuardia.NORMAL;
-							nuevasGuardias.add(new Guardia(nextId++, tipo, t, h));
-							t.setGuardiasPlanificadas(t.getGuardiasPlanificadas() + 1);
-							if (tipo == TipoGuardia.FESTIVO) {
-								t.setCantidadGuardiasFestivo(t.getCantidadGuardiasFestivo() + 1);
-							}
-						}
-					}
-				}
-				if (dow == 7) {
-					finSemanaMujer = !finSemanaMujer;
-					finSemanaMujerActual = finSemanaMujer;
 				}
 			}
 		}
@@ -810,6 +735,14 @@ public class GuardiaFactory {
 			int dow = fecha.getDayOfWeek().getValue();
 			boolean esFinDeSemana = (dow == 6 || dow == 7);
 			boolean esFestivo = (calendario != null && calendario.existeDiaFestivo(fecha));
+
+			// Al comenzar cada sábado, decidir alternancia real según guardias ya asignadas
+			if (dow == 6) {
+				Boolean tipoFinSemana = buscarTipoFinDeSemana(fecha, guardias, estudiantesF, trabajadores);
+				if (tipoFinSemana != null) {
+					finSemanaMujer = tipoFinSemana;
+				}
+			}
 
 			boolean ocupadoNocturno = false;
 			boolean ocupadoDiurno = false;
