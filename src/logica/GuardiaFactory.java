@@ -395,7 +395,8 @@ public class GuardiaFactory {
 			if (!estudiantesM.isEmpty()) {
 				Estudiante est = seleccionarEstudianteRecuperacionPrimero(estudiantesM);
 				Horario h = new Horario(fecha, LocalTime.of(20, 0), LocalTime.of(8, 0));
-				boolean existe = existeGuardia(est, h);
+				boolean existe = existeGuardiaParaPersonaEnHorario(est, fecha, LocalTime.of(20, 0), LocalTime.of(8, 0),
+						null);
 				if (!existe && est != null && est.puedeHacerGuardia(h)) {
 					TipoGuardia tipo;
 					if (est.getGuardiasRecuperacion() > 0) {
@@ -417,7 +418,8 @@ public class GuardiaFactory {
 				if (finSemanaMujer && !estudiantesF.isEmpty()) {
 					Estudiante est = seleccionarEstudianteRecuperacionPrimero(estudiantesF);
 					Horario h = new Horario(fecha, LocalTime.of(8, 0), LocalTime.of(20, 0));
-					boolean existe = existeGuardia(est, h);
+					boolean existe = existeGuardiaParaPersonaEnHorario(est, fecha, LocalTime.of(8, 0),
+							LocalTime.of(20, 0), null);
 					if (!existe && est != null && est.puedeHacerGuardia(h)) {
 						TipoGuardia tipo;
 						if (est.getGuardiasRecuperacion() > 0) {
@@ -435,11 +437,11 @@ public class GuardiaFactory {
 				} else if (!finSemanaMujer && !trabajadores.isEmpty()) {
 					// Trabajadores: 9-14 y 14-19 (solo fuera de julio/agosto)
 					for (int turno = 0; turno < 2; turno++) {
-						Horario h = (turno == 0)
-								? new Horario(fecha, LocalTime.of(9, 0), LocalTime.of(14, 0))
-								: new Horario(fecha, LocalTime.of(14, 0), LocalTime.of(19, 0));
+						LocalTime ini = (turno == 0) ? LocalTime.of(9, 0) : LocalTime.of(14, 0);
+						LocalTime fin = (turno == 0) ? LocalTime.of(14, 0) : LocalTime.of(19, 0);
+						Horario h = new Horario(fecha, ini, fin);
 						Trabajador t = seleccionarTrabajadorParaGuardia(trabajadores);
-						boolean existe = existeGuardia(t, h);
+						boolean existe = existeGuardiaParaPersonaEnHorario(t, fecha, ini, fin, null);
 						if (!existe && t != null && t.puedeHacerGuardia(h)) {
 							TipoGuardia tipo = esFestivo ? TipoGuardia.FESTIVO : TipoGuardia.NORMAL;
 							nuevasGuardias.add(new Guardia(nextId++, tipo, t, h));
@@ -452,38 +454,6 @@ public class GuardiaFactory {
 				}
 				if (dow == 7)
 					finSemanaMujer = !finSemanaMujer;
-			}
-		}
-	}
-
-	// Verifica si ya existe una guardia para la persona y horario dados
-	private boolean existeGuardia(Persona persona, Horario horario) {
-		for (Guardia existente : guardias) {
-			if (existente.getPersona().equals(persona) &&
-					existente.getHorario().getDia().equals(horario.getDia()) &&
-					existente.getHorario().getHoraInicio().equals(horario.getHoraInicio()) &&
-					existente.getHorario().getHoraFin().equals(horario.getHoraFin())) {
-				return true;
-			}
-		}
-		return false;
-	}
-
-	// Agrega las guardias nuevas a la lista global si no están duplicadas
-	private void agregarGuardiasNoDuplicadas(List<Guardia> nuevasGuardias) {
-		for (Guardia nueva : nuevasGuardias) {
-			boolean existe = false;
-			for (Guardia existente : guardias) {
-				if (existente.getPersona().equals(nueva.getPersona()) &&
-						existente.getHorario().getDia().equals(nueva.getHorario().getDia()) &&
-						existente.getHorario().getHoraInicio().equals(nueva.getHorario().getHoraInicio()) &&
-						existente.getHorario().getHoraFin().equals(nueva.getHorario().getHoraFin())) {
-					existe = true;
-					break;
-				}
-			}
-			if (!existe) {
-				guardias.add(nueva);
 			}
 		}
 	}
@@ -674,11 +644,6 @@ public class GuardiaFactory {
 		return null;
 	}
 
-	// Busca una guardia de una persona y tipo (alias)
-	public Guardia buscarGuardiaPorPersonaYTipo(Persona persona, utiles.TipoGuardia tipo) {
-		return buscarGuardiaDePersona(persona, tipo);
-	}
-
 	// Verifica si existe una guardia para una persona en una fecha y horario,
 	// ignorando una guardia específica
 	public boolean existeGuardiaParaPersonaEnHorario(Persona persona, java.time.LocalDate fecha,
@@ -692,5 +657,24 @@ public class GuardiaFactory {
 			}
 		}
 		return false;
+	}
+
+	// Agrega las guardias nuevas a la lista global si no están duplicadas
+	private void agregarGuardiasNoDuplicadas(List<Guardia> nuevasGuardias) {
+		for (Guardia nueva : nuevasGuardias) {
+			boolean existe = false;
+			for (Guardia existente : guardias) {
+				if (existente.getPersona().equals(nueva.getPersona()) &&
+					existente.getHorario().getDia().equals(nueva.getHorario().getDia()) &&
+					existente.getHorario().getHoraInicio().equals(nueva.getHorario().getHoraInicio()) &&
+					existente.getHorario().getHoraFin().equals(nueva.getHorario().getHoraFin())) {
+					existe = true;
+					break;
+				}
+			}
+			if (!existe) {
+				guardias.add(nueva);
+			}
+		}
 	}
 }

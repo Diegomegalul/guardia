@@ -25,7 +25,7 @@ public class EditGuardia extends JFrame {
 	private JComboBox<Persona> comboPersona;
 	private JDateChooser dateChooser;
 	private JComboBox<String> comboTurno;
-	
+
 	public EditGuardia(final Guardia guardia) {
 		setTitle("Editar Guardia");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -56,7 +56,8 @@ public class EditGuardia extends JFrame {
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+			public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected,
+					boolean cellHasFocus) {
 				Component c = super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
 				if (value instanceof Persona) {
 					Persona p = (Persona) value;
@@ -125,27 +126,59 @@ public class EditGuardia extends JFrame {
 				Persona persona = (Persona) comboPersona.getSelectedItem();
 				java.util.Date utilDate = dateChooser.getDate();
 				if (utilDate == null) {
-					JOptionPane.showMessageDialog(EditGuardia.this, "Seleccione una fecha.", "Error", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(EditGuardia.this, "Seleccione una fecha.", "Error",
+							JOptionPane.ERROR_MESSAGE);
 					return;
 				}
 				LocalDate fecha = new java.sql.Date(utilDate.getTime()).toLocalDate();
-				LocalTime inicio = LocalTime.of(9, 0);
-				LocalTime fin = LocalTime.of(14, 0);
-				if (persona instanceof Trabajador && comboTurno.getSelectedIndex() == 1) {
-					inicio = LocalTime.of(14, 0);
-					fin = LocalTime.of(19, 0);
+				LocalTime inicio;
+				LocalTime fin;
+				if (persona instanceof Trabajador) {
+					if (comboTurno.getSelectedIndex() == 1) {
+						inicio = LocalTime.of(14, 0);
+						fin = LocalTime.of(19, 0);
+					} else {
+						inicio = LocalTime.of(9, 0);
+						fin = LocalTime.of(14, 0);
+					}
+				} else if (persona instanceof Estudiante) {
+					Estudiante est = (Estudiante) persona;
+					if (est.getSexo() == utiles.Sexo.MASCULINO) {
+						inicio = LocalTime.of(20, 0);
+						fin = LocalTime.of(8, 0);
+					} else {
+						// Femenino: solo fines de semana
+						java.time.DayOfWeek diaSemana = fecha.getDayOfWeek();
+						if (diaSemana == java.time.DayOfWeek.SATURDAY || diaSemana == java.time.DayOfWeek.SUNDAY) {
+							inicio = LocalTime.of(8, 0);
+							fin = LocalTime.of(20, 0);
+						} else {
+							JOptionPane.showMessageDialog(EditGuardia.this,
+									"Las estudiantes solo pueden hacer guardia los fines de semana (sábado o domingo) de 8:00 a 20:00.",
+									"Error", JOptionPane.ERROR_MESSAGE);
+							return;
+						}
+					}
+				} else {
+					// Por defecto, horario de trabajador
+					inicio = LocalTime.of(9, 0);
+					fin = LocalTime.of(14, 0);
 				}
 				// Validar que la persona puede hacer la guardia
 				logica.Horario nuevoHorario = new logica.Horario(fecha, inicio, fin);
 				if (!persona.puedeHacerGuardia(nuevoHorario)) {
-					JOptionPane.showMessageDialog(EditGuardia.this, "La persona seleccionada no puede hacer guardia en ese horario.", "Error", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(EditGuardia.this,
+							"La persona seleccionada no puede hacer guardia en ese horario.", "Error",
+							JOptionPane.ERROR_MESSAGE);
 					return;
 				}
 				// Validar que no exista otra guardia para esa persona en ese día y horario
 				boolean existeSolapamiento = logica.PlanificadorGuardias.getInstancia().getGuardiaFactory()
-					.existeGuardiaParaPersonaEnHorario(persona, fecha, inicio, fin, guardia);
+						.existeGuardiaParaPersonaEnHorario(persona, fecha, inicio, fin, guardia);
 				if (existeSolapamiento) {
-					JOptionPane.showMessageDialog(EditGuardia.this, "Ya existe una guardia para esa persona en ese horario.", "Error", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(EditGuardia.this,
+							"Ya existe una guardia para esa persona en ese horario.", "Error",
+							JOptionPane.ERROR_MESSAGE);
 					return;
 				}
 				// Guardar cambios
@@ -154,7 +187,8 @@ public class EditGuardia extends JFrame {
 				guardia.getHorario().setDia(fecha);
 				guardia.getHorario().setHoraInicio(inicio);
 				guardia.getHorario().setHoraFin(fin);
-				JOptionPane.showMessageDialog(EditGuardia.this, "Guardia actualizada correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+				JOptionPane.showMessageDialog(EditGuardia.this, "Guardia actualizada correctamente.", "Éxito",
+						JOptionPane.INFORMATION_MESSAGE);
 				dispose();
 			}
 		});
@@ -167,13 +201,17 @@ public class EditGuardia extends JFrame {
 		List<Persona> personas = logica.PlanificadorGuardias.getInstancia().getFacultad().getPersonas();
 		for (Persona p : personas) {
 			if (tipo == TipoGuardia.NORMAL || tipo == TipoGuardia.FESTIVO) {
-				if (p.getActivo()) comboPersona.addItem(p);
+				if (p.getActivo())
+					comboPersona.addItem(p);
 			} else if (tipo == TipoGuardia.VOLUNTARIA) {
-				if (p instanceof Trabajador && ((Trabajador)p).getVoluntario()) comboPersona.addItem(p);
+				if (p instanceof Trabajador && ((Trabajador) p).getVoluntario())
+					comboPersona.addItem(p);
 			} else if (tipo == TipoGuardia.RECUPERACION) {
-				if (p instanceof Estudiante && ((Estudiante)p).tieneGuardiasPendientes()) comboPersona.addItem(p);
+				if (p instanceof Estudiante && ((Estudiante) p).tieneGuardiasPendientes())
+					comboPersona.addItem(p);
 			}
 		}
-		if (guardia != null) comboPersona.setSelectedItem(guardia.getPersona());
+		if (guardia != null)
+			comboPersona.setSelectedItem(guardia.getPersona());
 	}
 }
