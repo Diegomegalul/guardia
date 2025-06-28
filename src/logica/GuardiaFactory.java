@@ -402,8 +402,7 @@ public class GuardiaFactory {
 
 		for (Guardia g : new ArrayList<>(guardias)) {
 			if (g.getHorario().getDia().getYear() == ymARevisar.getYear() &&
-					g.getHorario().getDia().getMonthValue() == ymARevisar.getMonthValue() &&
-					g.getTipo() == TipoGuardia.NORMAL) {
+					g.getHorario().getDia().getMonthValue() == ymARevisar.getMonthValue()) {
 				boolean cumplida = false;
 				for (Guardia gc : guardiasCumplidas) {
 					if (gc.getId() == g.getId()) {
