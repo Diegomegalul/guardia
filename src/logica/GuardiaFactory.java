@@ -571,29 +571,54 @@ public class GuardiaFactory {
 	}
 
 	// Selecciona primero un estudiante con guardias de recuperación, si no, el de
-	// menos guardias asignadas
+	// menos guardias asignadas y si hay empate, el de menos guardias cumplidas
 	private Estudiante seleccionarEstudianteRecuperacionPrimero(List<Estudiante> lista) {
 		Estudiante seleccionado = null;
+		int maxRecuperacion = -1;
 		int minAsignadas = Integer.MAX_VALUE;
 		int minCumplidas = Integer.MAX_VALUE;
+		// Primero buscar el que más guardias de recuperación tiene
 		for (Estudiante e : lista) {
-			int asignadas = e.getGuardiasPlanificadas();
-			int cumplidas = e.getGuardiasCumplidas();
-			if (e.getGuardiasRecuperacion() > 0) {
-				// Prioridad a los de recuperación
-				if (seleccionado == null ||
-						asignadas < minAsignadas ||
-						(asignadas == minAsignadas && cumplidas < minCumplidas)) {
+			int rec = e.getGuardiasRecuperacion();
+			if (rec > maxRecuperacion) {
+				seleccionado = e;
+				maxRecuperacion = rec;
+				minAsignadas = e.getGuardiasPlanificadas();
+				minCumplidas = e.getGuardiasCumplidas();
+			} else if (rec == maxRecuperacion && rec > 0) {
+				// Si hay empate en recuperación, elegir el de menos asignadas
+				int asignadas = e.getGuardiasPlanificadas();
+				if (asignadas < minAsignadas) {
 					seleccionado = e;
 					minAsignadas = asignadas;
-					minCumplidas = cumplidas;
+					minCumplidas = e.getGuardiasCumplidas();
+				} else if (asignadas == minAsignadas) {
+					// Si también hay empate en asignadas, elegir el de menos cumplidas
+					int cumplidas = e.getGuardiasCumplidas();
+					if (cumplidas < minCumplidas) {
+						seleccionado = e;
+						minCumplidas = cumplidas;
+					}
 				}
-			} else if (seleccionado == null || seleccionado.getGuardiasRecuperacion() == 0) {
-				if (asignadas < minAsignadas ||
-						(asignadas == minAsignadas && cumplidas < minCumplidas)) {
+			}
+		}
+		// Si nadie tiene guardias de recuperación, buscar el de menos asignadas y menos cumplidas
+		if (maxRecuperacion <= 0) {
+			seleccionado = null;
+			minAsignadas = Integer.MAX_VALUE;
+			minCumplidas = Integer.MAX_VALUE;
+			for (Estudiante e : lista) {
+				int asignadas = e.getGuardiasPlanificadas();
+				int cumplidas = e.getGuardiasCumplidas();
+				if (asignadas < minAsignadas) {
 					seleccionado = e;
 					minAsignadas = asignadas;
 					minCumplidas = cumplidas;
+				} else if (asignadas == minAsignadas) {
+					if (cumplidas < minCumplidas) {
+						seleccionado = e;
+						minCumplidas = cumplidas;
+					}
 				}
 			}
 		}
