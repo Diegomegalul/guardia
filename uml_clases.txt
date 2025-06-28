@@ -32,6 +32,7 @@ Clase: Estudiante extends Persona
 - grupo: int
 - guardiasRecuperacion: int
 - guardiasIncumplidas: int
+- guardiasRecuperacionAsignadas: int
 + Estudiante(String, String, String, Sexo, boolean, int, int, int, int, int)
 + isLicenciaMatricula(): boolean
 + setLicenciaMatricula(boolean)

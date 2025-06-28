@@ -12,6 +12,7 @@ public class Estudiante extends Persona {
 	private int grupo; // Nuevo atributo grupo
 	private int guardiasRecuperacion; // Nuevo atributo guardias de recuperacion
 	private int guardiasIncumplidas; // Nuevo atributo guardias incumplidas
+	private int guardiasRecuperacionAsignadas; // Nuevo atributo guardias de recuperacion asignadas
 
 	// Constructor
 	public Estudiante(String ci, String nombre, String apellidos, Sexo sexo, boolean activo, int guardiasPlanificadas,
@@ -20,9 +21,18 @@ public class Estudiante extends Persona {
 		setGrupo(grupo);
 		setGuardiasRecuperacion(guardiasRecuperacion);
 		this.guardiasIncumplidas = 0;
+		this.guardiasRecuperacionAsignadas = 0;
 	}
 
 	// Getters y setters
+	public void setGuardiasRecuperacionAsignadas(int guardiasRecuperacionAsignadas) {
+		this.guardiasRecuperacionAsignadas = guardiasRecuperacionAsignadas;
+	}
+
+	public int getGuardiasRecuperacionAsignadas() {
+		return guardiasRecuperacionAsignadas;
+	}
+
 	public void setGuardiasRecuperacion(int guardiasRecuperacion) {
 		this.guardiasRecuperacion = guardiasRecuperacion;
 	}

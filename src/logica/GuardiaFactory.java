@@ -68,7 +68,7 @@ public class GuardiaFactory {
 	}
 
 	public void setGuardias(List<Guardia> guardias) {
-		this.guardias = new ArrayList<>(guardias); // 
+		this.guardias = new ArrayList<>(guardias); //
 	}
 	// Metodos
 
@@ -301,12 +301,17 @@ public class GuardiaFactory {
 							if (est.getGuardiasRecuperacion() > 0) {
 								tipo = esFestivo ? TipoGuardia.RECUPERACION_FESTIVO : TipoGuardia.RECUPERACION;
 								est.setGuardiasRecuperacion(est.getGuardiasRecuperacion() - 1);
+								est.setGuardiasRecuperacionAsignadas(est.getGuardiasRecuperacionAsignadas() + 1);
 							} else {
 								tipo = esFestivo ? TipoGuardia.FESTIVO : TipoGuardia.NORMAL;
 							}
 							nuevasGuardias.add(new Guardia(nextId++, tipo, est, h));
-							est.setGuardiasPlanificadas(est.getGuardiasPlanificadas() + 1);
-							if (tipo == TipoGuardia.FESTIVO || tipo == TipoGuardia.RECUPERACION_FESTIVO) {
+							if (tipo == TipoGuardia.NORMAL) {
+								est.setGuardiasPlanificadas(est.getGuardiasPlanificadas() + 1);
+							}else if (tipo == TipoGuardia.FESTIVO) {
+								est.setCantidadGuardiasFestivo(est.getCantidadGuardiasFestivo() + 1);
+								est.setGuardiasPlanificadas(est.getGuardiasPlanificadas() + 1);
+							}else if (tipo == TipoGuardia.RECUPERACION_FESTIVO) {
 								est.setCantidadGuardiasFestivo(est.getCantidadGuardiasFestivo() + 1);
 							}
 						}
@@ -602,7 +607,8 @@ public class GuardiaFactory {
 				}
 			}
 		}
-		// Si nadie tiene guardias de recuperación, buscar el de menos asignadas y menos cumplidas
+		// Si nadie tiene guardias de recuperación, buscar el de menos asignadas y menos
+		// cumplidas
 		if (maxRecuperacion <= 0) {
 			seleccionado = null;
 			minAsignadas = Integer.MAX_VALUE;

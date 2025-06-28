@@ -306,7 +306,7 @@ public class VerEstudiantes extends JFrame {
 					e.getSexo().toString(),
 					e.getActivo() ? "Sí" : "No",
 					e.getGrupo(),
-					e.getGuardiasPlanificadas(),
+					e.getGuardiasPlanificadas() + e.getGuardiasRecuperacionAsignadas(),
 					e.getGuardiasCumplidas(),
 					e.getGuardiasIncumplidas()
 			});
