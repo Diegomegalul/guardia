@@ -482,7 +482,7 @@ public class GuardiaFactory {
 		for (Persona p : personas) {
 			if (p instanceof logica.Estudiante) {
 				logica.Estudiante est = (logica.Estudiante) p;
-				int pendientes = est.calcularGuardiasPendientes();
+				int pendientes = est.getGuardiasRecuperacion();
 				if (pendientes > 0) {
 					// Buscar la última guardia asignada no cumplida
 					LocalDate ultimaAsignada = null;

@@ -110,12 +110,8 @@ public class Estudiante extends Persona {
 		this.guardiasCumplidas++;
 	}
 
-	public int calcularGuardiasPendientes() {
-		return guardiasPlanificadas - guardiasCumplidas;
-	}
-
 	public boolean tieneGuardiasPendientes() {
-		return calcularGuardiasPendientes() > 0;
+		return guardiasRecuperacion > 0;
 	}
 
 }
