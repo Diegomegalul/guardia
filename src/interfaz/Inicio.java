@@ -536,6 +536,19 @@ public class Inicio extends JFrame {
 		lblBienvenida.setForeground(negro);
 		lblBienvenida.setHorizontalAlignment(SwingConstants.CENTER);
 		lblBienvenida.setBorder(new EmptyBorder(80, 10, 10, 10));
+		// Hacer que la imagen ocupe todo el panel central
+		lblBienvenida.setHorizontalAlignment(SwingConstants.CENTER);
+		lblBienvenida.setVerticalAlignment(SwingConstants.CENTER);
+		lblBienvenida.setOpaque(false);
+
+		// Ajustar el layout para que el label ocupe todo el espacio
+		panelCentral.addComponentListener(new java.awt.event.ComponentAdapter() {
+			@Override
+			public void componentResized(java.awt.event.ComponentEvent e) {
+				actualizarImagenBienvenida();
+			}
+		});
+
 		panelCentral.add(lblBienvenida, BorderLayout.CENTER);
 
 		// Crear paneles de agregar estudiantes, trabajadores y calendario
@@ -728,8 +741,8 @@ public class Inicio extends JFrame {
 			return;
 		ImageIcon iconoBase = modoOscuro ? fondoOscuroIcon : fondoClaroIcon;
 		if (iconoBase != null && iconoBase.getIconWidth() > 0 && iconoBase.getIconHeight() > 0) {
-			int ancho = lblBienvenida.getWidth();
-			int alto = lblBienvenida.getHeight();
+			int ancho = panelCentral.getWidth();
+			int alto = panelCentral.getHeight();
 			if (ancho > 0 && alto > 0) {
 				Image imgEscalada = iconoBase.getImage().getScaledInstance(ancho, alto, Image.SCALE_SMOOTH);
 				lblBienvenida.setIcon(new ImageIcon(imgEscalada));
