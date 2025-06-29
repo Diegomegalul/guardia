@@ -296,4 +296,9 @@ public class EditCalendario extends JFrame {
 			modeloLista.addElement(d.getFechaString() + " - " + d.getDescripcion());
 		}
 	}
+
+	// Método para obtener el panel principal para uso en Inicio
+	public JPanel getPanelPrincipal() {
+		return contentPane;
+	}
 }

@@ -37,6 +37,12 @@ public class Inicio extends JFrame {
 	// Nuevos paneles para agregar estudiantes y trabajadores
 	private JPanel panelAddEstudiantes;
 	private JPanel panelAddTrabajadores;
+	// Nuevo panel para EditCalendario
+	private JPanel panelEditCalendario;
+
+	// Pila para navegación de paneles
+	private java.util.Stack<JPanel> pilaPaneles = new java.util.Stack<>();
+	private JButton btnVolver;
 
 	public Inicio() {
 		// Instancia singleton del planificador
@@ -240,21 +246,7 @@ public class Inicio extends JFrame {
 		menuCalendario.setBorder(BorderFactory.createLineBorder(negro, 1));
 		menuCalendario.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				boolean found = false;
-				for (Frame frame : JFrame.getFrames()) {
-					if (frame instanceof EditCalendario && frame.isVisible()) {
-						frame.toFront();
-						frame.requestFocus();
-						found = true;
-						break;
-					}
-				}
-				if (!found) {
-					EditCalendario frame = new EditCalendario(planificador);
-					if (modoOscuro)
-						frame.aplicarModoOscuro(modoOscuro, darkBg, darkFg, new Color(60, 63, 80), amarillo);
-					frame.setVisible(true);
-				}
+				mostrarPanelCentral(panelEditCalendario);
 			}
 		});
 		menuBar.add(menuCalendario);
@@ -546,9 +538,10 @@ public class Inicio extends JFrame {
 		lblBienvenida.setBorder(new EmptyBorder(80, 10, 10, 10));
 		panelCentral.add(lblBienvenida, BorderLayout.CENTER);
 
-		// Crear paneles de agregar estudiantes y trabajadores (usando los paneles de los frames)
+		// Crear paneles de agregar estudiantes, trabajadores y calendario
 		panelAddEstudiantes = new AddEstudiantes(planificador, null, null).getPanelPrincipal();
 		panelAddTrabajadores = new AddTrabajadores(planificador, null).getPanelPrincipal();
+		panelEditCalendario = new EditCalendario(planificador).getPanelPrincipal();
 
 		// Inicialmente solo el panel central visible
 		contentPane.add(panelCentral, BorderLayout.CENTER);
@@ -556,12 +549,14 @@ public class Inicio extends JFrame {
 		// Aplicar modo oscuro al inicio
 		aplicarModoOscuro();
 
-		// Panel inferior para el botón salir y el botón de modo oscuro
+		// Panel inferior para el botón salir, volver y el botón de modo oscuro
 		panelInferior = new JPanel(new BorderLayout());
 		panelInferior.setBackground(amarillo);
 
+		// Panel Salir (derecha) y Luna (izquierda) del mismo tamaño
 		JPanel panelSalir = new JPanel(new FlowLayout(FlowLayout.RIGHT));
 		panelSalir.setBackground(amarillo);
+		panelSalir.setPreferredSize(new Dimension(120, 60)); // Tamaño fijo
 
 		btnSalir = new JButton("Salir") {
 			private static final long serialVersionUID = 1L;
@@ -615,8 +610,33 @@ public class Inicio extends JFrame {
 		});
 		panelSalir.add(btnSalir);
 
+		// Botón Volver (centrado)
+		btnVolver = new JButton("Volver");
+		btnVolver.setFont(new Font("Arial", Font.BOLD, 16));
+		btnVolver.setBackground(negro);
+		btnVolver.setForeground(amarillo);
+		btnVolver.setFocusPainted(false);
+		btnVolver.setBorder(BorderFactory.createLineBorder(negro, 2, true));
+		btnVolver.setContentAreaFilled(false);
+		btnVolver.setOpaque(true);
+		btnVolver.setVisible(false);
+
+		btnVolver.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (!pilaPaneles.isEmpty()) {
+					JPanel anterior = pilaPaneles.pop();
+					mostrarPanelCentralInterno(anterior, false);
+				}
+			}
+		});
+
+		JPanel panelCentroInferior = new JPanel(new FlowLayout(FlowLayout.CENTER));
+		panelCentroInferior.setBackground(amarillo);
+		panelCentroInferior.add(btnVolver);
+
 		JPanel panelLuna = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		panelLuna.setBackground(amarillo);
+		panelLuna.setPreferredSize(new Dimension(120, 60)); // Tamaño fijo
 
 		btnLuna = new JButton() {
 			private static final long serialVersionUID = 1L;
@@ -696,6 +716,7 @@ public class Inicio extends JFrame {
 		panelLuna.add(btnLuna);
 
 		panelInferior.add(panelLuna, BorderLayout.WEST);
+		panelInferior.add(panelCentroInferior, BorderLayout.CENTER);
 		panelInferior.add(panelSalir, BorderLayout.EAST);
 
 		contentPane.add(panelCentral, BorderLayout.CENTER);
@@ -840,15 +861,43 @@ public class Inicio extends JFrame {
 
 	// Método para intercambiar el panel central por el panel deseado
 	private void mostrarPanelCentral(JPanel nuevoPanel) {
+		JPanel actual = obtenerPanelActual();
+		if (actual != null && actual != nuevoPanel) {
+			pilaPaneles.push(actual);
+		}
+		mostrarPanelCentralInterno(nuevoPanel, true);
+	}
+
+	// Método interno para mostrar panel y controlar visibilidad del botón volver
+	private void mostrarPanelCentralInterno(JPanel nuevoPanel, boolean desdeMenu) {
 		contentPane.remove(panelCentral);
 		contentPane.remove(panelAddEstudiantes);
 		contentPane.remove(panelAddTrabajadores);
+		contentPane.remove(panelEditCalendario);
 		contentPane.add(nuevoPanel, BorderLayout.CENTER);
 		contentPane.revalidate();
 		contentPane.repaint();
 		panelCentral.setVisible(false);
 		panelAddEstudiantes.setVisible(false);
 		panelAddTrabajadores.setVisible(false);
+		if (panelEditCalendario != null)
+			panelEditCalendario.setVisible(false);
 		nuevoPanel.setVisible(true);
+
+		// Mostrar botón volver si no estamos en el panel de bienvenida
+		btnVolver.setVisible(nuevoPanel != panelCentral && !pilaPaneles.isEmpty());
+	}
+
+	// Obtener el panel actualmente visible en el centro
+	private JPanel obtenerPanelActual() {
+		if (panelCentral.isVisible())
+			return panelCentral;
+		if (panelAddEstudiantes.isVisible())
+			return panelAddEstudiantes;
+		if (panelAddTrabajadores.isVisible())
+			return panelAddTrabajadores;
+		if (panelEditCalendario != null && panelEditCalendario.isVisible())
+			return panelEditCalendario;
+		return panelCentral; // fallback
 	}
 }
