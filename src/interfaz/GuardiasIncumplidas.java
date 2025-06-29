@@ -26,6 +26,7 @@ import logica.PlanificadorGuardias;
 public class GuardiasIncumplidas extends JFrame {
 
 	private static final long serialVersionUID = 1L;
+	private JPanel contentPane;
 	private JTable tablaGuardias;
 	private DefaultTableModel tablaModel;
 	private JComboBox<String> comboMes;
@@ -41,7 +42,7 @@ public class GuardiasIncumplidas extends JFrame {
 		setBounds(100, 100, 800, 500);
 		setLocationRelativeTo(null);
 
-		JPanel contentPane = new JPanel();
+		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(10, 10, 10, 10));
 		contentPane.setLayout(new BorderLayout(10, 10));
 		setContentPane(contentPane);
@@ -165,5 +166,9 @@ public class GuardiasIncumplidas extends JFrame {
 				mostrarVentana();
 			}
 		});
+	}
+
+	public JPanel getPanelPrincipal() {
+		return contentPane;
 	}
 }

@@ -135,4 +135,8 @@ public class EstInactivos extends JFrame {
 		contentPane.add(Box.createVerticalStrut(10));
 		contentPane.add(panelBoton);
 	}
+
+	public JPanel getPanelPrincipal() {
+		return contentPane;
+	}
 }

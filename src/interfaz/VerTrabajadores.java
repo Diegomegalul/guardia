@@ -267,4 +267,9 @@ public class VerTrabajadores extends JFrame {
 			instancia.setState(JFrame.NORMAL);
 		}
 	}
+
+	// Método para integración con Inicio
+	public JPanel getPanelPrincipal() {
+		return contentPane;
+	}
 }

@@ -43,6 +43,8 @@ public class Inicio extends JFrame {
 	private JPanel panelEditGuardia;
 	// Nuevo panel para PlanGuardias
 	private JPanel panelPlanGuardias;
+	// Nuevo panel para IntercambioPersona
+	private JPanel panelIntercambioPersona;
 
 	// Pila para navegación de paneles
 	private java.util.Stack<JPanel> pilaPaneles = new java.util.Stack<>();
@@ -156,19 +158,7 @@ public class Inicio extends JFrame {
 		mostrarGuardiasPlanificadas.setBorder(BorderFactory.createLineBorder(negro, 1));
 		mostrarGuardiasPlanificadas.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				boolean found = false;
-				for (Frame frame : JFrame.getFrames()) {
-					if (frame instanceof GuardiasPlanificadas && frame.isVisible()) {
-						frame.toFront();
-						frame.requestFocus();
-						found = true;
-						break;
-					}
-				}
-				if (!found) {
-					GuardiasPlanificadas frame = new GuardiasPlanificadas();
-					frame.setVisible(true);
-				}
+				mostrarPanelGuardiasPlanificadas();
 			}
 		});
 
@@ -180,19 +170,7 @@ public class Inicio extends JFrame {
 		mostrarGuardiasCumplidas.setBorder(BorderFactory.createLineBorder(negro, 1));
 		mostrarGuardiasCumplidas.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				boolean found = false;
-				for (Frame frame : JFrame.getFrames()) {
-					if (frame instanceof GuardiasCumplidas && frame.isVisible()) {
-						frame.toFront();
-						frame.requestFocus();
-						found = true;
-						break;
-					}
-				}
-				if (!found) {
-					GuardiasCumplidas frame = new GuardiasCumplidas();
-					frame.setVisible(true);
-				}
+				mostrarPanelGuardiasCumplidas();
 			}
 		});
 
@@ -205,19 +183,8 @@ public class Inicio extends JFrame {
 		mostrarGuardiasIncumplidas.setBorder(BorderFactory.createLineBorder(negro, 1));
 		mostrarGuardiasIncumplidas.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				boolean found = false;
-				for (Frame frame : JFrame.getFrames()) {
-					if (frame instanceof GuardiasIncumplidas && frame.isVisible()) {
-						frame.toFront();
-						frame.requestFocus();
-						found = true;
-						break;
-					}
-				}
-				if (!found) {
-					GuardiasIncumplidas frame = new GuardiasIncumplidas();
-					frame.setVisible(true);
-				}
+				// Llama al método de la clase Inicio usando this
+				Inicio.this.mostrarPanelGuardiasIncumplidas();
 			}
 		});
 
@@ -250,19 +217,7 @@ public class Inicio extends JFrame {
 		mostrarEstudiantes.setBorder(BorderFactory.createLineBorder(negro, 1));
 		mostrarEstudiantes.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				boolean found = false;
-				for (Frame frame : JFrame.getFrames()) {
-					if (frame instanceof VerEstudiantes && frame.isVisible()) {
-						frame.toFront();
-						frame.requestFocus();
-						found = true;
-						break;
-					}
-				}
-				if (!found) {
-					VerEstudiantes frame = new VerEstudiantes(planificador);
-					frame.setVisible(true);
-				}
+				mostrarPanelVerEstudiantes();
 			}
 		});
 
@@ -273,19 +228,7 @@ public class Inicio extends JFrame {
 		mostrarTrabajadores.setBorder(BorderFactory.createLineBorder(negro, 1));
 		mostrarTrabajadores.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				boolean found = false;
-				for (Frame frame : JFrame.getFrames()) {
-					if (frame instanceof VerTrabajadores && frame.isVisible()) {
-						frame.toFront();
-						frame.requestFocus();
-						found = true;
-						break;
-					}
-				}
-				if (!found) {
-					VerTrabajadores frame = new VerTrabajadores();
-					frame.setVisible(true);
-				}
+				mostrarPanelVerTrabajadores();
 			}
 		});
 
@@ -308,19 +251,7 @@ public class Inicio extends JFrame {
 		reporteRecuperacion.setBorder(BorderFactory.createLineBorder(negro, 1));
 		reporteRecuperacion.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				boolean found = false;
-				for (Frame frame : JFrame.getFrames()) {
-					if (frame instanceof GuardiasRecuperacion && frame.isVisible()) {
-						frame.toFront();
-						frame.requestFocus();
-						found = true;
-						break;
-					}
-				}
-				if (!found) {
-					GuardiasRecuperacion frame = new GuardiasRecuperacion();
-					frame.setVisible(true);
-				}
+				mostrarPanelGuardiasRecuperacion();
 			}
 		});
 
@@ -331,19 +262,7 @@ public class Inicio extends JFrame {
 		reporteVoluntarios.setBorder(BorderFactory.createLineBorder(negro, 1));
 		reporteVoluntarios.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				boolean found = false;
-				for (Frame frame : JFrame.getFrames()) {
-					if (frame instanceof ProfVoluntarios && frame.isVisible()) {
-						frame.toFront();
-						frame.requestFocus();
-						found = true;
-						break;
-					}
-				}
-				if (!found) {
-					ProfVoluntarios frame = new ProfVoluntarios();
-					frame.setVisible(true);
-				}
+				mostrarPanelProfVoluntarios();
 			}
 		});
 
@@ -354,19 +273,7 @@ public class Inicio extends JFrame {
 		reporteEstInactivos.setBorder(BorderFactory.createLineBorder(negro, 1));
 		reporteEstInactivos.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				boolean found = false;
-				for (Frame frame : JFrame.getFrames()) {
-					if (frame instanceof EstInactivos && frame.isVisible()) {
-						frame.toFront();
-						frame.requestFocus();
-						found = true;
-						break;
-					}
-				}
-				if (!found) {
-					EstInactivos frame = new EstInactivos();
-					frame.setVisible(true);
-				}
+				mostrarPanelEstInactivos();
 			}
 		});
 
@@ -377,19 +284,7 @@ public class Inicio extends JFrame {
 		reporteFestivas.setBorder(BorderFactory.createLineBorder(negro, 1));
 		reporteFestivas.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				boolean found = false;
-				for (Frame frame : JFrame.getFrames()) {
-					if (frame instanceof GuardiasFestivas && frame.isVisible()) {
-						frame.toFront();
-						frame.requestFocus();
-						found = true;
-						break;
-					}
-				}
-				if (!found) {
-					GuardiasFestivas frame = new GuardiasFestivas();
-					frame.setVisible(true);
-				}
+				mostrarPanelGuardiasFestivas();
 			}
 		});
 
@@ -536,12 +431,13 @@ public class Inicio extends JFrame {
 		panelCentral.add(lblBienvenida, BorderLayout.CENTER);
 
 		// Crear paneles de agregar estudiantes, trabajadores, calendario, editar
-		// guardia y planificar guardias
+		// guardia, planificar guardias e intercambio persona
 		panelAddEstudiantes = new AddEstudiantes(planificador, null, null).getPanelPrincipal();
 		panelAddTrabajadores = new AddTrabajadores(planificador, null).getPanelPrincipal();
 		panelEditCalendario = new EditCalendario(planificador).getPanelPrincipal();
 		panelEditGuardia = new EditGuardia(null).getPanelPrincipal();
 		panelPlanGuardias = new PlanGuardias(planificador).getPanelPrincipal();
+		panelIntercambioPersona = new IntercambioPersona(null).getPanelPrincipal();
 
 		// Inicialmente solo el panel central visible
 		contentPane.add(panelCentral, BorderLayout.CENTER);
@@ -611,7 +507,7 @@ public class Inicio extends JFrame {
 		panelSalir.add(btnSalir);
 
 		// Botón Volver (centrado)
-		btnVolver = new JButton("Volver");
+		btnVolver = new JButton("Inicio");
 		btnVolver.setFont(new Font("Arial", Font.BOLD, 16));
 		btnVolver.setBackground(negro);
 		btnVolver.setForeground(amarillo);
@@ -619,14 +515,11 @@ public class Inicio extends JFrame {
 		btnVolver.setBorder(BorderFactory.createLineBorder(negro, 2, true));
 		btnVolver.setContentAreaFilled(false);
 		btnVolver.setOpaque(true);
-		btnVolver.setVisible(false);
+		btnVolver.setVisible(true);
 
 		btnVolver.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (!pilaPaneles.isEmpty()) {
-					JPanel anterior = pilaPaneles.pop();
-					mostrarPanelCentralInterno(anterior, false);
-				}
+				mostrarPanelBienvenida();
 			}
 		});
 
@@ -868,29 +761,47 @@ public class Inicio extends JFrame {
 		mostrarPanelCentralInterno(nuevoPanel, true);
 	}
 
-	// Método interno para mostrar panel y controlar visibilidad del botón volver
+	// Método interno para mostrar panel y controlar visibilidad del botón inicio
 	private void mostrarPanelCentralInterno(JPanel nuevoPanel, boolean desdeMenu) {
-		contentPane.remove(panelCentral);
-		contentPane.remove(panelAddEstudiantes);
-		contentPane.remove(panelAddTrabajadores);
-		contentPane.remove(panelEditCalendario);
-		contentPane.remove(panelEditGuardia);
-		contentPane.remove(panelPlanGuardias);
+		// Elimina solo si el panel no es null y está actualmente en el contentPane
+		if (panelCentral != null && panelCentral.getParent() == contentPane)
+			contentPane.remove(panelCentral);
+		if (panelAddEstudiantes != null && panelAddEstudiantes.getParent() == contentPane)
+			contentPane.remove(panelAddEstudiantes);
+		if (panelAddTrabajadores != null && panelAddTrabajadores.getParent() == contentPane)
+			contentPane.remove(panelAddTrabajadores);
+		if (panelEditCalendario != null && panelEditCalendario.getParent() == contentPane)
+			contentPane.remove(panelEditCalendario);
+		if (panelEditGuardia != null && panelEditGuardia.getParent() == contentPane)
+			contentPane.remove(panelEditGuardia);
+		if (panelPlanGuardias != null && panelPlanGuardias.getParent() == contentPane)
+			contentPane.remove(panelPlanGuardias);
+		if (panelIntercambioPersona != null && panelIntercambioPersona.getParent() == contentPane)
+			contentPane.remove(panelIntercambioPersona);
+
 		contentPane.add(nuevoPanel, BorderLayout.CENTER);
 		contentPane.revalidate();
 		contentPane.repaint();
-		panelCentral.setVisible(false);
-		panelAddEstudiantes.setVisible(false);
-		panelAddTrabajadores.setVisible(false);
+
+		if (panelCentral != null)
+			panelCentral.setVisible(false);
+		if (panelAddEstudiantes != null)
+			panelAddEstudiantes.setVisible(false);
+		if (panelAddTrabajadores != null)
+			panelAddTrabajadores.setVisible(false);
 		if (panelEditCalendario != null)
 			panelEditCalendario.setVisible(false);
 		if (panelEditGuardia != null)
 			panelEditGuardia.setVisible(false);
 		if (panelPlanGuardias != null)
 			panelPlanGuardias.setVisible(false);
+		if (panelIntercambioPersona != null)
+			panelIntercambioPersona.setVisible(false);
+
 		nuevoPanel.setVisible(true);
 
-		btnVolver.setVisible(nuevoPanel != panelCentral && !pilaPaneles.isEmpty());
+		// El botón "Inicio" siempre visible
+		btnVolver.setVisible(true);
 	}
 
 	// Obtener el panel actualmente visible en el centro
@@ -907,6 +818,52 @@ public class Inicio extends JFrame {
 			return panelEditGuardia;
 		if (panelPlanGuardias != null && panelPlanGuardias.isVisible())
 			return panelPlanGuardias;
+		if (panelIntercambioPersona != null && panelIntercambioPersona.isVisible())
+			return panelIntercambioPersona;
 		return panelCentral; // fallback
+	}
+
+	// Para mostrar EditGuardia en el panel central con la guardia seleccionada
+	public void mostrarPanelEditGuardia(logica.Guardia guardia) {
+		// Crea un nuevo panel de edición con la guardia seleccionada
+		panelEditGuardia = new EditGuardia(guardia).getPanelPrincipal();
+		mostrarPanelCentral(panelEditGuardia);
+	}
+
+	// Métodos para mostrar los paneles principales de cada JFrame en el panel
+	// central
+	public void mostrarPanelVerEstudiantes() {
+		JPanel panel = new VerEstudiantes(planificador).getPanelPrincipal();
+		mostrarPanelCentral(panel);
+	}
+
+	public void mostrarPanelVerTrabajadores() {
+		JPanel panel = new VerTrabajadores().getPanelPrincipal();
+		mostrarPanelCentral(panel);
+	}
+
+	public void mostrarPanelProfVoluntarios() {
+		JPanel panel = new ProfVoluntarios().getPanelPrincipal();
+		mostrarPanelCentral(panel);
+	}
+
+	public void mostrarPanelGuardiasRecuperacion() {
+		JPanel panel = new GuardiasRecuperacion().getPanelPrincipal();
+		mostrarPanelCentral(panel);
+	}
+
+	public void mostrarPanelEstInactivos() {
+		JPanel panel = new EstInactivos().getPanelPrincipal();
+		mostrarPanelCentral(panel);
+	}
+
+	public void mostrarPanelGuardiasFestivas() {
+		JPanel panel = new GuardiasFestivas().getPanelPrincipal();
+		mostrarPanelCentral(panel);
+	}
+
+	// Nuevo método para mostrar el label de bienvenida (panelCentral)
+	public void mostrarPanelBienvenida() {
+		mostrarPanelCentral(panelCentral);
 	}
 }

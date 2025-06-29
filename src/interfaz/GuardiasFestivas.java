@@ -26,14 +26,6 @@ public class GuardiasFestivas extends JFrame {
 		}
 	}
 
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				mostrarVentana();
-			}
-		});
-	}
-
 	public GuardiasFestivas() {
 		setIconImage(Toolkit.getDefaultToolkit().getImage(Login.class.getResource("/imagenes/logo.jpg")));
 		setTitle("Guardias en Días Festivos");
@@ -113,5 +105,9 @@ public class GuardiasFestivas extends JFrame {
 		panelBoton.setBackground(amarillo);
 		panelBoton.add(btnCerrar);
 		contentPane.add(panelBoton, BorderLayout.SOUTH);
+	}
+
+	public JPanel getPanelPrincipal() {
+		return contentPane;
 	}
 }

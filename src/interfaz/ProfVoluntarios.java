@@ -122,4 +122,8 @@ public class ProfVoluntarios extends JFrame {
 		panelBoton.add(btnCerrar);
 		contentPane.add(panelBoton, BorderLayout.SOUTH);
 	}
+
+	public JPanel getPanelPrincipal() {
+		return contentPane;
+	}
 }

@@ -293,6 +293,10 @@ public class VerEstudiantes extends JFrame {
 		});
 	}
 
+	public JPanel getPanelPrincipal() {
+		return contentPane;
+	}
+
 	private void cargarEstudiantes(String filtro) {
 		model.setRowCount(0);
 		estudiantesFiltrados = new java.util.ArrayList<Persona>();

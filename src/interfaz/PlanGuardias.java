@@ -61,9 +61,16 @@ public class PlanGuardias extends JFrame {
 		}
 	}
 
+	private Inicio ventanaInicio; // Referencia al frame de Inicio
+
 	public PlanGuardias(final PlanificadorGuardias planificador) {
+		this(planificador, null);
+	}
+
+	public PlanGuardias(final PlanificadorGuardias planificador, Inicio inicio) {
 		setIconImage(Toolkit.getDefaultToolkit().getImage(Login.class.getResource("/imagenes/logo.jpg")));
 		this.planificador = planificador;
+		this.ventanaInicio = inicio;
 		setTitle("Planificar Guardias Automáticamente");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 800, 500);
@@ -226,8 +233,14 @@ public class PlanGuardias extends JFrame {
 				int id = Integer.parseInt(tablaModel.getValueAt(fila, 0).toString());
 				logica.Guardia g = buscarGuardiaPorId(id);
 				if (g != null) {
-					EditGuardia frame = new EditGuardia(g);
-					frame.setVisible(true);
+					// Si la ventana PlanGuardias está embebida en Inicio, usar el método de Inicio
+					if (ventanaInicio != null) {
+						ventanaInicio.mostrarPanelEditGuardia(g);
+					} else {
+						// Fallback: ventana flotante
+						EditGuardia frame = new EditGuardia(g);
+						frame.setVisible(true);
+					}
 				}
 			}
 		});

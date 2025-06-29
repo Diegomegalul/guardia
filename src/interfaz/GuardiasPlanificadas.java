@@ -36,14 +36,6 @@ public class GuardiasPlanificadas extends JFrame {
 		}
 	}
 
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				mostrarVentana();
-			}
-		});
-	}
-
 	public GuardiasPlanificadas() {
 		setIconImage(Toolkit.getDefaultToolkit().getImage(Login.class.getResource("/imagenes/logo.jpg")));
 		this.planificador = PlanificadorGuardias.getInstancia();
@@ -192,5 +184,9 @@ public class GuardiasPlanificadas extends JFrame {
 				}
 			}
 		}
+	}
+
+	public JPanel getPanelPrincipal() {
+		return contentPane;
 	}
 }

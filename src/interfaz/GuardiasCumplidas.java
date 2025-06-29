@@ -157,4 +157,8 @@ public class GuardiasCumplidas extends JFrame {
 			}
 		}
 	}
+
+	public JPanel getPanelPrincipal() {
+		return contentPane;
+	}
 }

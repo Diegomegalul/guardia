@@ -25,7 +25,7 @@ public class EditGuardia extends JFrame {
 	private JComboBox<Persona> comboPersona;
 	private JDateChooser dateChooser;
 	private JComboBox<String> comboTurno;
-	
+
 	public EditGuardia(final Guardia guardia) {
 		setIconImage(Toolkit.getDefaultToolkit().getImage(Login.class.getResource("/imagenes/logo.jpg")));
 		setTitle("Editar Guardia");
@@ -230,6 +230,7 @@ public class EditGuardia extends JFrame {
 			comboPersona.setSelectedItem(guardia.getPersona());
 	}
 
+	// Método para integración con Inicio
 	public JPanel getPanelPrincipal() {
 		return contentPane;
 	}

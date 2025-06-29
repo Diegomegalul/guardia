@@ -33,14 +33,6 @@ public class GuardiasRecuperacion extends JFrame {
 		}
 	}
 
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				mostrarVentana();
-			}
-		});
-	}
-
 	public GuardiasRecuperacion() {
 		setIconImage(Toolkit.getDefaultToolkit().getImage(Login.class.getResource("/imagenes/logo.jpg")));
 		setTitle("Guardias de Recuperación por Grupo");
@@ -181,15 +173,12 @@ public class GuardiasRecuperacion extends JFrame {
 		btnCerrar.setContentAreaFilled(false);
 		btnCerrar.setOpaque(true);
 		btnCerrar.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent e) {
-				dispose();
-			}
-		});
-		JPanel panelBoton = new JPanel();
-		panelBoton.setBackground(amarillo);
-		panelBoton.add(btnCerrar);
-		contentPane.add(Box.createVerticalStrut(10));
-		contentPane.add(panelBoton);
+
+	public void actionPerformed(java.awt.event.ActionEvent e) {
+		dispose();
+	}});
+
+	JPanel panelBoton = new JPanel();panelBoton.setBackground(amarillo);panelBoton.add(btnCerrar);contentPane.add(Box.createVerticalStrut(10));contentPane.add(panelBoton);
 	}
 
 	private int contarGuardiasRecuperacionAsignadas(List<Guardia> guardias, Estudiante estudiante) {
@@ -214,5 +203,9 @@ public class GuardiasRecuperacion extends JFrame {
 			}
 		}
 		return count;
+	}
+
+	public JPanel getPanelPrincipal() {
+		return contentPane;
 	}
 }
