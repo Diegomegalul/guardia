@@ -385,4 +385,9 @@ public class AddEstudiantes extends JFrame {
 			comp.setForeground(amarilloSec);
 		}
 	}
+
+	// Método para obtener el panel principal para uso en Inicio
+	public JPanel getPanelPrincipal() {
+		return contentPane;
+	}
 }

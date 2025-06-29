@@ -34,6 +34,10 @@ public class Inicio extends JFrame {
 	private ImageIcon fondoClaroIcon;
 	private ImageIcon fondoOscuroIcon;
 
+	// Nuevos paneles para agregar estudiantes y trabajadores
+	private JPanel panelAddEstudiantes;
+	private JPanel panelAddTrabajadores;
+
 	public Inicio() {
 		// Instancia singleton del planificador
 		setIconImage(Toolkit.getDefaultToolkit().getImage(Login.class.getResource("/imagenes/logo.jpg")));
@@ -93,21 +97,7 @@ public class Inicio extends JFrame {
 		itemEstudiante.setBorder(BorderFactory.createLineBorder(negro, 1));
 		itemEstudiante.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				boolean found = false;
-				for (Frame frame : JFrame.getFrames()) {
-					if (frame instanceof AddEstudiantes && frame.isVisible()) {
-						frame.toFront();
-						frame.requestFocus();
-						found = true;
-						break;
-					}
-				}
-				if (!found) {
-					AddEstudiantes frame = new AddEstudiantes(planificador);
-					if (modoOscuro)
-						frame.aplicarModoOscuro(modoOscuro, darkBg, darkFg, new Color(60, 63, 80), amarillo);
-					frame.setVisible(true);
-				}
+				mostrarPanelCentral(panelAddEstudiantes);
 			}
 		});
 
@@ -118,21 +108,7 @@ public class Inicio extends JFrame {
 		itemTrabajador.setBorder(BorderFactory.createLineBorder(negro, 1));
 		itemTrabajador.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				boolean found = false;
-				for (Frame frame : JFrame.getFrames()) {
-					if (frame instanceof AddTrabajadores && frame.isVisible()) {
-						frame.toFront();
-						frame.requestFocus();
-						found = true;
-						break;
-					}
-				}
-				if (!found) {
-					AddTrabajadores frame = new AddTrabajadores(planificador, null, null);
-					if (modoOscuro)
-						frame.aplicarModoOscuro(modoOscuro, darkBg, darkFg, new Color(60, 63, 80), amarillo);
-					frame.setVisible(true);
-				}
+				mostrarPanelCentral(panelAddTrabajadores);
 			}
 		});
 
@@ -569,17 +545,14 @@ public class Inicio extends JFrame {
 		lblBienvenida.setHorizontalAlignment(SwingConstants.CENTER);
 		lblBienvenida.setBorder(new EmptyBorder(80, 10, 10, 10));
 		panelCentral.add(lblBienvenida, BorderLayout.CENTER);
-		lblBienvenida.addComponentListener(new java.awt.event.ComponentAdapter() {
-			public void componentResized(java.awt.event.ComponentEvent e) {
-				actualizarImagenBienvenida();
-			}
-		});
-		// Inicializar imagen
-		SwingUtilities.invokeLater(new Runnable() {
-			public void run() {
-				actualizarImagenBienvenida();
-			}
-		});
+
+		// Crear paneles de agregar estudiantes y trabajadores (usando los paneles de los frames)
+		panelAddEstudiantes = new AddEstudiantes(planificador, null, null).getPanelPrincipal();
+		panelAddTrabajadores = new AddTrabajadores(planificador, null).getPanelPrincipal();
+
+		// Inicialmente solo el panel central visible
+		contentPane.add(panelCentral, BorderLayout.CENTER);
+
 		// Aplicar modo oscuro al inicio
 		aplicarModoOscuro();
 
@@ -863,5 +836,19 @@ public class Inicio extends JFrame {
 		if (opcion == JOptionPane.YES_OPTION) {
 			System.exit(0);
 		}
+	}
+
+	// Método para intercambiar el panel central por el panel deseado
+	private void mostrarPanelCentral(JPanel nuevoPanel) {
+		contentPane.remove(panelCentral);
+		contentPane.remove(panelAddEstudiantes);
+		contentPane.remove(panelAddTrabajadores);
+		contentPane.add(nuevoPanel, BorderLayout.CENTER);
+		contentPane.revalidate();
+		contentPane.repaint();
+		panelCentral.setVisible(false);
+		panelAddEstudiantes.setVisible(false);
+		panelAddTrabajadores.setVisible(false);
+		nuevoPanel.setVisible(true);
 	}
 }
