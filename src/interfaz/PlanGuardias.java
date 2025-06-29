@@ -44,7 +44,7 @@ public class PlanGuardias extends JFrame {
 	private DefaultTableModel tablaModel;
 	@SuppressWarnings("unused")
 	private PlanificadorGuardias planificador;
-	private JScrollPane scroll; // 
+	private JScrollPane scroll; //
 	// Referencias para modo oscuro no lo he terminado
 	private Color amarillo = new Color(255, 215, 0);
 	private Color negro = Color.BLACK;
@@ -464,5 +464,10 @@ public class PlanGuardias extends JFrame {
 				return g;
 		}
 		return null;
+	}
+
+	// Método para integración con Inicio
+	public JPanel getPanelPrincipal() {
+		return contentPane;
 	}
 }

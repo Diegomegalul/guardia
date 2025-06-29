@@ -39,6 +39,10 @@ public class Inicio extends JFrame {
 	private JPanel panelAddTrabajadores;
 	// Nuevo panel para EditCalendario
 	private JPanel panelEditCalendario;
+	// Nuevo panel para EditGuardia
+	private JPanel panelEditGuardia;
+	// Nuevo panel para PlanGuardias
+	private JPanel panelPlanGuardias;
 
 	// Pila para navegación de paneles
 	private java.util.Stack<JPanel> pilaPaneles = new java.util.Stack<>();
@@ -137,27 +141,7 @@ public class Inicio extends JFrame {
 		planificarAuto.setBorder(BorderFactory.createLineBorder(negro, 1));
 		planificarAuto.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				boolean found = false;
-				for (Frame frame : JFrame.getFrames()) {
-					if (frame instanceof PlanGuardias && frame.isVisible()) {
-						frame.toFront();
-						frame.requestFocus();
-						found = true;
-						break;
-					}
-				}
-				if (!found) {
-					PlanGuardias frame = new PlanGuardias(planificador);
-					frame.setVisible(true);
-					if (modoOscuro) {
-						frame.aplicarModoOscuro(
-								modoOscuro,
-								darkBg,
-								darkFg,
-								new Color(60, 63, 80),
-								amarillo);
-					}
-				}
+				mostrarPanelCentral(panelPlanGuardias);
 			}
 		});
 
@@ -551,10 +535,13 @@ public class Inicio extends JFrame {
 
 		panelCentral.add(lblBienvenida, BorderLayout.CENTER);
 
-		// Crear paneles de agregar estudiantes, trabajadores y calendario
+		// Crear paneles de agregar estudiantes, trabajadores, calendario, editar
+		// guardia y planificar guardias
 		panelAddEstudiantes = new AddEstudiantes(planificador, null, null).getPanelPrincipal();
 		panelAddTrabajadores = new AddTrabajadores(planificador, null).getPanelPrincipal();
 		panelEditCalendario = new EditCalendario(planificador).getPanelPrincipal();
+		panelEditGuardia = new EditGuardia(null).getPanelPrincipal();
+		panelPlanGuardias = new PlanGuardias(planificador).getPanelPrincipal();
 
 		// Inicialmente solo el panel central visible
 		contentPane.add(panelCentral, BorderLayout.CENTER);
@@ -887,6 +874,8 @@ public class Inicio extends JFrame {
 		contentPane.remove(panelAddEstudiantes);
 		contentPane.remove(panelAddTrabajadores);
 		contentPane.remove(panelEditCalendario);
+		contentPane.remove(panelEditGuardia);
+		contentPane.remove(panelPlanGuardias);
 		contentPane.add(nuevoPanel, BorderLayout.CENTER);
 		contentPane.revalidate();
 		contentPane.repaint();
@@ -895,9 +884,12 @@ public class Inicio extends JFrame {
 		panelAddTrabajadores.setVisible(false);
 		if (panelEditCalendario != null)
 			panelEditCalendario.setVisible(false);
+		if (panelEditGuardia != null)
+			panelEditGuardia.setVisible(false);
+		if (panelPlanGuardias != null)
+			panelPlanGuardias.setVisible(false);
 		nuevoPanel.setVisible(true);
 
-		// Mostrar botón volver si no estamos en el panel de bienvenida
 		btnVolver.setVisible(nuevoPanel != panelCentral && !pilaPaneles.isEmpty());
 	}
 
@@ -911,6 +903,10 @@ public class Inicio extends JFrame {
 			return panelAddTrabajadores;
 		if (panelEditCalendario != null && panelEditCalendario.isVisible())
 			return panelEditCalendario;
+		if (panelEditGuardia != null && panelEditGuardia.isVisible())
+			return panelEditGuardia;
+		if (panelPlanGuardias != null && panelPlanGuardias.isVisible())
+			return panelPlanGuardias;
 		return panelCentral; // fallback
 	}
 }
