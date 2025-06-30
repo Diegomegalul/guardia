@@ -183,8 +183,7 @@ public class Inicio extends JFrame {
 		mostrarGuardiasIncumplidas.setBorder(BorderFactory.createLineBorder(negro, 1));
 		mostrarGuardiasIncumplidas.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				// Llama al método de la clase Inicio usando this
-				Inicio.this.mostrarPanelGuardiasIncumplidas();
+				mostrarPanelGuardiasIncumplidas();
 			}
 		});
 
@@ -831,7 +830,7 @@ public class Inicio extends JFrame {
 	}
 
 	// Métodos para mostrar los paneles principales de cada JFrame en el panel
-	// central
+	// central (todos como JPanel embebidos)
 	public void mostrarPanelVerEstudiantes() {
 		JPanel panel = new VerEstudiantes(planificador).getPanelPrincipal();
 		mostrarPanelCentral(panel);
@@ -862,8 +861,72 @@ public class Inicio extends JFrame {
 		mostrarPanelCentral(panel);
 	}
 
+	public void mostrarPanelGuardiasPlanificadas() {
+		JPanel panel = new GuardiasPlanificadas().getPanelPrincipal();
+		mostrarPanelCentral(panel);
+	}
+
+	public void mostrarPanelGuardiasCumplidas() {
+		JPanel panel = new GuardiasCumplidas().getPanelPrincipal();
+		mostrarPanelCentral(panel);
+	}
+
+	public void mostrarPanelGuardiasIncumplidas() {
+		JPanel panel = new GuardiasIncumplidas().getPanelPrincipal();
+		mostrarPanelCentral(panel);
+	}
+
 	// Nuevo método para mostrar el label de bienvenida (panelCentral)
 	public void mostrarPanelBienvenida() {
-		mostrarPanelCentral(panelCentral);
+		// Oculta todos los paneles secundarios si están visibles
+		if (panelAddEstudiantes != null)
+			panelAddEstudiantes.setVisible(false);
+		if (panelAddTrabajadores != null)
+			panelAddTrabajadores.setVisible(false);
+		if (panelEditCalendario != null)
+			panelEditCalendario.setVisible(false);
+		if (panelEditGuardia != null)
+			panelEditGuardia.setVisible(false);
+		if (panelPlanGuardias != null)
+			panelPlanGuardias.setVisible(false);
+		if (panelIntercambioPersona != null)
+			panelIntercambioPersona.setVisible(false);
+
+		// Elimina todos los paneles secundarios del contentPane si están añadidos
+		if (panelAddEstudiantes != null && panelAddEstudiantes.getParent() == contentPane)
+			contentPane.remove(panelAddEstudiantes);
+		if (panelAddTrabajadores != null && panelAddTrabajadores.getParent() == contentPane)
+			contentPane.remove(panelAddTrabajadores);
+		if (panelEditCalendario != null && panelEditCalendario.getParent() == contentPane)
+			contentPane.remove(panelEditCalendario);
+		if (panelEditGuardia != null && panelEditGuardia.getParent() == contentPane)
+			contentPane.remove(panelEditGuardia);
+		if (panelPlanGuardias != null && panelPlanGuardias.getParent() == contentPane)
+			contentPane.remove(panelPlanGuardias);
+		if (panelIntercambioPersona != null && panelIntercambioPersona.getParent() == contentPane)
+			contentPane.remove(panelIntercambioPersona);
+
+		// Elimina todos los paneles de reportes/listados embebidos si están añadidos
+		Component[] components = contentPane.getComponents();
+		for (Component comp : components) {
+			if (comp != panelCentral && comp != panelInferior) {
+				contentPane.remove(comp);
+			}
+		}
+
+		// Mostrar el panelCentral (bienvenida)
+		if (panelCentral.getParent() != contentPane) {
+			contentPane.add(panelCentral, BorderLayout.CENTER);
+		}
+		panelCentral.setVisible(true);
+
+		// Revalida y repinta para asegurar que el label de bienvenida se muestre
+		contentPane.revalidate();
+		contentPane.repaint();
+
+		// Limpia la pila de navegación
+		pilaPaneles.clear();
+
+		btnVolver.setVisible(true);
 	}
 }

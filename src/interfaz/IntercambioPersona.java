@@ -41,6 +41,7 @@ public class IntercambioPersona extends JFrame {
 			setIconImage(Toolkit.getDefaultToolkit().getImage(Login.class.getResource("/imagenes/logo.jpg")));
 			setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 			setBounds(100, 100, 500, 250);
+			setLocationRelativeTo(null);
 			final Color amarillo = new Color(255, 215, 0);
 			final Color negro = Color.BLACK;
 			contentPane = new JPanel();
