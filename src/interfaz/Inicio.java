@@ -435,7 +435,8 @@ public class Inicio extends JFrame {
 		panelAddTrabajadores = new AddTrabajadores(planificador, null).getPanelPrincipal();
 		panelEditCalendario = new EditCalendario(planificador).getPanelPrincipal();
 		panelEditGuardia = new EditGuardia(null).getPanelPrincipal();
-		panelPlanGuardias = new PlanGuardias(planificador).getPanelPrincipal();
+		// Cambia aquí: pasa 'this' al constructor de PlanGuardias
+		panelPlanGuardias = new PlanGuardias(planificador, this).getPanelPrincipal();
 		panelIntercambioPersona = new IntercambioPersona(null).getPanelPrincipal();
 
 		// Inicialmente solo el panel central visible
@@ -752,7 +753,7 @@ public class Inicio extends JFrame {
 	}
 
 	// Método para intercambiar el panel central por el panel deseado
-	private void mostrarPanelCentral(JPanel nuevoPanel) {
+	void mostrarPanelCentral(JPanel nuevoPanel) {
 		JPanel actual = obtenerPanelActual();
 		if (actual != null && actual != nuevoPanel) {
 			pilaPaneles.push(actual);

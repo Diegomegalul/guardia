@@ -215,8 +215,20 @@ public class PlanGuardias extends JFrame {
 				int id = Integer.parseInt(tablaModel.getValueAt(fila, 0).toString());
 				logica.Guardia g = buscarGuardiaPorId(id);
 				if (g != null) {
-					IntercambioPersona frame = new IntercambioPersona(g);
-					frame.setVisible(true);
+					// Mostrar el panel de intercambioPersona embebido en Inicio
+					if (ventanaInicio != null) {
+						JPanel panelIntercambio = new IntercambioPersona(g).getPanelPrincipal();
+						ventanaInicio.mostrarPanelCentral(panelIntercambio);
+					} else {
+						// Fallback: mostrar el panel en una ventana flotante solo si no hay referencia
+						// a Inicio
+						JFrame frame = new JFrame("Intercambio de Persona");
+						frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+						frame.setContentPane(new IntercambioPersona(g).getPanelPrincipal());
+						frame.pack();
+						frame.setLocationRelativeTo(null);
+						frame.setVisible(true);
+					}
 				}
 			}
 		});
