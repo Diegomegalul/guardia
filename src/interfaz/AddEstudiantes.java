@@ -3,6 +3,7 @@ package interfaz;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
@@ -109,6 +110,8 @@ public class AddEstudiantes extends JFrame {
 				FormFactory.RELATED_GAP_COLSPEC,
 				ColumnSpec.decode("center:220px:grow"), },
 				new RowSpec[] {
+						FormFactory.RELATED_GAP_ROWSPEC,
+						RowSpec.decode("top:pref:grow"),
 						FormFactory.RELATED_GAP_ROWSPEC,
 						RowSpec.decode("top:pref:grow"),
 						FormFactory.RELATED_GAP_ROWSPEC,
@@ -355,6 +358,15 @@ public class AddEstudiantes extends JFrame {
 					framePadre.refrescarTabla();
 				}
 				dispose();
+				// Si está embebido en Inicio, llamar a volverPanelAnterior
+				Container parent = getPanelPrincipal().getParent();
+				while (parent != null) {
+					if (parent instanceof interfaz.Inicio) {
+						((interfaz.Inicio) parent).volverPanelAnterior();
+						break;
+					}
+					parent = parent.getParent();
+				}
 			}
 		});
 		panelBoton.add(btnGuardar, "4, 2, center, center");

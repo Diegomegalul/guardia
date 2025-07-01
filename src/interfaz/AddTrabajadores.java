@@ -90,6 +90,8 @@ public class AddTrabajadores extends JFrame {
 						FormFactory.RELATED_GAP_ROWSPEC,
 						RowSpec.decode("top:pref:grow"),
 						FormFactory.RELATED_GAP_ROWSPEC,
+						RowSpec.decode("top:pref:grow"),
+						FormFactory.RELATED_GAP_ROWSPEC,
 						RowSpec.decode("top:pref:grow"), }));
 
 		// CI
@@ -369,6 +371,15 @@ public class AddTrabajadores extends JFrame {
 							verTrabajadores.refrescarTabla();
 						}
 						dispose();
+						// Si está embebido en Inicio, llamar a volverPanelAnterior
+						Container parent = getPanelPrincipal().getParent();
+						while (parent != null) {
+							if (parent instanceof interfaz.Inicio) {
+								((interfaz.Inicio) parent).volverPanelAnterior();
+								break;
+							}
+							parent = parent.getParent();
+						}
 					} catch (IllegalArgumentException ex) {
 						JOptionPane.showMessageDialog(AddTrabajadores.this, ex.getMessage(), "Error",
 								JOptionPane.ERROR_MESSAGE);

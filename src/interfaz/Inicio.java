@@ -945,7 +945,7 @@ public class Inicio extends JFrame {
 	}
 
 	// Método para volver al panel anterior usando la pila
-	private void volverPanelAnterior() {
+	void volverPanelAnterior() {
 		if (!pilaPaneles.isEmpty()) {
 			JPanel anterior = pilaPaneles.pop();
 			mostrarPanelCentralInterno(anterior, false);
