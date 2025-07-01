@@ -60,7 +60,7 @@ public class AddEstudiantes extends JFrame {
 	public AddEstudiantes(final PlanificadorGuardias planificador, Estudiante estudiante,
 			final VerEstudiantes framePadre) {
 		setIconImage(Toolkit.getDefaultToolkit().getImage(Login.class.getResource("/imagenes/logo.jpg")));
-		setMinimumSize(new Dimension(510, 550));
+		setMinimumSize(new Dimension(900, 600));
 		this.planificador = planificador;
 		this.estudianteEditado = estudiante;
 		this.framePadre = framePadre;
@@ -71,7 +71,7 @@ public class AddEstudiantes extends JFrame {
 
 		setTitle(estudiante == null ? "Añadir Estudiante" : "Editar Estudiante");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); // No cierra la app :V
-		setBounds(100, 100, 510, 550);
+		setBounds(100, 100, 900, 600);
 		setLocationRelativeTo(null);
 
 		contentPane = new JPanel();
@@ -107,24 +107,24 @@ public class AddEstudiantes extends JFrame {
 				FormFactory.RELATED_GAP_COLSPEC,
 				ColumnSpec.decode("center:200px:grow"),
 				FormFactory.RELATED_GAP_COLSPEC,
-				ColumnSpec.decode("center:220px:grow"), },
-				new RowSpec[] {
-						FormFactory.RELATED_GAP_ROWSPEC,
-						RowSpec.decode("top:20dlu:grow"),
-						FormFactory.RELATED_GAP_ROWSPEC,
-						RowSpec.decode("20dlu:grow"),
-						FormFactory.RELATED_GAP_ROWSPEC,
-						RowSpec.decode("20dlu:grow"),
-						FormFactory.RELATED_GAP_ROWSPEC,
-						RowSpec.decode("fill:20dlu:grow"),
-						FormFactory.RELATED_GAP_ROWSPEC,
-						RowSpec.decode("20dlu:grow"),
-						FormFactory.RELATED_GAP_ROWSPEC,
-						RowSpec.decode("20dlu:grow"),
-						FormFactory.RELATED_GAP_ROWSPEC,
-						RowSpec.decode("20dlu:grow"),
-						FormFactory.RELATED_GAP_ROWSPEC,
-						RowSpec.decode("fill:20dlu:grow"), }));
+				ColumnSpec.decode("center:220px:grow"),},
+			new RowSpec[] {
+				FormFactory.RELATED_GAP_ROWSPEC,
+				RowSpec.decode("top:pref:grow"),
+				FormFactory.RELATED_GAP_ROWSPEC,
+				RowSpec.decode("top:pref:grow"),
+				FormFactory.RELATED_GAP_ROWSPEC,
+				RowSpec.decode("top:pref:grow"),
+				FormFactory.RELATED_GAP_ROWSPEC,
+				RowSpec.decode("top:pref:grow"),
+				FormFactory.RELATED_GAP_ROWSPEC,
+				RowSpec.decode("top:pref:grow"),
+				FormFactory.RELATED_GAP_ROWSPEC,
+				RowSpec.decode("top:pref:grow"),
+				FormFactory.RELATED_GAP_ROWSPEC,
+				RowSpec.decode("top:pref:grow"),
+				FormFactory.RELATED_GAP_ROWSPEC,
+				RowSpec.decode("top:pref:grow"),}));
 		panelForm.add(new JLabel("CI:"), "2, 2, center, center");
 		gbc.gridx = 1;
 		panelForm.add(txtCi, "4, 2, center, center");

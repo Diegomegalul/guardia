@@ -49,7 +49,7 @@ public class EditCalendario extends JFrame {
 		setMinimumSize(new Dimension(600, 500));
 		setTitle("Editar Calendario - Días Festivos");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 600, 500);
+		setBounds(100, 100, 900, 600);
 		setLocationRelativeTo(null);
 
 		final Color amarillo = new Color(255, 215, 0);
@@ -88,15 +88,21 @@ public class EditCalendario extends JFrame {
 
 		// Fecha
 		dateChooser = new JDateChooser();
+		dateChooser.setAlignmentX(Component.LEFT_ALIGNMENT);
 		dateChooser.setDateFormatString("yyyy-MM-dd");
 		dateChooser.setFont(new Font("Arial", Font.PLAIN, 15));
-		panelForm.add(new JLabel("Fecha:"), "2, 2, center, center");
+		JLabel label_1 = new JLabel("Fecha:");
+		label_1.setAlignmentX(Component.RIGHT_ALIGNMENT);
+		panelForm.add(label_1, "2, 2, center, center");
 		panelForm.add(dateChooser, "4, 2, center, center");
 
 		// Descripción
 		txtDescripcion = new JTextField(20);
+		txtDescripcion.setAlignmentX(Component.LEFT_ALIGNMENT);
 		txtDescripcion.setFont(new Font("Arial", Font.PLAIN, 15));
-		panelForm.add(new JLabel("Descripción:"), "2, 4, center, center");
+		JLabel label = new JLabel("Descripción:");
+		label.setAlignmentX(Component.RIGHT_ALIGNMENT);
+		panelForm.add(label, "2, 4, center, center");
 		panelForm.add(txtDescripcion, "4, 4, center, center");
 
 		// Botones CRUD

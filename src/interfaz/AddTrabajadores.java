@@ -38,7 +38,7 @@ public class AddTrabajadores extends JFrame {
 	public AddTrabajadores(final PlanificadorGuardias planificador, final Trabajador trabajador,
 			final VerTrabajadores verTrabajadores) {
 		setIconImage(Toolkit.getDefaultToolkit().getImage(Login.class.getResource("/imagenes/logo.jpg")));
-		setMinimumSize(new Dimension(510, 550));
+		setMinimumSize(new Dimension(900, 600));
 		this.planificador = planificador;
 		// Colores institucionales
 		final Color amarillo = new Color(255, 215, 0);
@@ -47,7 +47,7 @@ public class AddTrabajadores extends JFrame {
 
 		setTitle(trabajador == null ? "Añadir Trabajador" : "Editar Trabajador");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); // No cierra la app
-		setBounds(100, 100, 510, 550);
+		setBounds(100, 100, 900, 600);
 		setLocationRelativeTo(null);
 
 		contentPane = new JPanel();
@@ -67,32 +67,28 @@ public class AddTrabajadores extends JFrame {
 				FormFactory.RELATED_GAP_COLSPEC,
 				ColumnSpec.decode("center:200px:grow"),
 				FormFactory.RELATED_GAP_COLSPEC,
-				ColumnSpec.decode("center:220px:grow"), },
-				new RowSpec[] {
-						FormFactory.RELATED_GAP_ROWSPEC,
-						RowSpec.decode("top:20dlu:grow"),
-						FormFactory.RELATED_GAP_ROWSPEC,
-						RowSpec.decode("20dlu:grow"),
-						FormFactory.RELATED_GAP_ROWSPEC,
-						RowSpec.decode("20dlu:grow"),
-						FormFactory.RELATED_GAP_ROWSPEC,
-						RowSpec.decode("fill:20dlu:grow"),
-						FormFactory.RELATED_GAP_ROWSPEC,
-						RowSpec.decode("20dlu:grow"),
-						FormFactory.RELATED_GAP_ROWSPEC,
-						RowSpec.decode("20dlu:grow"),
-						FormFactory.RELATED_GAP_ROWSPEC,
-						RowSpec.decode("20dlu:grow"),
-						FormFactory.RELATED_GAP_ROWSPEC,
-						RowSpec.decode("20dlu:grow"),
-						FormFactory.RELATED_GAP_ROWSPEC,
-						RowSpec.decode("20dlu:grow"),
-						FormFactory.RELATED_GAP_ROWSPEC,
-						RowSpec.decode("20dlu:grow"),
-						FormFactory.RELATED_GAP_ROWSPEC,
-						RowSpec.decode("20dlu:grow"),
-						FormFactory.RELATED_GAP_ROWSPEC,
-						RowSpec.decode("20dlu:grow"), }));
+				ColumnSpec.decode("center:220px:grow"),},
+			new RowSpec[] {
+				FormFactory.RELATED_GAP_ROWSPEC,
+				RowSpec.decode("top:pref:grow"),
+				FormFactory.RELATED_GAP_ROWSPEC,
+				RowSpec.decode("top:pref:grow"),
+				FormFactory.RELATED_GAP_ROWSPEC,
+				RowSpec.decode("top:pref:grow"),
+				FormFactory.RELATED_GAP_ROWSPEC,
+				RowSpec.decode("top:pref:grow"),
+				FormFactory.RELATED_GAP_ROWSPEC,
+				RowSpec.decode("top:pref:grow"),
+				FormFactory.RELATED_GAP_ROWSPEC,
+				RowSpec.decode("top:pref:grow"),
+				FormFactory.RELATED_GAP_ROWSPEC,
+				RowSpec.decode("top:pref:grow"),
+				FormFactory.RELATED_GAP_ROWSPEC,
+				RowSpec.decode("top:pref:grow"),
+				FormFactory.RELATED_GAP_ROWSPEC,
+				RowSpec.decode("top:pref:grow"),
+				FormFactory.RELATED_GAP_ROWSPEC,
+				RowSpec.decode("top:pref:grow"),}));
 
 		// CI
 		txtCi = new JTextField(15);
@@ -256,7 +252,8 @@ public class AddTrabajadores extends JFrame {
 						RowSpec.decode("20px"), }));
 
 		JButton btnGuardar = new JButton(trabajador == null ? "Guardar" : "Actualizar");
-		btnGuardar.setFont(new Font("Arial", Font.BOLD, 15));
+		btnGuardar.setAlignmentX(Component.CENTER_ALIGNMENT);
+		btnGuardar.setFont(new Font("Arial", Font.BOLD, 16));
 		btnGuardar.setBackground(negro);
 		btnGuardar.setForeground(amarillo);
 		btnGuardar.setFocusPainted(false);

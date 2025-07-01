@@ -22,7 +22,7 @@ public class Inicio extends JFrame {
 
 	// Referencias para modo oscuro
 	private JLabel lblBienvenida;
-	private JPanel panelCentral, panelInferior;
+	private JPanel panelCentral, panelInferior, panelLuna, panelSalir, panelCentroInferior;
 	private JMenuBar menuBar;
 	private JMenuItem itemEstudiante, itemTrabajador;
 	private JMenuItem valoresEstudiantes, valoresTrabajadores;
@@ -51,6 +51,7 @@ public class Inicio extends JFrame {
 	private JButton btnVolver;
 
 	public Inicio() {
+		setMinimumSize(new Dimension(900, 600));
 		// Instancia singleton del planificador
 		setIconImage(Toolkit.getDefaultToolkit().getImage(Login.class.getResource("/imagenes/logo.jpg")));
 		this.planificador = PlanificadorGuardias.getInstancia();
@@ -450,9 +451,9 @@ public class Inicio extends JFrame {
 		panelInferior.setBackground(amarillo);
 
 		// Panel Salir (derecha) y Luna (izquierda) del mismo tamaño
-		JPanel panelSalir = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+		panelSalir = new JPanel(new FlowLayout(FlowLayout.RIGHT));
 		panelSalir.setBackground(amarillo);
-		panelSalir.setPreferredSize(new Dimension(120, 60)); // Tamaño fijo
+		panelSalir.setPreferredSize(new Dimension(90, 55)); // Tamaño fijo
 
 		btnSalir = new JButton("Salir") {
 			private static final long serialVersionUID = 1L;
@@ -506,30 +507,9 @@ public class Inicio extends JFrame {
 		});
 		panelSalir.add(btnSalir);
 
-		// Botón Volver (centrado)
-		btnVolver = new JButton("Inicio");
-		btnVolver.setFont(new Font("Arial", Font.BOLD, 16));
-		btnVolver.setBackground(negro);
-		btnVolver.setForeground(amarillo);
-		btnVolver.setFocusPainted(false);
-		btnVolver.setBorder(BorderFactory.createLineBorder(negro, 2, true));
-		btnVolver.setContentAreaFilled(false);
-		btnVolver.setOpaque(true);
-		btnVolver.setVisible(true);
-
-		btnVolver.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				mostrarPanelBienvenida();
-			}
-		});
-
-		JPanel panelCentroInferior = new JPanel(new FlowLayout(FlowLayout.CENTER));
-		panelCentroInferior.setBackground(amarillo);
-		panelCentroInferior.add(btnVolver);
-
-		JPanel panelLuna = new JPanel(new FlowLayout(FlowLayout.LEFT));
+		panelLuna = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		panelLuna.setBackground(amarillo);
-		panelLuna.setPreferredSize(new Dimension(120, 60)); // Tamaño fijo
+		panelLuna.setPreferredSize(new Dimension(55, 55)); // Tamaño fijo
 
 		btnLuna = new JButton() {
 			private static final long serialVersionUID = 1L;
@@ -609,11 +589,32 @@ public class Inicio extends JFrame {
 		panelLuna.add(btnLuna);
 
 		panelInferior.add(panelLuna, BorderLayout.WEST);
-		panelInferior.add(panelCentroInferior, BorderLayout.CENTER);
 		panelInferior.add(panelSalir, BorderLayout.EAST);
 
 		contentPane.add(panelCentral, BorderLayout.CENTER);
 		contentPane.add(panelInferior, BorderLayout.SOUTH);
+
+		// Botón Volver (centrado)
+		btnVolver = new JButton("Inicio");
+		btnVolver.setFont(new Font("Arial", Font.BOLD, 16));
+		btnVolver.setBackground(negro);
+		btnVolver.setForeground(amarillo);
+		btnVolver.setFocusPainted(false);
+		btnVolver.setBorder(BorderFactory.createLineBorder(negro, 2, true));
+		btnVolver.setContentAreaFilled(false);
+		btnVolver.setOpaque(true);
+		btnVolver.setVisible(true);
+
+		btnVolver.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				mostrarPanelBienvenida();
+			}
+		});
+
+		panelCentroInferior = new JPanel(new FlowLayout(FlowLayout.CENTER));
+		panelInferior.add(panelCentroInferior, BorderLayout.CENTER);
+		panelCentroInferior.setBackground(amarillo);
+		panelCentroInferior.add(btnVolver);
 	}
 
 	private void actualizarImagenBienvenida() {
@@ -648,6 +649,13 @@ public class Inicio extends JFrame {
 			panelCentral.setBackground(fondo);
 		if (panelInferior != null)
 			panelInferior.setBackground(fondo);
+		// Cambia el fondo de los paneles inferiores correctamente
+		if (panelCentroInferior != null)
+			panelCentroInferior.setBackground(fondo);
+		if (panelSalir != null)
+			panelSalir.setBackground(fondo);
+		if (panelLuna != null)
+			panelLuna.setBackground(fondo);
 		if (lblBienvenida != null) {
 			lblBienvenida.setForeground(texto);
 			actualizarImagenBienvenida();
