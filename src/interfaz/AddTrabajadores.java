@@ -67,28 +67,30 @@ public class AddTrabajadores extends JFrame {
 				FormFactory.RELATED_GAP_COLSPEC,
 				ColumnSpec.decode("center:200px:grow"),
 				FormFactory.RELATED_GAP_COLSPEC,
-				ColumnSpec.decode("center:220px:grow"),},
-			new RowSpec[] {
-				FormFactory.RELATED_GAP_ROWSPEC,
-				RowSpec.decode("top:pref:grow"),
-				FormFactory.RELATED_GAP_ROWSPEC,
-				RowSpec.decode("top:pref:grow"),
-				FormFactory.RELATED_GAP_ROWSPEC,
-				RowSpec.decode("top:pref:grow"),
-				FormFactory.RELATED_GAP_ROWSPEC,
-				RowSpec.decode("top:pref:grow"),
-				FormFactory.RELATED_GAP_ROWSPEC,
-				RowSpec.decode("top:pref:grow"),
-				FormFactory.RELATED_GAP_ROWSPEC,
-				RowSpec.decode("top:pref:grow"),
-				FormFactory.RELATED_GAP_ROWSPEC,
-				RowSpec.decode("top:pref:grow"),
-				FormFactory.RELATED_GAP_ROWSPEC,
-				RowSpec.decode("top:pref:grow"),
-				FormFactory.RELATED_GAP_ROWSPEC,
-				RowSpec.decode("top:pref:grow"),
-				FormFactory.RELATED_GAP_ROWSPEC,
-				RowSpec.decode("top:pref:grow"),}));
+				ColumnSpec.decode("center:220px:grow"), },
+				new RowSpec[] {
+						FormFactory.RELATED_GAP_ROWSPEC,
+						RowSpec.decode("top:pref:grow"),
+						FormFactory.RELATED_GAP_ROWSPEC,
+						RowSpec.decode("top:pref:grow"),
+						FormFactory.RELATED_GAP_ROWSPEC,
+						RowSpec.decode("top:pref:grow"),
+						FormFactory.RELATED_GAP_ROWSPEC,
+						RowSpec.decode("top:pref:grow"),
+						FormFactory.RELATED_GAP_ROWSPEC,
+						RowSpec.decode("top:pref:grow"),
+						FormFactory.RELATED_GAP_ROWSPEC,
+						RowSpec.decode("top:pref:grow"),
+						FormFactory.RELATED_GAP_ROWSPEC,
+						RowSpec.decode("top:pref:grow"),
+						FormFactory.RELATED_GAP_ROWSPEC,
+						RowSpec.decode("top:pref:grow"),
+						FormFactory.RELATED_GAP_ROWSPEC,
+						RowSpec.decode("top:pref:grow"),
+						FormFactory.RELATED_GAP_ROWSPEC,
+						RowSpec.decode("top:pref:grow"),
+						FormFactory.RELATED_GAP_ROWSPEC,
+						RowSpec.decode("top:pref:grow"), }));
 
 		// CI
 		txtCi = new JTextField(15);
@@ -406,6 +408,7 @@ public class AddTrabajadores extends JFrame {
 		} else if (comp instanceof JTextField) {
 			comp.setBackground(oscuro ? new Color(50, 50, 60) : Color.WHITE);
 			((JTextField) comp).setForeground(oscuro ? Color.WHITE : texto);
+			((JTextField) comp).setCaretColor(oscuro ? Color.WHITE : Color.BLACK);
 		} else if (comp instanceof JComboBox) {
 			comp.setBackground(oscuro ? new Color(50, 50, 60) : Color.WHITE);
 			comp.setForeground(oscuro ? Color.WHITE : texto);
@@ -419,6 +422,9 @@ public class AddTrabajadores extends JFrame {
 			Component editor = ((com.toedter.calendar.JDateChooser) comp).getComponent(1);
 			editor.setBackground(oscuro ? new Color(50, 50, 60) : Color.WHITE);
 			editor.setForeground(oscuro ? Color.WHITE : texto);
+			if (editor instanceof JTextField) {
+				((JTextField) editor).setCaretColor(oscuro ? Color.WHITE : Color.BLACK);
+			}
 		}
 	}
 

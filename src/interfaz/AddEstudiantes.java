@@ -107,24 +107,28 @@ public class AddEstudiantes extends JFrame {
 				FormFactory.RELATED_GAP_COLSPEC,
 				ColumnSpec.decode("center:200px:grow"),
 				FormFactory.RELATED_GAP_COLSPEC,
-				ColumnSpec.decode("center:220px:grow"),},
-			new RowSpec[] {
-				FormFactory.RELATED_GAP_ROWSPEC,
-				RowSpec.decode("top:pref:grow"),
-				FormFactory.RELATED_GAP_ROWSPEC,
-				RowSpec.decode("top:pref:grow"),
-				FormFactory.RELATED_GAP_ROWSPEC,
-				RowSpec.decode("top:pref:grow"),
-				FormFactory.RELATED_GAP_ROWSPEC,
-				RowSpec.decode("top:pref:grow"),
-				FormFactory.RELATED_GAP_ROWSPEC,
-				RowSpec.decode("top:pref:grow"),
-				FormFactory.RELATED_GAP_ROWSPEC,
-				RowSpec.decode("top:pref:grow"),
-				FormFactory.RELATED_GAP_ROWSPEC,
-				RowSpec.decode("top:pref:grow"),
-				FormFactory.RELATED_GAP_ROWSPEC,
-				RowSpec.decode("top:pref:grow"),}));
+				ColumnSpec.decode("center:220px:grow"), },
+				new RowSpec[] {
+						FormFactory.RELATED_GAP_ROWSPEC,
+						RowSpec.decode("top:pref:grow"),
+						FormFactory.RELATED_GAP_ROWSPEC,
+						RowSpec.decode("top:pref:grow"),
+						FormFactory.RELATED_GAP_ROWSPEC,
+						RowSpec.decode("top:pref:grow"),
+						FormFactory.RELATED_GAP_ROWSPEC,
+						RowSpec.decode("top:pref:grow"),
+						FormFactory.RELATED_GAP_ROWSPEC,
+						RowSpec.decode("top:pref:grow"),
+						FormFactory.RELATED_GAP_ROWSPEC,
+						RowSpec.decode("top:pref:grow"),
+						FormFactory.RELATED_GAP_ROWSPEC,
+						RowSpec.decode("top:pref:grow"),
+						FormFactory.RELATED_GAP_ROWSPEC,
+						RowSpec.decode("top:pref:grow"),
+						FormFactory.RELATED_GAP_ROWSPEC,
+						RowSpec.decode("top:pref:grow"),
+						FormFactory.RELATED_GAP_ROWSPEC,
+						RowSpec.decode("top:pref:grow"), }));
 		panelForm.add(new JLabel("CI:"), "2, 2, center, center");
 		gbc.gridx = 1;
 		panelForm.add(txtCi, "4, 2, center, center");
@@ -374,6 +378,7 @@ public class AddEstudiantes extends JFrame {
 		} else if (comp instanceof JTextField) {
 			comp.setBackground(oscuro ? new Color(50, 50, 60) : Color.WHITE);
 			((JTextField) comp).setForeground(oscuro ? Color.WHITE : texto);
+			((JTextField) comp).setCaretColor(oscuro ? Color.WHITE : Color.BLACK);
 		} else if (comp instanceof JComboBox) {
 			comp.setBackground(oscuro ? new Color(50, 50, 60) : Color.WHITE);
 			comp.setForeground(oscuro ? Color.WHITE : texto);
