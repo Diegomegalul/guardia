@@ -641,101 +641,16 @@ public class Inicio extends JFrame {
 		Color boton = modoOscuro ? new Color(60, 63, 80) : negro;
 		Color amarilloSec = amarillo;
 
-		if (menuBar != null) {
-			menuBar.setBackground(amarillo);
-			menuBar.setOpaque(true);
-		}
-		if (contentPane != null)
-			contentPane.setBackground(fondo);
-		if (panelCentral != null)
-			panelCentral.setBackground(fondo);
-		if (panelInferior != null)
-			panelInferior.setBackground(fondo);
-		// Cambia el fondo de los paneles inferiores correctamente
-		if (panelCentroInferior != null)
-			panelCentroInferior.setBackground(fondo);
-		if (panelSalir != null)
-			panelSalir.setBackground(fondo);
-		if (panelLuna != null)
-			panelLuna.setBackground(fondo);
+		// Solo aplicar colores recursivamente a todos los componentes
+		setComponentColors(contentPane, modoOscuro, fondo, texto, boton, amarilloSec);
+
+		// Actualizar la imagen de bienvenida si es necesario
 		if (lblBienvenida != null) {
 			lblBienvenida.setForeground(texto);
 			actualizarImagenBienvenida();
 		}
-		if (itemDiasFestivos != null) {
-			itemDiasFestivos.setBackground(modoOscuro ? amarillo : darkBg);
-			itemDiasFestivos.setForeground(modoOscuro ? negro : amarillo);
-		}
-		if (mostrarGuardiasIncumplidas != null) {
-			mostrarGuardiasIncumplidas.setBackground(modoOscuro ? amarillo : darkBg);
-			mostrarGuardiasIncumplidas.setForeground(modoOscuro ? negro : amarillo);
-		}
-		if (itemEstudiante != null) {
-			itemEstudiante.setBackground(modoOscuro ? amarillo : darkBg);
-			itemEstudiante.setForeground(modoOscuro ? negro : amarillo);
-		}
-		if (reporteFestivas != null) {
-			reporteFestivas.setBackground(modoOscuro ? amarillo : darkBg);
-			reporteFestivas.setForeground(modoOscuro ? negro : amarillo);
-		}
-		if (reporteEstInactivos != null) {
-			reporteEstInactivos.setBackground(modoOscuro ? amarillo : darkBg);
-			reporteEstInactivos.setForeground(modoOscuro ? negro : amarillo);
-		}
-		if (reporteRecuperacion != null) {
-			reporteRecuperacion.setBackground(modoOscuro ? amarillo : darkBg);
-			reporteRecuperacion.setForeground(modoOscuro ? negro : amarillo);
-		}
-		if (reporteVoluntarios != null) {
-			reporteVoluntarios.setBackground(modoOscuro ? amarillo : darkBg);
-			reporteVoluntarios.setForeground(modoOscuro ? negro : amarillo);
-		}
-		if (itemTrabajador != null) {
-			itemTrabajador.setBackground(modoOscuro ? amarillo : darkBg);
-			itemTrabajador.setForeground(modoOscuro ? negro : amarillo);
-		}
-		if (mostrarGuardiasCumplidas != null) {
-			mostrarGuardiasCumplidas.setBackground(modoOscuro ? amarillo : darkBg);
-			mostrarGuardiasCumplidas.setForeground(modoOscuro ? negro : amarillo);
-		}
-		if (mostrarGuardiasPlanificadas != null) {
-			mostrarGuardiasPlanificadas.setBackground(modoOscuro ? amarillo : darkBg);
-			mostrarGuardiasPlanificadas.setForeground(modoOscuro ? negro : amarillo);
-		}
-		if (mostrarTrabajadores != null) {
-			mostrarTrabajadores.setBackground(modoOscuro ? amarillo : darkBg);
-			mostrarTrabajadores.setForeground(modoOscuro ? negro : amarillo);
-		}
-		if (mostrarEstudiantes != null) {
-			mostrarEstudiantes.setBackground(modoOscuro ? amarillo : darkBg);
-			mostrarEstudiantes.setForeground(modoOscuro ? negro : amarillo);
-		}
-		if (planificarAuto != null) {
-			planificarAuto.setBackground(modoOscuro ? amarillo : darkBg);
-			planificarAuto.setForeground(modoOscuro ? negro : amarillo);
-		}
-		if (valoresEstudiantes != null) {
-			valoresEstudiantes.setBackground(modoOscuro ? amarillo : darkBg);
-			valoresEstudiantes.setForeground(modoOscuro ? negro : amarillo);
-		}
-		if (valoresTrabajadores != null) {
-			valoresTrabajadores.setBackground(modoOscuro ? amarillo : darkBg);
-			valoresTrabajadores.setForeground(modoOscuro ? negro : amarillo);
-		}
-		if (btnSalir != null) {
-			btnSalir.setBackground(boton);
-			btnSalir.setForeground(amarilloSec);
-		}
-		if (btnLuna != null) {
-			btnLuna.setBackground(fondo);
-			btnLuna.setIcon(modoOscuro ? iconoSol : iconoLuna);
-		}
-		// Cambia el color del botón "Inicio" según el modo
-		if (btnVolver != null) {
-			btnVolver.setBackground(boton);
-			btnVolver.setForeground(amarilloSec);
-		}
 
+		// Seguir aplicando modo oscuro a frames hijos
 		for (Frame frame : JFrame.getFrames()) {
 			if (frame instanceof AddEstudiantes) {
 				((AddEstudiantes) frame).aplicarModoOscuro(modoOscuro, fondo, texto, boton, amarilloSec);
@@ -786,7 +701,33 @@ public class Inicio extends JFrame {
 			if (frame instanceof IntercambioPersona) {
 				((IntercambioPersona) frame).aplicarModoOscuro(modoOscuro, fondo, texto, boton, amarilloSec);
 			}
-			
+
+		}
+	}
+
+	// Método recursivo para aplicar colores a todos los componentes
+	private void setComponentColors(Component comp, boolean oscuro, Color fondo, Color texto, Color boton,
+			Color amarilloSec) {
+		if (comp instanceof JPanel) {
+			comp.setBackground(fondo);
+			for (Component child : ((JPanel) comp).getComponents()) {
+				setComponentColors(child, oscuro, fondo, texto, boton, amarilloSec);
+			}
+		} else if (comp instanceof JLabel) {
+			((JLabel) comp).setForeground(oscuro ? darkFg : negro);
+		} else if (comp instanceof JTextField) {
+			comp.setBackground(oscuro ? new Color(50, 50, 60) : Color.WHITE);
+			((JTextField) comp).setForeground(oscuro ? darkFg : texto);
+			((JTextField) comp).setCaretColor(oscuro ? Color.WHITE : Color.BLACK);
+		} else if (comp instanceof JComboBox) {
+			comp.setBackground(oscuro ? new Color(50, 50, 60) : Color.WHITE);
+			comp.setForeground(oscuro ? darkFg : texto);
+		} else if (comp instanceof JCheckBox) {
+			comp.setBackground(fondo);
+			((JCheckBox) comp).setForeground(oscuro ? darkFg : texto);
+		} else if (comp instanceof JButton) {
+			comp.setBackground(boton);
+			comp.setForeground(amarilloSec);
 		}
 	}
 
