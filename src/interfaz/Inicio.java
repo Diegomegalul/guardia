@@ -27,8 +27,8 @@ public class Inicio extends JFrame {
 	private JMenuItem itemEstudiante, itemTrabajador;
 	private JMenuItem valoresEstudiantes, valoresTrabajadores;
 	private JMenuItem planificarAuto;
-	private JMenuItem mostrarEstudiantes, mostrarTrabajadores, mostrarGuardiasPlanificadas, mostrarGuardiasCumplidas;
-	private JMenuItem reporteRecuperacion, reporteVoluntarios, reporteEstInactivos, reporteFestivas;
+	private JMenuItem mostrarEstudiantes, mostrarTrabajadores, mostrarGuardiasPlanificadas, mostrarGuardiasCumplidas, mostrarGuardiasIncumplidas;
+	private JMenuItem reporteRecuperacion, reporteVoluntarios, reporteEstInactivos, reporteFestivas,itemDiasFestivos;
 	private JButton btnSalir, btnLuna;
 	private Icon iconoLuna, iconoSol;
 	private ImageIcon fondoClaroIcon;
@@ -176,7 +176,7 @@ public class Inicio extends JFrame {
 		});
 
 		// Nuevo submenu G.Incumplidas
-		JMenuItem mostrarGuardiasIncumplidas = new JMenuItem("G.Incumplidas");
+		mostrarGuardiasIncumplidas = new JMenuItem("G.Incumplidas");
 		menuPlanificar.add(mostrarGuardiasIncumplidas);
 		mostrarGuardiasIncumplidas.setFont(new Font("Arial", Font.PLAIN, 15));
 		mostrarGuardiasIncumplidas.setBackground(darkBg);
@@ -244,7 +244,7 @@ public class Inicio extends JFrame {
 		menuReportes.setForeground(negro);
 		menuReportes.setBorder(BorderFactory.createLineBorder(negro, 1));
 
-		JMenuItem reporteRecuperacion = new JMenuItem("Guardias Recuperacion");
+		reporteRecuperacion = new JMenuItem("Guardias Recuperacion");
 		reporteRecuperacion.setFont(new Font("Arial", Font.PLAIN, 15));
 		reporteRecuperacion.setBackground(darkBg);
 		reporteRecuperacion.setForeground(amarillo);
@@ -255,7 +255,7 @@ public class Inicio extends JFrame {
 			}
 		});
 
-		JMenuItem reporteVoluntarios = new JMenuItem("Profesores Voluntarios");
+		reporteVoluntarios = new JMenuItem("Profesores Voluntarios");
 		reporteVoluntarios.setFont(new Font("Arial", Font.PLAIN, 15));
 		reporteVoluntarios.setBackground(darkBg);
 		reporteVoluntarios.setForeground(amarillo);
@@ -266,7 +266,7 @@ public class Inicio extends JFrame {
 			}
 		});
 
-		JMenuItem reporteEstInactivos = new JMenuItem("Estudiantes Inactivos");
+		reporteEstInactivos = new JMenuItem("Estudiantes Inactivos");
 		reporteEstInactivos.setFont(new Font("Arial", Font.PLAIN, 15));
 		reporteEstInactivos.setBackground(darkBg);
 		reporteEstInactivos.setForeground(amarillo);
@@ -277,7 +277,7 @@ public class Inicio extends JFrame {
 			}
 		});
 
-		JMenuItem reporteFestivas = new JMenuItem("Guardias Festivas");
+		reporteFestivas = new JMenuItem("Guardias Festivas");
 		reporteFestivas.setFont(new Font("Arial", Font.PLAIN, 15));
 		reporteFestivas.setBackground(darkBg);
 		reporteFestivas.setForeground(amarillo);
@@ -302,7 +302,7 @@ public class Inicio extends JFrame {
 		menuValores.setForeground(negro);
 		menuValores.setBorder(BorderFactory.createLineBorder(negro, 1));
 
-		JMenuItem valoresEstudiantes = new JMenuItem("Estudiantes");
+		valoresEstudiantes = new JMenuItem("Estudiantes");
 		valoresEstudiantes.setFont(new Font("Arial", Font.PLAIN, 15));
 		valoresEstudiantes.setBackground(darkBg);
 		valoresEstudiantes.setForeground(amarillo);
@@ -344,7 +344,7 @@ public class Inicio extends JFrame {
 			}
 		});
 
-		JMenuItem valoresTrabajadores = new JMenuItem("Trabajadores");
+		valoresTrabajadores = new JMenuItem("Trabajadores");
 		valoresTrabajadores.setFont(new Font("Arial", Font.PLAIN, 15));
 		valoresTrabajadores.setBackground(darkBg);
 		valoresTrabajadores.setForeground(amarillo);
@@ -382,7 +382,7 @@ public class Inicio extends JFrame {
 			}
 		});
 
-		JMenuItem itemDiasFestivos = new JMenuItem("Días Festivos");
+		itemDiasFestivos = new JMenuItem("Días Festivos");
 		itemDiasFestivos.setFont(new Font("Arial", Font.PLAIN, 15));
 		itemDiasFestivos.setBackground(darkBg);
 		itemDiasFestivos.setForeground(amarillo);
@@ -661,7 +661,14 @@ public class Inicio extends JFrame {
 			lblBienvenida.setForeground(texto);
 			actualizarImagenBienvenida();
 		}
-
+		if (itemDiasFestivos != null){
+			itemDiasFestivos.setBackground(modoOscuro ? amarillo : darkBg);
+			itemDiasFestivos.setForeground(modoOscuro ? negro : amarillo);
+		}
+		if (mostrarGuardiasIncumplidas != null){
+			mostrarGuardiasIncumplidas.setBackground(modoOscuro ? amarillo : darkBg);
+			mostrarGuardiasIncumplidas.setForeground(modoOscuro ? negro : amarillo);			
+		}
 		if (itemEstudiante != null) {
 			itemEstudiante.setBackground(modoOscuro ? amarillo : darkBg);
 			itemEstudiante.setForeground(modoOscuro ? negro : amarillo);
