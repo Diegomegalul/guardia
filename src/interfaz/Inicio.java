@@ -40,16 +40,15 @@ public class Inicio extends JFrame {
 	private JPanel panelAddTrabajadores;
 	// Nuevo panel para EditCalendario
 	private JPanel panelEditCalendario;
-	// Nuevo panel para EditGuardia
-	private JPanel panelEditGuardia;
 	// Nuevo panel para PlanGuardias
 	private JPanel panelPlanGuardias;
-	// Nuevo panel para IntercambioPersona
-	private JPanel panelIntercambioPersona;
 
 	// Pila para navegación de paneles
 	private java.util.Stack<JPanel> pilaPaneles = new java.util.Stack<>();
 	private JButton btnVolver;
+
+	// Añade esta variable de instancia:
+	private JPanel panelActual;
 
 	public Inicio() {
 		setMinimumSize(new Dimension(900, 600));
@@ -436,13 +435,13 @@ public class Inicio extends JFrame {
 		panelAddEstudiantes = new AddEstudiantes(planificador, null, null).getPanelPrincipal();
 		panelAddTrabajadores = new AddTrabajadores(planificador, null).getPanelPrincipal();
 		panelEditCalendario = new EditCalendario(planificador).getPanelPrincipal();
-		panelEditGuardia = new EditGuardia(null).getPanelPrincipal();
+		new EditGuardia(null).getPanelPrincipal();
 		// Cambia aquí: pasa 'this' al constructor de PlanGuardias
 		panelPlanGuardias = new PlanGuardias(planificador, this).getPanelPrincipal();
-		panelIntercambioPersona = new IntercambioPersona(null).getPanelPrincipal();
 
 		// Inicialmente solo el panel central visible
 		contentPane.add(panelCentral, BorderLayout.CENTER);
+		panelActual = panelCentral; // <-- Inicializa el panel actual
 
 		// Aplicar modo oscuro al inicio
 		aplicarModoOscuro();
@@ -596,7 +595,7 @@ public class Inicio extends JFrame {
 		contentPane.add(panelInferior, BorderLayout.SOUTH);
 
 		// Botón Volver (centrado)
-		btnVolver = new JButton("Inicio");
+		btnVolver = new JButton("Volver");
 		btnVolver.setFont(new Font("Arial", Font.BOLD, 16));
 		btnVolver.setBackground(negro);
 		btnVolver.setForeground(amarillo);
@@ -604,19 +603,35 @@ public class Inicio extends JFrame {
 		btnVolver.setBorder(BorderFactory.createLineBorder(negro, 2, true));
 		btnVolver.setContentAreaFilled(false);
 		btnVolver.setOpaque(true);
-		btnVolver.setVisible(true);
+		btnVolver.setVisible(false);
 
 		btnVolver.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				mostrarPanelBienvenida();
+				Inicio.this.volverPanelAnterior();
 			}
 		});
 
-		btnVolver.setVisible(false);
 		panelCentroInferior = new JPanel(new FlowLayout(FlowLayout.CENTER));
 		panelInferior.add(panelCentroInferior, BorderLayout.CENTER);
 		panelCentroInferior.setBackground(amarillo);
 		panelCentroInferior.add(btnVolver);
+
+		// Botón Inicio (centrado a la derecha de Volver)
+		JButton btnInicio = new JButton("Inicio");
+		btnInicio.setFont(new Font("Arial", Font.BOLD, 16));
+		btnInicio.setBackground(negro);
+		btnInicio.setForeground(amarillo);
+		btnInicio.setFocusPainted(false);
+		btnInicio.setBorder(BorderFactory.createLineBorder(negro, 2, true));
+		btnInicio.setContentAreaFilled(false);
+		btnInicio.setOpaque(true);
+
+		btnInicio.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				mostrarPanelBienvenida();
+			}
+		});
+		panelCentroInferior.add(btnInicio);
 	}
 
 	private void actualizarImagenBienvenida() {
@@ -698,9 +713,11 @@ public class Inicio extends JFrame {
 			if (frame instanceof EditGuardia) {
 				((EditGuardia) frame).aplicarModoOscuro(modoOscuro, fondo, texto, boton, amarilloSec);
 			}
-			if (frame instanceof IntercambioPersona) {
-				((IntercambioPersona) frame).aplicarModoOscuro(modoOscuro, fondo, texto, boton, amarilloSec);
-			}
+			// Quita esta línea:
+			// if (frame instanceof IntercambioPersona) {
+			// ((IntercambioPersona) frame).aplicarModoOscuro(modoOscuro, fondo, texto,
+			// boton, amarilloSec);
+			// }
 
 		}
 	}
@@ -756,47 +773,44 @@ public class Inicio extends JFrame {
 	// Método para intercambiar el panel central por el panel deseado
 	void mostrarPanelCentral(JPanel nuevoPanel) {
 		JPanel actual = obtenerPanelActual();
-		if (actual != null && actual != nuevoPanel) {
+		// Solo apila si es navegación hacia adelante (no si es el mismo panel ni si es
+		// volver)
+		if (actual != null && actual != nuevoPanel && (pilaPaneles.isEmpty() || pilaPaneles.peek() != actual)) {
 			pilaPaneles.push(actual);
 		}
 		mostrarPanelCentralInterno(nuevoPanel, true);
 	}
 
-	// Método interno para mostrar panel y controlar visibilidad del botón inicio
+	// Método interno para mostrar panel y controlar visibilidad de los botones
 	private void mostrarPanelCentralInterno(JPanel nuevoPanel, boolean desdeMenu) {
-		// Elimina todos los paneles del centro antes de agregar el nuevo
-		contentPane.removeAll();
-		contentPane.add(nuevoPanel, BorderLayout.CENTER);
-		// Si tienes un panel inferior fijo (como panelInferior), vuelve a agregarlo:
-		if (panelInferior != null) {
+		// Oculta el panel actualmente visible, pero NO lo elimina del contentPane
+		if (panelActual != null && panelActual != nuevoPanel) {
+			panelActual.setVisible(false);
+		}
+		// Si el panel no está añadido aún, lo agregamos
+		if (nuevoPanel.getParent() != contentPane) {
+			contentPane.add(nuevoPanel, BorderLayout.CENTER);
+		}
+		nuevoPanel.setVisible(true);
+
+		// El panel inferior siempre debe estar presente
+		if (panelInferior != null && panelInferior.getParent() != contentPane) {
 			contentPane.add(panelInferior, BorderLayout.SOUTH);
 		}
+
 		contentPane.revalidate();
 		contentPane.repaint();
 
-		nuevoPanel.setVisible(true);
+		// Actualiza el panel actual
+		panelActual = nuevoPanel;
 
-		// El botón "Inicio" siempre visible
-		btnVolver.setVisible(nuevoPanel != panelCentral);
+		// Mostrar u ocultar el botón "Volver" según la pila
+		btnVolver.setVisible(!pilaPaneles.isEmpty());
 	}
 
 	// Obtener el panel actualmente visible en el centro
 	private JPanel obtenerPanelActual() {
-		if (panelCentral.isVisible())
-			return panelCentral;
-		if (panelAddEstudiantes.isVisible())
-			return panelAddEstudiantes;
-		if (panelAddTrabajadores.isVisible())
-			return panelAddTrabajadores;
-		if (panelEditCalendario != null && panelEditCalendario.isVisible())
-			return panelEditCalendario;
-		if (panelEditGuardia != null && panelEditGuardia.isVisible())
-			return panelEditGuardia;
-		if (panelPlanGuardias != null && panelPlanGuardias.isVisible())
-			return panelPlanGuardias;
-		if (panelIntercambioPersona != null && panelIntercambioPersona.isVisible())
-			return panelIntercambioPersona;
-		return panelCentral; // fallback
+		return panelActual;
 	}
 
 	// Métodos para mostrar los paneles principales de cada JFrame en el panel
@@ -914,44 +928,10 @@ public class Inicio extends JFrame {
 	// Nuevo método para mostrar el label de bienvenida (panelCentral)
 	public void mostrarPanelBienvenida() {
 		// Oculta todos los paneles secundarios si están visibles
-		if (panelAddEstudiantes != null)
-			panelAddEstudiantes.setVisible(false);
-		if (panelAddTrabajadores != null)
-			panelAddTrabajadores.setVisible(false);
-		if (panelEditCalendario != null)
-			panelEditCalendario.setVisible(false);
-		if (panelEditGuardia != null)
-			panelEditGuardia.setVisible(false);
-		if (panelPlanGuardias != null)
-			panelPlanGuardias.setVisible(false);
-		if (panelIntercambioPersona != null)
-			panelIntercambioPersona.setVisible(false);
-
-		// Elimina todos los paneles secundarios del contentPane si están añadidos
-		if (panelAddEstudiantes != null && panelAddEstudiantes.getParent() == contentPane)
-			contentPane.remove(panelAddEstudiantes);
-		if (panelAddTrabajadores != null && panelAddTrabajadores.getParent() == contentPane)
-			contentPane.remove(panelAddTrabajadores);
-		if (panelEditCalendario != null && panelEditCalendario.getParent() == contentPane)
-			contentPane.remove(panelEditCalendario);
-		if (panelEditGuardia != null && panelEditGuardia.getParent() == contentPane)
-			contentPane.remove(panelEditGuardia);
-		if (panelPlanGuardias != null && panelPlanGuardias.getParent() == contentPane)
-			contentPane.remove(panelPlanGuardias);
-		if (panelIntercambioPersona != null && panelIntercambioPersona.getParent() == contentPane)
-			contentPane.remove(panelIntercambioPersona);
-
-		// Elimina todos los paneles de reportes/listados embebidos si están añadidos
-		Component[] components = contentPane.getComponents();
-		for (Component comp : components) {
-			if (comp != panelCentral && comp != panelInferior) {
-				contentPane.remove(comp);
+		for (Component comp : contentPane.getComponents()) {
+			if (comp != panelCentral && comp != panelInferior && comp instanceof JPanel) {
+				comp.setVisible(false);
 			}
-		}
-
-		// Mostrar el panelCentral (bienvenida)
-		if (panelCentral.getParent() != contentPane) {
-			contentPane.add(panelCentral, BorderLayout.CENTER);
 		}
 		panelCentral.setVisible(true);
 
@@ -962,6 +942,16 @@ public class Inicio extends JFrame {
 		// Limpia la pila de navegación
 		pilaPaneles.clear();
 
+		panelActual = panelCentral; // <-- Actualiza el panel actual
+
 		btnVolver.setVisible(false);
+	}
+
+	// Método para volver al panel anterior usando la pila
+	private void volverPanelAnterior() {
+		if (!pilaPaneles.isEmpty()) {
+			JPanel anterior = pilaPaneles.pop();
+			mostrarPanelCentralInterno(anterior, false);
+		}
 	}
 }
