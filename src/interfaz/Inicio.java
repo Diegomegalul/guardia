@@ -722,6 +722,11 @@ public class Inicio extends JFrame {
 			btnLuna.setBackground(fondo);
 			btnLuna.setIcon(modoOscuro ? iconoSol : iconoLuna);
 		}
+		// Cambia el color del botón "Inicio" según el modo
+		if (btnVolver != null) {
+			btnVolver.setBackground(boton);
+			btnVolver.setForeground(amarilloSec);
+		}
 
 		for (Frame frame : JFrame.getFrames()) {
 			if (frame instanceof AddEstudiantes) {
