@@ -18,6 +18,8 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
@@ -35,7 +37,7 @@ public class IntercambioPersona extends JFrame {
 	private List<Persona> personasIntercambio;
 
 	public IntercambioPersona(Guardia g) {
-		if (g != null){
+		if (g != null) {
 			this.guardia = g;
 			setTitle("Intercambio de Guardia");
 			setIconImage(Toolkit.getDefaultToolkit().getImage(Login.class.getResource("/imagenes/logo.jpg")));
@@ -53,7 +55,8 @@ public class IntercambioPersona extends JFrame {
 			Persona personaActual = g.getPersona();
 			final TipoGuardia tipoGuardia = g.getTipo();
 
-			lblActual = new JLabel("Guardia asignada a: " + personaActual.getNombre() + " " + personaActual.getApellidos());
+			lblActual = new JLabel(
+					"Guardia asignada a: " + personaActual.getNombre() + " " + personaActual.getApellidos());
 			lblActual.setFont(new Font("Arial", Font.BOLD, 18));
 			lblActual.setForeground(negro);
 			lblActual.setHorizontalAlignment(SwingConstants.CENTER);
@@ -84,7 +87,8 @@ public class IntercambioPersona extends JFrame {
 				private static final long serialVersionUID = 1L;
 
 				@Override
-				public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected,
+				public Component getListCellRendererComponent(JList<?> list, Object value, int index,
+						boolean isSelected,
 						boolean cellHasFocus) {
 					Component c = super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
 					if (value instanceof Persona) {
@@ -109,7 +113,8 @@ public class IntercambioPersona extends JFrame {
 				public void actionPerformed(ActionEvent e) {
 					Persona seleccionada = (Persona) comboPersonas.getSelectedItem();
 					if (seleccionada == null) {
-						JOptionPane.showMessageDialog(IntercambioPersona.this, "Seleccione una persona para intercambiar.",
+						JOptionPane.showMessageDialog(IntercambioPersona.this,
+								"Seleccione una persona para intercambiar.",
 								"Error", JOptionPane.ERROR_MESSAGE);
 						return;
 					}
@@ -117,7 +122,8 @@ public class IntercambioPersona extends JFrame {
 							.buscarGuardiaDePersona(seleccionada, tipoGuardia);
 					if (guardiaSeleccionada == null) {
 						JOptionPane.showMessageDialog(IntercambioPersona.this,
-								"No se encontró guardia para la persona seleccionada.", "Error", JOptionPane.ERROR_MESSAGE);
+								"No se encontró guardia para la persona seleccionada.", "Error",
+								JOptionPane.ERROR_MESSAGE);
 						return;
 					}
 					Persona temp = guardia.getPersona();
@@ -144,5 +150,37 @@ public class IntercambioPersona extends JFrame {
 	// Método para integración con Inicio
 	public JPanel getPanelPrincipal() {
 		return contentPane;
+	}
+
+	public void aplicarModoOscuro(boolean oscuro, Color fondo, Color texto, Color boton, Color amarilloSec) {
+		if (getContentPane() instanceof JPanel) {
+			JPanel contentPane = (JPanel) getContentPane();
+			contentPane.setBackground(fondo);
+			setComponentColors(contentPane, oscuro, fondo, texto, boton, amarilloSec);
+		}
+	}
+
+	private void setComponentColors(Component comp, boolean oscuro, Color fondo, Color texto, Color boton,
+			Color amarilloSec) {
+		if (comp instanceof JPanel) {
+			comp.setBackground(fondo);
+			for (Component child : ((JPanel) comp).getComponents()) {
+				setComponentColors(child, oscuro, fondo, texto, boton, amarilloSec);
+			}
+		} else if (comp instanceof JLabel) {
+			((JLabel) comp).setForeground(oscuro ? Color.WHITE : Color.BLACK);
+		} else if (comp instanceof JTextField) {
+			comp.setBackground(oscuro ? new Color(50, 50, 60) : Color.WHITE);
+			((JTextField) comp).setForeground(oscuro ? Color.WHITE : texto);
+		} else if (comp instanceof JComboBox) {
+			comp.setBackground(oscuro ? new Color(50, 50, 60) : Color.WHITE);
+			comp.setForeground(oscuro ? Color.WHITE : texto);
+		} else if (comp instanceof JButton) {
+			comp.setBackground(boton);
+			comp.setForeground(amarilloSec);
+		} else if (comp instanceof JTable) {
+			comp.setBackground(oscuro ? new Color(40, 40, 50) : Color.WHITE);
+			((JTable) comp).setForeground(oscuro ? Color.WHITE : texto);
+		}
 	}
 }

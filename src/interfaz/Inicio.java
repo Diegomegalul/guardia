@@ -759,6 +759,34 @@ public class Inicio extends JFrame {
 			if (frame instanceof GuardiasIncumplidas) {
 				((GuardiasIncumplidas) frame).aplicarModoOscuro(modoOscuro, fondo, texto, boton, amarilloSec);
 			}
+			if (frame instanceof GuardiasPlanificadas) {
+				((GuardiasPlanificadas) frame).aplicarModoOscuro(modoOscuro, fondo, texto, boton, amarilloSec);
+			}
+			if (frame instanceof GuardiasCumplidas) {
+				((GuardiasCumplidas) frame).aplicarModoOscuro(modoOscuro, fondo, texto, boton, amarilloSec);
+			}
+			if (frame instanceof VerTrabajadores) {
+				((VerTrabajadores) frame).aplicarModoOscuro(modoOscuro, fondo, texto, boton, amarilloSec);
+			}
+			if (frame instanceof VerEstudiantes) {
+				((VerEstudiantes) frame).aplicarModoOscuro(modoOscuro, fondo, texto, boton, amarilloSec);
+			}
+			if (frame instanceof GuardiasRecuperacion) {
+				((GuardiasRecuperacion) frame).aplicarModoOscuro(modoOscuro, fondo, texto, boton, amarilloSec);
+			}
+			if (frame instanceof ProfVoluntarios) {
+				((ProfVoluntarios) frame).aplicarModoOscuro(modoOscuro, fondo, texto, boton, amarilloSec);
+			}
+			if (frame instanceof VerGuardiasPersona) {
+				((VerGuardiasPersona) frame).aplicarModoOscuro(modoOscuro, fondo, texto, boton, amarilloSec);
+			}
+			if (frame instanceof EditGuardia) {
+				((EditGuardia) frame).aplicarModoOscuro(modoOscuro, fondo, texto, boton, amarilloSec);
+			}
+			if (frame instanceof IntercambioPersona) {
+				((IntercambioPersona) frame).aplicarModoOscuro(modoOscuro, fondo, texto, boton, amarilloSec);
+			}
+			
 		}
 	}
 
@@ -855,32 +883,47 @@ public class Inicio extends JFrame {
 		return panelCentral; // fallback
 	}
 
-	// Para mostrar EditGuardia en el panel central con la guardia seleccionada
-	public void mostrarPanelEditGuardia(logica.Guardia guardia) {
-		// Crea un nuevo panel de edición con la guardia seleccionada
-		panelEditGuardia = new EditGuardia(guardia).getPanelPrincipal();
-		mostrarPanelCentral(panelEditGuardia);
-	}
-
 	// Métodos para mostrar los paneles principales de cada JFrame en el panel
 	// central (todos como JPanel embebidos)
 	public void mostrarPanelVerEstudiantes() {
-		JPanel panel = new VerEstudiantes(planificador).getPanelPrincipal();
+		boolean oscuro = modoOscuro;
+		Color fondo = oscuro ? darkBg : amarillo;
+		Color texto = oscuro ? darkFg : negro;
+		Color boton = oscuro ? new Color(60, 63, 80) : negro;
+		Color amarilloSec = amarillo;
+		VerEstudiantes frame = new VerEstudiantes(planificador);
+		frame.aplicarModoOscuro(oscuro, fondo, texto, boton, amarilloSec);
+		JPanel panel = frame.getPanelPrincipal();
 		mostrarPanelCentral(panel);
 	}
 
 	public void mostrarPanelVerTrabajadores() {
-		JPanel panel = new VerTrabajadores().getPanelPrincipal();
+		boolean oscuro = modoOscuro;
+		Color fondo = oscuro ? darkBg : amarillo;
+		Color texto = oscuro ? darkFg : negro;
+		Color boton = oscuro ? new Color(60, 63, 80) : negro;
+		Color amarilloSec = amarillo;
+		JPanel panel = new VerTrabajadores(oscuro, fondo, texto, boton, amarilloSec).getPanelPrincipal();
 		mostrarPanelCentral(panel);
 	}
 
 	public void mostrarPanelProfVoluntarios() {
-		JPanel panel = new ProfVoluntarios().getPanelPrincipal();
+		boolean oscuro = modoOscuro;
+		Color fondo = oscuro ? darkBg : amarillo;
+		Color texto = oscuro ? darkFg : negro;
+		Color boton = oscuro ? new Color(60, 63, 80) : negro;
+		Color amarilloSec = amarillo;
+		JPanel panel = new ProfVoluntarios(oscuro, fondo, texto, boton, amarilloSec).getPanelPrincipal();
 		mostrarPanelCentral(panel);
 	}
 
 	public void mostrarPanelGuardiasRecuperacion() {
-		JPanel panel = new GuardiasRecuperacion().getPanelPrincipal();
+		boolean oscuro = modoOscuro;
+		Color fondo = oscuro ? darkBg : amarillo;
+		Color texto = oscuro ? darkFg : negro;
+		Color boton = oscuro ? new Color(60, 63, 80) : negro;
+		Color amarilloSec = amarillo;
+		JPanel panel = new GuardiasRecuperacion(oscuro, fondo, texto, boton, amarilloSec).getPanelPrincipal();
 		mostrarPanelCentral(panel);
 	}
 
@@ -905,12 +948,14 @@ public class Inicio extends JFrame {
 	}
 
 	public void mostrarPanelGuardiasPlanificadas() {
-		JPanel panel = new GuardiasPlanificadas().getPanelPrincipal();
-		mostrarPanelCentral(panel);
-	}
-
-	public void mostrarPanelGuardiasCumplidas() {
-		JPanel panel = new GuardiasCumplidas().getPanelPrincipal();
+		boolean oscuro = modoOscuro;
+		Color fondo = oscuro ? darkBg : amarillo;
+		Color texto = oscuro ? darkFg : negro;
+		Color boton = oscuro ? new Color(60, 63, 80) : negro;
+		Color amarilloSec = amarillo;
+		GuardiasPlanificadas frame = new GuardiasPlanificadas();
+		frame.aplicarModoOscuro(oscuro, fondo, texto, boton, amarilloSec);
+		JPanel panel = frame.getPanelPrincipal();
 		mostrarPanelCentral(panel);
 	}
 
@@ -920,7 +965,33 @@ public class Inicio extends JFrame {
 		Color texto = oscuro ? darkFg : negro;
 		Color boton = oscuro ? new Color(60, 63, 80) : negro;
 		Color amarilloSec = amarillo;
-		JPanel panel = new GuardiasIncumplidas(oscuro, fondo, texto, boton, amarilloSec).getPanelPrincipal();
+		GuardiasIncumplidas frame = new GuardiasIncumplidas();
+		frame.aplicarModoOscuro(oscuro, fondo, texto, boton, amarilloSec);
+		JPanel panel = frame.getPanelPrincipal();
+		mostrarPanelCentral(panel);
+	}
+
+	public void mostrarPanelGuardiasCumplidas() {
+		boolean oscuro = modoOscuro;
+		Color fondo = oscuro ? darkBg : amarillo;
+		Color texto = oscuro ? darkFg : negro;
+		Color boton = oscuro ? new Color(60, 63, 80) : negro;
+		Color amarilloSec = amarillo;
+		GuardiasCumplidas frame = new GuardiasCumplidas();
+		frame.aplicarModoOscuro(oscuro, fondo, texto, boton, amarilloSec);
+		JPanel panel = frame.getPanelPrincipal();
+		mostrarPanelCentral(panel);
+	}
+
+	public void mostrarPanelEditGuardia(logica.Guardia guardia) {
+		boolean oscuro = modoOscuro;
+		Color fondo = oscuro ? darkBg : amarillo;
+		Color texto = oscuro ? darkFg : negro;
+		Color boton = oscuro ? new Color(60, 63, 80) : negro;
+		Color amarilloSec = amarillo;
+		EditGuardia frame = new EditGuardia(guardia);
+		frame.aplicarModoOscuro(oscuro, fondo, texto, boton, amarilloSec);
+		JPanel panel = frame.getPanelPrincipal();
 		mostrarPanelCentral(panel);
 	}
 

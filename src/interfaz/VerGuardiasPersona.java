@@ -176,8 +176,10 @@ public class VerGuardiasPersona extends JFrame {
 
 	// --- MODO OSCURO ---
 	public void aplicarModoOscuro(boolean oscuro, Color fondo, Color texto, Color boton, Color amarilloSec) {
-		contentPane.setBackground(fondo);
-		setComponentColors(contentPane, oscuro, fondo, texto, boton, amarilloSec);
+		if (contentPane != null) {
+			contentPane.setBackground(fondo);
+			setComponentColors(contentPane, oscuro, fondo, texto, boton, amarilloSec);
+		}
 	}
 
 	private void setComponentColors(Component comp, boolean oscuro, Color fondo, Color texto, Color boton,

@@ -21,19 +21,7 @@ public class GuardiasRecuperacion extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
-	private static GuardiasRecuperacion instancia = null;
-
-	public static void mostrarVentana() {
-		if (instancia == null || !instancia.isDisplayable()) {
-			instancia = new GuardiasRecuperacion();
-			instancia.setVisible(true);
-		} else {
-			instancia.toFront();
-			instancia.setState(JFrame.NORMAL);
-		}
-	}
-
-	public GuardiasRecuperacion() {
+	public GuardiasRecuperacion(boolean oscuro, Color fondo, Color texto, Color boton, Color amarilloSec) {
 		setIconImage(Toolkit.getDefaultToolkit().getImage(Login.class.getResource("/imagenes/logo.jpg")));
 		setTitle("Guardias de Recuperación por Grupo");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -174,11 +162,16 @@ public class GuardiasRecuperacion extends JFrame {
 		btnCerrar.setOpaque(true);
 		btnCerrar.addActionListener(new java.awt.event.ActionListener() {
 
-	public void actionPerformed(java.awt.event.ActionEvent e) {
-		dispose();
-	}});
+			public void actionPerformed(java.awt.event.ActionEvent e) {
+				dispose();
+			}
+		});
 
-	JPanel panelBoton = new JPanel();panelBoton.setBackground(amarillo);panelBoton.add(btnCerrar);contentPane.add(Box.createVerticalStrut(10));contentPane.add(panelBoton);
+		JPanel panelBoton = new JPanel();
+		panelBoton.setBackground(amarillo);
+		panelBoton.add(btnCerrar);
+		contentPane.add(Box.createVerticalStrut(10));
+		contentPane.add(panelBoton);
 	}
 
 	private int contarGuardiasRecuperacionAsignadas(List<Guardia> guardias, Estudiante estudiante) {
@@ -207,5 +200,34 @@ public class GuardiasRecuperacion extends JFrame {
 
 	public JPanel getPanelPrincipal() {
 		return contentPane;
+	}
+
+	public void aplicarModoOscuro(boolean oscuro, Color fondo, Color texto, Color boton, Color amarilloSec) {
+		contentPane.setBackground(fondo);
+		setComponentColors(contentPane, oscuro, fondo, texto, boton, amarilloSec);
+	}
+
+	private void setComponentColors(Component comp, boolean oscuro, Color fondo, Color texto, Color boton,
+			Color amarilloSec) {
+		if (comp instanceof JPanel) {
+			comp.setBackground(fondo);
+			for (Component child : ((JPanel) comp).getComponents()) {
+				setComponentColors(child, oscuro, fondo, texto, boton, amarilloSec);
+			}
+		} else if (comp instanceof JLabel) {
+			((JLabel) comp).setForeground(oscuro ? Color.WHITE : Color.BLACK);
+		} else if (comp instanceof JTextField) {
+			comp.setBackground(oscuro ? new Color(50, 50, 60) : Color.WHITE);
+			((JTextField) comp).setForeground(oscuro ? Color.WHITE : texto);
+		} else if (comp instanceof JComboBox) {
+			comp.setBackground(oscuro ? new Color(50, 50, 60) : Color.WHITE);
+			comp.setForeground(oscuro ? Color.WHITE : texto);
+		} else if (comp instanceof JButton) {
+			comp.setBackground(boton);
+			comp.setForeground(amarilloSec);
+		} else if (comp instanceof JTable) {
+			comp.setBackground(oscuro ? new Color(40, 40, 50) : Color.WHITE);
+			((JTable) comp).setForeground(oscuro ? Color.WHITE : texto);
+		}
 	}
 }

@@ -41,7 +41,8 @@ public class ProfVoluntarios extends JFrame {
 		}
 	}
 
-	public ProfVoluntarios() {
+	// Nuevo constructor con modo oscuro
+	public ProfVoluntarios(boolean oscuro, Color fondo, Color texto, Color boton, Color amarilloSec) {
 		setIconImage(Toolkit.getDefaultToolkit().getImage(Login.class.getResource("/imagenes/logo.jpg")));
 		setTitle("Profesores Voluntarios en Vacaciones");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -121,12 +122,23 @@ public class ProfVoluntarios extends JFrame {
 		panelBoton.setBackground(amarillo);
 		panelBoton.add(btnCerrar);
 		contentPane.add(panelBoton, BorderLayout.SOUTH);
+
+		// Aplicar modo oscuro según parámetros
+		aplicarModoOscuro(oscuro, fondo, texto, boton, amarilloSec);
+	}
+
+	// Constructor por defecto para compatibilidad (abre en modo claro)
+	public ProfVoluntarios() {
+		this(false, new Color(255, 215, 0), Color.BLACK, Color.BLACK, new Color(255, 215, 0));
 	}
 
 	// --- MODO OSCURO ---
 	public void aplicarModoOscuro(boolean oscuro, Color fondo, Color texto, Color boton, Color amarilloSec) {
-		contentPane.setBackground(fondo);
-		setComponentColors(contentPane, oscuro, fondo, texto, boton, amarilloSec);
+		if (getContentPane() instanceof JPanel) {
+			JPanel contentPane = (JPanel) getContentPane();
+			contentPane.setBackground(fondo);
+			setComponentColors(contentPane, oscuro, fondo, texto, boton, amarilloSec);
+		}
 	}
 
 	private void setComponentColors(Component comp, boolean oscuro, Color fondo, Color texto, Color boton,

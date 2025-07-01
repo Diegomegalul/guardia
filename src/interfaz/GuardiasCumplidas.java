@@ -91,9 +91,9 @@ public class GuardiasCumplidas extends JFrame {
 		panelSuperior.add(btnActualizar);
 
 		contentPane.add(panelSuperior, BorderLayout.NORTH);
-		
+
 		panelSuperior.add(Box.createHorizontalStrut(180));
-		
+
 		JLabel GuardiasCumplidas = new JLabel("Guardias Cumplidas");
 		GuardiasCumplidas.setFont(new Font("Arial", Font.BOLD, 16));
 		panelSuperior.add(GuardiasCumplidas);

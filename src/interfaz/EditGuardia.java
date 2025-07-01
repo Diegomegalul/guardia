@@ -235,4 +235,36 @@ public class EditGuardia extends JFrame {
 	public JPanel getPanelPrincipal() {
 		return contentPane;
 	}
+
+	public void aplicarModoOscuro(boolean oscuro, Color fondo, Color texto, Color boton, Color amarilloSec) {
+		if (getContentPane() instanceof JPanel) {
+			JPanel contentPane = (JPanel) getContentPane();
+			contentPane.setBackground(fondo);
+			setComponentColors(contentPane, oscuro, fondo, texto, boton, amarilloSec);
+		}
+	}
+
+	private void setComponentColors(Component comp, boolean oscuro, Color fondo, Color texto, Color boton,
+			Color amarilloSec) {
+		if (comp instanceof JPanel) {
+			comp.setBackground(fondo);
+			for (Component child : ((JPanel) comp).getComponents()) {
+				setComponentColors(child, oscuro, fondo, texto, boton, amarilloSec);
+			}
+		} else if (comp instanceof JLabel) {
+			((JLabel) comp).setForeground(oscuro ? Color.WHITE : Color.BLACK);
+		} else if (comp instanceof JTextField) {
+			comp.setBackground(oscuro ? new Color(50, 50, 60) : Color.WHITE);
+			((JTextField) comp).setForeground(oscuro ? Color.WHITE : texto);
+		} else if (comp instanceof JComboBox) {
+			comp.setBackground(oscuro ? new Color(50, 50, 60) : Color.WHITE);
+			comp.setForeground(oscuro ? Color.WHITE : texto);
+		} else if (comp instanceof JButton) {
+			comp.setBackground(boton);
+			comp.setForeground(amarilloSec);
+		} else if (comp instanceof JTable) {
+			comp.setBackground(oscuro ? new Color(40, 40, 50) : Color.WHITE);
+			((JTable) comp).setForeground(oscuro ? Color.WHITE : texto);
+		}
+	}
 }
