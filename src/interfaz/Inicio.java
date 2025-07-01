@@ -764,40 +764,15 @@ public class Inicio extends JFrame {
 
 	// Método interno para mostrar panel y controlar visibilidad del botón inicio
 	private void mostrarPanelCentralInterno(JPanel nuevoPanel, boolean desdeMenu) {
-		// Elimina solo si el panel no es null y está actualmente en el contentPane
-		if (panelCentral != null && panelCentral.getParent() == contentPane)
-			contentPane.remove(panelCentral);
-		if (panelAddEstudiantes != null && panelAddEstudiantes.getParent() == contentPane)
-			contentPane.remove(panelAddEstudiantes);
-		if (panelAddTrabajadores != null && panelAddTrabajadores.getParent() == contentPane)
-			contentPane.remove(panelAddTrabajadores);
-		if (panelEditCalendario != null && panelEditCalendario.getParent() == contentPane)
-			contentPane.remove(panelEditCalendario);
-		if (panelEditGuardia != null && panelEditGuardia.getParent() == contentPane)
-			contentPane.remove(panelEditGuardia);
-		if (panelPlanGuardias != null && panelPlanGuardias.getParent() == contentPane)
-			contentPane.remove(panelPlanGuardias);
-		if (panelIntercambioPersona != null && panelIntercambioPersona.getParent() == contentPane)
-			contentPane.remove(panelIntercambioPersona);
-
+		// Elimina todos los paneles del centro antes de agregar el nuevo
+		contentPane.removeAll();
 		contentPane.add(nuevoPanel, BorderLayout.CENTER);
+		// Si tienes un panel inferior fijo (como panelInferior), vuelve a agregarlo:
+		if (panelInferior != null) {
+			contentPane.add(panelInferior, BorderLayout.SOUTH);
+		}
 		contentPane.revalidate();
 		contentPane.repaint();
-
-		if (panelCentral != null)
-			panelCentral.setVisible(false);
-		if (panelAddEstudiantes != null)
-			panelAddEstudiantes.setVisible(false);
-		if (panelAddTrabajadores != null)
-			panelAddTrabajadores.setVisible(false);
-		if (panelEditCalendario != null)
-			panelEditCalendario.setVisible(false);
-		if (panelEditGuardia != null)
-			panelEditGuardia.setVisible(false);
-		if (panelPlanGuardias != null)
-			panelPlanGuardias.setVisible(false);
-		if (panelIntercambioPersona != null)
-			panelIntercambioPersona.setVisible(false);
 
 		nuevoPanel.setVisible(true);
 
