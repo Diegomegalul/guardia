@@ -14,11 +14,11 @@ public class Inicio extends JFrame {
 	private JPanel contentPane;
 	private PlanificadorGuardias planificador;
 
-	private boolean modoOscuro = false;
-	private Color amarillo = new Color(255, 215, 0);
-	private Color negro = Color.BLACK;
-	private Color darkBg = new Color(30, 32, 40); // color principal modo oscuro
-	private Color darkFg = new Color(220, 220, 220); // texto modo oscuro
+	boolean modoOscuro = false;
+	Color amarillo = new Color(255, 215, 0);
+	Color negro = Color.BLACK;
+	Color darkBg = new Color(30, 32, 40); // color principal modo oscuro
+	Color darkFg = new Color(220, 220, 220); // texto modo oscuro
 
 	// Referencias para modo oscuro
 	private JLabel lblBienvenida;

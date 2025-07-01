@@ -220,14 +220,27 @@ public class PlanGuardias extends JFrame {
 				if (g != null) {
 					// Mostrar el panel de intercambioPersona embebido en Inicio
 					if (ventanaInicio != null) {
-						JPanel panelIntercambio = new IntercambioPersona(g).getPanelPrincipal();
+						// Obtener modo oscuro y colores actuales de la ventana de inicio
+						boolean oscuro = ventanaInicio.modoOscuro;
+						Color fondo = oscuro ? ventanaInicio.darkBg : ventanaInicio.amarillo;
+						Color texto = oscuro ? ventanaInicio.darkFg : ventanaInicio.negro;
+						Color boton = oscuro ? new Color(60, 63, 80) : ventanaInicio.negro;
+						Color amarilloSec = ventanaInicio.amarillo;
+
+						IntercambioPersona intercambio = new IntercambioPersona(g);
+						intercambio.aplicarModoOscuro(oscuro, fondo, texto, boton, amarilloSec);
+						JPanel panelIntercambio = intercambio.getPanelPrincipal();
 						ventanaInicio.mostrarPanelCentral(panelIntercambio);
 					} else {
 						// Fallback: mostrar el panel en una ventana flotante solo si no hay referencia
 						// a Inicio
 						JFrame frame = new JFrame("Intercambio de Persona");
+						IntercambioPersona intercambio = new IntercambioPersona(g);
+						// Por defecto modo claro
+						intercambio.aplicarModoOscuro(false, new Color(255, 215, 0), Color.BLACK, Color.BLACK,
+								new Color(255, 215, 0));
 						frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-						frame.setContentPane(new IntercambioPersona(g).getPanelPrincipal());
+						frame.setContentPane(intercambio.getPanelPrincipal());
 						frame.pack();
 						frame.setLocationRelativeTo(null);
 						frame.setVisible(true);
