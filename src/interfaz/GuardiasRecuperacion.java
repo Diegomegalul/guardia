@@ -28,18 +28,15 @@ public class GuardiasRecuperacion extends JFrame {
 		setBounds(100, 100, 900, 600);
 		setLocationRelativeTo(null); // Centrar en pantalla
 
-		Color amarillo = new Color(255, 215, 0);
-		Color negro = Color.BLACK;
-
 		contentPane = new JPanel();
-		contentPane.setBackground(amarillo);
+		contentPane.setBackground(fondo);
 		contentPane.setBorder(new EmptyBorder(10, 10, 10, 10));
 		contentPane.setLayout(new BoxLayout(contentPane, BoxLayout.Y_AXIS));
 		setContentPane(contentPane);
 
 		JLabel lblTitulo = new JLabel("Guardias de Recuperación por Grupo");
 		lblTitulo.setFont(new Font("Arial", Font.BOLD, 22));
-		lblTitulo.setForeground(negro);
+		lblTitulo.setForeground(texto);
 		lblTitulo.setAlignmentX(Component.CENTER_ALIGNMENT);
 		lblTitulo.setBorder(new EmptyBorder(10, 0, 20, 0));
 		contentPane.add(lblTitulo);
@@ -63,8 +60,7 @@ public class GuardiasRecuperacion extends JFrame {
 		for (int i = 0; i < grupos.size(); i++) {
 			GrupoRecuperacionOrdenado grupo = grupos.get(i);
 
-			// Ordenar estudiantes por la suma de guardias de recuperación asignadas y
-			// cumplidas (desc)
+			// Ordenar estudiantes por la suma de guardias de recuperación asignadas y cumplidas (desc)
 			List<Estudiante> estudiantesOrdenados = new java.util.ArrayList<Estudiante>(grupo.estudiantes);
 			java.util.Collections.sort(estudiantesOrdenados, new java.util.Comparator<Estudiante>() {
 				public int compare(Estudiante a, Estudiante b) {
@@ -94,7 +90,7 @@ public class GuardiasRecuperacion extends JFrame {
 
 			JLabel lblGrupo = new JLabel("Grupo " + grupo.grupo + " (Total: " + grupo.totalRecuperacion + ")");
 			lblGrupo.setFont(new Font("Arial", Font.BOLD, 18));
-			lblGrupo.setForeground(negro);
+			lblGrupo.setForeground(texto);
 			lblGrupo.setAlignmentX(Component.LEFT_ALIGNMENT);
 			lblGrupo.setBorder(new EmptyBorder(10, 0, 5, 0));
 			contentPane.add(lblGrupo);
@@ -122,6 +118,8 @@ public class GuardiasRecuperacion extends JFrame {
 			}
 			final JTable tabla = new JTable(model);
 			tabla.getTableHeader().setFont(new Font("Arial", Font.BOLD, 14));
+			tabla.getTableHeader().setForeground(texto);
+			tabla.getTableHeader().setBackground(fondo);
 			tabla.setFont(new Font("Arial", Font.PLAIN, 14));
 			tabla.setRowHeight(24);
 
@@ -139,39 +137,42 @@ public class GuardiasRecuperacion extends JFrame {
 			});
 
 			JScrollPane scroll = new JScrollPane(tabla);
-			scroll.setBorder(BorderFactory.createLineBorder(amarillo, 2));
+			scroll.setBorder(BorderFactory.createLineBorder(amarilloSec, 2));
 			scroll.setMaximumSize(new Dimension(Integer.MAX_VALUE, 120));
+			scroll.getViewport().setBackground(fondo);
 			contentPane.add(scroll);
 		}
 
 		if (!hayGrupos) {
 			JLabel lblSinDatos = new JLabel("No hay grupos con guardias de recuperación.");
 			lblSinDatos.setFont(new Font("Arial", Font.ITALIC, 16));
-			lblSinDatos.setForeground(Color.DARK_GRAY);
+			lblSinDatos.setForeground(texto);
 			lblSinDatos.setAlignmentX(Component.CENTER_ALIGNMENT);
 			contentPane.add(lblSinDatos);
 		}
 
 		JButton btnCerrar = new JButton("Cerrar");
 		btnCerrar.setFont(new Font("Arial", Font.BOLD, 15));
-		btnCerrar.setBackground(negro);
-		btnCerrar.setForeground(amarillo);
+		btnCerrar.setBackground(boton);
+		btnCerrar.setForeground(amarilloSec);
 		btnCerrar.setFocusPainted(false);
-		btnCerrar.setBorder(BorderFactory.createLineBorder(negro, 2, true));
+		btnCerrar.setBorder(BorderFactory.createLineBorder(boton, 2, true));
 		btnCerrar.setContentAreaFilled(false);
 		btnCerrar.setOpaque(true);
 		btnCerrar.addActionListener(new java.awt.event.ActionListener() {
-
 			public void actionPerformed(java.awt.event.ActionEvent e) {
 				dispose();
 			}
 		});
 
 		JPanel panelBoton = new JPanel();
-		panelBoton.setBackground(amarillo);
+		panelBoton.setBackground(fondo);
 		panelBoton.add(btnCerrar);
 		contentPane.add(Box.createVerticalStrut(10));
 		contentPane.add(panelBoton);
+
+		// Aplicar modo oscuro al final del constructor
+		aplicarModoOscuro(oscuro, fondo, texto, boton, amarilloSec);
 	}
 
 	private int contarGuardiasRecuperacionAsignadas(List<Guardia> guardias, Estudiante estudiante) {
