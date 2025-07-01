@@ -151,23 +151,8 @@ public class GuardiasRecuperacion extends JFrame {
 			contentPane.add(lblSinDatos);
 		}
 
-		JButton btnCerrar = new JButton("Cerrar");
-		btnCerrar.setFont(new Font("Arial", Font.BOLD, 15));
-		btnCerrar.setBackground(boton);
-		btnCerrar.setForeground(amarilloSec);
-		btnCerrar.setFocusPainted(false);
-		btnCerrar.setBorder(BorderFactory.createLineBorder(boton, 2, true));
-		btnCerrar.setContentAreaFilled(false);
-		btnCerrar.setOpaque(true);
-		btnCerrar.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent e) {
-				dispose();
-			}
-		});
-
 		JPanel panelBoton = new JPanel();
 		panelBoton.setBackground(fondo);
-		panelBoton.add(btnCerrar);
 		contentPane.add(Box.createVerticalStrut(10));
 		contentPane.add(panelBoton);
 

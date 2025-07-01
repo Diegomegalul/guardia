@@ -104,25 +104,6 @@ public class ProfVoluntarios extends JFrame {
 		scrollPane.setBorder(BorderFactory.createLineBorder(amarillo, 2));
 		contentPane.add(scrollPane, BorderLayout.CENTER);
 
-		JButton btnCerrar = new JButton("Cerrar");
-		btnCerrar.setFont(new Font("Arial", Font.BOLD, 15));
-		btnCerrar.setBackground(negro);
-		btnCerrar.setForeground(amarillo);
-		btnCerrar.setFocusPainted(false);
-		btnCerrar.setBorder(BorderFactory.createLineBorder(negro, 2, true));
-		btnCerrar.setContentAreaFilled(false);
-		btnCerrar.setOpaque(true);
-		btnCerrar.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent e) {
-				dispose();
-			}
-		});
-
-		JPanel panelBoton = new JPanel();
-		panelBoton.setBackground(amarillo);
-		panelBoton.add(btnCerrar);
-		contentPane.add(panelBoton, BorderLayout.SOUTH);
-
 		// Aplicar modo oscuro según parámetros
 		aplicarModoOscuro(oscuro, fondo, texto, boton, amarilloSec);
 	}
