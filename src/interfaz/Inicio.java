@@ -35,9 +35,6 @@ public class Inicio extends JFrame {
 	private ImageIcon fondoClaroIcon;
 	private ImageIcon fondoOscuroIcon;
 
-	// Nuevos paneles para agregar estudiantes y trabajadores
-	private JPanel panelAddEstudiantes;
-	private JPanel panelAddTrabajadores;
 	// Nuevo panel para EditCalendario
 	private JPanel panelEditCalendario;
 	// Nuevo panel para PlanGuardias
@@ -110,6 +107,7 @@ public class Inicio extends JFrame {
 		itemEstudiante.setBorder(BorderFactory.createLineBorder(negro, 1));
 		itemEstudiante.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				JPanel panelAddEstudiantes = new AddEstudiantes(planificador, null, null).getPanelPrincipal();
 				mostrarPanelCentral(panelAddEstudiantes);
 			}
 		});
@@ -121,6 +119,7 @@ public class Inicio extends JFrame {
 		itemTrabajador.setBorder(BorderFactory.createLineBorder(negro, 1));
 		itemTrabajador.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				JPanel panelAddTrabajadores = new AddTrabajadores(planificador, null).getPanelPrincipal();
 				mostrarPanelCentral(panelAddTrabajadores);
 			}
 		});
@@ -432,8 +431,6 @@ public class Inicio extends JFrame {
 
 		// Crear paneles de agregar estudiantes, trabajadores, calendario, editar
 		// guardia, planificar guardias e intercambio persona
-		panelAddEstudiantes = new AddEstudiantes(planificador, null, null).getPanelPrincipal();
-		panelAddTrabajadores = new AddTrabajadores(planificador, null).getPanelPrincipal();
 		panelEditCalendario = new EditCalendario(planificador).getPanelPrincipal();
 		new EditGuardia(null).getPanelPrincipal();
 		// Cambia aquí: pasa 'this' al constructor de PlanGuardias
