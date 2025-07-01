@@ -3,6 +3,7 @@ package interfaz;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Container;
 import java.awt.Font;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
@@ -320,8 +321,20 @@ public class VerEstudiantes extends JFrame {
 	}
 
 	private void abrirFormularioEdicion(Estudiante estudiante) {
-		AddEstudiantes frame = new AddEstudiantes(planificador, estudiante, this);
-		frame.setVisible(true);
+		// Buscar el contenedor padre del panel principal
+		Container parent = getPanelPrincipal().getParent();
+		while (parent != null && !(parent instanceof Inicio)) {
+			parent = parent.getParent();
+		}
+		if (parent instanceof Inicio) {
+			Inicio inicio = (Inicio) parent;
+			JPanel panelEditEstudiante = new AddEstudiantes(planificador, estudiante, this).getPanelPrincipal();
+			inicio.mostrarPanelCentral(panelEditEstudiante);
+		} else {
+			// Fallback: ventana flotante si no está embebido en Inicio
+			AddEstudiantes frame = new AddEstudiantes(planificador, estudiante, this);
+			frame.setVisible(true);
+		}
 	}
 
 	// Método para refrescar la tabla desde AddEstudiantes tras editar

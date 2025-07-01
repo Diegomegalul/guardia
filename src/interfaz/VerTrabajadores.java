@@ -4,6 +4,7 @@ package interfaz;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Container;
 import java.awt.Font;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
@@ -220,8 +221,21 @@ public class VerTrabajadores extends JFrame {
 				if (selectedRow >= 0) {
 					Trabajador trabajador = (Trabajador) trabajadoresFiltrados
 							.get(table.convertRowIndexToModel(selectedRow));
-					AddTrabajadores frame = new AddTrabajadores(planificador, trabajador);
-					frame.setVisible(true);
+					// Buscar el contenedor padre del panel principal
+					Container parent = getPanelPrincipal().getParent();
+					while (parent != null && !(parent instanceof Inicio)) {
+						parent = parent.getParent();
+					}
+					if (parent instanceof Inicio) {
+						Inicio inicio = (Inicio) parent;
+						JPanel panelEditTrabajador = new AddTrabajadores(planificador, trabajador, VerTrabajadores.this)
+								.getPanelPrincipal();
+						inicio.mostrarPanelCentral(panelEditTrabajador);
+					} else {
+						// Fallback: ventana flotante si no está embebido en Inicio
+						AddTrabajadores frame = new AddTrabajadores(planificador, trabajador);
+						frame.setVisible(true);
+					}
 				} else {
 					JOptionPane.showMessageDialog(VerTrabajadores.this, "Seleccione un trabajador para editar.",
 							"Aviso", JOptionPane.WARNING_MESSAGE);
