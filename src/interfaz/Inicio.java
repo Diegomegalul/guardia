@@ -509,7 +509,7 @@ public class Inicio extends JFrame {
 
 		panelLuna = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		panelLuna.setBackground(amarillo);
-		panelLuna.setPreferredSize(new Dimension(55, 55)); // Tamaño fijo
+		panelLuna.setPreferredSize(new Dimension(90, 55)); // Tamaño fijo
 
 		btnLuna = new JButton() {
 			private static final long serialVersionUID = 1L;
@@ -611,6 +611,7 @@ public class Inicio extends JFrame {
 			}
 		});
 
+		btnVolver.setVisible(false);
 		panelCentroInferior = new JPanel(new FlowLayout(FlowLayout.CENTER));
 		panelInferior.add(panelCentroInferior, BorderLayout.CENTER);
 		panelCentroInferior.setBackground(amarillo);
@@ -809,7 +810,7 @@ public class Inicio extends JFrame {
 		nuevoPanel.setVisible(true);
 
 		// El botón "Inicio" siempre visible
-		btnVolver.setVisible(true);
+		btnVolver.setVisible(nuevoPanel != panelCentral);
 	}
 
 	// Obtener el panel actualmente visible en el centro
@@ -936,6 +937,6 @@ public class Inicio extends JFrame {
 		// Limpia la pila de navegación
 		pilaPaneles.clear();
 
-		btnVolver.setVisible(true);
+		btnVolver.setVisible(false);
 	}
 }
