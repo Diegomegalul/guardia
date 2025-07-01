@@ -63,6 +63,9 @@ public class PlanGuardias extends JFrame {
 
 	private Inicio ventanaInicio; // Referencia al frame de Inicio
 
+	/**
+	 * @wbp.parser.constructor
+	 */
 	public PlanGuardias(final PlanificadorGuardias planificador) {
 		this(planificador, null);
 	}

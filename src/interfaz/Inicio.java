@@ -27,8 +27,9 @@ public class Inicio extends JFrame {
 	private JMenuItem itemEstudiante, itemTrabajador;
 	private JMenuItem valoresEstudiantes, valoresTrabajadores;
 	private JMenuItem planificarAuto;
-	private JMenuItem mostrarEstudiantes, mostrarTrabajadores, mostrarGuardiasPlanificadas, mostrarGuardiasCumplidas, mostrarGuardiasIncumplidas;
-	private JMenuItem reporteRecuperacion, reporteVoluntarios, reporteEstInactivos, reporteFestivas,itemDiasFestivos;
+	private JMenuItem mostrarEstudiantes, mostrarTrabajadores, mostrarGuardiasPlanificadas, mostrarGuardiasCumplidas,
+			mostrarGuardiasIncumplidas;
+	private JMenuItem reporteRecuperacion, reporteVoluntarios, reporteEstInactivos, reporteFestivas, itemDiasFestivos;
 	private JButton btnSalir, btnLuna;
 	private Icon iconoLuna, iconoSol;
 	private ImageIcon fondoClaroIcon;
@@ -661,13 +662,13 @@ public class Inicio extends JFrame {
 			lblBienvenida.setForeground(texto);
 			actualizarImagenBienvenida();
 		}
-		if (itemDiasFestivos != null){
+		if (itemDiasFestivos != null) {
 			itemDiasFestivos.setBackground(modoOscuro ? amarillo : darkBg);
 			itemDiasFestivos.setForeground(modoOscuro ? negro : amarillo);
 		}
-		if (mostrarGuardiasIncumplidas != null){
+		if (mostrarGuardiasIncumplidas != null) {
 			mostrarGuardiasIncumplidas.setBackground(modoOscuro ? amarillo : darkBg);
-			mostrarGuardiasIncumplidas.setForeground(modoOscuro ? negro : amarillo);			
+			mostrarGuardiasIncumplidas.setForeground(modoOscuro ? negro : amarillo);
 		}
 		if (itemEstudiante != null) {
 			itemEstudiante.setBackground(modoOscuro ? amarillo : darkBg);
@@ -747,6 +748,16 @@ public class Inicio extends JFrame {
 			}
 			if (frame instanceof PlanGuardias) {
 				((PlanGuardias) frame).aplicarModoOscuro(modoOscuro, fondo, texto, boton, amarilloSec);
+			}
+			// Agrega estas líneas:
+			if (frame instanceof GuardiasFestivas) {
+				((GuardiasFestivas) frame).aplicarModoOscuro(modoOscuro, fondo, texto, boton, amarilloSec);
+			}
+			if (frame instanceof EstInactivos) {
+				((EstInactivos) frame).aplicarModoOscuro(modoOscuro, fondo, texto, boton, amarilloSec);
+			}
+			if (frame instanceof GuardiasIncumplidas) {
+				((GuardiasIncumplidas) frame).aplicarModoOscuro(modoOscuro, fondo, texto, boton, amarilloSec);
 			}
 		}
 	}
@@ -874,12 +885,22 @@ public class Inicio extends JFrame {
 	}
 
 	public void mostrarPanelEstInactivos() {
-		JPanel panel = new EstInactivos().getPanelPrincipal();
+		boolean oscuro = modoOscuro;
+		Color fondo = oscuro ? darkBg : amarillo;
+		Color texto = oscuro ? darkFg : negro;
+		Color boton = oscuro ? new Color(60, 63, 80) : negro;
+		Color amarilloSec = amarillo;
+		JPanel panel = new EstInactivos(oscuro, fondo, texto, boton, amarilloSec).getPanelPrincipal();
 		mostrarPanelCentral(panel);
 	}
 
 	public void mostrarPanelGuardiasFestivas() {
-		JPanel panel = new GuardiasFestivas().getPanelPrincipal();
+		boolean oscuro = modoOscuro;
+		Color fondo = oscuro ? darkBg : amarillo;
+		Color texto = oscuro ? darkFg : negro;
+		Color boton = oscuro ? new Color(60, 63, 80) : negro;
+		Color amarilloSec = amarillo;
+		JPanel panel = new GuardiasFestivas(oscuro, fondo, texto, boton, amarilloSec).getPanelPrincipal();
 		mostrarPanelCentral(panel);
 	}
 
@@ -894,7 +915,12 @@ public class Inicio extends JFrame {
 	}
 
 	public void mostrarPanelGuardiasIncumplidas() {
-		JPanel panel = new GuardiasIncumplidas().getPanelPrincipal();
+		boolean oscuro = modoOscuro;
+		Color fondo = oscuro ? darkBg : amarillo;
+		Color texto = oscuro ? darkFg : negro;
+		Color boton = oscuro ? new Color(60, 63, 80) : negro;
+		Color amarilloSec = amarillo;
+		JPanel panel = new GuardiasIncumplidas(oscuro, fondo, texto, boton, amarilloSec).getPanelPrincipal();
 		mostrarPanelCentral(panel);
 	}
 

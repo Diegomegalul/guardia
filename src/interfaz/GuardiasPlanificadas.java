@@ -84,6 +84,12 @@ public class GuardiasPlanificadas extends JFrame {
 		panelSuperior.add(btnActualizar);
 
 		contentPane.add(panelSuperior, BorderLayout.NORTH);
+		panelSuperior.add(Box.createHorizontalStrut(180));
+		
+		JLabel lblGuardiasPlanificadas = new JLabel("Guardias Planificadas");
+		lblGuardiasPlanificadas.setFont(new Font("Arial", Font.BOLD, 16));
+		lblGuardiasPlanificadas.setAlignmentX(Component.CENTER_ALIGNMENT);
+		panelSuperior.add(lblGuardiasPlanificadas);
 
 		String[] columnas = { "ID", "Tipo", "Persona", "CI", "Fecha", "Hora Inicio", "Hora Fin", "Cumplida" };
 		tablaModel = new DefaultTableModel(columnas, 0) {

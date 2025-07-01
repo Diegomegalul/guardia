@@ -53,6 +53,7 @@ public class GuardiasCumplidas extends JFrame {
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(10, 10, 10, 10));
 		contentPane.setLayout(new BorderLayout(10, 10));
+		contentPane.setBackground(new Color(255, 215, 0)); // amarillo por defecto
 		setContentPane(contentPane);
 
 		JPanel panelSuperior = new JPanel();
@@ -90,6 +91,12 @@ public class GuardiasCumplidas extends JFrame {
 		panelSuperior.add(btnActualizar);
 
 		contentPane.add(panelSuperior, BorderLayout.NORTH);
+		
+		panelSuperior.add(Box.createHorizontalStrut(180));
+		
+		JLabel GuardiasCumplidas = new JLabel("Guardias Cumplidas");
+		GuardiasCumplidas.setFont(new Font("Arial", Font.BOLD, 16));
+		panelSuperior.add(GuardiasCumplidas);
 
 		String[] columnas = { "ID", "Tipo", "Persona", "CI", "Fecha", "Hora Inicio", "Hora Fin" };
 		tablaModel = new DefaultTableModel(columnas, 0) {
@@ -155,6 +162,40 @@ public class GuardiasCumplidas extends JFrame {
 						g.getHorario().getHoraFin()
 				});
 			}
+		}
+	}
+
+	// --- MODO OSCURO ---
+	public void aplicarModoOscuro(boolean oscuro, Color fondo, Color texto, Color boton, Color amarilloSec) {
+		contentPane.setBackground(fondo);
+		setComponentColors(contentPane, oscuro, fondo, texto, boton, amarilloSec);
+		if (tablaGuardias != null) {
+			tablaGuardias.setBackground(oscuro ? new Color(40, 40, 50) : Color.WHITE);
+			tablaGuardias.setForeground(oscuro ? Color.WHITE : texto);
+		}
+	}
+
+	private void setComponentColors(Component comp, boolean oscuro, Color fondo, Color texto, Color boton,
+			Color amarilloSec) {
+		if (comp instanceof JPanel) {
+			comp.setBackground(fondo);
+			for (Component child : ((JPanel) comp).getComponents()) {
+				setComponentColors(child, oscuro, fondo, texto, boton, amarilloSec);
+			}
+		} else if (comp instanceof JLabel) {
+			((JLabel) comp).setForeground(oscuro ? Color.WHITE : Color.BLACK);
+		} else if (comp instanceof JTextField) {
+			comp.setBackground(oscuro ? new Color(50, 50, 60) : Color.WHITE);
+			((JTextField) comp).setForeground(oscuro ? Color.WHITE : texto);
+		} else if (comp instanceof JComboBox) {
+			comp.setBackground(oscuro ? new Color(50, 50, 60) : Color.WHITE);
+			comp.setForeground(oscuro ? Color.WHITE : texto);
+		} else if (comp instanceof JButton) {
+			comp.setBackground(boton);
+			comp.setForeground(amarilloSec);
+		} else if (comp instanceof JTable) {
+			comp.setBackground(oscuro ? new Color(40, 40, 50) : Color.WHITE);
+			((JTable) comp).setForeground(oscuro ? Color.WHITE : texto);
 		}
 	}
 

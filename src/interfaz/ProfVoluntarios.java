@@ -2,20 +2,28 @@ package interfaz;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.EventQueue;
+import java.awt.Component;
 import java.awt.Font;
 import java.awt.Toolkit;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.List;
 
-import javax.swing.*;
+import javax.swing.BorderFactory;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
 import logica.PlanificadorGuardias;
 import logica.Trabajador;
-
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 
 public class ProfVoluntarios extends JFrame {
 
@@ -31,14 +39,6 @@ public class ProfVoluntarios extends JFrame {
 			instancia.toFront();
 			instancia.setState(JFrame.NORMAL);
 		}
-	}
-
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				mostrarVentana();
-			}
-		});
 	}
 
 	public ProfVoluntarios() {
@@ -121,6 +121,36 @@ public class ProfVoluntarios extends JFrame {
 		panelBoton.setBackground(amarillo);
 		panelBoton.add(btnCerrar);
 		contentPane.add(panelBoton, BorderLayout.SOUTH);
+	}
+
+	// --- MODO OSCURO ---
+	public void aplicarModoOscuro(boolean oscuro, Color fondo, Color texto, Color boton, Color amarilloSec) {
+		contentPane.setBackground(fondo);
+		setComponentColors(contentPane, oscuro, fondo, texto, boton, amarilloSec);
+	}
+
+	private void setComponentColors(Component comp, boolean oscuro, Color fondo, Color texto, Color boton,
+			Color amarilloSec) {
+		if (comp instanceof JPanel) {
+			comp.setBackground(fondo);
+			for (Component child : ((JPanel) comp).getComponents()) {
+				setComponentColors(child, oscuro, fondo, texto, boton, amarilloSec);
+			}
+		} else if (comp instanceof JLabel) {
+			((JLabel) comp).setForeground(oscuro ? Color.WHITE : Color.BLACK);
+		} else if (comp instanceof JTextField) {
+			comp.setBackground(oscuro ? new Color(50, 50, 60) : Color.WHITE);
+			((JTextField) comp).setForeground(oscuro ? Color.WHITE : texto);
+		} else if (comp instanceof JComboBox) {
+			comp.setBackground(oscuro ? new Color(50, 50, 60) : Color.WHITE);
+			comp.setForeground(oscuro ? Color.WHITE : texto);
+		} else if (comp instanceof JButton) {
+			comp.setBackground(boton);
+			comp.setForeground(amarilloSec);
+		} else if (comp instanceof JTable) {
+			comp.setBackground(oscuro ? new Color(40, 40, 50) : Color.WHITE);
+			((JTable) comp).setForeground(oscuro ? Color.WHITE : texto);
+		}
 	}
 
 	public JPanel getPanelPrincipal() {
