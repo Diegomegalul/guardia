@@ -12,11 +12,9 @@ import java.awt.Color; // Importar SwingConstants
 
 public class AcercaDe extends JFrame {
 
+	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 
-	/**
-	 * Launch the application.
-	 */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -30,9 +28,6 @@ public class AcercaDe extends JFrame {
 		});
 	}
 
-	/**
-	 * Create the frame.
-	 */
 	public AcercaDe() {
 		setTitle("Acerca de - Sistema de Guardias"); // Título de la ventana
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); // Importante: solo cierra esta ventana
