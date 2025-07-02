@@ -1,13 +1,16 @@
 package interfaz;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.EventQueue;
 import java.awt.Font; // Importar Font
+
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JLabel; // Importar JLabel
 import javax.swing.SwingConstants;
+
 import java.awt.Color; // Importar SwingConstants
 
 public class AcercaDe extends JFrame {
@@ -41,12 +44,22 @@ public class AcercaDe extends JFrame {
 		setContentPane(contentPane);
 
 		// Añadir contenido a la ventana AcercaDe
-		JLabel lblInfo = new JLabel("<html><div style='text-align: center;'><h2>Sistema de Gestión de Guardias</h2><p>Desarrolladores: Diego Canales Calvo  y Daniela Rguez Molina\r\n</p><p>Este software ayuda a la planificación y seguimiento de guardias de estudiantes y trabajadores.</p><p>Versión: 1.0</p></div></html>");
+		JLabel lblInfo = new JLabel("<html><div style='text-align: center;'><h2>Sistema de Gestión de Guardias</h2><p>Desarrolladores: Diego Canales Calvo  y Daniela Rguez Molina\r\n</p><p>Este software ayuda a la planificación y seguimiento de guardias de estudiantes y trabajadores.</p><p>Versión: 2.2</p></div></html>");
 		lblInfo.setBackground(Color.ORANGE);
 		lblInfo.setFont(new Font("Arial", Font.PLAIN, 14));
 		lblInfo.setHorizontalAlignment(SwingConstants.CENTER);
 		lblInfo.setVerticalAlignment(SwingConstants.CENTER);
 		contentPane.add(lblInfo, BorderLayout.CENTER);
+		
+		JLabel lblProyecto = new JLabel(
+				"<html><div style='text-align: center; width: 100%;'>"
+				+ "Este es el proyecto de DPOO<br>más sexy que ojos humanos hayan visto"
+				+ "</div></html>", SwingConstants.CENTER);
+			lblProyecto.setFont(new Font("Arial", Font.ITALIC, 22));
+			lblProyecto.setForeground(new Color(60, 63, 80));
+			lblProyecto.setAlignmentX(Component.CENTER_ALIGNMENT);
+			lblProyecto.setBorder(new EmptyBorder(30, 0, 0, 0));
+			contentPane.add(lblProyecto, BorderLayout.NORTH);
 	}
 
 }
