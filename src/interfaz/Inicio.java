@@ -402,6 +402,32 @@ public class Inicio extends JFrame {
 		menuValores.add(itemDiasFestivos);
 		menuBar.add(menuValores);
 
+		// --- INICIO DEL CÓDIGO AGREGADO PARA EL MENÚ AYUDA ---
+		// Menú Ayuda (al final de la barra de menú)
+		JMenu menuAyuda = new JMenu("Ayuda");
+		menuAyuda.setOpaque(true);
+		menuAyuda.setFont(new Font("Arial", Font.BOLD, 16));
+		menuAyuda.setBackground(amarillo); // Usar el color amarillo definido en Inicio
+		menuAyuda.setForeground(negro); // Usar el color negro definido en Inicio
+		menuAyuda.setBorder(BorderFactory.createLineBorder(negro, 1));
+
+		JMenuItem itemAcercaDe = new JMenuItem("Acerca de");
+		itemAcercaDe.setFont(new Font("Arial", Font.PLAIN, 15));
+		itemAcercaDe.setBackground(darkBg); // Usar darkBg para el fondo del item
+		itemAcercaDe.setForeground(amarillo); // Usar amarillo para el texto del item
+		itemAcercaDe.setBorder(BorderFactory.createLineBorder(negro, 1));
+		itemAcercaDe.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				// Crear y mostrar la ventana AcercaDe
+				AcercaDe acercaDeFrame = new AcercaDe();
+				acercaDeFrame.setVisible(true);
+			}
+		});
+
+		menuAyuda.add(itemAcercaDe);
+		menuBar.add(menuAyuda); // Añadir el menú Ayuda a la barra de menú
+		// --- FIN DEL CÓDIGO AGREGADO PARA EL MENÚ AYUDA ---
+
 		setJMenuBar(menuBar);
 
 		// Panel central con mensaje de bienvenida o imagen
