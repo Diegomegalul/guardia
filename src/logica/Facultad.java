@@ -27,7 +27,6 @@ public class Facultad {
 	}
 
 	public boolean eliminarPersona(Persona p) {
-		// Eliminar todas las guardias asociadas a la persona (sin usar ->)
 		PlanificadorGuardias planificador = PlanificadorGuardias.getInstancia();
 		if (planificador != null && planificador.getGuardiaFactory() != null) {
 			logica.GuardiaFactory factory = planificador.getGuardiaFactory();
