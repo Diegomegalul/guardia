@@ -429,37 +429,6 @@ public class Inicio extends JFrame {
 		// --- FIN DEL CÓDIGO AGREGADO PARA EL MENÚ AYUDA ---
 
 		setJMenuBar(menuBar);
-
-		// Botón "i" de información
-		JButton btnInfo = new JButton("i");
-		btnInfo.setFont(new Font("Arial", Font.BOLD, 20));
-		btnInfo.setForeground(negro);
-		btnInfo.setBackground(Color.BLUE);
-		btnInfo.setBorder(BorderFactory.createLineBorder(negro, 2, true));
-		btnInfo.setFocusPainted(false);
-		btnInfo.setPreferredSize(new Dimension(20, 20));
-		btnInfo.setMaximumSize(new Dimension(20, 20));
-		btnInfo.setMinimumSize(new Dimension(20, 20));
-		btnInfo.setContentAreaFilled(false);
-		btnInfo.setOpaque(true);
-		btnInfo.setToolTipText("Información");
-
-		// Panel para mantener el botón cuadrado alineado a la derecha
-		JPanel panelInfo = new JPanel();
-		panelInfo.setBackground(amarillo);
-		panelInfo.setBorder(null);
-		panelInfo.setLayout(new BorderLayout());
-		panelInfo.add(btnInfo, BorderLayout.EAST);
-		menuBar.add(Box.createHorizontalGlue());
-		menuBar.add(panelInfo);
-
-		btnInfo.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				JPanel infoPanel = new Info();
-				mostrarPanelCentral(infoPanel);
-			}
-		});
-
 		// Panel central con mensaje de bienvenida o imagen
 		panelCentral = new JPanel();
 		panelCentral.setBackground(amarillo);
