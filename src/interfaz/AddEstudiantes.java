@@ -294,13 +294,13 @@ public class AddEstudiantes extends JFrame {
 				String apellidos = txtApellidos.getText().trim();
 				String sexoStr = (String) comboSexo.getSelectedItem();
 				boolean activo = chkActivo.isSelected();
-				int guardiasAsignadas = 0;
+				int guardiasCumplidas = 0;
 				int guardiasFestivo = 0;
 				int grupo = 0;
-				int guardiasCumplidas = 0;
+				int guardiasAsignadas = 0;
 				int guardiasRecuperacion = 0;
 				try {
-					guardiasAsignadas = Integer.parseInt(txtGuardiasAsignadas.getText().trim());
+					guardiasCumplidas = Integer.parseInt(txtGuardiasAsignadas.getText().trim());
 					guardiasFestivo = Integer.parseInt(txtGuardiasFestivo.getText().trim());
 					grupo = Integer.parseInt(txtGrupo.getText().trim());
 				} catch (Exception ex) {
